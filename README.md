@@ -3,9 +3,9 @@ Retail Tracker
 
 Терминология:
 
-CRUD - Create Retrieve Update Delete
-POS - Point of Sale
-CI - Continuous Integration
+- CRUD (Create Retrieve Update Delete)
+- POS (Point of Sale)
+- CI (Continuous Integration)
 
 Целевая аудитория:
 
