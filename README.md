@@ -96,9 +96,8 @@ Retail Tracker
 
 # Версия 6 Интеграция с баркод счетчиком и печать ценников
 
-- Investigation: wifi barcode readers
-- Investigation: wifi ticket printer (принтер чеков)
-- Investigation: wifi принтер ценников
+- Investigation: wifi Принтер для печати через 
+- Investigation: wifi Принтер для печати ценников
 
 # Версия 6 Интеграция с платежными системами
 
