@@ -1,18 +1,18 @@
 
 ## Установка
 
-### Скачать и установить
+Скачать и установить
 
   - http://nodejs.org/download/
   - http://mongodb.org/downloads
   - http://git-scm.com/download/win
    
   
-### Сделать копию проекта
+Сделать копию проекта
 
   - git clone git@github.com:maximoleinyk/retailtracker.git
   
-### Выполнить команды в корне проекта
+Выполнить команды в корне проекта
 
   - npm install -g grunt-cli
   - npm install -g bower
@@ -20,7 +20,7 @@
   - bower install
   - grunt
 
-### Запуск приложения
+Запуск приложения
 
   - start.bat (Windows)
   - npm start
