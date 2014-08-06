@@ -9,8 +9,9 @@
    
 1.1 MongoDB
 
-Создать баш фал для Windows и поместить: 
-- START C:\mongodb\bin\mongod.exe --config "d:\github\retailtracker\mongodb.cfg"
+Создать баш фал для Windows и поместить строку 
+
+START C:\mongodb\bin\mongod.exe --config "d:\github\retailtracker\mongodb.cfg"
   
   
 2. Сделать копию проекта
