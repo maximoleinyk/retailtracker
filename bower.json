@@ -1,0 +1,55 @@
+{
+  "name": "Sample",
+  "version": "0.0.1",
+  "authors": [
+    "Maxim Oleinyk <maxim.oleinyk@gmail.com>"
+  ],
+  "dependencies": {
+    "jquery": "2.1.0",
+    "underscore": "1.6.0",
+    "json2": "https://github.com/douglascrockford/JSON-js.git",
+    "requirejs": "2.1.11",
+    "backbone": "1.1.2",
+    "socket.io-client": "https://github.com/LearnBoost/socket.io-client.git",
+    "marionette": "1.7.2",
+    "backbone.wreqr": "1.0.1",
+    "backbone.babysitter": "https://github.com/marionettejs/backbone.babysitter.git",
+    "coffee-script": "1.7.1",
+    "ect": "https://github.com/baryshev/ect.git",
+    "rivets": "0.6.7",
+    "require-cs": "https://github.com/guybedford/require-coffee.git",
+    "handlebars": "1.3.0",
+    "requirejs-text": "https://github.com/requirejs/text.git",
+    "bootstrap": "~3.1.1",
+    "requirejs-hbs": "~0.1.1"
+  },
+  "description": "This is the skeleton app that utilize mainstream technologies.",
+  "main": "./js/config.js",
+  "keywords": [
+    "nodeJS",
+    "express",
+    "socket.io",
+    "Backbone",
+    "underscore",
+    "jquery",
+    "requirejs",
+    "rivets",
+    "coffee-script",
+    "marionette",
+    "Bootstrap",
+    "ect",
+    "json"
+  ],
+  "homepage": "http://localhost:3000",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "libs",
+    "test",
+    "tests"
+  ],
+  "resolutions": {
+    "jquery": "2.1.0"
+  }
+}

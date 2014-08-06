@@ -1,0 +1,1 @@
+START C:\mongodb\bin\mongod.exe --config "D:\github\retailtracker\mongodb.cfg"
