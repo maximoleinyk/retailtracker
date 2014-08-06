@@ -6,6 +6,7 @@ Retail Tracker
 - CRUD (Create Retrieve Update Delete)
 - POS (Point of Sale)
 - CI (Continuous Integration)
+- CRM (Customer Relationship Management)
 
 Целевая аудитория:
 
