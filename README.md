@@ -6,6 +6,12 @@
   - http://nodejs.org/download/
   - http://mongodb.org/downloads
   - http://git-scm.com/download/win
+   
+1.1 MongoDB
+
+Создать баш фал для Windows и поместить: 
+- START C:\mongodb\bin\mongod.exe --config "d:\github\retailtracker\mongodb.cfg"
+  
   
 2. Сделать копию проекта
 
