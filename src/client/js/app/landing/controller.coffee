@@ -1,5 +1,8 @@
-define ['cs!app/common/baseController', 'cs!app/landing/view/dashboard/top'], (BaseController, LandingPage) ->
+define (require) ->
   'use strict'
+
+  BaseController = require('cs!app/common/baseController');
+  LandingPage = require('cs!app/landing/view/dashboard')
 
   BaseController.extend
     index: ->
