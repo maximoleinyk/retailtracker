@@ -130,8 +130,8 @@ module.exports = (grunt) ->
             to: ''
           }
           {
-            from: 'src="/js/libs/requirejs/require.js"'
-            to: 'src="/js/require.js"'
+            from: '/js/libs/requirejs/require.js'
+            to: '/js/require.js'
           }
           {
             from: '/js/config.js'

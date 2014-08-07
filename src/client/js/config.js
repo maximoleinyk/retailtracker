@@ -1,6 +1,6 @@
 require.config({
 
-    baseUrl: '/js',
+    baseUrl: '/static/js',
 
     paths: {
         jquery: 'libs/jquery/dist/jquery',

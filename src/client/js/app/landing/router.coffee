@@ -16,3 +16,4 @@ define [
 
     Backbone.history.start
       pushState: true
+      root: '/ui/'

@@ -1,6 +1,10 @@
 require("coffee-script/register");
 
-var app = require('./src/server/app'),
+global.inject = function(url) {
+    return require('./src/server/' + url);
+};
+
+var app = inject('app'),
     path = require('path'),
     isDev = process.env.NODE_ENV === 'development';
 
