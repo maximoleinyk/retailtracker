@@ -3,8 +3,8 @@ define(function() {
 	'use strict';
 
 	return {
-		log: function() {
-			console.log.apply(this, arguments);
+		log: function(message) {
+			console.log(message);
 		}
 	};
 });

@@ -8,11 +8,12 @@ MongoStore = require('connect-mongo')(session)
 router = inject('router')
 socket = inject('socket')
 security = inject('security')
+database = inject('database')
+eventBus = inject('util/eventBus')
 
 module.exports =
 
   start: (config) ->
-
     app = express()
     app.use '/static', express.static config.staticDir
     app.use bodyParser.json()
@@ -39,6 +40,8 @@ module.exports =
     security(expressRouter, passport)
     router(passport, expressRouter, config)
     socket(app, config)
+    database(config)
 
-    app.listen config.appPort, ->
-      console.log 'Application started on port ' + config.appPort + ' in ' + process.env.NODE_ENV + ' mode'
+    eventBus.on 'db:open', ->
+      app.listen config.appPort, ->
+        console.log 'Application started on port ' + config.appPort + ' in ' + process.env.NODE_ENV + ' mode'
