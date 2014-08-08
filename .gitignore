@@ -7,3 +7,5 @@ npm-debug.log
 .DS_Store
 README.md
 src/client/css/main.css
+*.iml
+*.ipr

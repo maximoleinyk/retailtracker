@@ -13,7 +13,7 @@ app.start({
     sessionSecret: 'session_secret_word',
     staticDir: path.resolve(__dirname, isDev ? 'src/client' : 'build/client'),
     indexFile: path.resolve(__dirname, isDev ? 'src/client/index.html' : 'build/server/index.html'),
-    socketPort: 8001,
+    socketPort: 4000,
     appPort: 3000,
     dbHost: '127.0.0.1',
     dbPort: '27017',

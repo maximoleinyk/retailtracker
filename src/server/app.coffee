@@ -5,7 +5,6 @@ bodyParser = require('body-parser')
 cookieParser = require('cookie-parser')
 passport = require('passport')
 MongoStore = require('connect-mongo')(session)
-Server = require('mongodb').Server
 router = inject('router')
 socket = inject('socket')
 security = inject('security')
@@ -37,7 +36,7 @@ module.exports =
     app.use passport.session()
     app.use expressRouter
 
-    security(passport)
+    security(expressRouter, passport)
     router(passport, expressRouter, config)
     socket(app, config)
 
