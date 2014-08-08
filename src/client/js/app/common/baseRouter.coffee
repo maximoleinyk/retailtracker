@@ -1,5 +1,8 @@
-define ['marionette', 'cs!app/common/view/notFound/top'], (Marionette, NotFound) ->
+define (require) ->
   'use strict'
+
+  Marionette = require('marionette')
+  NotFound = require('cs!app/common/view/notFound')
 
   Marionette.AppRouter.extend
 

@@ -1,10 +1,10 @@
-define [
-  'backbone'
-  'cs!app/common/baseRouter'
-  'cs!app/landing/controller'
-  'cs!app/common/app'
-], (Backbone, BaseRouter, Controller, App) ->
+define (require) ->
   'use strict'
+
+  Backbone = require('backbone')
+  BaseRouter = require('cs!app/common/baseRouter')
+  Controller = require('cs!app/landing/controller')
+  App = require('cs!app/common/app')
 
   Router = BaseRouter.extend
     appRoutes:

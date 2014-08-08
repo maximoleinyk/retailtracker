@@ -3,7 +3,7 @@ define (require) ->
 
   Marionette = require('marionette')
   Backbone = require('backbone')
-  template = require('hbs!app/landing/view/dashboard')
+  template = require('hbs!./dashboard')
 
   Marionette.ItemView.extend
     template: template

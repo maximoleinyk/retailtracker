@@ -1,7 +1,8 @@
-define ['marionette'], (Marionette) ->
+define (require) ->
   'use strict'
 
-  Marionette.Controller.extend
+  Marionette = require('marionette')
 
+  Marionette.Controller.extend
     constructor: ->
       Marionette.Controller::constructor.call(@, arguments)
