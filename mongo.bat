@@ -1,1 +1,1 @@
-START C:\mongodb\bin\mongod.exe --config "D:\github\retailtracker\mongodb.cfg"
+START C:\mongodb\bin\mongod.exe --logpath C:\mongodb\data\mongodb.log --dbpath C:\mongodb\data\db --rest

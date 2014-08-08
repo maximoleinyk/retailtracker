@@ -1,2 +1,2 @@
 #!/bin/sh
-exec ~/Tools/mongodb/bin/mongod --dbpath ~/Tools/mongodb/data/db --logpath ~/Tools/mongodb/data/log/mongodb.log
+exec ~/Tools/mongodb/bin/mongod --logpath ~/Tools/mongodb/data/mongodb.log --dbpath ~/Tools/mongodb/data/db --rest
