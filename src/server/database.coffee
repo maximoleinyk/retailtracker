@@ -1,12 +1,22 @@
 mongoose = require('mongoose')
-eventBus = inject('util/eventBus')
+session = require('express-session')
+MongoStore = require('connect-mongo')(session)
 
-module.exports = (config) ->
+module.exports =
 
-  mongoose.connection.once 'open', ->
-    eventBus.emit('db:open')
-
-  mongoose.connection.on 'error', ->
-    eventBus.emit('db:error')
-
-  mongoose.connect(config.dbHost, config.dbName, config.dbPort)
+  connect: (app, config, done) ->
+    mongoose.connect config.dbHost, config.dbName, config.dbPort, (err) ->
+      throw err if err
+      console.log('Connected to mongo on: ' + config.dbHost + ':' + config.dbPort)
+      app.use session({
+        saveUninitialized: true,
+        resave: true
+        secret: config.sessionSecret,
+        store: new MongoStore({
+          db: mongoose.connection.db
+          cookie:
+            maxAge: 1000 * 60 * 60 * 2
+        })
+      })
+      # release the chain
+      done()

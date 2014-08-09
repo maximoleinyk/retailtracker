@@ -104,7 +104,7 @@ module.exports = (grunt) ->
           {
             expand: true
             src: [
-              '**/landing/main.js'
+              '**/management/main.js'
             ]
             cwd: 'temp/built/js/app'
             dest: 'build/client/js/app'
@@ -166,7 +166,7 @@ module.exports = (grunt) ->
               ]
             },
             {
-              name: 'app/landing/main'
+              name: 'app/management/main'
               exclude: [
                 'config'
               ]
@@ -178,7 +178,7 @@ module.exports = (grunt) ->
         files:
           'build/client/js/require.js': 'build/client/js/require.js'
           'build/client/js/app/config.js': 'build/client/js/app/config.js'
-          'build/client/js/app/landing/main.js': 'build/client/js/app/landing/main.js'
+          'build/client/js/app/management/main.js': 'build/client/js/app/management/main.js'
 
     mochaTest:
       test:

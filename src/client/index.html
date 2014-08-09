@@ -1,6 +1,6 @@
 <!DOCTYPE>
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-<!--[if (lt IE 9)|(IE 9)]><!--> <html lang="en" class="no-support no-js"> <!--<![endif]-->
+<!--[if (lt IE 9)]><!--> <html lang="en" class="no-support no-js"> <!--<![endif]-->
 <head>
 	<title></title>
 	<script type="text/javascript">
@@ -19,7 +19,12 @@
 	<script src="/static/js/libs/requirejs/require.js"></script>
 	<script>
 		require(['/static/js/config.js'], function() {
-			require(['cs!app/landing/main']);
+			require(['cs!app/loader'], function(Loader) {
+                var loader = new Loader({
+                    '*': 'management'
+                });
+                loader.load();
+            });
 		});
 	</script>
 </body>
