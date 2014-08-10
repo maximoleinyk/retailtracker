@@ -3,7 +3,6 @@ userService = inject('services/userService')
 crypto = require('crypto')
 
 module.exports = (router) ->
-
   router.get '/test/data', (req, res) ->
     user = {
       firstName: 'Maksym'
@@ -15,7 +14,4 @@ module.exports = (router) ->
     res.status(HttpStatus.OK).end()
 
   router.get '/user/fetch', (req, res) ->
-    if req.isAuthenticated()
-      res.status(HttpStatus.OK).send(req.user)
-    else
-      res.status(HttpStatus.UNAUTHORIZED).end()
+    res.status(HttpStatus.OK).send(req.user)

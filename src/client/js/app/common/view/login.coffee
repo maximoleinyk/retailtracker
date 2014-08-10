@@ -5,6 +5,8 @@ define (require) ->
   http = require('util/http')
   Backbone = require('backbone')
   Marionette = require('marionette')
+  UserInfo = require('util/userInfo')
+  IO = require('util/io')
 
   Marionette.ItemView.extend
 
@@ -21,12 +23,20 @@ define (require) ->
       e.preventDefault();
 
       @validation.reset @
+
       authenticate = new Promise (resolve, reject) =>
         http.post '/security/login', @model.toJSON(), resolve, ->
           reject('Invalid username/password.')
 
       authenticate
-        .then =>
+        .then ->
+          new Promise (resolve, reject) ->
+            http.get '/user/fetch', (err, user) ->
+              if err then reject(err) else resolve(user)
+        .then (userInfo) =>
+          UserInfo.set(userInfo)
+          IO.register "user:#{UserInfo.id}:logout", ->
+            window.location.reload()
           @ensureHistory()
           @eventBus.trigger('router:reload')
         .then null, (err) =>

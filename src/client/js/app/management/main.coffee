@@ -1,17 +1,21 @@
 define (require) ->
   'use strict'
 
-  Router = require('cs!app/management/router')
-  Controller = require('cs!app/management/controller')
+  Router = require('cs!./router')
+  Controller = require('cs!./controller')
   http = require('util/http')
+  UserInfo = require('util/userInfo')
+  IO = require('util/io')
 
   (start) ->
-    start Router, Controller, {
-      Header: require('cs!app/management/view/header')
+    start(Router, Controller, {
+      Header: require('cs!./view/header')
       before: ->
         new Promise (resolve, reject) ->
           http.get '/user/fetch', (err, user) ->
             if err then reject(err) else ->
-              # do something with user
+              UserInfo.set(user);
+              IO.register "user:#{UserInfo.id}:logout", ->
+                window.location.reload()
               resolve()
-    }
+    })

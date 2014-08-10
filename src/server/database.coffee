@@ -17,10 +17,12 @@ module.exports =
         saveUninitialized: true,
         resave: true
         secret: config.app.sessionSecret,
+        cookie:
+          maxAge: 1000 * 60 * 2
         store: new MongoStore({
           db: mongoose.connection.db
           cookie:
-            maxAge: 1000 * 60 * 60 # one hour
+            maxAge: 1000 * 60 * 2
         })
       })
 

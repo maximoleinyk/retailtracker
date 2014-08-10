@@ -8,8 +8,7 @@ module.exports = (passport) ->
   }
 
   handler = (email, password, done) ->
-    process.nextTick ->
-      userService.findByCredentials(email, password, done)
+    userService.findByCredentials(email, password, done)
 
   strategy = new LocalStrategy(credentialsInfo, handler)
 
