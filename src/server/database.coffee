@@ -5,18 +5,24 @@ MongoStore = require('connect-mongo')(session)
 module.exports =
 
   connect: (app, config, done) ->
-    mongoose.connect config.dbHost, config.dbName, config.dbPort, (err) ->
-      throw err if err
-      console.log('Connected to mongo on: ' + config.dbHost + ':' + config.dbPort)
+
+    host = config.db.host
+    name = config.db.name
+    port = config.db.port
+
+    mongoose.connect host, name, port, (err) ->
+      return done(err) if err
+
       app.use session({
         saveUninitialized: true,
         resave: true
-        secret: config.sessionSecret,
+        secret: config.app.sessionSecret,
         store: new MongoStore({
           db: mongoose.connection.db
           cookie:
-            maxAge: 1000 * 60 * 60 * 2
+            maxAge: 1000 * 60 * 60 # one hour
         })
       })
-      # release the chain
+
+      console.log('Connected to mongo on host ' + config.db.host + ' and port ' + config.db.port)
       done()

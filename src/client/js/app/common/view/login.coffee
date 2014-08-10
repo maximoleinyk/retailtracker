@@ -30,7 +30,10 @@ define (require) ->
           @ensureHistory()
           @eventBus.trigger('router:reload')
         .then null, (err) =>
-          @validation.show({ generic: err }, @)
+          if err.status is 403
+            @validation.show({ generic: 'Учетная запись не существует' }, @)
+          else
+            @validation.show({ generic: err.statusText }, @)
 
       @model.unset('password')
 

@@ -4,4 +4,4 @@ define (require) ->
   BaseRouter = require('cs!app/common/baseRouter')
   BaseRouter.extend
     appRoutes:
-      'home': 'home'
+      '': 'home'
