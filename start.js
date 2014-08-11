@@ -11,8 +11,8 @@ var app = inject('app'),
 app.start({
 	app: {
 		port: 3000,
-		indexHtml: path.resolve(__dirname, isDev ? 'src/client/index.html' : 'build/server/index.html'),
-		staticDir: path.resolve(__dirname, isDev ? 'src/client' : 'build/client'),
+		indexHtml: path.resolve(__dirname  + (isDev ? '/src/client/index.html' : '/build/server/index.html')),
+		staticDir: path.resolve(__dirname + (isDev ? '/src/client' : '/build/client')),
 		cookieSecret: 'secret_cookie_word',
 		sessionSecret: 'session_secret_word'
 	},

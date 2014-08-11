@@ -160,9 +160,11 @@ module.exports = (grunt) ->
                 'marionette'
                 'handlebars'
                 'hbs'
+                'rsvp'
                 'socket.io'
                 'rivets'
                 'text'
+                'app/loader'
               ]
             },
             {
