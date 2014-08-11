@@ -3,6 +3,7 @@ define (require) ->
 
   Backbone = require('backbone')
   NotFound = require('cs!app/common/view/notFound')
+  http = require('http')
 
   Backbone.Marionette.Controller.extend
 
