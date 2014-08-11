@@ -8,6 +8,6 @@ define(function (require) {
 		register: function(eventName, callback) {
 			return socket.on(eventName, callback);
 		}
-	}
+	};
 
 });

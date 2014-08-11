@@ -1,4 +1,5 @@
 define(function(require) {
+	'use strict';
 
     var numeral = require('numeral'),
 		moment = require('moment'),

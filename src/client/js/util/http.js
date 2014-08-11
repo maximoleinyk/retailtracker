@@ -2,7 +2,8 @@ define(function (require) {
 	'use strict';
 
 	var Backbone = require('backbone'),
-		eventBus = require('util/eventBus');
+		eventBus = require('util/eventBus'),
+		_ = require('underscore');
 
 	var request = function (method, url, data, callback, options) {
 

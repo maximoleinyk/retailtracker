@@ -2,7 +2,10 @@ define(function (require) {
 	'use strict';
 
 	var rivets = require('rivets'),
-		Marionette = require('marionette');
+		Marionette = require('marionette'),
+		Backbone = require('backbone'),
+		_ = require('underscore');
+
 
 	if (typeof String.prototype.trim !== 'function') {
 		String.prototype.trim = function () {
@@ -59,12 +62,12 @@ define(function (require) {
 		bindings = bindings || {
 			model: view.model
 		};
-		view._rivets = rivets.bind(view.$el, bindings);
+		view.rv = rivets.bind(view.$el, bindings);
 	}
 
 	function unbind(view) {
-		if (view._rivets) {
-			view._rivets.unbind();
+		if (view.rv) {
+			view.rv.unbind();
 		}
 	}
 

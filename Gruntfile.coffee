@@ -9,7 +9,7 @@ module.exports = (grunt) ->
 
     eslint:
       target:
-        src: ['src/client/js/app/**/*.js', 'src/client/js/etc/**/*.js']
+        src: ['src/client/js/app/**/*.js', 'src/client/js/util/**/*.js']
       options:
         config: 'eslint.json'
 
