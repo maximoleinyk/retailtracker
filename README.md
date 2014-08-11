@@ -25,6 +25,7 @@
 
 Запуск приложения
 
+  - export NODE_ENV=development (Linux) | set NODE_ENV=development (Windows)
   - mongo.bat (Windows) | moongo.sh (Unix) в установочной директории mongodb
   - node-inspector
   - npm start
