@@ -4,6 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   Backbone = require('backbone')
   http = require('util/http')
+  sessionStore = require('util/sessionStore')
 
   Marionette.AppRouter.extend
 
@@ -34,5 +35,7 @@ define (require) ->
 
       'redirect': -> # do nothing
 
-      '*404': -> # do nothing
-
+      '*404': ->
+        url = Backbone.history.fragment
+        return if url is '404'
+        @eventBus.trigger 'load:module', url

@@ -22,9 +22,18 @@ module.exports =
       authentication(passport)
       app.use (req, res, next) ->
         url = req.url
-        if url.indexOf('/ui') is 0 or url.indexOf('/static') > -1 or url.indexOf('/security/login') is 0 or url is '/'
+        allowedUrls = [/^\/page*/, /^\/security\/login$/, /^\/static*/, /^\/$/]
+        flag = false
+
+        if req.isAuthenticated()
           return next()
-        if req.isAuthenticated() then next() else res.status(HttpStatus.UNAUTHORIZED).end()
+        else
+          allowedUrls.forEach (regexp) ->
+            if regexp.test(url)
+              flag = true
+              return next()
+        res.status(HttpStatus.UNAUTHORIZED).end() if not flag
+
       app.use(router)
       rest(router, passport, config)
       socket(app, config)

@@ -7,13 +7,30 @@ define (require) ->
   http = require('util/http')
   Backbone = require('backbone')
   _ = require('underscore')
+  eventBus = require('util/eventBus')
+  sessionStore = require('util/sessionStore')
 
   App = new Marionette.Application
   Marionette.Renderer.render = (compile, data) ->
     compile data
 
   (mappings) ->
+    origin = window.location.origin or window.location.protocol + '//' + window.location.host
+    url = window.location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/')
+
+    eventBus.on 'load:module', (url) ->
+      moduleName = null
+      _.each mappings, (name, route) ->
+        if (url.indexOf('/page/' + route) is 0)
+          moduleName = 'app/' + name + '/main'
+      if moduleName
+        require ['cs!' + moduleName], (module) ->
+          module(run)
+      else
+        eventBus.trigger('router:navigate', '404', {trigger: true})
+
     run = (Router, Controller, options) ->
+      options or= {}
       options = _.extend(options, {
         before: (resolve) -> return resolve()
       })
@@ -21,9 +38,13 @@ define (require) ->
       if document.documentElement.className.indexOf('no-support') > -1
         throw new Error('This application cannot be started in Internet Explorer 7 or below.')
 
-      startApp = (user) ->
+      startApp = (authenticated) ->
+        if not authenticated and url isnt '/page/account/login'
+          sessionStore.add('redirectUrl', url.replace('/page/', ''))
+          return window.location.replace('/page/account/login')
+
         options = _.extend(options, {
-          user: user
+          user: authenticated
         })
 
         App.addInitializer (options) ->
@@ -34,11 +55,11 @@ define (require) ->
             controller: new Controller(options)
           });
 
-          if (options.user)
-            Backbone.history.start({
-              pushState: true,
-              root: '/ui/'
-            })
+          Backbone.history.start({
+            pushState: true,
+            root: '/page/'
+          })
+
         App.start(options)
 
       cookieEnabled = navigator.cookieEnabled or ('cookie' in document and (document.cookie.length > 0 or (document.cookie = 'test').indexOf.call(document.cookie,
@@ -58,15 +79,14 @@ define (require) ->
 
     {
     load: ->
-      origin = window.location.origin or window.location.protocol + '//' + window.location.host
-      url = window.location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/')
       moduleName = 'app/management/main'
 
       # determine which module we should load
       _.each mappings, (name, route) ->
-        if (url.indexOf(route) is 0)
+        if (url.indexOf('/page/' + route) is 0)
           moduleName = 'app/' + name + '/main'
 
       # invoke loaded module after successful loading
-      require ['cs!' + moduleName], (module) -> module(run)
+      require ['cs!' + moduleName], (module) ->
+        module(run)
     }
