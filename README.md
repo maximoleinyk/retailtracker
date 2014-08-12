@@ -32,13 +32,11 @@
   - npm install -g node-gyp
   - открыть файл addon.gypi в директории c:\Program Files\nodejs\node_modules\npm\node_modules\node-gyp\
   - добавить следующее после строчки [ 'OS=="win"', {
-  
   'msvs_settings': {
     'VCLinkerTool': {
       'AdditionalLibraryDirectories': 'c:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\x64'
     }
    },
-  
   - npm install
   - bower install
   - grunt
