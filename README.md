@@ -43,14 +43,14 @@
 Запуск приложения Unix
 
   - export NODE_ENV=development
-  - moongo.sh (Unix) в установочной директории mongodb
+  - moongo.sh в установочной директории mongodb
   - node-inspector
   - npm start
   
 Запуск приложения Windows
 
   - set NODE_ENV=development
-  - mongo.bat (Windows) в установочной директории mongodb
+  - mongo.bat в установочной директории mongodb
   - node-inspector
   - npm start
 
