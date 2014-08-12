@@ -14,64 +14,73 @@ define (require) ->
   Marionette.Renderer.render = (compile, data) ->
     compile data
 
-  (mappings) ->
+  getPath = ->
     origin = window.location.origin or window.location.protocol + '//' + window.location.host
-    url = window.location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/')
+    window.location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/').replace(/^\/page\/?/, '')
 
-    eventBus.on 'load:module', (url) ->
-      moduleName = null
-      _.each mappings, (name, route) ->
-        if (url.indexOf('/page/' + route) is 0)
-          moduleName = 'app/' + name + '/main'
-      if moduleName
+  App.addInitializer (options) ->
+    layout = new Layout(options)
+    layout.render();
+
+    new options.Router({
+      controller: new options.Controller(options)
+      moduleName: options.moduleName
+    });
+
+    url = getPath()
+
+    Backbone.history.start({
+      pushState: true,
+      root: '/page/',
+      silent: not options.isAuthenticated and url isnt 'account/login'
+    })
+    if not options.isAuthenticated and url isnt 'account/login'
+      sessionStore.add('redirectUrl', url.replace(/^\/page\/?/, ''))
+      return eventBus.trigger('router:navigate', 'account/login', {trigger:true})
+
+  (mappings) ->
+
+    load = (url, defaultModuleName, callback) ->
+      callback or= ->
+      moduleName = defaultModuleName
+      for route of mappings
+        do ->
+          name = mappings[route]
+          if (url.indexOf(route) is 0)
+            moduleName = 'app/' + name + '/main'
+
+      prevModule = sessionStore.get('prevNotFound')
+      sessionStore.remove('prevNotFound')
+
+      if moduleName && prevModule isnt moduleName
         require ['cs!' + moduleName], (module) ->
           module(run)
       else
-        eventBus.trigger('router:navigate', '404', {trigger: true})
+        window.location.replace('/404')
 
-    run = (Router, Controller, options) ->
-      options or= {}
-      options = _.extend(options, {
-        before: (resolve) -> return resolve()
-      })
+    eventBus.on 'load:module', (url, module) ->
+      Backbone.history.stop()
+      load(url, module)
+
+    run = (options) ->
 
       if document.documentElement.className.indexOf('no-support') > -1
         throw new Error('This application cannot be started in Internet Explorer 7 or below.')
-
-      startApp = (authenticated) ->
-        if not authenticated and url isnt '/page/account/login'
-          sessionStore.add('redirectUrl', url.replace('/page/', ''))
-          return window.location.replace('/page/account/login')
-
-        options = _.extend(options, {
-          user: authenticated
-        })
-
-        App.addInitializer (options) ->
-          layout = new Layout(options)
-          layout.render();
-
-          new Router({
-            controller: new Controller(options)
-          });
-
-          Backbone.history.start({
-            pushState: true,
-            root: '/page/'
-          })
-
-        App.start(options)
 
       cookieEnabled = navigator.cookieEnabled or ('cookie' in document and (document.cookie.length > 0 or (document.cookie = 'test').indexOf.call(document.cookie,
         'test') > -1))
       document.documentElement.className += if cookieEnabled then ' cookies': ' no-cookies'
 
       testAuthentication = new Promise (resolve, reject) =>
-        http.get '/security/test', (err) =>
-          return reject(err) if err
-          options.before(resolve)
+        http.get '/security/test', (err, result) =>
+          if err then reject(err) else resolve(result)
 
-      testAuthentication
+      allPromises = [testAuthentication]
+
+      if options.before
+        allPromises.push(options.before())
+
+      Promise.all(allPromises)
       .then ->
         startApp(true)
       .then null, (err) ->
@@ -79,14 +88,11 @@ define (require) ->
 
     {
     load: ->
-      moduleName = 'app/management/main'
+      url = getPath()
+      load(url, 'app/management/main')
+      startApp = (authenticated) ->
+        App.start(_.extend(options, {
+          isAuthenticated: authenticated
+        }))
 
-      # determine which module we should load
-      _.each mappings, (name, route) ->
-        if (url.indexOf('/page/' + route) is 0)
-          moduleName = 'app/' + name + '/main'
-
-      # invoke loaded module after successful loading
-      require ['cs!' + moduleName], (module) ->
-        module(run)
     }

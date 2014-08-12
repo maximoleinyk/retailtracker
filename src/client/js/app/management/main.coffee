@@ -8,14 +8,18 @@ define (require) ->
   IO = require('util/io')
 
   (start) ->
-    start(Router, Controller, {
+    start({
+      Router: Router
+      Controller: Controller
       Header: require('cs!./view/header')
+      moduleName: 'app/management/main'
       before: ->
         new Promise (resolve, reject) ->
           http.get '/user/fetch', (err, user) ->
-            if err then reject(err) else ->
-              UserInfo.set(user);
-              IO.register "user:#{UserInfo.id}:logout", ->
-                window.location.reload()
-              resolve()
+            return reject(err) if err
+
+            UserInfo.set(user)
+            IO.register "user:#{UserInfo.id}:logout", ->
+              window.location.reload()
+            resolve()
     })

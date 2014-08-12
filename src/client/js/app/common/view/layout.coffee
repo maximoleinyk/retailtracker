@@ -21,8 +21,7 @@ define (require) ->
       @options = options
 
     onRender: ->
-      return @displayHeader() if @options.user
-      @redirectToLogin()
+      return @displayHeader() if @options.isAuthenticated
 
     hideAll: ->
       @header.close()

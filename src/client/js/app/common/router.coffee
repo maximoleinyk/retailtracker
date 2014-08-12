@@ -29,7 +29,6 @@ define (require) ->
       @options = options
 
       @appRoutes['logout'] = 'logout'
-      @appRoutes['404'] = 'notFound'
 
     routes:
 
@@ -38,4 +37,9 @@ define (require) ->
       '*404': ->
         url = Backbone.history.fragment
         return if url is '404'
-        @eventBus.trigger 'load:module', url
+#
+#        if @options.moduleName is sessionStore.get('module')
+#          @eventBus.trigger('router:navigate', '404', {trigger:true})
+#        else
+        sessionStore.add('prevNotFound', @options.moduleName)
+        @eventBus.trigger('load:module', url)

@@ -40,4 +40,4 @@ define (require) ->
         @eventBus.trigger('router:reload');
 
     notFound: ->
-      @openPage new NotFound
+      window.location.replace('/404')
