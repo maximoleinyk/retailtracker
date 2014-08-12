@@ -19,12 +19,12 @@
 	<script src="/static/js/libs/requirejs/require.js"></script>
 	<script>
 		require(['/static/js/config.js'], function() {
-			require(['cs!app/loader'], function(Loader) {
-                var loader = new Loader({
+			require(['cs!app/loader'], function(ModuleLoader) {
+                var loader = new ModuleLoader({
                     '': 'management',
                     'account': 'account'
                 });
-                loader.load();
+                loader.loadModule();
             });
 		});
 	</script>

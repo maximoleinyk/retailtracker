@@ -2,6 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
+  sessionStore = require('util/sessionStore')
 
   Marionette.Layout.extend
 
@@ -13,7 +14,7 @@ define (require) ->
       container: '#container'
 
     appEvents:
-      'router:reload': 'displayHeader'
+      'router:navigate': 'hideHeader'
       'http:401': 'redirectToLogin'
       'open:page': 'openPage'
 
@@ -21,21 +22,18 @@ define (require) ->
       @options = options
 
     onRender: ->
-      return @displayHeader() if @options.isAuthenticated
+      @displayHeader()
 
-    hideAll: ->
-      @header.close()
-      @container.close()
+    hideHeader: (route) ->
+      @header.close() if route is '404'
 
     displayHeader: ->
-      return if not @options.Header
-      @showHeader(new @options.Header(@options))
-
-    showHeader: (view) ->
-      @header.show view
+      return if not @options.isAuthenticated or Backbone.history.fragment is '404'
+      @header.show(new @options.Header(@options)) if @options.Header
 
     openPage: (view) ->
-      @container.show view
+      @container.show(view)
 
     redirectToLogin: ->
-      @eventBus.trigger('loader:module', 'account/login')
+      sessionStore.add('redirectUrl', Backbone.history.fragment)
+      window.location.replace('/page/account/login')

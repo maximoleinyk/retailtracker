@@ -2,7 +2,6 @@ define (require) ->
   'use strict'
 
   Backbone = require('backbone')
-  NotFound = require('cs!app/common/view/notFound')
   http = require('util/http')
 
   Backbone.Marionette.Controller.extend
@@ -37,7 +36,4 @@ define (require) ->
 
     logout: ->
       http.del '/security/logout', =>
-        @eventBus.trigger('router:reload');
-
-    notFound: ->
-      window.location.replace('/404')
+        @eventBus.trigger('router:reload')

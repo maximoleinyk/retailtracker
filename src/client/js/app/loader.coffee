@@ -9,61 +9,32 @@ define (require) ->
   _ = require('underscore')
   eventBus = require('util/eventBus')
   sessionStore = require('util/sessionStore')
-
-  App = new Marionette.Application
-  Marionette.Renderer.render = (compile, data) ->
-    compile data
+  UserInfo = require('util/userInfo')
 
   getPath = ->
     origin = window.location.origin or window.location.protocol + '//' + window.location.host
     window.location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/').replace(/^\/page\/?/, '')
 
-  App.addInitializer (options) ->
-    layout = new Layout(options)
-    layout.render();
-
-    new options.Router({
-      controller: new options.Controller(options)
-      moduleName: options.moduleName
-    });
-
-    url = getPath()
-
-    Backbone.history.start({
-      pushState: true,
-      root: '/page/',
-      silent: not options.isAuthenticated and url isnt 'account/login'
-    })
-    if not options.isAuthenticated and url isnt 'account/login'
-      sessionStore.add('redirectUrl', url.replace(/^\/page\/?/, ''))
-      return eventBus.trigger('router:navigate', 'account/login', {trigger:true})
+  App = new Marionette.Application
+  Marionette.Renderer.render = (compile, data) ->
+    compile(data)
 
   (mappings) ->
+    App.addInitializer (options) ->
+      layout = new Layout(options)
+      layout.render();
 
-    load = (url, defaultModuleName, callback) ->
-      callback or= ->
-      moduleName = defaultModuleName
-      for route of mappings
-        do ->
-          name = mappings[route]
-          if (url.indexOf(route) is 0)
-            moduleName = 'app/' + name + '/main'
+      new options.Router({
+        controller: new options.Controller(options)
+      })
 
-      prevModule = sessionStore.get('prevNotFound')
-      sessionStore.remove('prevNotFound')
+      Backbone.history.start({
+        pushState: true
+        root: '/page/'
+      })
 
-      if moduleName && prevModule isnt moduleName
-        require ['cs!' + moduleName], (module) ->
-          module(run)
-      else
-        window.location.replace('/404')
-
-    eventBus.on 'load:module', (url, module) ->
-      Backbone.history.stop()
-      load(url, module)
-
-    run = (options) ->
-
+    {
+    loadModule: ->
       if document.documentElement.className.indexOf('no-support') > -1
         throw new Error('This application cannot be started in Internet Explorer 7 or below.')
 
@@ -71,28 +42,33 @@ define (require) ->
         'test') > -1))
       document.documentElement.className += if cookieEnabled then ' cookies': ' no-cookies'
 
-      testAuthentication = new Promise (resolve, reject) =>
-        http.get '/security/test', (err, result) =>
-          if err then reject(err) else resolve(result)
-
-      allPromises = [testAuthentication]
-
-      if options.before
-        allPromises.push(options.before())
-
-      Promise.all(allPromises)
-      .then ->
-        startApp(true)
-      .then null, (err) ->
-        return startApp(false) if (err.status is 401)
-
-    {
-    load: ->
       url = getPath()
-      load(url, 'app/management/main')
-      startApp = (authenticated) ->
-        App.start(_.extend(options, {
-          isAuthenticated: authenticated
-        }))
+      firstModule = 'app/management/main'
+
+      for route of mappings
+        do ->
+          if url.indexOf(route) is 0
+            firstModule = 'app/' + mappings[route] + '/main'
+
+      require ['cs!' + firstModule], (module) ->
+        startApp = (authenticated) ->
+          if not authenticated and url.indexOf('account') isnt 0
+            sessionStore.add('redirectUrl', url)
+            return window.location.replace('/page/account/login')
+
+          App.start(_.extend(module, {
+            isAuthenticated: authenticated
+          }))
+
+        fetchUser = new Promise (resolve, reject) =>
+          http.get '/user/fetch', (err, result) =>
+            if err then reject(err) else resolve(result)
+
+        fetchUser
+        .then (userInfo) ->
+          UserInfo.set(userInfo)
+          startApp(true)
+        .then null, (err) ->
+          return startApp(false) if (err.status is 401)
 
     }

@@ -31,7 +31,6 @@ define (require) ->
       .then =>
         redirectUrl = sessionStore.get('redirectUrl') or ''
         @eventBus.trigger('router:navigate', redirectUrl, {trigger: true})
-        sessionStore.remove('redirectUrl')
       .then null, (err) =>
         if err.status is 403
           @validation.show({ generic: 'Учетная запись не существует' }, @)

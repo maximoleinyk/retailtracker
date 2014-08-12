@@ -31,15 +31,13 @@ define (require) ->
       @appRoutes['logout'] = 'logout'
 
     routes:
-
       'redirect': -> # do nothing
 
       '*404': ->
-        url = Backbone.history.fragment
-        return if url is '404'
-#
-#        if @options.moduleName is sessionStore.get('module')
-#          @eventBus.trigger('router:navigate', '404', {trigger:true})
-#        else
-        sessionStore.add('prevNotFound', @options.moduleName)
-        @eventBus.trigger('load:module', url)
+        redirectLink = sessionStore.get('redirectUrl')
+
+        if redirectLink
+          sessionStore.remove('redirectUrl')
+          window.location.replace('/page' + if not redirectLink then '' else '/' + redirectLink)
+        else
+          window.location.replace('/404')
