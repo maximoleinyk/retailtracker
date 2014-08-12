@@ -12,7 +12,7 @@
 
   - git clone git@github.com:maximoleinyk/retailtracker.git
 
-Скопировать из корня директории файл запуска БД (mongo.bat|mongo.sh) в корневую директорию mongodb и изменить в нем пути.
+Скопировать из корня проекта mongo.bat и mongo.sh в корневую директорию mongodb и изменить пути внутри файлов.
   
 Конфигурация проекта Unix
 
