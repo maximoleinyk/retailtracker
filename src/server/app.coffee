@@ -22,7 +22,7 @@ module.exports =
       authentication(passport)
       app.use (req, res, next) ->
         url = req.url
-        allowedUrls = [/^\/page*/, /^\/security\/login$/, /^\/static*/, /^\/test\/data/, /^\/$/]
+        allowedUrls = [/^\/page*/, /^\/security\/login$/, /^\/security\/register/, /^\/static*/, /^\/test\/data/, /^\/$/]
         flag = false
 
         if req.isAuthenticated()
