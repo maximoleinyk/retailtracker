@@ -1,10 +1,15 @@
 HttpStatus = require('http-status-codes')
 eventBus = inject('util/eventBus')
+userService = inject('services/userService')
 
 module.exports = (router, passport) ->
 
   router.get '/security/test', (req, res) ->
     res.status(HttpStatus.OK).end()
+
+  router.post '/security/register', (req, res) ->
+    userService.register(req.body);
+    res.status(200).end()
 
   router.post '/security/login', (req, res, next) ->
     passport.authenticate('local', (err, user) ->
