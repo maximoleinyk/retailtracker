@@ -38,6 +38,6 @@ define (require) ->
 
         if redirectLink
           sessionStore.remove('redirectUrl')
-          window.location.replace('/page' + if not redirectLink then '' else '/' + redirectLink)
+          window.location.replace('/page' + if not redirectLink or redirectLink is '*' then '' else '/' + redirectLink)
         else
           window.location.replace('/404')

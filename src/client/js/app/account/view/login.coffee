@@ -29,7 +29,8 @@ define (require) ->
 
       authenticate
       .then =>
-        redirectUrl = sessionStore.get('redirectUrl') or ''
+        url = sessionStore.get('redirectUrl')
+        redirectUrl = if not url or url is '*' then '' else url
         @eventBus.trigger('router:navigate', redirectUrl, {trigger: true})
       .then null, (err) =>
         if err.status is 403

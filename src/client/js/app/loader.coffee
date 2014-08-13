@@ -53,7 +53,7 @@ define (require) ->
       require ['cs!' + firstModule], (module) ->
         startApp = (authenticated) ->
           if not authenticated and url.indexOf('account') isnt 0
-            sessionStore.add('redirectUrl', url)
+            sessionStore.add('redirectUrl', url or '*')
             return window.location.replace('/page/account/login')
 
           App.start(_.extend(module, {
