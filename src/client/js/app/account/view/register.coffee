@@ -21,7 +21,7 @@ define (require) ->
     register: (e) ->
       e.preventDefault()
 
-      originButtonLabel = @ui.registerButton.val()
+      originButtonLabel = @ui.registerButton.text()
 
       @validation.reset()
       @ui.registerButton.text('Регистрация...').attr('disabled', true)

@@ -21,5 +21,5 @@ define (require) ->
       .then (userInfo) ->
         UserInfo.set(userInfo)
         resolve()
-      .then reject
+      .then null, reject
   })
