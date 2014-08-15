@@ -4,6 +4,7 @@ define (require) ->
   BaseController = require('cs!app/common/controller');
   LoginPage = require('cs!./view/login')
   RegistrationPage = require('cs!./view/register')
+  RegistrationSuccessPage = require('cs!./view/success')
 
   BaseController.extend
 
@@ -14,4 +15,4 @@ define (require) ->
       @openPage(new RegistrationPage)
 
     success: ->
-      @openPage(new SuccessRegistration)
+      @openPage(new RegistrationSuccessPage)

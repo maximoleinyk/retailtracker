@@ -3,7 +3,6 @@ define (require) ->
 
   http = require('util/http')
   Marionette = require('marionette')
-  SuccessRegistration = require('cs!app/account/view/success')
 
   Marionette.ItemView.extend
 
@@ -32,7 +31,7 @@ define (require) ->
 
       register
       .then =>
-        @eventBus.trigger('page:open', new RegistrationSuccess())
+        @eventBus.trigger('router:navigate:silent', 'register/success')
       .then null, (err) =>
         @validation.show(err.errors)
         @ui.registerButton.text(originButtonLabel).removeAttr('disabled')

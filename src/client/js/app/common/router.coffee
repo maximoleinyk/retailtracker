@@ -11,6 +11,15 @@ define (require) ->
     constructor: ->
       Marionette.AppRouter::constructor.apply @, arguments
 
+      silentRoutes = Marionette.getOption(this, "silentRoutes");
+
+      @listenTo @eventBus, 'router:navigate:silent', (name) =>
+        methodName = silentRoutes[name]
+        controller = Marionette.getOption(this, "controller")
+        method = controller[methodName]
+        throw "Silent route should be mapped to existing method" if not method
+        method.call(controller)
+
       @listenTo @eventBus, 'router:navigate', =>
         @navigate.apply(@, arguments)
 
