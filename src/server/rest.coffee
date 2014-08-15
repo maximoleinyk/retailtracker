@@ -16,4 +16,4 @@ module.exports = (router, passport, config) ->
 
   # REST handlers
   security(router, passport)
-  user(router)
+  user(router, config)

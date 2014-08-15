@@ -1,8 +1,11 @@
 HttpStatus = require('http-status-codes')
 userService = inject('services/userService')
 crypto = require('crypto')
+emailService = inject('services/emailService')
+mailer = inject('util/mailer')
+templateService = inject('services/templateService')
 
-module.exports = (router) ->
+module.exports = (router, config) ->
   router.get '/test/data', (req, res) ->
     user = {
       firstName: 'Maksym'
