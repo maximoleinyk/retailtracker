@@ -9,3 +9,4 @@ define (require) ->
     appRoutes:
       'account/login': 'login'
       'account/register': 'register'
+      'account/approve/:inviteKey': 'approve'
