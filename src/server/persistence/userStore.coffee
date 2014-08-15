@@ -1,5 +1,4 @@
 User = inject('persistence/model/user')
-crypto = require('crypto')
 
 module.exports =
 
@@ -12,9 +11,8 @@ module.exports =
       callback(err, doc?.toObject())
 
   findByCredentials: (email, password, callback) ->
-    encryptedPass = crypto.createHash('md5').update(password).digest('hex')
     criteria =
       email: email
-      password: encryptedPass
+      password: password
     User.findOne criteria, (err, doc) ->
       callback(err, doc?.toObject())

@@ -39,4 +39,5 @@ module.exports =
     userStore.findById(id, callback)
 
   findByCredentials: (login, password, callback) ->
-    userStore.findByCredentials(login, password, callback)
+    encryptedPass = crypto.createHash('md5').update(password).digest('hex')
+    userStore.findByCredentials(login, encryptedPass, callback)

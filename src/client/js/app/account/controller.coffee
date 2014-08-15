@@ -21,11 +21,10 @@ define (require) ->
 
     approve: (inviteKey) ->
       invite = new Invite({id: inviteKey})
-
       invite.fetch()
-      .then ->
-        @showPage(new RegistrationApprovePage({model: invite}))
       .then =>
+        @openPage(new RegistrationApprovePage({model: invite}))
+      .then null, =>
         @login()
 
 

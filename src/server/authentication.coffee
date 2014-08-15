@@ -10,12 +10,10 @@ module.exports = (passport) ->
   handler = (email, password, done) ->
     userService.findByCredentials(email, password, done)
 
-  strategy = new LocalStrategy(credentialsInfo, handler)
-
   passport.serializeUser (user, done) ->
     done(null, user._id)
 
   passport.deserializeUser (id, done) ->
     userService.findById(id, done)
 
-  passport.use(strategy)
+  passport.use(new LocalStrategy(credentialsInfo, handler))

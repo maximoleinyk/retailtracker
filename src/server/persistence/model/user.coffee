@@ -1,7 +1,8 @@
 mongoose = require('mongoose')
 
 schema = mongoose.Schema
-  firstName: String
+  firstName:
+    type: String
     required: true
   lastName: String
   email:

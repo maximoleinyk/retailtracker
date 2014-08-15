@@ -18,12 +18,8 @@ define(function (require) {
 		var params = _.extend({
 			type: method,
 			url: url,
-			success: function (data) {
-				callback(null, data);
-			},
-			error: function (xhr) {
-				callback(xhr);
-			},
+			success: callback,
+			error: callback,
 			statusCode: {
 				400: function (result) {
 					var response;

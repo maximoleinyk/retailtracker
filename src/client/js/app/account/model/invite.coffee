@@ -14,4 +14,5 @@ define (require) ->
         success = (data) =>
           @set(data, options)
           @trigger('sync', @, data, options)
-        http.get('/security/invite' + @id, success, reject)
+          resolve()
+        http.get('/security/invite/' + @id, success, reject)
