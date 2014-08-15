@@ -21,7 +21,7 @@
 		require(['/static/js/config.js'], function() {
 			require(['cs!app/loader'], function(ModuleLoader) {
                 var loader = new ModuleLoader({
-                    '': 'management',
+                    'admin': 'admin',
                     'account': 'account'
                 });
                 loader.loadModule();

@@ -1,11 +1,9 @@
 HttpStatus = require('http-status-codes')
 userService = inject('services/userService')
 crypto = require('crypto')
-emailService = inject('services/emailService')
-mailer = inject('util/mailer')
-templateService = inject('services/templateService')
+authFilter= inject('util/authFilter')
 
-module.exports = (router, config) ->
+module.exports = (router) ->
   router.get '/test/data', (req, res) ->
     user = {
       firstName: 'Maksym'
@@ -16,5 +14,5 @@ module.exports = (router, config) ->
     userService.create(user)
     res.status(HttpStatus.OK).end()
 
-  router.get '/user/fetch', (req, res) ->
+  router.get '/user/fetch', authFilter, (req, res) ->
     res.status(HttpStatus.OK).send(req.user)

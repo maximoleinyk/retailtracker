@@ -14,6 +14,9 @@ module.exports = (router, passport, config) ->
   router.get '/', (req, res) ->
     res.redirect '/page'
 
+  router.get '/404', (req, res) ->
+    res.status(404).end();
+
   # REST handlers
   security(router, passport)
-  user(router, config)
+  user(router)
