@@ -9,8 +9,8 @@ module.exports = (router, passport) ->
     res.status(HttpStatus.OK).end()
 
   router.post '/security/register', (req, res) ->
-    userService.register(req.body);
-    res.status(200).end()
+    userService.register req.body, (err) ->
+      if err then res.status(HttpStatus.BAD_REQUEST).end() else res.status(200).end()
 
   router.post '/security/login', (req, res, next) ->
     passport.authenticate('local', (err, user) ->

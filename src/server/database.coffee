@@ -18,11 +18,11 @@ module.exports =
         resave: true
         secret: config.app.sessionSecret,
         cookie:
-          maxAge: 1000 * 60 * 2
+          maxAge: config.cookie.maxAge
         store: new MongoStore({
           db: mongoose.connection.db
           cookie:
-            maxAge: 1000 * 60 * 2
+            maxAge: config.cookie.maxAge
         })
       })
 

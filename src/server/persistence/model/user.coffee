@@ -6,4 +6,4 @@ schema = mongoose.Schema
   email: String
   password: String
 
-module.exports = mongoose.model 'User', schema
+module.exports = mongoose.model('User', schema)

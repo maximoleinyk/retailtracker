@@ -4,6 +4,7 @@ crypto = require('crypto')
 authFilter= inject('util/authFilter')
 
 module.exports = (router) ->
+
   router.get '/test/data', (req, res) ->
     user = {
       firstName: 'Maksym'

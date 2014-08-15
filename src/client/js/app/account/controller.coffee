@@ -12,3 +12,6 @@ define (require) ->
 
     register: ->
       @openPage(new RegistrationPage)
+
+    success: ->
+      @openPage(new SuccessRegistration)

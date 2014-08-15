@@ -6,6 +6,7 @@ rest = inject('rest')
 socket = inject('socket')
 authentication = inject('authentication')
 database = inject('database')
+mailPubSub = inject('mailPubSub')
 
 module.exports =
 
@@ -19,6 +20,8 @@ module.exports =
       app.use passport.initialize()
       app.use passport.session()
       app.use(router)
+
+      mailPubSub(config)
       authentication(passport)
       rest(router, passport, config)
       socket(app, config)

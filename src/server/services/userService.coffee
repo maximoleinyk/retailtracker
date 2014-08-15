@@ -1,13 +1,21 @@
 userStore = inject('persistence/userStore')
+inviteStore = inject('persistence/inviteStore')
+generatorLinkService = inject('util/linkGenerator')
+eventBus = inject('util/eventBus')
 
 module.exports =
 
   register: (data, callback) ->
-    inviteStore.createInvite(data)
-    # создать инвайт
-    # genegate permanent link
-    # send email with link
-    # start cron job если не зайдет в течении суток удалить из базы инвайт
+
+    generatorLinkService.generateLink (err, generatedLink) ->
+      inviteData = {
+        firstName: data.firstName
+        email: data.email
+        generatedLink: generatedLink
+      }
+      inviteStore.create inviteData, (err) ->
+        return callback('На ваш почтовый адресс уже было выслано письмо с подтверждением регистрации.') if err
+        eventBus.emit('mail:send:invite', inviteData, callback)
 
   create: (data, callback) ->
     userStore.create(data, callback)
