@@ -18,7 +18,9 @@ define(function (require) {
 		var params = _.extend({
 			type: method,
 			url: url,
-			success: callback,
+			success: function(response) {
+                callback(null, response);
+            },
 			error: callback,
 			statusCode: {
 				400: function (result) {
