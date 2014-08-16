@@ -16,9 +16,12 @@ module.exports = (grunt) ->
     less:
       compile:
         options:
+          sourceMap: true
+          sourceMapFilename: "src/client/css/main.css.map"
+          sourceMapBasepath: "src/client/css/"
           cleancss: true
           modifyVars:
-            'img-path': '"../img/"'
+            'img-path': '"../img"'
             'icon-font-path': '"../fonts/"'
             'fa-font-path': '"../fonts/"'
         files:

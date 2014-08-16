@@ -9,3 +9,4 @@ README.md
 src/client/css/main.css
 *.iml
 *.ipr
+*.map

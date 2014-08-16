@@ -73,7 +73,7 @@ define(function (require) {
 
 	var listeners = {
 		autofocus: function (el) {
-			el.focus().removeAttr('autofocus');
+			el.focus();
 		}
 	};
 
@@ -96,7 +96,7 @@ define(function (require) {
 					}
 				});
 			},
-			show: function(messages) {
+			show: function (messages) {
 				if (!_.isObject(messages)) {
 					return;
 				}
@@ -110,7 +110,11 @@ define(function (require) {
 					}
 				});
 
-				self.$el.find('.has-error').first().find('input, select, textarea').focus();
+				var firstErrorGroup = self.$el.find('.has-error').first();
+				if (!firstErrorGroup.length) {
+					firstErrorGroup = self.$el.find('[autofocus]').closest('.form-group, .validation-group');
+				}
+				firstErrorGroup.find('input, select, textarea').focus();
 			}
 		};
 

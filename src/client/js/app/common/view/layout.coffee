@@ -21,6 +21,18 @@ define (require) ->
     initialize: (options) ->
       @options = options
 
+      Marionette.$(document).on 'click', 'a[href^="/"]', (e) =>
+        $el = $(e.currentTarget)
+        href = $el.attr('href')
+
+        if (!$el.data('enable-href') and (href isnt '#') and !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey)
+          e.preventDefault()
+
+          url = href.replace(new RegExp('^' + Backbone.history.root), '')
+          @eventBus.trigger('router:navigate', url, {trigger: true})
+
+          $(document).trigger('click.bs.dropdown');
+
     onRender: ->
       @displayHeader()
 

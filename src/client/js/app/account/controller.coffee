@@ -6,6 +6,7 @@ define (require) ->
   RegistrationPage = require('cs!./view/register')
   RegistrationSuccessPage = require('cs!./view/success')
   RegistrationApprovePage = require('cs!./view/approve')
+  ForgotPasswordPage = require('cs!./view/forgot')
   Invite = require('cs!./model/invite')
 
   BaseController.extend
@@ -18,6 +19,9 @@ define (require) ->
 
     success: ->
       @openPage(new RegistrationSuccessPage)
+
+    forgot: ->
+      @openPage(new ForgotPasswordPage)
 
     approve: (inviteKey) ->
       invite = new Invite({id: inviteKey})
