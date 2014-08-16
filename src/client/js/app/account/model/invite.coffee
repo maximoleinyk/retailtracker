@@ -10,9 +10,12 @@ define (require) ->
     fetch: (options) ->
       options or= {}
 
-      new Promise (resolve, reject) =>
-        success = (data) =>
-          @set(data, options)
-          @trigger('sync', @, data, options)
-          resolve()
-        http.get('/security/invite/' + @id, success, reject)
+      loadInvite = new Promise (resolve, reject) =>
+        http.get '/security/invite/' + @id, (err, data) ->
+          if err then reject(err) else resolve(data)
+
+      loadInvite
+      .then (data) =>
+        @set(data, options)
+        @trigger('sync', @, data, options)
+

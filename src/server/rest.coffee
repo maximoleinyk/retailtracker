@@ -4,7 +4,11 @@ TemplateService = inject('services/templateService')
 security = inject('rest/security')
 user = inject('rest/user')
 
-module.exports = (router, passport, config) ->
+module.exports = (router, passport) ->
+
+  # redirect from login page if user is authenticated
+  router.get '/page/account/login', (req, res, next) ->
+    if req.isAuthenticated() then res.redirect('/page') else next()
 
   # always return single HTML page on leading /ui* part
   router.get "/page*", (req, res) ->

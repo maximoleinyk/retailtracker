@@ -6,7 +6,6 @@ rest = inject('rest')
 socket = inject('socket')
 authentication = inject('authentication')
 database = inject('database')
-mailPubSub = inject('mailPubSub')
 
 module.exports =
 
@@ -14,17 +13,16 @@ module.exports =
     app = express()
     router = express.Router()
 
-    database.connect app, config, ->
+    database.connect app, ->
       app.use '/static', express.static config.app.staticDir
       app.use bodyParser.json()
       app.use passport.initialize()
       app.use passport.session()
       app.use(router)
 
-      mailPubSub(config)
       authentication(passport)
-      rest(router, passport, config)
-      socket(app, config)
+      rest(router, passport)
+      socket(app)
 
       app.listen config.app.port, ->
         console.log 'Application started on port ' + config.app.port + ' in ' + process.env.NODE_ENV + ' mode'

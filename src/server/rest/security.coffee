@@ -10,15 +10,15 @@ module.exports = (router, passport) ->
 
   router.post '/security/register', (req, res) ->
     userService.register req.body, (err) ->
-      if err then res.status(HttpStatus.BAD_REQUEST).end() else res.status(HttpStatus.SUCCESS).end()
+      if err then res.status(HttpStatus.BAD_REQUEST).end() else res.status(HttpStatus.OK).end()
 
   router.get '/security/invite/:inviteKey', (req, res) ->
     inviteService.find req.params.inviteKey, (err, invite) ->
-      if err or not invite then res.status(HttpStatus.NOT_FOUND).end() else res.send(HttpStatus.SUCCESS, invite)
+      if err or not invite then res.status(HttpStatus.NOT_FOUND).end() else res.send(invite)
 
   router.post '/security/approve', (req, res) ->
     userService.approveRegistration req.body, (err) ->
-      if err then res.status(HttpStatus.BAD_REQUEST).end() else res.status(HttpStatus.SUCCESS).end()
+      if err then res.status(HttpStatus.BAD_REQUEST).end() else res.status(HttpStatus.OK).end()
 
   router.post '/security/login', (req, res, next) ->
     passport.authenticate('local', (err, user) ->

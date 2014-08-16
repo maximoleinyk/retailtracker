@@ -4,7 +4,7 @@ MongoStore = require('connect-mongo')(session)
 
 module.exports =
 
-  connect: (app, config, done) ->
+  connect: (app, done) ->
 
     host = config.db.host
     name = config.db.name

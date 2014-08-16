@@ -7,7 +7,7 @@ eventBus = inject('util/eventBus')
 module.exports =
 
   approveRegistration: (data, callback) ->
-    inviteService.find data.inviteKey, (err, invite) ->
+    inviteService.find data.id, (err, invite) =>
       return callback(err) if err
       return callback('Not found') if not invite
 
@@ -16,9 +16,9 @@ module.exports =
         email: invite.email
         password: data.password
       }
-      userStore.create user, (err) ->
+      @create user, (err) ->
         return callback(err) if err
-        inviteService.remove(invite, callback)
+        inviteService.remove(invite._id, callback)
 
   register: (data, callback) ->
     generatorLinkService.generateLink (err, generatedLink) ->
@@ -27,9 +27,7 @@ module.exports =
         email: data.email
         generatedLink: generatedLink
       }
-      inviteService.create inviteData, (err) ->
-        return callback('На ваш почтовый адресс уже было выслано письмо с подтверждением регистрации.') if err
-        eventBus.emit('mail:send:invite', inviteData, callback)
+      inviteService.create(inviteData, callback)
 
   create: (data, callback) ->
     data.password = crypto.createHash('md5').update(data.password).digest('hex')

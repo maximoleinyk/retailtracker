@@ -1,7 +1,7 @@
 path = require('path')
 nodeMailer = require('nodemailer')
 
-module.exports = (config) ->
+module.exports =  ->
   transporter = nodeMailer.createTransport
     host: config.mailer.host,
     port: config.mailer.port
