@@ -1,10 +1,15 @@
 module.exports = (mailer, templateService) ->
-  approveRegistration: (user, callback) ->
-    subject = 'Подтверждение регистрации'
-    template = templateService.template('approveRegistration', user)
-    mailer.send(user.email, subject, template, callback)
+  successfulRegistration: (data, callback) ->
+    subject = 'Рагистрация завершена'
+    template = templateService.template('successfulRegistration', data)
+    mailer.send(data.email, subject, template, callback)
 
-  registrationInvite: (inviteData, callback) ->
-    subject = 'Подтверждение регистрации'
-    template = templateService.template('registrationInvite', inviteData)
-    mailer.send(inviteData.email, subject, template, callback)
+  registrationInvite: (data, callback) ->
+    subject = 'Регистрация'
+    template = templateService.template('registrationInvite', data)
+    mailer.send(data.email, subject, template, callback)
+
+  changePassword: (data, callback) ->
+    subject = 'Забыли пароль?'
+    template = templateService.template('forgotPassword', data)
+    mailer.send(data.email, subject, template, callback)

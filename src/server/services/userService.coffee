@@ -1,8 +1,10 @@
 crypto = require('crypto')
 userStore = inject('persistence/userStore')
 inviteService = inject('services/inviteService')
-generatorLinkService = inject('util/linkGenerator')
-eventBus = inject('util/eventBus')
+emailService = inject('services/emailService')
+mailer = inject('util/mailer')
+templateService = inject('services/templateService')
+linkService = inject('services/linkService')
 
 module.exports = (passport) ->
   {
@@ -10,28 +12,22 @@ module.exports = (passport) ->
     password = data.password
     confirmPassword = data.confirmPassword
 
-    if not password
-      return callback({ password: '' })
-    else if not confirmPassword
-      return callback({ confirmPassword: '' })
-    else if password and confirmPassword and password isnt confirmPassword
-      return callback({ generic: 'Пароли не совпадают' })
+    return callback({ password: '' }) if not password
+    return callback({ confirmPassword: '' }) if not confirmPassword
+    return callback({ generic: 'Пароли не совпадают' }) if password and confirmPassword and password isnt confirmPassword
 
     inviteService.find data.id, (err, invite) =>
-      if err
-        return console.log(err) # handle properly this case
-      else if not err and not invite
-        return callback({ generic: 'Вы уже подтверждали регистрацию' })
-      else
-        user = {
-          firstName: invite.firstName
-          email: invite.email
-          password: data.password
-        }
-        @create user, (err) ->
-          if err
-            return console.log(err) # handle properly this case
-          inviteService.remove(invite._id, callback)
+      return console.log(err) if err
+      return callback({ generic: 'Вы уже подтверждали регистрацию' }) if not err and not invite
+
+      user = {
+        firstName: invite.firstName
+        email: invite.email
+        password: data.password
+      }
+      @create user, (err) ->
+        return console.log(err) if err
+        inviteService.remove(invite, callback)
 
   register: (data, callback) ->
     return callback({ firstName: '' }) if not data.firstName
@@ -41,11 +37,11 @@ module.exports = (passport) ->
       return console.log(err) if err
       return callback({ generic: 'Учетная запись уже существует' }) if user
 
-      generatorLinkService.generateLink (err, generatedLink) ->
+      linkService.create data.email, (err, link) ->
         inviteData = {
           firstName: data.firstName
           email: data.email
-          generatedLink: generatedLink
+          link: link.link
         }
         inviteService.create(inviteData, callback)
 
@@ -54,6 +50,22 @@ module.exports = (passport) ->
     return loginHandler({ password: '' }) if not data.password
 
     callback(passport.authenticate('local', loginHandler))
+
+  forgotPassword: (email, callback) ->
+    return callback({ generic: '' }) if not email
+
+    @findByEmail email, (err, user) =>
+      return callback({ generic: 'Учетной записи не найдено' }) if not user
+
+      linkService.findByEmail email, (err, link) ->
+        return console.log(err) if err
+        return callback('Письмо уже было отправлено') if link
+
+        linkService.create email, (err, link) ->
+          return console.log(err) if err
+
+          mail = emailService(mailer, templateService)
+          mail.changePassword(link, callback)
 
   create: (data, callback) ->
     data.password = crypto.createHash('md5').update(data.password).digest('hex')
@@ -68,5 +80,4 @@ module.exports = (passport) ->
 
   findByEmail: (email, callback) ->
     userStore.findByEmail(email, callback)
-
   }

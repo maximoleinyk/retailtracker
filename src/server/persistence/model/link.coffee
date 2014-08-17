@@ -1,9 +1,6 @@
 mongoose = require('mongoose')
 
 schema = mongoose.Schema
-  firstName:
-    type: String
-    required: true
   email:
     type: String
     unique: true
@@ -13,4 +10,4 @@ schema = mongoose.Schema
     unique: true
     required: true
 
-module.exports = mongoose.model('Invite', schema)
+module.exports = mongoose.model('Link', schema)

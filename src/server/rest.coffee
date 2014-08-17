@@ -4,11 +4,13 @@ user = inject('rest/user')
 
 module.exports = (router, passport) ->
 
+  userService = inject('services/userService')(passport)
+
   # redirect from login page if user is authenticated
   router.get '/page/account/login', (req, res, next) ->
     if req.isAuthenticated() then res.redirect('/page') else next()
 
-  # always return single HTML page on leading /ui* part
+  # always return single HTML page on leading /page* part
   router.get "/page*", (req, res) ->
     res.sendFile config.app.indexHtml
 
@@ -17,7 +19,18 @@ module.exports = (router, passport) ->
     res.redirect '/page'
 
   router.get '/404', (req, res) ->
-    res.status(404).end();
+    res.status(HttpStatus.NOT_FOUND).end()
+
+  # test data REST end point
+  router.get '/test/data', (req, res) ->
+    user = {
+      firstName: 'Maksym'
+      lastName: 'Oliinyk'
+      email: 'maxim.oleinyk@gmail.com'
+      password: 'password'
+    }
+    userService.create user, ->
+      res.status(HttpStatus.OK).end()
 
   # REST handlers
   security(router, passport)

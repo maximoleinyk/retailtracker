@@ -11,7 +11,7 @@ module.exports = {
       callback(err, doc?.toObject())
 
   findByKey: (key, callback) ->
-    Invite.findOne { generatedLink: key }, (err, doc) ->
+    Invite.findOne { link: key }, (err, doc) ->
       callback(err, doc?.toObject())
 
   remove: (id, callback) ->
