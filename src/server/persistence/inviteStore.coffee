@@ -1,6 +1,6 @@
 Invite = inject('persistence/model/invite')
 
-module.exports =
+module.exports = {
 
   create: (data, callback) ->
     invite = new Invite(data)
@@ -16,3 +16,5 @@ module.exports =
 
   remove: (id, callback) ->
     Invite.findByIdAndRemove(id, callback)
+
+}

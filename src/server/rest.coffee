@@ -1,6 +1,4 @@
 HttpStatus = require('http-status-codes')
-EmailService = inject('services/emailService')
-TemplateService = inject('services/templateService')
 security = inject('rest/security')
 user = inject('rest/user')
 
@@ -23,4 +21,4 @@ module.exports = (router, passport) ->
 
   # REST handlers
   security(router, passport)
-  user(router)
+  user(router, passport)

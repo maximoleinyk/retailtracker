@@ -24,18 +24,15 @@ define (require) ->
       @validation.reset @
 
       authenticate = new Promise (resolve, reject) =>
-        http.post '/security/login', @model.toJSON(), resolve, ->
-          reject('Invalid username/password.')
+        http.post '/security/login', @model.toJSON(), (err, response) ->
+          if err then reject(err) else resolve(response)
 
       authenticate
       .then =>
         url = sessionStore.get('redirectUrl')
-        redirectUrl = if not url or url is '*' then '' else url
+        redirectUrl = if not url then 'default' else url
         @eventBus.trigger('router:navigate', redirectUrl, {trigger: true})
       .then null, (err) =>
-        if err.status is 403
-          @validation.show({ generic: 'Учетная запись не существует' }, @)
-        else
-          @validation.show({ generic: err.statusText }, @)
+          @validation.show(err.errors)
 
       @model.unset('password')

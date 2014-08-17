@@ -29,7 +29,4 @@ define (require) ->
       .then =>
         @openPage(new RegistrationApprovePage({model: invite}))
       .then null, =>
-        @eventBus.trigger('router:navigate', 'account/login')
-        @login()
-
-
+        @eventBus.trigger('router:navigate', 'account/login', {trigger: true})

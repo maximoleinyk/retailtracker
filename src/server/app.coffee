@@ -7,7 +7,7 @@ socket = inject('socket')
 authentication = inject('authentication')
 database = inject('database')
 
-module.exports =
+module.exports = {
 
   start: (config) ->
     app = express()
@@ -26,3 +26,5 @@ module.exports =
 
       app.listen config.app.port, ->
         console.log 'Application started on port ' + config.app.port + ' in ' + process.env.NODE_ENV + ' mode'
+
+}

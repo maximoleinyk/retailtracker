@@ -1,5 +1,3 @@
-Mailer = inject('util/mailer')
-
 module.exports = (mailer, templateService) ->
   approveRegistration: (user, callback) ->
     subject = 'Подтверждение регистрации'

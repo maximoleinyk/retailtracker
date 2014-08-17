@@ -1,6 +1,54 @@
 @import "variables";
+@import "../globals/bootstrap/mixins";
+@import "../globals/bootstrap/alerts";
 
 body {
   background: #f1f1f1 url('@{img-path}/bg.png');
 }
 
+form {
+  margin-bottom: 0;
+}
+
+.alert {
+  padding: 10px !important;
+  margin-bottom: 15px;
+}
+
+.page-block {
+  .box-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+  .border-top-radius(@border-radius-base);
+  .border-bottom-radius(2px);
+  margin: 25px auto;
+  background-color: #fff;
+  width: 350px;
+  padding-bottom: 20px;
+
+  > header {
+    padding: 10px 15px;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+    background-color: #829aa8;
+    border: 1px solid #768995;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  > section {
+    padding: 20px;
+
+    > .warning {
+      .alert;
+      .alert-warning;
+      text-align: center;
+      color: #a94442;
+      padding-bottom:  15px;
+    }
+  }
+
+  > footer {
+    padding: 0 20px;
+    font-size: 11px;
+    color: #888;
+  }
+}

@@ -1,14 +1,14 @@
 path = require('path')
 nodeMailer = require('nodemailer')
 
-module.exports =  ->
-  transporter = nodeMailer.createTransport
-    host: config.mailer.host,
-    port: config.mailer.port
-    auth:
-      user: config.mailer.user
-      pass: config.mailer.pass
+transporter = nodeMailer.createTransport
+  host: config.mailer.host,
+  port: config.mailer.port
+  auth:
+    user: config.mailer.user
+    pass: config.mailer.pass
 
+module.exports = {
   send: (to, subject, template, callback) ->
     template (err, html) ->
       return callback(err) if err
@@ -18,7 +18,7 @@ module.exports =  ->
         subject: subject
         html: html
       }, callback
-
+}
 
 
 

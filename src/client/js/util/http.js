@@ -21,7 +21,16 @@ define(function (require) {
 			success: function(response) {
                 callback(null, response);
             },
-			error: callback,
+			error: function(xhr) {
+				var response;
+				try {
+					response = JSON.parse(xhr.responseText);
+				} catch (e) {
+				}
+				response = !response ? xhr.statusText : response;
+
+				callback(response);
+			},
 			statusCode: {
 				400: function (result) {
 					var response;

@@ -43,10 +43,11 @@ define (require) ->
       'redirect': -> # do nothing
 
       '*404': ->
-        redirectLink = sessionStore.get('redirectUrl')
+        redirectUrl = sessionStore.get('redirectUrl')
+        fragment = Backbone.history.fragment
 
-        if redirectLink
+        if redirectUrl or fragment is 'default'
           sessionStore.remove('redirectUrl')
-          window.location.replace('/page' + if not redirectLink or redirectLink is 'default' then '' else '/' + redirectLink)
+          window.location.replace('/page' + if not redirectUrl or redirectUrl is 'default' then '' else '/' + redirectUrl)
         else
           window.location.replace('/404')

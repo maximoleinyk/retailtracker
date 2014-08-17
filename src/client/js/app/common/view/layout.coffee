@@ -21,11 +21,11 @@ define (require) ->
     initialize: (options) ->
       @options = options
 
-      Marionette.$(document).on 'click', 'a[href^="/"]', (e) =>
+      Marionette.$(document).delegate 'a[href^="/"]', 'click', (e) =>
         $el = $(e.currentTarget)
         href = $el.attr('href')
 
-        if (!$el.data('enable-href') and (href isnt '#') and !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey)
+        if (!$el.data('enable-href') and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
           e.preventDefault()
 
           url = href.replace(new RegExp('^' + Backbone.history.root), '')

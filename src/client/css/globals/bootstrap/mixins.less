@@ -863,6 +863,9 @@
   // Set the border and box shadow on specific inputs to match
   .form-control {
     border-color: @border-color;
+    background-color: #a94442;
+    color: #fff;
+    .placeholder(#fff);
     .box-shadow(inset 0 1px 1px rgba(0,0,0,.075)); // Redeclare so transitions work
     &:focus {
       border-color: darken(@border-color, 10%);

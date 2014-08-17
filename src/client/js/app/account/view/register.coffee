@@ -27,7 +27,8 @@ define (require) ->
       @ui.registerButton.text('Регистрация...').attr('disabled', true)
 
       register = new Promise (resolve, reject) =>
-        http.post '/security/register', @model.toJSON(), resolve, reject
+        http.post '/security/register', @model.toJSON(), (err, response) ->
+          if err then reject(err) else resolve(response)
 
       register
       .then =>

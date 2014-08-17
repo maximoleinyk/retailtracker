@@ -4,8 +4,7 @@ global.inject = function (url) {
 	return require(require('path').resolve('./src/server/', url));
 };
 
-var app = inject('app'),
-	path = require('path'),
+var path = require('path'),
 	isProduction = process.env.NODE_ENV === 'production',
 	config = {
 		app: {
@@ -35,7 +34,6 @@ var app = inject('app'),
 		}
 	};
 
-// put config in global scope
 global.config = config;
 
-app.start(config);
+inject('app').start(config);

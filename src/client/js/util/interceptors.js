@@ -42,16 +42,19 @@ define(function (require) {
 				return;
 			}
 
-			// when we set the numeric value from the input it has a string type
-			// i.e. "32", "2.3" etc. Hence why we need to parse number from string
-			// into its original type to avoid further inconsistencies with raw JSON
-			if (value && typeof value === 'string') {
-				// heading plus sign is needed for parsing numeric values (including
-				// those with floating point) and string concatenation is needed
-				// because: NaN === NaN -> false. But we also should skip values
-				// which was written with explicit specifying of leading zeros e.g. "000001"
-				// we have about 16 digits of precision so we also need to validate this
-				value = (+value + '' === 'NaN') ? value : (/^0+\d+/.test(value)) ? value : (value.length > 16) ? value : +value;
+			if (typeof value === 'string') {
+				value = value.trim();
+				// when we set the numeric value from the input it has a string type
+				// i.e. "32", "2.3" etc. Hence why we need to parse number from string
+				// into its original type to avoid further inconsistencies with raw JSON
+				if (value) {
+					// heading plus sign is needed for parsing numeric values (including
+					// those with floating point) and string concatenation is needed
+					// because: NaN === NaN -> false. But we also should skip values
+					// which was written with explicit specifying of leading zeros e.g. "000001"
+					// we have about 16 digits of precision so we also need to validate this
+					value = (+value + '' === 'NaN') ? value : (/^0+\d+/.test(value)) ? value : (value.length > 16) ? value : +value;
+				}
 			}
 
 			return obj.set ? obj.set(keypath, value) : obj[keypath] = value;
@@ -74,6 +77,9 @@ define(function (require) {
 	var listeners = {
 		autofocus: function (el) {
 			el.focus();
+		},
+		'data-hide': function (el) {
+			el.addClass('hidden').removeAttr('data-hide');
 		}
 	};
 
@@ -95,6 +101,13 @@ define(function (require) {
 						$el.removeData('hidden');
 					}
 				});
+
+				self.$el.find('[data-validation]').each(function () {
+					var $el = Backbone.$(this);
+					if ($el) {
+						$el.addClass('hidden');
+					}
+				});
 			},
 			show: function (messages) {
 				if (!_.isObject(messages)) {
@@ -108,6 +121,8 @@ define(function (require) {
 					if ($wrapper.hasClass('hidden')) {
 						$wrapper.data('hidden', 'true').removeClass('hidden');
 					}
+
+					$el.removeClass('hidden')
 				});
 
 				var firstErrorGroup = self.$el.find('.has-error').first();

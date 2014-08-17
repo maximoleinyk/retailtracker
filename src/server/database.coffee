@@ -2,10 +2,9 @@ mongoose = require('mongoose')
 session = require('express-session')
 MongoStore = require('connect-mongo')(session)
 
-module.exports =
+module.exports = {
 
   connect: (app, done) ->
-
     host = config.db.host
     name = config.db.name
     port = config.db.port
@@ -28,3 +27,5 @@ module.exports =
 
       console.log('Connected to mongo on host ' + config.db.host + ' and port ' + config.db.port)
       done()
+
+}

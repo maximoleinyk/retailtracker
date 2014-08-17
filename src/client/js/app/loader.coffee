@@ -65,7 +65,7 @@ define (require) ->
           startApp(true)
 
         reject = (err) ->
-          if err.status is 401
+          if err is 'Unauthorized'
             startApp(false)
           else
             # handle properly this case
