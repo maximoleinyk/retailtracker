@@ -57,6 +57,6 @@
 Открываем два URL:
 
  - http://127.0.0.1:8080/debug?port=5858
- - http://localhost:3000/ui
+ - http://localhost:3000/
  
 Готово!
