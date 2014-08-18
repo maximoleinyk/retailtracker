@@ -43,7 +43,7 @@ module.exports = (passport) ->
     return callback({ confirmPassword: '' }) if not confirmPassword
     return callback({ generic: 'Пароли не совпадают' }) if password and confirmPassword and password isnt confirmPassword
 
-    inviteService.find data.id, (err, invite) =>
+    inviteService.find data.link, (err, invite) =>
       return console.log(err) if err
       return callback({ generic: 'Вы уже подтверждали регистрацию' }) if not err and not invite
 

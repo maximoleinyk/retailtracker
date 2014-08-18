@@ -5,9 +5,10 @@ define (require) ->
   Marionette = require('marionette')
   sessionStore = require('util/sessionStore')
   Promise = require('rsvp').Promise
+  ForgotPasswordSuccessPage = require('cs!./sent')
 
   Marionette.ItemView.extend
-    template: require('hbs!./forgot')
+    template: require('hbs!./main')
     binding: true
 
     initialize: ->
@@ -26,6 +27,6 @@ define (require) ->
 
       generateLink
       .then =>
-        @eventBus.trigger('router:navigate:silent', 'forgotPasswordLinkSent')
+        @eventBus.trigger('open:page', new ForgotPasswordSuccessPage)
       .then null, (err) =>
         @validation.show(err.errors)

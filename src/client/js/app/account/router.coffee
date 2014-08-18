@@ -6,6 +6,6 @@ define (require) ->
     appRoutes:
       'account/login': 'login'
       'account/register': 'registration'
-      'account/approve/:inviteKey': 'registrationConfirm'
+      'account/register/:inviteKey': 'confirmRegistration'
       'account/forgot': 'forgotPassword'
-      'account/forgot/:key': 'forgotPasswordConfirm'
+      'account/forgot/:key': 'changeForgottenPassword'

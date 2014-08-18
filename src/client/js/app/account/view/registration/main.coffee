@@ -4,10 +4,11 @@ define (require) ->
   http = require('util/http')
   Marionette = require('marionette')
   Promise = require('rsvp').Promise
+  RegistrationSuccessPage = require('cs!./sent')
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./register')
+    template: require('hbs!./main')
     binding: true
 
     ui:
@@ -33,7 +34,7 @@ define (require) ->
 
       register
       .then =>
-        @eventBus.trigger('router:navigate:silent', 'registrationInviteSent')
+        @eventBus.trigger('open:page', new RegistrationSuccessPage)
       .then null, (err) =>
         @validation.show(err.errors)
         @ui.registerButton.text(originButtonLabel).removeAttr('disabled')

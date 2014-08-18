@@ -1,20 +1,15 @@
 define (require) ->
   'use strict'
 
-  BaseController = require('cs!app/common/controller');
+  Controller = require('cs!app/common/controller');
   LoginPage = require('cs!./view/login')
-  RegistrationPage = require('cs!./view/register')
-  RegistrationSuccessPage = require('cs!./view/success')
-  RegistrationApprovePage = require('cs!./view/approve')
-  ForgotPasswordPage = require('cs!./view/forgot')
-  ForgotPasswordSuccessPage = require('cs!./view/forgotSuccess')
-  Invite = require('cs!./model/invite')
-  ChangePassword = require('cs!./model/changePassword')
-  PasswordChangePage = require('cs!./view/changePassword')
-  RegistrationCompletedPage = require('cs!./view/registrationCompleted')
-  PasswordSuccessfullyChangedPage = require('cs!./view/passwordChangedSuccess')
+  RegistrationPage = require('cs!./view/registration/main')
+  RegistrationApprovePage = require('cs!./view/registration/approve')
+  ForgotPasswordPage = require('cs!./view/forgotPassword/main')
+  PasswordChangePage = require('cs!./view/forgotPassword/change')
+  Account = require('cs!./model/account')
 
-  BaseController.extend
+  Controller.extend
 
     login: ->
       @openPage(new LoginPage)
@@ -25,31 +20,18 @@ define (require) ->
     forgotPassword: ->
       @openPage(new ForgotPasswordPage)
 
-    registrationConfirm: (inviteKey) ->
-      invite = new Invite({id: inviteKey})
-      invite.fetch()
+    confirmRegistration: (inviteKey) ->
+      account = new Account()
+      account.loadInvite({id: inviteKey})
       .then =>
-        @openPage(new RegistrationApprovePage({model: invite}))
+        @openPage(new RegistrationApprovePage({model: account}))
       .then null, =>
         @eventBus.trigger('router:navigate', 'account/login', {trigger: true})
 
-    forgotPasswordConfirm: (changeKey) ->
-      passwordChange = new ChangePassword({id: changeKey})
-      passwordChange.fetch()
+    changeForgottenPassword: (changeKey) ->
+      account = new Account()
+      account.loadLink({id: changeKey})
       .then =>
-        @openPage(new PasswordChangePage({model: passwordChange}))
+        @openPage(new PasswordChangePage({model: account}))
       .then null, =>
         @eventBus.trigger('router:navigate', 'account/login', {trigger: true})
-
-    silent:
-      registrationInviteSent: ->
-        @openPage(new RegistrationSuccessPage)
-
-      registrationCompleted: ->
-        @openPage(new RegistrationCompletedPage)
-
-      forgotPasswordLinkSent: ->
-        @openPage(new ForgotPasswordSuccessPage)
-
-      forgotPasswordChanged: ->
-        @openPage(new PasswordSuccessfullyChangedPage)

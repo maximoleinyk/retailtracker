@@ -3,4 +3,4 @@ define (require) ->
 
   Marionette = require('marionette')
   Marionette.ItemView.extend
-    template: require('hbs!./passwordChangedSuccess')
+    template: require('hbs!./completed')

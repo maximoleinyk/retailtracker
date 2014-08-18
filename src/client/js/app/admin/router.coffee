@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  BaseRouter = require('cs!app/common/router')
-  BaseRouter.extend
+  Router = require('cs!app/common/router')
+  Router.extend
     appRoutes:
       '': 'home'
