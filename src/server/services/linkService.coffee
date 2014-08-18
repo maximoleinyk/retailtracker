@@ -3,6 +3,9 @@ generatorLinkService = inject('util/linkGenerator')
 
 module.exports = {
 
+  findByKey: (key, callback) ->
+    linkStore.findByKey(key, callback)
+
   findByEmail: (email, callback) ->
     linkStore.findByEmail(email, callback)
 

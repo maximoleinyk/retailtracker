@@ -3,11 +3,9 @@ define (require) ->
 
   BaseRouter = require('cs!app/common/router')
   BaseRouter.extend
-    silentRoutes:
-      'register/success': 'success'
-
     appRoutes:
       'account/login': 'login'
-      'account/register': 'register'
-      'account/approve/:inviteKey': 'approve'
-      'account/forgot': 'forgot'
+      'account/register': 'registration'
+      'account/approve/:inviteKey': 'registrationConfirm'
+      'account/forgot': 'forgotPassword'
+      'account/forgot/:key': 'forgotPasswordConfirm'

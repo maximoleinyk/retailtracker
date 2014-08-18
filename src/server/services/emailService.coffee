@@ -1,6 +1,6 @@
 module.exports = (mailer, templateService) ->
   successfulRegistration: (data, callback) ->
-    subject = 'Рагистрация завершена'
+    subject = 'Регистрация завершена'
     template = templateService.template('successfulRegistration', data)
     mailer.send(data.email, subject, template, callback)
 
@@ -13,3 +13,9 @@ module.exports = (mailer, templateService) ->
     subject = 'Забыли пароль?'
     template = templateService.template('forgotPassword', data)
     mailer.send(data.email, subject, template, callback)
+
+  passwordChanged: (data, callback) ->
+    subject = 'Пароль изменен'
+    template = templateService.template('passwordChanged', data)
+    mailer.send(data.email, subject, template, callback)
+

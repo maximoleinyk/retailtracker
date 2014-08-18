@@ -6,6 +6,9 @@ module.exports = {
     user = new User(data)
     user.save(callback)
 
+  update: (data, callback) ->
+    User.update(data, callback)
+
   findById: (id, callback) ->
     User.findById id, (err, doc) ->
       callback(err, doc?.toObject())

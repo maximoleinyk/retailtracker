@@ -6,22 +6,22 @@ define (require) ->
   Promise = require('rsvp').Promise
 
   Marionette.ItemView.extend
-    template: require('hbs!./approve')
+    template: require('hbs!./changePassword')
     binding: true
 
     events:
-      'submit': 'approve'
+      'submit': 'change'
 
-    approve: (e) ->
+    change: (e) ->
       e.preventDefault()
       @validation.reset()
 
       register = new Promise (resolve, reject) =>
-        http.post '/security/approve', @model.toJSON(), (err, response) ->
+        http.post '/security/password/change', @model.toJSON(), (err, response) ->
           if err then reject(err) else resolve(response)
 
       register
       .then =>
-        @eventBus.trigger('router:navigate:silent', 'registrationCompleted')
+        @eventBus.trigger('router:navigate:silent', 'forgotPasswordChanged')
       .then null, (err) =>
         @validation.show(err.errors)

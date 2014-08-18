@@ -3,6 +3,7 @@ define (require) ->
 
   http = require('util/http')
   Marionette = require('marionette')
+  Promise = require('rsvp').Promise
 
   Marionette.ItemView.extend
 
@@ -32,7 +33,7 @@ define (require) ->
 
       register
       .then =>
-        @eventBus.trigger('router:navigate:silent', 'register/success')
+        @eventBus.trigger('router:navigate:silent', 'registrationInviteSent')
       .then null, (err) =>
         @validation.show(err.errors)
         @ui.registerButton.text(originButtonLabel).removeAttr('disabled')

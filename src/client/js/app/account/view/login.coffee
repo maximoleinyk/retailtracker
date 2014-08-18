@@ -20,8 +20,7 @@ define (require) ->
 
     login: (e) ->
       e.preventDefault();
-
-      @validation.reset @
+      @validation.reset()
 
       authenticate = new Promise (resolve, reject) =>
         http.post '/security/login', @model.toJSON(), (err, response) ->

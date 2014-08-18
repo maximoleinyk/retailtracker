@@ -1,17 +1,28 @@
 HttpStatus = require('http-status-codes')
 authFilter = inject('util/authFilter')
 inviteService = inject('services/inviteService')
+linkService = inject('services/linkService')
 
 module.exports = (router, passport) ->
   userService = inject('services/userService')(passport)
 
-  router.get '/security/invite/:inviteKey', (req, res) ->
-    inviteService.find req.params.inviteKey, (err, invite) ->
+  router.get '/security/invite/:key', (req, res) ->
+    inviteService.find req.params.key, (err, invite) ->
+      return res.status(HttpStatus.NOT_FOUND).end() if err or not invite
+      res.send(invite)
+
+  router.get '/security/forgot/:key', (req, res) ->
+    linkService.findByKey req.params.key, (err, invite) ->
       return res.status(HttpStatus.NOT_FOUND).end() if err or not invite
       res.send(invite)
 
   router.post '/security/forgot', (req, res) ->
     userService.forgotPassword req.body.email, (err) ->
+      return res.status(HttpStatus.BAD_REQUEST).send({ errors: err }) if err
+      res.status(HttpStatus.OK).end()
+
+  router.post '/security/password/change', (req, res) ->
+    userService.changePassword req.body, (err) ->
       return res.status(HttpStatus.BAD_REQUEST).send({ errors: err }) if err
       res.status(HttpStatus.OK).end()
 

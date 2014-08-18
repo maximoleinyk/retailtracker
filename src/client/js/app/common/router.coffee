@@ -13,10 +13,10 @@ define (require) ->
 
       silentRoutes = Marionette.getOption(this, "silentRoutes");
 
-      @listenTo @eventBus, 'router:navigate:silent', (name) =>
-        methodName = silentRoutes[name]
+      @listenTo @eventBus, 'router:navigate:silent', (methodName) =>
         controller = Marionette.getOption(this, "controller")
-        method = controller[methodName]
+        controller.silent or= {}
+        method = controller.silent[methodName]
         throw "Silent route should be mapped to existing method" if not method
         method.call(controller)
 

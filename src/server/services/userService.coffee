@@ -8,6 +8,33 @@ linkService = inject('services/linkService')
 
 module.exports = (passport) ->
   {
+  changePassword: (data, callback) ->
+    password = data.password
+    confirmPassword = data.confirmPassword
+
+    return callback({ password: '' }) if not password
+    return callback({ confirmPassword: '' }) if not confirmPassword
+    return callback({ generic: 'Пароли не совпадают' }) if password and confirmPassword and password isnt confirmPassword
+
+    @findByEmail data.email, (err, user) ->
+      return console.log(err) if err
+      return callback({ generic: 'Такой учетной записи не сущетвует' }) if not user
+
+      user.password = crypto.createHash('md5').update(password).digest('hex')
+      userStore.update user, (err) ->
+        return console.log(err) if err
+
+        linkService.removeByKey data.link, (err) ->
+          return console.log(err) if err
+
+          changePasswordData = {
+            email: data.email
+            firstName: user.firstName
+            lastName: user.lastName
+          }
+          mail = emailService(mailer, templateService)
+          mail.passwordChanged(changePasswordData, callback)
+
   approveRegistration: (data, callback) ->
     password = data.password
     confirmPassword = data.confirmPassword
@@ -59,7 +86,7 @@ module.exports = (passport) ->
 
       linkService.findByEmail email, (err, link) ->
         return console.log(err) if err
-        return callback('Письмо уже было отправлено') if link
+        return callback({ generic: 'Письмо уже было отправлено' }) if link
 
         linkService.create email, (err, link) ->
           return console.log(err) if err
