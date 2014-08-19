@@ -15,9 +15,6 @@ define (require) ->
     initialize: ->
       @model = new Backbone.Model()
 
-    events:
-      'submit': 'login'
-
     login: (e) ->
       e.preventDefault();
       @validation.reset()

@@ -7,9 +7,7 @@ define (require) ->
 
   Marionette.ItemView.extend
     template: require('hbs!./header')
-
-    events:
-      'click [data-id="logout"]': 'logout'
+    tagNme: 'header'
 
     logout: ->
       http.del '/security/logout', (err) ->

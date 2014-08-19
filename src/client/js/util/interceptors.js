@@ -148,7 +148,7 @@ define(function (require) {
 
 		this.listenTo(this, 'show', function () {
 			_.each(listeners, function (callback, attribute) {
-				callback(this.$el.find('[' + attribute + ']'));
+				callback(this.$el.find('[' + attribute + ']'), this);
 			}, this);
 		}, this);
 
@@ -159,6 +159,13 @@ define(function (require) {
 		}, this);
 
 		constructor.apply(this, arguments);
+
+		this.$el.on('click', '[data-action]', _.bind(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			this[Backbone.$(e.currentTarget).data('action')](e);
+		}, this));
 	};
 
 });
