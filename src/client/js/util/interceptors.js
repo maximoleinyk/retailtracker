@@ -122,7 +122,7 @@ define(function (require) {
 						$wrapper.data('hidden', 'true').removeClass('hidden');
 					}
 
-					$el.removeClass('hidden')
+					$el.removeClass('hidden');
 				});
 
 				var firstErrorGroup = self.$el.find('.has-error').first();
