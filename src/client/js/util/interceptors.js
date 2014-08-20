@@ -87,6 +87,13 @@ define(function (require) {
 	Marionette.View.prototype.constructor = function () {
 		var self = this;
 
+        this.handleActions = _.bind(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            this[Backbone.$(e.currentTarget).data('action')](e);
+        }, this);
+
 		this.validation = {
 			reset: function () {
 				var $wrapper = self.$el.find('[data-validation]')
@@ -156,16 +163,12 @@ define(function (require) {
 			if (this.binding) {
 				return unbind(this);
 			}
+            this.$el.off('click', '[data-action]', this.handleActions);
 		}, this);
 
 		constructor.apply(this, arguments);
 
-		this.$el.on('click', '[data-action]', _.bind(function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			this[Backbone.$(e.currentTarget).data('action')](e);
-		}, this));
+		this.$el.on('click', '[data-action]', this.handleActions);
 	};
 
 });

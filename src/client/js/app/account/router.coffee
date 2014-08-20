@@ -9,3 +9,4 @@ define (require) ->
       'account/register/:inviteKey': 'confirmRegistration'
       'account/forgot': 'forgotPassword'
       'account/forgot/:key': 'changeForgottenPassword'
+
