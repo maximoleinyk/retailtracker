@@ -4,4 +4,5 @@ define (require) ->
   Router = require('cs!app/common/router')
   Router.extend
     appRoutes:
-      '': 'home'
+      '': 'home',
+      'settings/:view': 'settings'

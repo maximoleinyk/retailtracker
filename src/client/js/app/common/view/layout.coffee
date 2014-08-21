@@ -10,11 +10,11 @@ define (require) ->
     template: require('hbs!./layout')
 
     regions:
-      header: '#header'
+      navigation: '#navigation'
       container: '#container'
 
     appEvents:
-      'router:navigate': 'hideHeader'
+      'router:navigate': 'hideNavigation'
       'http:401': 'redirectToLogin'
       'open:page': 'openPage'
 
@@ -34,14 +34,14 @@ define (require) ->
           $(document).trigger('click.bs.dropdown');
 
     onRender: ->
-      @displayHeader()
+      @displayNavigation()
 
-    hideHeader: (route) ->
-      @header.close() if route is '404'
+    hideNavigation: (route) ->
+      @navigation.close() if route is '404'
 
-    displayHeader: ->
+    displayNavigation: ->
       return if not @options.isAuthenticated or Backbone.history.fragment is '404'
-      @header.show(new @options.Header(@options)) if @options.Header
+      @navigation.show(new @options.Navigation(@options)) if @options.Navigation
 
     openPage: (view) ->
       @container.show(view)

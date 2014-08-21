@@ -3,14 +3,14 @@ define (require) ->
 
   Router = require('cs!./router')
   Controller = require('cs!./controller')
-  Header = require('cs!./view/header')
+  Navigation = require('cs!./view/navigation')
   http = require('util/http')
   UserInfo = require('util/userInfo')
 
   ({
     Router: Router
     Controller: Controller
-    Header: Header
+    Navigation: Navigation
     moduleName: 'admin'
     beforeStart: (resolve, reject) ->
       fetchUser = new Promise (resolve, reject) =>

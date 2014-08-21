@@ -6,7 +6,7 @@ define (require) ->
   console = require('util/console')
 
   Marionette.ItemView.extend
-    template: require('hbs!./header')
+    template: require('hbs!./navigation')
     tagNme: 'header'
 
     logout: ->

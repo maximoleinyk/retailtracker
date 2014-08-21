@@ -107,7 +107,15 @@ module.exports = (grunt) ->
           {
             expand: true
             src: [
-              '**/management/main.js'
+              '**/admin/main.js'
+            ]
+            cwd: 'temp/built/js/app'
+            dest: 'build/client/js/app'
+          },
+          {
+            expand: true
+            src: [
+              '**/account/main.js'
             ]
             cwd: 'temp/built/js/app'
             dest: 'build/client/js/app'
@@ -171,7 +179,13 @@ module.exports = (grunt) ->
               ]
             },
             {
-              name: 'app/management/main'
+              name: 'app/admin/main'
+              exclude: [
+                'config'
+              ]
+            },
+            {
+              name: 'app/account/main'
               exclude: [
                 'config'
               ]
@@ -183,7 +197,8 @@ module.exports = (grunt) ->
         files:
           'build/client/js/require.js': 'build/client/js/require.js'
           'build/client/js/app/config.js': 'build/client/js/app/config.js'
-          'build/client/js/app/management/main.js': 'build/client/js/app/management/main.js'
+          'build/client/js/app/admin/main.js': 'build/client/js/app/admin/main.js'
+          'build/client/js/app/account/main.js': 'build/client/js/app/account/main.js'
 
     mochaTest:
       test:
