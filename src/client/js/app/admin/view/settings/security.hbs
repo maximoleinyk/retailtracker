@@ -1,4 +1,35 @@
 <div class="page-title">Настройки безопасности</div>
 <div class="content">
-    ....
+    <div class="warning" data-validation="generic" data-hide></div>
+    <form class="form-horizontal" role="form">
+        <fieldset>
+            <legend>Пароль</legend>
+            <div class="form-group">
+                <label for="oldPassword" class="col-sm-3 control-label">Текущий пароль</label>
+                <div class="col-sm-5">
+                    <input type="password" class="form-control" id="oldPassword" name="oldPassword" data-value="model.oldPassword" autofocus>
+                    <div class="help-block" data-validation="oldPassword"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="newPassword" class="col-sm-3 control-label">Новый пароль</label>
+                <div class="col-sm-5">
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" data-value="model.newPassword">
+                    <div class="help-block" data-validation="newPassword"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword" class="col-sm-3 control-label">Пароль еще раз</label>
+                <div class="col-sm-5">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" data-value="model.confirmPassword">
+                    <div class="help-block" data-validation="confirmPassword"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-3">
+                    <button type="submit" class="btn btn-success" data-action="save">Изменить</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 </div>
