@@ -11,6 +11,4 @@ define (require) ->
       @openPage(new HomePage)
 
     settings: (view) ->
-      @openPage new SettingsPage({
-        view: view
-      })
+      @openPage new SettingsPage({ view: view })
