@@ -1,10 +1,10 @@
 HttpStatus = require('http-status-codes')
 security = inject('rest/security')
 user = inject('rest/user')
+settings = inject('rest/settings')
+userService = inject('services/userService')
 
 module.exports = (router, passport) ->
-
-  userService = inject('services/userService')(passport)
 
   # redirect from login page if user is authenticated
   router.get '/page/account/login', (req, res, next) ->
@@ -34,4 +34,5 @@ module.exports = (router, passport) ->
 
   # REST handlers
   security(router, passport)
-  user(router, passport)
+  user(router)
+  settings(router)

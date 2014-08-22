@@ -1,8 +1,7 @@
 LocalStrategy = require('passport-local')
+userService = inject('services/userService')
 
 module.exports = (passport) ->
-
-  userService = inject('services/userService')(passport)
 
   credentialsInfo = {
     usernameField: 'login'

@@ -30,7 +30,7 @@ var path = require('path'),
 			pass: 'P@sSw0Rd'
 		},
 		cookie: {
-			maxAge: 1000 * 60 * 15
+			maxAge: 1000 * 60 * 60 * 2
 		}
 	};
 

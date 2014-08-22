@@ -1,10 +1,11 @@
 HttpStatus = require('http-status-codes')
+_ = require('underscore')
 authFilter = inject('util/authFilter')
 inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
+userService = inject('services/userService')
 
 module.exports = (router, passport) ->
-  userService = inject('services/userService')(passport)
 
   router.get '/security/invite/:key', (req, res) ->
     inviteService.find req.params.key, (err, invite) ->
@@ -22,7 +23,7 @@ module.exports = (router, passport) ->
       res.status(HttpStatus.OK).end()
 
   router.post '/security/password/change', (req, res) ->
-    userService.changePassword req.body, (err) ->
+    userService.changeForgottenPassword req.body, (err) ->
       return res.status(HttpStatus.BAD_REQUEST).send({ errors: err }) if err
       res.status(HttpStatus.OK).end()
 
@@ -37,17 +38,19 @@ module.exports = (router, passport) ->
       res.status(HttpStatus.OK).end()
 
   router.post '/security/login', (req, res, next) ->
+    errors = {}
+    errors.login = '' if not req.body.login
+    errors.password = '' if not req.body.password
+    return res.status(HttpStatus.BAD_REQUEST).send({ errors: errors }) if not _.isEmpty(errors)
+
     loginHandler = (err, user) ->
-      return res.status(HttpStatus.BAD_REQUEST).send({ errors: err }) if err
-      return res.status(HttpStatus.FORBIDDEN).send({ errors:
-        generic: 'Логин или пароль не подходят'}) if not user
+      return res.status(HttpStatus.FORBIDDEN).send({ errors: generic: 'Логин или пароль не совпадают'}) if not user
 
       req.login user, (err) ->
         return next(err) if err
         res.status(HttpStatus.OK).send(user)
 
-    userService.authenticate req.body, loginHandler, (callback) ->
-      callback(req, res, next)
+    passport.authenticate('local', loginHandler)(req, res, next)
 
   router.delete '/security/logout', authFilter, (req, res) ->
     req.logout()

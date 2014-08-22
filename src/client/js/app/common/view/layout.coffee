@@ -21,6 +21,8 @@ define (require) ->
     initialize: (options) ->
       @options = options
 
+      syncCount = 0
+
       Marionette.$(document).delegate 'a[href^="/"]', 'click', (e) =>
         $el = $(e.currentTarget)
         href = $el.attr('href')
@@ -32,6 +34,14 @@ define (require) ->
           @eventBus.trigger('router:navigate', url, {trigger: true})
 
           $(document).trigger('click.bs.dropdown');
+
+      @listenTo @eventBus, 'sync:start', =>
+        syncCount += 1
+        Marionette.$('[data-disable-on-sync]').attr('disabled', true)
+
+      @listenTo @eventBus, 'sync:stop', =>
+        syncCount -= 1
+        Marionette.$('[data-disable-on-sync]').removeAttr('disabled') if not syncCount
 
     onRender: ->
       @displayNavigation()

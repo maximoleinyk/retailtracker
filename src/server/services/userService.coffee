@@ -6,8 +6,20 @@ mailer = inject('util/mailer')
 templateService = inject('services/templateService')
 linkService = inject('services/linkService')
 
-module.exports = (passport) ->
+module.exports =
   {
+  changeForgottenPassword: (data, callback) ->
+    @changePassword data, (err, user) ->
+      linkService.removeByKey data.link, (err) ->
+        return console.log(err) if err
+        changePasswordData = {
+          email: data.email
+          firstName: user.firstName
+          lastName: user.lastName
+        }
+        mail = emailService(mailer, templateService)
+        mail.passwordChanged(changePasswordData, callback)
+
   changePassword: (data, callback) ->
     password = data.password
     confirmPassword = data.confirmPassword
@@ -16,24 +28,14 @@ module.exports = (passport) ->
     return callback({ confirmPassword: '' }) if not confirmPassword
     return callback({ generic: 'Пароли не совпадают' }) if password and confirmPassword and password isnt confirmPassword
 
-    @findByEmail data.email, (err, user) ->
+    @findByEmail data.email, (err, user) =>
       return console.log(err) if err
       return callback({ generic: 'Такой учетной записи не сущетвует' }) if not user
 
-      user.password = crypto.createHash('md5').update(password).digest('hex')
+      user.password = @encryptPassword(password)
       userStore.update user, (err) ->
         return console.log(err) if err
-
-        linkService.removeByKey data.link, (err) ->
-          return console.log(err) if err
-
-          changePasswordData = {
-            email: data.email
-            firstName: user.firstName
-            lastName: user.lastName
-          }
-          mail = emailService(mailer, templateService)
-          mail.passwordChanged(changePasswordData, callback)
+        callback(null, user)
 
   approveRegistration: (data, callback) ->
     password = data.password
@@ -72,12 +74,6 @@ module.exports = (passport) ->
         }
         inviteService.create(inviteData, callback)
 
-  authenticate: (data, loginHandler, callback) ->
-    return loginHandler({ login: '' }) if not data.login
-    return loginHandler({ password: '' }) if not data.password
-
-    callback(passport.authenticate('local', loginHandler))
-
   forgotPassword: (email, callback) ->
     return callback({ generic: '' }) if not email
 
@@ -94,15 +90,21 @@ module.exports = (passport) ->
           mail = emailService(mailer, templateService)
           mail.changePassword(link, callback)
 
+  encryptPassword: (password) ->
+    crypto.createHash('md5').update(password).digest('hex')
+
   create: (data, callback) ->
-    data.password = crypto.createHash('md5').update(data.password).digest('hex')
+    data.password = @encryptPassword(data.password)
     userStore.create(data, callback)
+
+  update: (data, callback) ->
+    userStore.update(data, callback)
 
   findById: (id, callback) ->
     userStore.findById(id, callback)
 
   findByCredentials: (login, password, callback) ->
-    encryptedPass = crypto.createHash('md5').update(password).digest('hex')
+    encryptedPass = @encryptPassword(password)
     userStore.findByCredentials(login, encryptedPass, callback)
 
   findByEmail: (email, callback) ->
