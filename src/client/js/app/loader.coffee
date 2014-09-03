@@ -16,7 +16,9 @@ define (require) ->
 
     App = new Marionette.Application
     Marionette.Renderer.render = (compile, data) ->
-      compile(data)
+      compile(_.extend(data, {
+        i18n: window.RetailTracker.i18n
+      }))
 
     App.addInitializer (options) ->
       layout = new Layout(options)

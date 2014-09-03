@@ -1,25 +1,25 @@
-<div class="page-title">Настройки безопасности</div>
+<div class="page-title">{{i18n.securitySettings}}</div>
 <div class="content">
     <div class="warning" data-validation="generic" data-hide></div>
     <form class="form-horizontal" role="form">
         <fieldset>
-            <legend>Пароль</legend>
+            <legend>{{i18n.password}}</legend>
             <div class="form-group">
-                <label for="oldPassword" class="col-sm-3 control-label">Текущий пароль</label>
+                <label for="oldPassword" class="col-sm-3 control-label">{{i18n.currentPassword}}</label>
                 <div class="col-sm-5">
                     <input type="password" class="form-control" id="oldPassword" name="oldPassword" data-value="model.oldPassword" autofocus>
                     <div class="help-block" data-validation="oldPassword"></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">Новый пароль</label>
+                <label for="password" class="col-sm-3 control-label">{{i18n.newPassword}}</label>
                 <div class="col-sm-5">
                     <input type="password" class="form-control" id="password" name="password" data-value="model.password">
                     <div class="help-block" data-validation="password"></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="confirmPassword" class="col-sm-3 control-label">Пароль еще раз</label>
+                <label for="confirmPassword" class="col-sm-3 control-label">{{i18n.confirmPassword}}</label>
                 <div class="col-sm-5">
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" data-value="model.confirmPassword">
                     <div class="help-block" data-validation="confirmPassword"></div>
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-3">
-                    <button type="submit" class="btn btn-success" data-action="save" data-disable-on-sync>Изменить</button>
+                    <button type="submit" class="btn btn-success" data-action="save" data-disable-on-sync>{{i18n.change}}</button>
                 </div>
             </div>
         </fieldset>

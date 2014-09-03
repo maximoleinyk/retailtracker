@@ -2,6 +2,7 @@ HttpStatus = require('http-status-codes')
 security = inject('rest/security')
 user = inject('rest/user')
 settings = inject('rest/settings')
+i18n = inject('rest/i18n')
 userService = inject('services/userService')
 
 module.exports = (router, passport) ->
@@ -36,3 +37,4 @@ module.exports = (router, passport) ->
   security(router, passport)
   user(router)
   settings(router)
+  i18n(router)

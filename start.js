@@ -7,6 +7,7 @@ global.inject = function (url) {
 var path = require('path'),
 	isProduction = process.env.NODE_ENV === 'production',
 	config = {
+        resourcesDir: path.resolve(__dirname + '/resources'),
 		app: {
 			port: 3000,
 			indexHtml: path.resolve(__dirname + (isProduction ? '/build/server/index.html' : '/src/client/index.html')),
