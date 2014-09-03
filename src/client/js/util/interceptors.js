@@ -153,10 +153,10 @@ define(function (require) {
                 }
             }
             this.$el.find('[data-catch-url]').each(function () {
-                var $el = $(this),
+                var $el = Backbone.$(this),
                     route = $el.data('catch-url');
                 if (!route) {
-                    route = $el.attr('href')
+                    route = $el.attr('href');
                 } else if (route === '/') {
                     route = 'root';
                 }
