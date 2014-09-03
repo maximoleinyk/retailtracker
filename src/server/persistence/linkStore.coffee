@@ -4,7 +4,8 @@ module.exports = {
 
   create: (data, callback) ->
     link = new Link(data)
-    link.save(callback)
+    link.save (err, doc) ->
+      callback(err, doc?.toObject())
 
   removeByKey: (link, callback) ->
     Link.findOneAndRemove({ link: link }, callback)
