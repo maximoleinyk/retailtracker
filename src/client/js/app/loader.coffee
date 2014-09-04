@@ -63,24 +63,29 @@ define (require) ->
             isAuthenticated: authenticated
           }))
 
-        resolve = ->
-          startApp(true)
+        beforeStart = ->
+          resolve = ->
+            startApp(true)
+          reject = (err) ->
+            if err is 'Unauthorized'
+              startApp(false)
+            else
+              # handle properly this case
 
-        reject = (err) ->
-          if err is 'Unauthorized'
-            startApp(false)
-          else
+          module.beforeStart(resolve, reject)
+
+        loadMessages = (done) ->
+          getMessages = new Promise (resolve, reject) ->
+            http.get '/i18n/messages/' + module.bundleName, (err, response) ->
+              if err then reject(err) else resolve(response)
+
+          getMessages
+          .then (messages) ->
+            window.RetailTracker.i18n = messages;
+            done()
+          .then null, ->
             # handle properly this case
 
-        getMessages = new Promise (resolve, reject) ->
-          http.get '/i18n/messages/' + module.bundleName, (err, response) ->
-            if err then reject(err) else resolve(response)
-
-        getMessages
-        .then (messages) ->
-          window.RetailTracker.i18n = messages;
-          module.beforeStart(resolve, reject)
-        .then null, ->
-          # handle properly this case
+        if module.bundleName then loadMessages(beforeStart) else beforeStart()
 
     }
