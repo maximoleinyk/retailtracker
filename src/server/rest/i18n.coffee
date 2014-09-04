@@ -21,6 +21,5 @@ module.exports = (router) ->
           if line and line.split('=')[0]?.trim()
             result[line.split('=')[0].trim()] = line.split('=')[1]
 
-      res.charset('utr')
       res.send(result)
 
