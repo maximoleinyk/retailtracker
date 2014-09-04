@@ -8,7 +8,7 @@ define (require) ->
   ({
     Router: Router
     Controller: Controller
-    moduleName: 'account'
+    bundleName: 'account'
     beforeStart: (resolve, reject) ->
       getL10nMessages = new Promise (resolve, reject) ->
         http.get '/i18n/messages/account', (err, response) ->

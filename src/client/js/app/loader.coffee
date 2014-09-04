@@ -72,6 +72,15 @@ define (require) ->
           else
             # handle properly this case
 
-        module.beforeStart(resolve, reject)
+        getMessages = new Promise (resolve, reject) ->
+          http.get '/i18n/messages/' + module.bundleName, (err, response) ->
+            if err then reject(err) else resolve(response)
+
+        getMessages
+        .then (messages) ->
+          window.RetailTracker.i18n = messages;
+          module.beforeStart(resolve, reject)
+        .then null, ->
+          # handle properly this case
 
     }

@@ -11,7 +11,7 @@ define (require) ->
     Router: Router
     Controller: Controller
     Navigation: Navigation
-    moduleName: 'admin'
+    bundleName: 'admin'
     beforeStart: (resolve, reject) ->
       fetchUser = new Promise (resolve, reject) =>
         http.get '/user/fetch', (err, result) =>
@@ -20,11 +20,6 @@ define (require) ->
       fetchUser
       .then (userInfo) ->
         UserInfo.set(userInfo)
-        new Promise (resolve, reject) ->
-          http.get '/i18n/messages/admin', (err, response) ->
-            if err then reject(err) else resolve(response)
-      .then (messages) ->
-        window.RetailTracker.i18n = messages;
         resolve()
       .then null, reject
   })

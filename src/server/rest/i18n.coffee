@@ -6,7 +6,7 @@ userService = inject('services/userService')
 
 module.exports = (router) ->
 
-  router.get '/i18n/messages/:batch', authFilter, (req, res) ->
+  router.get '/i18n/messages/:batch', (req, res) ->
     batch = req.params.batch
     filePath = path.resolve(config.resourcesDir + '/i18n/' + batch + '.properties')
     result = {}

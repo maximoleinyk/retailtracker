@@ -1,22 +1,22 @@
 <div class="page page-block">
-    <header>Смена пароля</header>
+    <header>{{i18n.passwordChange}}</header>
     <section>
         <div class="warning" data-validation="generic" data-hide></div>
         <form>
             <div class="form-group">
-                <label for="password">Пароль</label>
+                <label for="password">{{i18n.password}}</label>
                 <input type="password" id="password" name="password" data-value="model.password"
                        class="form-control" placeholder="Введите пароль" title="Введите пароль" autofocus/>
                 <span class="help-block" data-validation="password" data-hide></span>
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Подтвердите пароль</label>
+                <label for="confirmPassword">{{i18n.confirmPassword}}</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" data-value="model.confirmPassword"
                        class="form-control" placeholder="Подтвердите пароль" title="Подтвердите пароль"/>
                 <span class="help-block" data-validation="confirmPassword" data-hide></span>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success center-block" data-disable-on-sync>Готово</button>
+                <button type="submit" class="btn btn-success center-block" data-disable-on-sync>{{i18n.done}}</button>
             </div>
         </form>
     </section>
