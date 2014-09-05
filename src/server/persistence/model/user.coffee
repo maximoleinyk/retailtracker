@@ -4,7 +4,9 @@ schema = mongoose.Schema
   firstName:
     type: String
     required: true
-  lastName: String
+  lastName:
+    type: String
+    default: ''
   email:
     type: String
     unique: true
