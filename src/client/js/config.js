@@ -17,9 +17,10 @@ require.config({
         text: 'libs/requirejs-text/text',
         bootstrap: 'libs/bootstrap/dist/js/bootstrap',
         'socket.io': 'libs/socket.io-client/socket.io',
-        'rsvp': 'libs/rsvp/rsvp.amd',
-        'select2': 'libs/select2/select2',
-        'respond': 'libs/respond/dest/respond.src'
+        rsvp: 'libs/rsvp/rsvp.amd',
+        select2: 'libs/select2/select2',
+        respond: 'libs/respond/dest/respond.src',
+		grid: 'util/grid/main'
     },
     packages: [
         {
@@ -47,7 +48,7 @@ require.config({
             deps: ['backbone']
         },
         marionette: {
-            deps: ['backbone']
+            deps: ['backbone', 'backbone.wreqr', 'backbone.babysitter']
         },
         handlebars: {
             exports: 'Handlebars'
@@ -60,16 +61,20 @@ require.config({
         },
         bootstrap: {
             deps: ['jquery']
-        }
+        },
+		grid: {
+			deps: ['marionette']
+		}
     },
 
     deps: [
         'respond',
         'bootstrap',
-        'util/eventBus',
-        'util/interceptors',
-        'util/http',
-        'util/io'
+		'grid',
+		'util/eventBus',
+		'util/interceptors',
+		'util/http',
+		'util/io'
     ]
 
 });
