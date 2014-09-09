@@ -33,7 +33,7 @@ define (require) ->
         born: new Date()
       }))
 
-      new Grid({
+      grid = new Grid({
         el: @ui.$container,
         collection: collection,
         columns:
@@ -48,3 +48,4 @@ define (require) ->
             format: (value) ->
               moment(value).format('DDMMYY')
       })
+      grid.render()
