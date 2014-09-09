@@ -12,7 +12,7 @@ define (require) ->
     ui:
       $container: '[data-hook="grid-wrapper"]'
 
-    onRender: ->
+    onShow: ->
       collection = new Backbone.Collection();
       collection.add(new Backbone.Model({
         id: 1
@@ -32,8 +32,9 @@ define (require) ->
         age: 28
         born: new Date()
       }))
+
       new Grid({
-        $el: @ui.$container,
+        el: @ui.$container,
         collection: collection,
         columns:
           id:

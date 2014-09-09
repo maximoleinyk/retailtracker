@@ -1,88 +1,83 @@
 (function (callback) {
 
-	if (typeof module === 'object') {
-		var _ = require('underscore'),
-			Backbone = require('backbone'),
-			Marionette = require('marionette');
-		module.exports = callback(_, Backbone, Marionette);
-	} else if (typeof define === 'function' && define.amd) {
-		define(['underscore', 'backbone', 'marionette'], callback);
-	}
+    if (typeof module === 'object') {
+        var _ = require('underscore'),
+            Backbone = require('backbone'),
+            Marionette = require('marionette');
+        module.exports = callback(_, Backbone, Marionette);
+    } else if (typeof define === 'function' && define.amd) {
+        define(['underscore', 'backbone', 'marionette'], callback);
+    }
 
 }(function (_, Backbone, Marionette) {
 
-	var $ = Marionette.$;
+    var $ = Marionette.$;
 
-	return function(config) {
-		config = config || {
-			collection: new Backbone.Collection(),
-			columns: {}
-		};
+    return Marionette.Layout.extend({
 
-		return Marionette.Layout.extend({
+        initialize: function () {
+            this.columns = this.options.columns;
+            this.collections = this.options.collection;
 
-			$el: config.$el,
+            this.registerEventHandlers();
+            this.render();
+        },
 
-			initialize: function() {
-				this.registerEventHandlers();
-			},
+        registerEventHandlers: function () {
+            this.listenTo(this.collection, "reset", this.render);
+            this.fragment = document.createDocumentFragment();
+        },
 
-			registerEventHandlers: function() {
-				this.listenTo(this.collection, "reset", this.render);
-			},
+        render: function () {
+            var table = $('<table/>');
 
-			render: function() {
-				this.fragment = document.createDocumentFragment();
+            table.append(this.buildHeader());
+            table.append(this.buildContent());
 
-				var table = $('<table/>');
+            this.fragment.appendChild(table.get(0));
+            this.$el.html(this.fragment);
+        },
 
-				table.append(this.buildHeader());
-				table.append(this.buildContent());
+        buildContent: function () {
+            var tbody = $('<tbody/>'),
+                self = this;
 
-				this.fragment.appendChild(table);
-				this.$el.append(this.fragment);
-			},
+            this.collection.each(function (model) {
+                var tr = $('<tr/>');
 
-			buildContent: function() {
-				var tbody = $('<tbody/>');
+                _.each(self.columns, function (value, property) {
+                    var td = $('<td/>'),
+                        text = model.get(property);
 
-				config.collection.each(function(model) {
-					var tr = $('<tr/>');
+                    if (typeof value.format === 'function') {
+                        text = value.format(text);
+                    }
 
-					_.each(config.columns, function(value, property) {
-						var td = $('<td/>'),
-							text = model.get(property);
+                    td.text(text);
+                    tr.append(td);
+                });
 
-						if (typeof value.format === 'function') {
-							text = value.format(text);
-						}
+                tbody.append(tr);
+            });
 
-						td.text(text);
-						tr.append(td);
-					});
+            return tbody;
+        },
 
-					tbody.append(tr);
-				});
+        buildHeader: function () {
+            var thead = $('<thead/>'),
+                tr = $('<tr/>');
 
-				return tbody;
-			},
+            _.each(this.columns, function (value) {
+                var th = $('<th/>'),
+                    text = typeof value.title === 'function' ? value.title() : value.title;
+                th.text(text);
+                tr.append(th);
+            });
 
-			buildHeader: function() {
-				var thead = $('<thead/>'),
-					tr = $('<tr/>');
+            thead.append(tr);
 
-				_.each(config.columns, function(value) {
-					var th = $('<th/>'),
-						text = typeof value.title === 'function' ? value.title() : value.title;
-					th.text(text);
-					tr.append(th);
-				});
-
-				thead.append(tr);
-
-				return thead;
-			}
-		});
-	}
+            return thead;
+        }
+    });
 
 }));
