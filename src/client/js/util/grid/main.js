@@ -21,9 +21,7 @@ define(function (require) {
 
         buildHeader: function () {
             this.header.show(new Header({
-                model: this.model,
-                columns: this.options.columns,
-                collection: this.options.collection
+                columns: this.options.columns
             }))
         },
 
@@ -37,9 +35,8 @@ define(function (require) {
 
         buildFooter: function () {
             this.footer.show(new Footer({
-                model: this.model,
                 columns: this.options.columns,
-                collection: this.options.collection
+                items: this.options.collection
             }));
         },
 
