@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  Grid = require('grid')
+  Grid = require('util/grid/main')
   moment = require('moment')
   Backbone = require('backbone')
 
