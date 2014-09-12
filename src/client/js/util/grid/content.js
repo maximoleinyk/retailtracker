@@ -1,17 +1,17 @@
 define(function (require) {
 
     var Marionette = require('marionette'),
-        ViewRow = require('./viewRow');
+        Row = require('./row');
 
     return Marionette.CollectionView.extend({
 
         template: require('hbs!./content'),
-        itemView: ViewRow,
+        itemView: true,
 
-        buildItemView: function (model, ItemView) {
-            return new ItemView({
-                columns: this.columns,
-                model: model
+        buildItemView: function(model) {
+            return new Row({
+                model: model,
+                columns: this.options.columns
             });
         }
 

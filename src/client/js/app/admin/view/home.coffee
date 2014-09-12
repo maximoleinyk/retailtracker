@@ -41,10 +41,13 @@ define (require) ->
             title: 'Идентификатор'
           name:
             title: 'Имя'
+            type: 'string'
           age:
             title: 'Возраст'
+            type: 'number'
           born:
             title: 'Родился'
+            type: 'date'
             format: (value) ->
               moment(value).format('DDMMYY')
       })

@@ -2,7 +2,7 @@ define(function (require) {
 
     var Backbone = require('backbone'),
         Marionette = require('marionette'),
-        HeaderCell = require('./headerCell'),
+        HeaderCell = require('./cells/headerCell'),
         _ = require('underscore');
 
     return Marionette.CollectionView.extend({

@@ -27,7 +27,6 @@ define(function (require) {
 
         buildContent: function () {
             this.body.show(new Content({
-                model: this.model,
                 columns: this.options.columns,
                 collection: this.options.collection
             }));

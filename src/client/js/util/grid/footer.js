@@ -1,39 +1,17 @@
 define(function (require) {
 
-    var Marionette = require('marionette'),
-        FooterCell = require('./footerCell');
+    var Row = require('./row');
 
-    return Marionette.CollectionView.extend({
-        template: require('hbs!./footer'),
-        itemView: true,
+    return Row.extend({
 
-        initialize: function () {
-            this.collection = new Backbone.Collection(_.map(this.options.columns, function (value, key) {
-                return _.extend(value, {
-                    field: key
-                });
-            }));
+        initialize: function (options) {
+            options = options || {};
+            options.editable = true;
+
+            Row.prototype.initialize.apply(this, arguments);
             this.model = new this.options.items.model({});
-        },
-
-        buildItemView: function (model) {
-            var type = model.get('type') || 'view',
-                options = {
-                    model: this.model,
-                    meta: model
-                };
-
-            switch (type) {
-                case 'view':
-                    return new ViewCell(options);
-                case 'string':
-                    return new TextCell(options);
-                case 'date':
-                    return new DatepickerCell(options);
-                case 'boolean':
-                    return new BooleanCell(options);
-            }
         }
+
     });
 
 });
