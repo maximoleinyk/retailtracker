@@ -3,52 +3,28 @@ define (require) ->
 
   Marionette = require('marionette')
   Grid = require('util/grid/main')
-  moment = require('moment')
-  Backbone = require('backbone')
+  Products = require('cs!app/admin/collection/products')
 
-  Marionette.ItemView.extend
+  Marionette.Layout.extend
+
     template: require('hbs!./home')
 
-    ui:
-      $container: '[data-hook="grid-wrapper"]'
+    regions:
+      container: '[data-hook="grid-wrapper"]'
 
     onShow: ->
-      collection = new Backbone.Collection();
-      collection.add(new Backbone.Model({
-        id: 1
-        name: 'Patrick'
-        age: 23
-        born: new Date()
-      }))
-      collection.add(new Backbone.Model({
-        id: 2
-        name: 'Sam'
-        age: 39
-        born: new Date()
-      }))
-      collection.add(new Backbone.Model({
-        id: 3
-        name: 'Angela'
-        age: 28
-        born: new Date()
-      }))
-
-      grid = new Grid({
-        el: @ui.$container,
-        collection: collection,
+      this.container.show(new Grid({
+        collection: new Products(),
+        numerable: true,
         columns:
-          id:
-            title: 'Идентификатор'
-          name:
-            title: 'Имя'
+          product:
+            title: 'Позиция'
             type: 'string'
-          age:
-            title: 'Возраст'
+          amount:
+            title: 'Кол-во'
             type: 'number'
-          born:
-            title: 'Родился'
-            type: 'date'
-            format: (value) ->
-              moment(value).format('DDMMYY')
-      })
-      grid.render()
+          price:
+            title: 'Цена'
+            type: 'number'
+            formatter: (value) -> value
+      }))

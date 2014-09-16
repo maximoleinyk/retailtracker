@@ -9,13 +9,10 @@ define(function (require) {
 
         template: require('hbs!./header'),
         itemView: HeaderCell,
+        tagName: 'tr',
 
         initialize: function () {
-            this.collection = new Backbone.Collection(_.map(this.options.columns, function (value, key) {
-                return _.extend(value, {
-                    field: key
-                });
-            }));
+            this.collection = new Backbone.Collection(this.options.columns);
         }
 
     });

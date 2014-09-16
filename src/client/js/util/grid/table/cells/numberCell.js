@@ -4,7 +4,8 @@ define(function (require) {
 
     return Marionette.ItemView.extend({
 
-        template: require('hbs!./textCell'),
+        template: require('hbs!./numberCell'),
+        tagName: 'td',
 
         initialize: function() {}
 

@@ -6,10 +6,10 @@ define(function (require) {
     return Marionette.CollectionView.extend({
 
         template: require('hbs!./content'),
-        itemView: true,
+        itemView: Row,
 
-        buildItemView: function(model) {
-            return new Row({
+        buildItemView: function(model, ItemView) {
+            return new ItemView({
                 model: model,
                 columns: this.options.columns
             });

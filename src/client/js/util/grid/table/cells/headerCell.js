@@ -4,7 +4,8 @@ define(function (require) {
         _ = require('underscore');
 
     return Marionette.ItemView.extend({
-        template: require('hbs!./headerCell')
+        template: require('hbs!./headerCell'),
+        tagName: 'th'
     });
 
 });
