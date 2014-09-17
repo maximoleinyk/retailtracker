@@ -51,7 +51,8 @@ define(function (require) {
                 selectionHandler(e.object, this.model);
             }
 
-            this.model.set(column.get('field'), value)
+            this.model.set(column.get('field'), value);
+            this.options.cellManager.next(this.options.column).activate();
         },
 
         initSelection: function($el, callback) {

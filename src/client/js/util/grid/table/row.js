@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Marionette = require('marionette'),
+    var Backbone = require('backbone'),
+        Marionette = require('marionette'),
         ViewCell = require('./cells/viewCell'),
         TextCell = require('./cells/textCell'),
         DateCell = require('./cells/dateCell'),
@@ -19,6 +20,19 @@ define(function (require) {
             this.collection = new Backbone.Collection(this.options.columns);
         },
 
+        next: function(column) {
+            var index = -1;
+
+            this.collection.each(function(model, i) {
+                if (model.get('field') === column.get('field')) {
+                    index = i;
+                    return false;
+                }
+            });
+
+            return this.children.findByIndex((this.collection.length - 1 === index) ? index : index + 1);
+        },
+
         buildItemView: function (column, itemView, itemViewOptions) {
             itemViewOptions = itemViewOptions || {};
 
@@ -26,7 +40,8 @@ define(function (require) {
                 options = _.extend(itemViewOptions, {
                     model: this.model,
 					collection: this.options.items,
-                    column: column
+                    column: column,
+                    cellManager: this
                 });
 
             if (this.editable) {
