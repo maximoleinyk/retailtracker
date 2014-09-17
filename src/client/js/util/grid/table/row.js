@@ -26,7 +26,7 @@ define(function (require) {
                 options = _.extend(itemViewOptions, {
                     model: this.model,
 					collection: this.options.items,
-                    meta: column
+                    column: column
                 });
 
             if (this.editable) {

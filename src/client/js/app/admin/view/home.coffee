@@ -22,7 +22,9 @@ define (require) ->
             field: 'product'
             title: 'Позиция'
             type: 'select',
-            format: (value, model) -> model.get('productName')
+            onSelection: (object, model) ->
+              model.set('price', object.price);
+            formatter: (data) -> data.productName
           }
           {
             field: 'amount'
@@ -33,6 +35,7 @@ define (require) ->
             field: 'price'
             title: 'Цена'
             type: 'number'
+            nonEditable: true
           }
         ]
       }))

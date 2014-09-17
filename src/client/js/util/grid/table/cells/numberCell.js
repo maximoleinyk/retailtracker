@@ -6,8 +6,17 @@ define(function (require) {
 
         template: require('hbs!./numberCell'),
         tagName: 'td',
+        binding: true,
 
-        initialize: function() {}
+        templateHelpers: function() {
+            var self = this;
+
+            return {
+                getField: function() {
+                    return self.options.column.get('field');
+                }
+            }
+        }
 
     });
 

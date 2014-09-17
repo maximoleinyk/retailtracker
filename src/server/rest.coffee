@@ -4,6 +4,7 @@ user = inject('rest/user')
 settings = inject('rest/settings')
 i18n = inject('rest/i18n')
 userService = inject('services/userService')
+test = inject('rest/test')
 
 module.exports = (router, passport) ->
 
@@ -38,3 +39,4 @@ module.exports = (router, passport) ->
   user(router)
   settings(router)
   i18n(router)
+  test(router)
