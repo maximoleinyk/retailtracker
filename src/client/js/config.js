@@ -20,7 +20,8 @@ require.config({
         rsvp: 'libs/rsvp/rsvp.amd',
         select2: 'libs/select2/select2',
         respond: 'libs/respond/dest/respond.src',
-        moment: 'libs/moment/moment'
+        moment: 'libs/moment/moment',
+        numeral: 'libs/numeral/numeral'
     },
 
     packages: [

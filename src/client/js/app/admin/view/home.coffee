@@ -3,7 +3,8 @@ define (require) ->
 
   Marionette = require('marionette')
   Grid = require('util/grid/main')
-  Products = require('cs!app/admin/collection/products')
+  numeral = require('numeral')
+  WarehouseItems = require('cs!app/admin/collection/warehouseItems')
 
   Marionette.Layout.extend
 
@@ -12,9 +13,9 @@ define (require) ->
     regions:
       container: '[data-id="grid-wrapper"]'
 
-    onShow: ->
+    onRender: ->
       this.container.show(new Grid({
-        collection: new Products(),
+        collection: new WarehouseItems(),
         numerable: true,
         editable: true,
         columns: [
@@ -22,12 +23,17 @@ define (require) ->
             field: 'product'
             title: 'Позиция'
             type: 'select',
+            url: '/warehouse/items/search'
+            formatter: (data) ->
+              data.productName
             onSelection: (object, model) ->
-              model.set('price', object.price);
-            formatter: (data) -> data.productName
+              model.set({
+                price: object.price
+                count: 1
+              })
           }
           {
-            field: 'amount'
+            field: 'count'
             title: 'Кол-во'
             type: 'number'
           }
@@ -35,7 +41,8 @@ define (require) ->
             field: 'price'
             title: 'Цена'
             type: 'number'
-            nonEditable: true
+            formatter: (value) ->
+              numeral(value).format('0,0.00')
           }
         ]
       }))

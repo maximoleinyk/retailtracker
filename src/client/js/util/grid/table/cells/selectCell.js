@@ -16,9 +16,8 @@ define(function (require) {
 
 		onRender: function() {
 			var select2 = this.ui.$input.select2({
-                minimumInputLength: 2,
                 ajax: {
-                    url: this.options.collection.url,
+                    url: this.options.column.get('url'),
                     dataType: 'jsonp',
                     quietMillis: 100,
                     data: function (term) {

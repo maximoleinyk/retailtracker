@@ -5,7 +5,14 @@ define(function (require) {
 
     return Marionette.ItemView.extend({
         template: require('hbs!./headerCell'),
-        tagName: 'th'
+        tagName: 'th',
+
+        onRender: function() {
+            if (this.model.get('type') !== 'number') {
+                return;
+            }
+            this.$el.addClass('numeric');
+        }
     });
 
 });

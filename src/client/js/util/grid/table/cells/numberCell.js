@@ -1,21 +1,28 @@
 define(function (require) {
 
-    var Marionette = require('marionette');
+    var ViewCell = require('./viewCell');
 
-    return Marionette.ItemView.extend({
+    return ViewCell.extend({
 
         template: require('hbs!./numberCell'),
-        tagName: 'td',
-        binding: true,
 
-        templateHelpers: function() {
-            var self = this;
+        ui: {
+            $input: 'input'
+        },
 
-            return {
-                getField: function() {
-                    return self.options.column.get('field');
-                }
-            }
+        events: {
+            'change @ui.$input': 'updateModel'
+        },
+
+        updateModel: function() {
+            var property = this.options.column.get('field'),
+                value = this.ui.$input.val();
+
+            this.model.set(property, value);
+        },
+
+        appendValue: function(value) {
+            this.ui.$input.val(value);
         }
 
     });
