@@ -10,21 +10,29 @@ define (require) ->
     template: require('hbs!./home')
 
     regions:
-      container: '[data-hook="grid-wrapper"]'
+      container: '[data-id="grid-wrapper"]'
 
     onShow: ->
       this.container.show(new Grid({
         collection: new Products(),
         numerable: true,
-        columns:
-          product:
+        editable: true,
+        columns: [
+          {
+            field: 'product'
             title: 'Позиция'
-            type: 'string'
-          amount:
+            type: 'select',
+            format: (value, model) -> model.get('productName')
+          }
+          {
+            field: 'amount'
             title: 'Кол-во'
             type: 'number'
-          price:
+          }
+          {
+            field: 'price'
             title: 'Цена'
             type: 'number'
-            formatter: (value) -> value
+          }
+        ]
       }))

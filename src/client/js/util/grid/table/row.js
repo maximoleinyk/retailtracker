@@ -5,7 +5,8 @@ define(function (require) {
         TextCell = require('./cells/textCell'),
         DateCell = require('./cells/dateCell'),
         BoolCell = require('./cells/boolCell'),
-        NumberCell = require('./cells/numberCell');
+        NumberCell = require('./cells/numberCell'),
+		SelectCell = require('./cells/selectCell');
 
     return Marionette.CollectionView.extend({
 
@@ -24,6 +25,7 @@ define(function (require) {
             var type = column.get('type') || 'view',
                 options = _.extend(itemViewOptions, {
                     model: this.model,
+					collection: this.options.items,
                     meta: column
                 });
 
@@ -37,8 +39,10 @@ define(function (require) {
                         return new NumberCell(options);
                     case 'boolean':
                         return new BoolCell(options);
-                    case 'action':
-                        return new column.get('instance')(options);
+					case 'action':
+						return new column.get('instance')(options);
+					case 'select':
+						return new SelectCell(options);
                     default:
                         return new ViewCell(options);
                 }

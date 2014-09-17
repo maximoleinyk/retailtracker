@@ -6,4 +6,5 @@ define (require) ->
 
   Backbone.Collection.extend({
     model: Product
+    url: '/products/search'
   })

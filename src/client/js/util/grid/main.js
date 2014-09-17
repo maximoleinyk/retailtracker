@@ -21,19 +21,20 @@ define(function (require) {
         },
 
         obtainColumns: function() {
-            this.columns = _.map(this.options.columns, function (value, key) {
-                return _.extend(value, {
-                    field: key
-                });
-            });
-
             if (this.options.numerable) {
-                this.columns.unshift({
+                this.options.columns.unshift({
                     field: 'numerable',
                     type: 'autoincrement',
                     title: '#'
                 })
             }
+			if (this.options.editable) {
+				this.options.columns.push({
+					field: 'editable',
+					type: 'edit',
+					title: ''
+				})
+			}
         },
 
         buildHeader: function () {
@@ -44,7 +45,7 @@ define(function (require) {
 
         buildContent: function () {
             this.content.show(new Table({
-                columns: this.columns,
+                columns: this.options.columns,
                 collection: this.options.collection,
                 numerable: this.options.numerable
             }));
