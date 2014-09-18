@@ -23,9 +23,9 @@ define (require) ->
             field: 'product'
             title: 'Позиция'
             type: 'select',
-            url: '/warehouse/items/search'
+            url: '/products/search'
             formatter: (data) ->
-              data.productName
+              data?.productName
             onSelection: (object, model) ->
               model.set({
                 price: object.price
@@ -36,11 +36,13 @@ define (require) ->
             field: 'count'
             title: 'Кол-во'
             type: 'number'
+            width: 100
           }
           {
             field: 'price'
             title: 'Цена'
             type: 'number'
+            width: 120
             formatter: (value) ->
               numeral(value).format('0,0.00')
           }

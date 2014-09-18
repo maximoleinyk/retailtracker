@@ -1,20 +1,14 @@
 define(function (require) {
 
-	var Marionette = require('marionette'),
+	var InputCell = require('./inputCell'),
         _ = require('underscore');
 
 	require('select2');
 
-	return Marionette.ItemView.extend({
-
-		template: require('hbs!./selectCell'),
-		tagName: 'td',
-
-		ui: {
-			$input: 'input[type="hidden"]'
-		},
+	return InputCell.extend({
 
 		onRender: function() {
+            InputCell.prototype.onRender.apply(this, arguments);
 			var select2 = this.ui.$input.select2({
                 ajax: {
                     url: this.options.column.get('url'),
@@ -38,8 +32,17 @@ define(function (require) {
             select2.on('select2-selecting', _.bind(this.onSelection, this));
 		},
 
+        // @Override
+        getType: function() {
+            return 'hidden';
+        },
+
         getValue: function(object) {
             return object.id;
+        },
+
+        getPlaceholder: function() {
+            return 'Choose something';
         },
 
         onSelection: function(e) {
@@ -52,11 +55,11 @@ define(function (require) {
             }
 
             this.model.set(column.get('field'), value);
-            this.options.cellManager.next(this.options.column).activate();
+            this.nextCell();
         },
 
         initSelection: function($el, callback) {
-            var formatter = this.options.column.get('format'),
+            var formatter = this.options.column.get('formatter'),
                 value = $el.val();
 
             callback(formatter(value, this.model));

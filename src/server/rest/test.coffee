@@ -4,7 +4,7 @@ _ = require('underscore')
 
 module.exports = (router) ->
 
-  warehouseItems = [
+  productItems = [
     {
       id: 1
       productName: 'Apple watch'
@@ -26,8 +26,8 @@ module.exports = (router) ->
   ]
 
   router.get '/warehouse/items', authFilter, (req, res) ->
-    res.send(warehouseItems)
+    res.send([])
 
-  router.get '/warehouse/items/search', authFilter, (req, res) ->
-    res.jsonp _.filter warehouseItems, (item) ->
+  router.get '/products/search', authFilter, (req, res) ->
+    res.jsonp _.filter productItems, (item) ->
       item.productName.toLowerCase().indexOf(req.query.q) > -1

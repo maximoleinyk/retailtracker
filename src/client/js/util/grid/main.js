@@ -47,7 +47,8 @@ define(function (require) {
             this.content.show(new Table({
                 columns: this.options.columns,
                 collection: this.options.collection,
-                numerable: this.options.numerable
+                numerable: this.options.numerable,
+                editable: this.options.editable
             }));
         },
 

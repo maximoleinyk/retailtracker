@@ -3,7 +3,7 @@ define(function (require) {
     var Backbone = require('backbone'),
         Marionette = require('marionette'),
         ViewCell = require('./cells/viewCell'),
-        TextCell = require('./cells/textCell'),
+        InputCell = require('./cells/inputCell'),
         DateCell = require('./cells/dateCell'),
         BoolCell = require('./cells/boolCell'),
         NumberCell = require('./cells/numberCell'),
@@ -47,7 +47,7 @@ define(function (require) {
             if (this.editable) {
                 switch (type) {
                     case 'string':
-                        return new TextCell(options);
+                        return new InputCell(options);
                     case 'date':
                         return new DateCell(options);
                     case 'number':

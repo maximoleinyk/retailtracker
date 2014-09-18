@@ -1,14 +1,8 @@
 define(function (require) {
 
-    var Marionette = require('marionette');
+    var ViewCell = require('./viewCell');
 
-    return Marionette.ItemView.extend({
-
-        template: require('hbs!./boolCell'),
-        tagName: 'td',
-
-        initialize: function() {}
-
+    return ViewCell.extend({
     });
 
 });

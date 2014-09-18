@@ -4,6 +4,7 @@ define(function (require) {
         _ = require('underscore');
 
     return Marionette.ItemView.extend({
+
         template: require('hbs!./headerCell'),
         tagName: 'th',
 
@@ -13,6 +14,7 @@ define(function (require) {
             }
             this.$el.addClass('numeric');
         }
+
     });
 
 });

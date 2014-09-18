@@ -41,6 +41,10 @@ define(function (require) {
         },
 
         buildFooter: function () {
+            // do not render footer with editable row if grid is not editable
+            if (!this.options.editable) {
+                return;
+            }
             this.footer.show(new Footer({
                 columns: this.options.columns,
                 items: this.options.collection,
