@@ -35,7 +35,8 @@ define(function (require) {
                 el: this.ui.$content,
                 columns: this.options.columns,
                 collection: this.options.collection,
-                numerable: this.options.numerable
+                numerable: this.options.numerable,
+                editable: this.options.editable
             });
             view.render();
         },

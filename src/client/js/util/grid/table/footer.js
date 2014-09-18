@@ -6,10 +6,10 @@ define(function (require) {
 
         initialize: function (options) {
             options = options || {};
-            options.editable = true;
+            options.state = 'edit';
 
-            Row.prototype.initialize.apply(this, arguments);
             this.model = new this.options.items.model({});
+            Row.prototype.initialize.apply(this, arguments);
         }
 
     });

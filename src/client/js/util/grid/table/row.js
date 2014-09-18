@@ -7,7 +7,8 @@ define(function (require) {
         DateCell = require('./cells/dateCell'),
         BoolCell = require('./cells/boolCell'),
         NumberCell = require('./cells/numberCell'),
-		SelectCell = require('./cells/selectCell');
+        SelectCell = require('./cells/selectCell'),
+        AutoincrementCell = require('./cells/autoincrementCell');
 
     return Marionette.CollectionView.extend({
 
@@ -16,14 +17,14 @@ define(function (require) {
         tagName: 'tr',
 
         initialize: function (options) {
-            this.editable = options.editable || false;
+            this.state = options.state || false;
             this.collection = new Backbone.Collection(this.options.columns);
         },
 
-        next: function(column) {
+        next: function (column) {
             var index = -1;
 
-            this.collection.each(function(model, i) {
+            this.collection.each(function (model, i) {
                 if (model.get('field') === column.get('field')) {
                     index = i;
                     return false;
@@ -39,12 +40,12 @@ define(function (require) {
             var type = column.get('type') || 'view',
                 options = _.extend(itemViewOptions, {
                     model: this.model,
-					collection: this.options.items,
+                    collection: this.options.items,
                     column: column,
                     cellManager: this
                 });
 
-            if (this.editable) {
+            if (this.state === 'edit') {
                 switch (type) {
                     case 'string':
                         return new InputCell(options);
@@ -54,20 +55,22 @@ define(function (require) {
                         return new NumberCell(options);
                     case 'boolean':
                         return new BoolCell(options);
-					case 'action':
-						return new column.get('instance')(options);
-					case 'select':
-						return new SelectCell(options);
+                    case 'select':
+                        return new SelectCell(options);
                     default:
-                        return new ViewCell(options);
+                        return this.buildCustomItemView(type, column, options);
                 }
             } else {
-                switch (type) {
-                    case 'action':
-                        return new column.get('instance')(options);
-                    default:
-                        return new ViewCell(options);
-                }
+                return new ViewCell(options);
+            }
+        },
+
+        buildCustomItemView: function (type, column, options) {
+            switch (type) {
+                case 'autoincrement':
+                    return new AutoincrementCell(options);
+                default:
+                    return new ViewCell(options);
             }
         }
 

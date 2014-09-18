@@ -4,7 +4,6 @@ define (require) ->
   Marionette = require('marionette')
   Grid = require('util/grid/main')
   numeral = require('numeral')
-  WarehouseItems = require('cs!app/admin/collection/warehouseItems')
 
   Marionette.Layout.extend
 
@@ -15,7 +14,7 @@ define (require) ->
 
     onRender: ->
       this.container.show(new Grid({
-        collection: new WarehouseItems(),
+        collection: this.options.collection,
         numerable: true,
         editable: true,
         columns: [

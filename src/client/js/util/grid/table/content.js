@@ -11,7 +11,10 @@ define(function (require) {
         buildItemView: function(model, ItemView) {
             return new ItemView({
                 model: model,
-                columns: this.options.columns
+                columns: this.options.columns,
+                items: this.options.collection,
+                editable: this.options.editable,
+                state: 'view'
             });
         }
 

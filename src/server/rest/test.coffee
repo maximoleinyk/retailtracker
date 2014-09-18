@@ -3,7 +3,6 @@ authFilter = inject('util/authFilter')
 _ = require('underscore')
 
 module.exports = (router) ->
-
   productItems = [
     {
       id: 1
@@ -26,7 +25,18 @@ module.exports = (router) ->
   ]
 
   router.get '/warehouse/items', authFilter, (req, res) ->
-    res.send([])
+    res.send([
+      {
+        product: 1,
+        count: 1,
+        price: 300.0
+      },
+      {
+        product: 3,
+        count: 1,
+        price: 400.0
+      }
+    ])
 
   router.get '/products/search', authFilter, (req, res) ->
     res.jsonp _.filter productItems, (item) ->
