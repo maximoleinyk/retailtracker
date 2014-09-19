@@ -15,20 +15,28 @@ define(function (require) {
             footer: 'footer'
         },
 
+        initialize: function(options) {
+            options = options || {};
+
+            this.state = options.state || 'view';
+            this.editable = options.editable || false;
+            this.numerable = options.numerable || false;
+        },
+
         onRender: function () {
             this.obtainColumns();
             this.build();
         },
 
         obtainColumns: function() {
-            if (this.options.numerable) {
+            if (this.numerable) {
                 this.options.columns.unshift({
                     field: 'numerable',
                     type: 'autoincrement',
                     title: '#'
                 })
             }
-			if (this.options.editable) {
+			if (this.editable) {
 				this.options.columns.push({
 					field: 'editable',
 					type: 'edit',
@@ -47,8 +55,9 @@ define(function (require) {
             this.content.show(new Table({
                 columns: this.options.columns,
                 collection: this.options.collection,
-                numerable: this.options.numerable,
-                editable: this.options.editable
+                numerable: this.numerable,
+                editable: this.editable,
+                state: this.state
             }));
         },
 
