@@ -14,18 +14,16 @@ define(function (require) {
             EditRow.prototype.initialize.apply(this, arguments);
         },
 
-        renderCustomCell: function(type, options) {
-            if (type === 'autoincrement') {
+        buildCustomCell: function (type, options) {
+            if (type === 'edit') {
+                return new ButtonCell(_.extend(options, {
+                    action: function (e) {
+                        console.log('Crate new model');
+                    }
+                }));
+            } else {
                 return new ViewCell(options);
             }
-        },
-
-        renderButtonCell: function(options) {
-            return new ButtonCell(_.extend(options, {
-                action: function(e) {
-                    console.log('Create new record');
-                }
-            }));
         }
 
     });

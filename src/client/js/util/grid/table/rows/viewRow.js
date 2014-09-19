@@ -12,36 +12,14 @@ define(function (require) {
                 case 'autoincrement':
                     return new AutoincrementCell(options);
                 case 'edit':
-                    return this.renderButtonCell(options);
+                    return new ButtonCell(_.extend(options, {
+                        action: function (e) {
+                            console.log('Make row editable');
+                        }
+                    }));
                 default:
-                    return this.renderCustomCell(type, options);
+                    return new ViewCell(options);
             }
-        },
-
-        renderCustomCell: function(type, options) {
-            if (type === 'autoincrement') {
-                return new AutoincrementCell(options);
-            } else {
-                return new ViewCell(options);
-            }
-        },
-
-        renderButtonCell: function(options) {
-            var action;
-
-            if (this.state === 'view') {
-                action = function(e) {
-                    console.log('Make row editable');
-                };
-            } else if (this.state === 'edit') {
-                action = function(e) {
-                    console.log('Save applied changed');
-                };
-            }
-
-            return new ButtonCell(_.extend(options, {
-                action: action
-            }));
         }
 
     });

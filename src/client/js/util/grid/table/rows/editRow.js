@@ -24,35 +24,23 @@ define(function (require) {
                     return new BoolCell(options);
                 case 'select':
                     return new SelectCell(options);
-                case 'edit':
-                    return this.renderButtonCell(options);
                 default:
-                    return this.renderCustomCell(type, options);
+                    return this.buildCustomCell(type, options);
             }
         },
 
-        renderCustomCell: function(type, options) {
+        buildCustomCell: function (type, options) {
             if (type === 'autoincrement') {
                 return new AutoincrementCell(options);
+            } else if (type === 'edit') {
+                return new ButtonCell(_.extend(options, {
+                    action: function (e) {
+                        console.log('Save applied changed');
+                    }
+                }));
+            } else {
+                return new ViewCell(options);
             }
-        },
-
-        renderButtonCell: function(options) {
-            var action;
-
-            if (this.state === 'view') {
-                action = function(e) {
-                    console.log('Make row editable');
-                };
-            } else if (this.state === 'edit') {
-                action = function(e) {
-                    console.log('Save applied changed');
-                };
-            }
-
-            return new ButtonCell(_.extend(options, {
-                action: action
-            }));
         }
 
     });
