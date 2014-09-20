@@ -76,7 +76,11 @@ define(function (require) {
 
     var listeners = {
         autofocus: function (el) {
-            el.focus();
+			if (el.data('select2')) {
+				return el.data('select2').select2('focus');
+			} else {
+				el.focus();
+			}
         },
         'data-hide': function (el) {
             el.addClass('hidden').removeAttr('data-hide');

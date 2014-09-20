@@ -57,7 +57,8 @@ define(function (require) {
                 collection: this.options.collection,
                 numerable: this.numerable,
                 editable: this.editable,
-                state: this.state
+                state: this.state,
+				onCreate: this.options.onCreate
             }));
         },
 

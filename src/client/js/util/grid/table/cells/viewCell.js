@@ -1,16 +1,19 @@
 define(function (require) {
 
-    var AbstractCell = require('./abstractCell'),
-        _ = require('underscore');
+	var AbstractCell = require('./abstractCell'),
+		_ = require('underscore');
 
-    return AbstractCell.extend({
+	return AbstractCell.extend({
 
-        template: require('hbs!./viewCell'),
+		template: require('hbs!./viewCell'),
 
-        appendValue: function(value) {
-            this.$el.text(value);
-        }
+		addAttributes: function () {
+		},
 
-    });
+		appendValue: function (value) {
+			this.$el.text(value);
+		}
+
+	});
 
 });

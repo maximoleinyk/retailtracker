@@ -23,18 +23,35 @@ define(function (require) {
             return this.rowIndex;
         },
 
-        next: function (column) {
-            var index = -1;
+		getCellIndex: function(column) {
+			var index = -1;
 
-            this.collection.each(function (model, i) {
-                if (model.get('field') === column.get('field')) {
-                    index = i;
-                    return false;
-                }
-            });
+			this.collection.each(function (model, i) {
+				if (model.get('field') === column.get('field')) {
+					index = i;
+					return false;
+				}
+			});
 
-            return this.children.findByIndex((this.collection.length - 1 === index) ? index : index + 1);
-        },
+			return index;
+		},
+
+		first: function() {
+			return this.children.findByIndex(this.options.numerable ? 1 : 0);
+		},
+
+		next: function (column) {
+			var index = this.getCellIndex(column);
+
+			return this.children.findByIndex((this.collection.length - 1 === index) ? index : index + 1);
+		},
+
+		prev: function (column) {
+			var index = this.getCellIndex(column),
+				allowedIndex = this.options.numerable ? 1 : 0;
+
+			return this.children.findByIndex((index === allowedIndex) ? allowedIndex : --index);
+		},
 
         buildItemView: function (column, itemView, itemViewOptions) {
             itemViewOptions = itemViewOptions || {};

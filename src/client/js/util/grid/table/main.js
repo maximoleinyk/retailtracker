@@ -26,6 +26,7 @@ define(function (require) {
         buildHeader: function () {
             this.header.show(new Header({
                 columns: this.options.columns,
+				items: this.options.collection,
                 numerable: this.options.numerable
             }))
         },
@@ -50,7 +51,8 @@ define(function (require) {
             this.footer.show(new Footer({
                 columns: this.options.columns,
                 items: this.options.collection,
-                numerable: this.options.numerable
+                numerable: this.options.numerable,
+				onCreate: this.options.onCreate
             }));
         },
 

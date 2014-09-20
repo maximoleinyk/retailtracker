@@ -14,6 +14,10 @@ define(function (require) {
             'change @ui.$input': 'updateModel'
         },
 
+		getRootElement: function() {
+			return this.ui.$input;
+		},
+
         templateHelpers: function() {
             return {
                 type: _.bind(this.getType, this),
@@ -46,11 +50,7 @@ define(function (require) {
         },
 
         activate: function () {
-            var self = this;
-
-            setTimeout(function () {
-                self.ui.$input.focus().select();
-            }, 0);
+			this.ui.$input.focus().select();
         }
 
     });

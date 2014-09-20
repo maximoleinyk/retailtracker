@@ -1,20 +1,27 @@
 define(function (require) {
 
-    var Backbone = require('backbone'),
-        Marionette = require('marionette'),
-        HeaderCell = require('./cells/headerCell'),
-        _ = require('underscore');
+	var Backbone = require('backbone'),
+		ViewRow = require('./rows/viewRow'),
+		HeaderCell = require('./cells/headerCell'),
+		_ = require('underscore');
 
-    return Marionette.CollectionView.extend({
+	return ViewRow.extend({
 
-        template: require('hbs!./header'),
-        itemView: HeaderCell,
-        tagName: 'tr',
+		template: require('hbs!./header'),
 
-        initialize: function () {
-            this.collection = new Backbone.Collection(this.options.columns);
-        }
+		initialize: function (options) {
+			var attributes = {};
+			_.each(options.columns, function (column) {
+				attributes[column.field] = column.title;
+			});
+			this.model = new Backbone.Model(attributes);
+			ViewRow.prototype.initialize.apply(this, arguments);
+		},
 
-    });
+		buildCellView: function (type, column, options) {
+			return new HeaderCell(options);
+		}
+
+	});
 
 });

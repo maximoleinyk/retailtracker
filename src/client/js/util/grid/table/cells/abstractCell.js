@@ -1,55 +1,118 @@
 define(function (require) {
 
-    var Marionette = require('marionette');
+	var Marionette = require('marionette');
 
-    return Marionette.ItemView.extend({
+	return Marionette.ItemView.extend({
 
-        tagName: 'td',
+		tagName: 'td',
 
-        initialize: function() {
-            var field = this.options.column.get('field');
+		initialize: function () {
+			this.canBeFormatted = true;
+			this.bindEvents();
+			this.listenEvents();
+		},
 
-            switch (field) {
-                case 'numerable':
-                case 'editable':
-                    break;
-                default:
-                    this.model.on('change:' + field, _.bind(this.renderValue, this));
-                    break;
-            }
-        },
+		bindEvents: function() {
+			var field = this.options.column.get('field');
 
-        onRender: function() {
-            this.renderValue();
-        },
+			switch (field) {
+				case 'numerable':
+				case 'editable':
+					break;
+				default:
+					this.model.on('change:' + field, _.bind(this.renderValue, this));
+					break;
+			}
+		},
 
-        renderValue: function() {
-            var value = this.model.get(this.options.column.get('field')),
-                formatter = this.options.column.get('formatter');
+		listenEvents: function () {
+			var self = this;
 
-            if (_.isFunction(formatter)) {
-                value = formatter(value, this.model);
-            }
+			this.$el.on('keydown', function (e) {
+				if (e.keyCode !== 13) {
+					return;
+				}
+				self[e.shiftKey ? 'prevCell' : 'nextCell']();
+			});
+		},
 
-            this.appendValue(value);
-        },
+		onRender: function () {
+			this.renderValue();
+			this.addAttributes();
+			this.setTextAlign();
+			this.applyColumnWidth();
+		},
 
-        appendValue: function(value) {
-            // abstract method
-        },
+		setTextAlign: function() {
+			var type = this.options.column.get('type');
 
-        nextCell: function() {
-            var nextCell = this.options.cellManager.next(this.options.column);
+			if (type !== 'number') {
+				return;
+			}
 
-            if (nextCell) {
-                nextCell.activate();
-            }
-        },
+			this.$el.addClass('numeric');
+		},
 
-        activate: function () {
-            // abstract method
-        }
+		applyColumnWidth: function () {
+			var type = this.options.column.get('type'),
+				width = this.options.column.get('width');
 
-    });
+			if (type === 'autoincrement' || type === 'edit') {
+				return this.$el.css({width: '1px'});
+			}
+
+			if (width) {
+				this.$el.css({width: width});
+			}
+		},
+
+		addAttributes: function () {
+			var attributes = this.options.column.get('attributes') || {};
+
+			_.each(attributes, function (value, key) {
+				this.getRootElement().attr(key, value);
+			}, this);
+		},
+
+		getRootElement: function () {
+			return this.$el;
+		},
+
+		renderValue: function () {
+			var value = this.model.get(this.options.column.get('field')),
+				formatter = this.options.column.get('formatter');
+
+			if (this.canBeFormatted && _.isFunction(formatter)) {
+				value = formatter(value, this.model);
+			}
+
+			this.appendValue(value);
+		},
+
+		appendValue: function (value) {
+			// abstract method
+		},
+
+		nextCell: function () {
+			var nextCell = this.options.cellManager.next(this.options.column);
+
+			if (nextCell) {
+				nextCell.activate();
+			}
+		},
+
+		prevCell: function () {
+			var nextCell = this.options.cellManager.prev(this.options.column);
+
+			if (nextCell) {
+				nextCell.activate();
+			}
+		},
+
+		activate: function () {
+			// abstract method
+		}
+
+	});
 
 });

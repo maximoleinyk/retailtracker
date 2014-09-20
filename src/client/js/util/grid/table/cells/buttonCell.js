@@ -1,25 +1,42 @@
 define(function (require) {
 
-    var AbstractCell = require('./abstractCell');
+	var AbstractCell = require('./abstractCell');
 
-    return AbstractCell.extend({
+	return AbstractCell.extend({
 
-        template: require('hbs!./buttonCell'),
+		template: require('hbs!./buttonCell'),
 
-        templateHelpers: function() {
-            return {
-                label: _.bind(this.getLabel, this)
-            }
-        },
+		ui: {
+			$button: 'button'
+		},
 
-        getLabel: function () {
-            return 'Click';
-        },
+		templateHelpers: function () {
+			return {
+				label: _.bind(this.getLabel, this)
+			}
+		},
 
-        action: function(e) {
-            this.options.action(e);
-        }
+		getRootElement: function () {
+			return this.ui.$button;
+		},
 
-    });
+		getLabel: function () {
+			return 'Click';
+		},
+
+		action: function (e) {
+			this.options.action(e);
+		},
+
+		activate: function () {
+			var self = this;
+
+			// setTimeout for preventing simultaneous click on button within element focusing
+			setTimeout(function () {
+				self.ui.$button.focus();
+			}, 0);
+		}
+
+	});
 
 });

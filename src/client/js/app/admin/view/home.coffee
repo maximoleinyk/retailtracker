@@ -12,16 +12,21 @@ define (require) ->
     regions:
       container: '[data-id="grid-wrapper"]'
 
-    onRender: ->
-      this.container.show(new Grid({
-        collection: this.options.collection,
-        numerable: true,
-        editable: true,
+    onCreate: (model, callback) ->
+      @options.collection.add(model)
+      callback()
+
+    onShow: ->
+      @container.show(new Grid({
+        collection: @options.collection
+        numerable: true
+        editable: true
+        onCreate: _.bind(@onCreate, @)
         columns: [
           {
             field: 'product'
             title: 'Позиция'
-            type: 'select',
+            type: 'select'
             url: '/products/search'
             formatter: (data) ->
               data?.productName
@@ -41,7 +46,9 @@ define (require) ->
             field: 'price'
             title: 'Цена'
             type: 'number'
-            width: 120
+            width: 180
+            attributes:
+              readonly: true
             formatter: (value) ->
               numeral(value).format('0,0.00')
           }
