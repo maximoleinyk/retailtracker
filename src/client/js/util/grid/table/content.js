@@ -58,6 +58,7 @@ define(function (require) {
 				items: this.options.collection,
 				editable: this.options.editable,
 				onSave: this.options.onSave,
+				onDelete: this.options.onDelete,
 				state: state
 			});
 

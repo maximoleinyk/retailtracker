@@ -20,7 +20,7 @@ define(function (require) {
 			if (type === 'edit') {
 				return new ButtonCell(_.extend(options, {
 					template: require('hbs!./cells/buttons/createButton'),
-					action: function (e) {
+					action: function () {
 						var next = function (err) {
 							if (err) {
 								// TODO: do something with errors
@@ -42,9 +42,9 @@ define(function (require) {
 			}
 		},
 
-		onRender: function() {
+		onRender: function () {
 			var self = this;
-			setTimeout(function() {
+			setTimeout(function () {
 				self.first().activate();
 			}, 0)
 		}

@@ -1,0 +1,16 @@
+<div class="btn-group pull-right">
+    <button class="btn btn-default" data-action="action" data-id="button">
+        <span class="fa fa-pencil"></span>
+    </button>
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+		<span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu">
+		{{#each actions}}
+            <li>
+                <a href="#" data-action="{{action}}">{{label}}</a>
+            </li>
+		{{/each}}
+    </ul>
+</div>

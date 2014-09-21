@@ -3,7 +3,7 @@ define(function (require) {
     var AbstractRow = require('./abstractRow'),
         ViewCell = require('../cells/viewCell'),
         AutoincrementCell = require('../cells/autoincrementCell'),
-        ButtonCell = require('../cells/buttonCell');
+        DropdownButtonCell = require('../cells/dropdownButtonCell');
 
     return AbstractRow.extend({
 
@@ -14,8 +14,18 @@ define(function (require) {
                 case 'autoincrement':
                     return new AutoincrementCell(options);
                 case 'edit':
-                    return new ButtonCell(_.extend(options, {
-						template: require('hbs!../cells/buttons/updateButton'),
+                    return new DropdownButtonCell(_.extend(options, {
+						onDelete: function() {
+							var next = function() {
+								self.removeItem(self.model);
+							};
+
+							if (self.options.onDelete) {
+								return self.options.onDelete(self.model, next);
+							}
+
+							next();
+						},
                         action: function () {
 							self.changeState('edit');
                         }

@@ -21,6 +21,11 @@ define (require) ->
       console.log('Saved on server!')
       callback()
 
+    onDelete: (model, callback) ->
+      console.log('Server removed item')
+      @options.collection.remove(model)
+      callback()
+
     onShow: ->
       @container.show(new Grid({
         collection: @options.collection
@@ -28,6 +33,7 @@ define (require) ->
         editable: true
         onCreate: _.bind(@onCreate, @)
         onSave: _.bind(@onSave, @)
+        onDelete: _.bind(@onDelete, @)
         columns: [
           {
             field: 'product'

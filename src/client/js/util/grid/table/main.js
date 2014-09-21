@@ -39,7 +39,8 @@ define(function (require) {
 				numerable: this.options.numerable,
 				editable: this.options.editable,
 				state: this.options.state,
-				onSave: this.options.onSave
+				onSave: this.options.onSave,
+				onDelete: this.options.onDelete
 			});
 			view.render();
 		},
