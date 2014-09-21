@@ -1,15 +1,59 @@
 .grid {
 
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
   table {
     width: 100%;
     border-collapse: collapse;
     border: 0;
 
+    thead {
+      background-color: #eee;
+
+      th {
+        border-bottom: 1px solid #ccc;
+
+        &.increment {
+          border-bottom: 1px solid #bbb;
+        }
+      }
+    }
+
+    tbody {
+      background-color: #fafafa;
+
+      tr {
+        &:first-child {
+          td {
+            border-top: none !important
+          }
+        }
+
+        td {
+          border-top: 1px solid #f0f0f0;
+        }
+      }
+    }
+
+    tfoot {
+      background-color: #fff;
+
+      td {
+        border-top: 1px solid #ccc;
+
+        &.increment {
+          border-top: 1px solid #bbb;
+        }
+      }
+    }
+
     td, th {
-      padding: 5px;
+      padding: 10px;
 
       &.increment {
         width: 1px !important;
+        background-color: #ddd;
       }
 
       &.numeric {
@@ -17,6 +61,10 @@
 
         input {
           text-align: right;
+
+          &[readonly] {
+            background-color: #fff;
+          }
         }
       }
 
