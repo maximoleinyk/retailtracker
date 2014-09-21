@@ -4,7 +4,7 @@ define(function (require) {
 
 	return AbstractCell.extend({
 
-		template: require('hbs!./buttonCell'),
+		template: require('hbs!./buttons/defaultButton'),
 
 		ui: {
 			$button: 'button'
@@ -21,7 +21,7 @@ define(function (require) {
 		},
 
 		getLabel: function () {
-			return 'Click';
+			return this.options.label;
 		},
 
 		action: function (e) {
@@ -33,7 +33,9 @@ define(function (require) {
 
 			// setTimeout for preventing simultaneous click on button within element focusing
 			setTimeout(function () {
-				self.ui.$button.focus();
+				if (typeof self.ui.$button === 'object') {
+					self.ui.$button.focus();
+				}
 			}, 0);
 		}
 

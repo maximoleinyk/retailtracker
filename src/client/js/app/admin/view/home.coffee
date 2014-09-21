@@ -13,7 +13,12 @@ define (require) ->
       container: '[data-id="grid-wrapper"]'
 
     onCreate: (model, callback) ->
+      console.log('Created on server!')
       @options.collection.add(model)
+      callback()
+
+    onSave: (model, callback) ->
+      console.log('Saved on server!')
       callback()
 
     onShow: ->
@@ -22,17 +27,21 @@ define (require) ->
         numerable: true
         editable: true
         onCreate: _.bind(@onCreate, @)
+        onSave: _.bind(@onSave, @)
         columns: [
           {
             field: 'product'
             title: 'Позиция'
             type: 'select'
             url: '/products/search'
-            formatter: (data) ->
-              data?.productName
+            formatter: (value, model) ->
+              model.get('productName')
+            formatResult: (json) ->
+              json?.productName
             onSelection: (object, model) ->
               model.set({
                 price: object.price
+                productName: object.productName
                 count: 1
               })
           }

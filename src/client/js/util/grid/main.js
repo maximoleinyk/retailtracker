@@ -58,7 +58,8 @@ define(function (require) {
                 numerable: this.numerable,
                 editable: this.editable,
                 state: this.state,
-				onCreate: this.options.onCreate
+				onCreate: this.options.onCreate,
+				onSave: this.options.onSave
             }));
         },
 

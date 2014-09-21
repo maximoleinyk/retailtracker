@@ -26,8 +26,8 @@ define(function (require) {
 					}
 				},
 				initSelection: _.bind(this.initSelection, this),
-				formatResult: _.bind(this.formatter, this),
-				formatSelection: _.bind(this.formatter, this)
+				formatResult: _.bind(this.formatResult, this),
+				formatSelection: _.bind(this.formatResult, this)
 			});
 			select2.on('select2-selecting', _.bind(this.onSelection, this));
 		},
@@ -63,17 +63,21 @@ define(function (require) {
 		},
 
 		initSelection: function ($el, callback) {
-			var formatter = this.options.column.get('formatter'),
-				value = $el.val();
+			callback(this.model.toJSON());
+		},
 
-			callback(formatter(value, this.model));
+		formatResult: function (object) {
+			var column = this.options.column,
+				formatResult = column.get('formatResult');
+
+			return (formatResult) ? formatResult(object) : object[column.get('field')];
 		},
 
 		formatter: function (data) {
-			var meta = this.options.column,
-				formatter = meta.get('formatter');
+			var column = this.options.column,
+				formatter = column.get('formatter');
 
-			return (formatter) ? formatter(data) : data[this.model.get(meta.get('field'))];
+			return (formatter) ? formatter(data) : data[column.get('field')];
 		},
 
 		activate: function () {

@@ -30,12 +30,23 @@ define(function (require) {
         },
 
         buildCustomCell: function (type, options) {
+			var self = this;
+
             if (type === 'autoincrement') {
                 return new AutoincrementCell(options);
             } else if (type === 'edit') {
                 return new ButtonCell(_.extend(options, {
-                    action: function (e) {
-                        console.log('Save applied changed');
+					template: require('hbs!../cells/buttons/saveButton'),
+                    action: function () {
+						var next = function() {
+							self.changeState('view');
+						};
+
+						if (self.options.onSave) {
+							return self.options.onSave(self.model, next);
+						}
+
+						next();
                     }
                 }));
             } else {

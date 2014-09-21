@@ -12,7 +12,7 @@ define(function (require) {
 			this.listenEvents();
 		},
 
-		bindEvents: function() {
+		bindEvents: function () {
 			var field = this.options.column.get('field');
 
 			switch (field) {
@@ -43,23 +43,22 @@ define(function (require) {
 			this.applyColumnWidth();
 		},
 
-		setTextAlign: function() {
-			var type = this.options.column.get('type');
+		setTextAlign: function () {
+			var map = {
+					autoincrement: 'increment',
+					number: 'numeric',
+					edit: 'action'
+				},
+				type = this.options.column.get('type'),
+				className = map[type];
 
-			if (type !== 'number') {
-				return;
+			if (className) {
+				this.$el.addClass(className);
 			}
-
-			this.$el.addClass('numeric');
 		},
 
 		applyColumnWidth: function () {
-			var type = this.options.column.get('type'),
-				width = this.options.column.get('width');
-
-			if (type === 'autoincrement' || type === 'edit') {
-				return this.$el.css({width: '1px'});
-			}
+			var width = this.options.column.get('width');
 
 			if (width) {
 				this.$el.css({width: width});

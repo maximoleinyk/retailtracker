@@ -14,6 +14,11 @@ define(function (require) {
             this.collection = new Backbone.Collection(this.options.columns);
         },
 
+		changeState: function(state) {
+			this.state = state;
+			this.trigger('change:state', state, this, this.model);
+		},
+
         render: function(index) {
             this.rowIndex = index;
             return Marionette.CollectionView.prototype.render.apply(this, arguments);

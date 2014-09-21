@@ -27,17 +27,20 @@ module.exports = (router) ->
   router.get '/warehouse/items', authFilter, (req, res) ->
     res.send([
       {
-        product: 1,
-        count: 1,
+        product: 1
+        productName: 'Apple watch'
+        count: 1
         price: 300.0
-      },
+      }
       {
-        product: 3,
-        count: 1,
+        product: 3
+        productName: 'Nexus 5'
+        count: 1
         price: 400.0
       }
     ])
 
   router.get '/products/search', authFilter, (req, res) ->
     res.jsonp _.filter productItems, (item) ->
-      item.productName.toLowerCase().indexOf(req.query.q) > -1
+      query = if req.query.q then req.query.q.toLowerCase() else ''
+      item.productName.toLowerCase().indexOf(query) > -1

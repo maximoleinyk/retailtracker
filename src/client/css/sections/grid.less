@@ -1,4 +1,5 @@
 .grid {
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -6,6 +7,33 @@
 
     td, th {
       padding: 5px;
+
+      &.increment {
+        width: 1px !important;
+      }
+
+      &.numeric {
+        text-align: right;
+
+        input {
+          text-align: right;
+        }
+      }
+
+      &.action {
+        width: 1px !important;
+
+        > * {
+          width: 100%;
+        }
+      }
+
+      button {
+        .fa {
+          font-size: 20px;
+        }
+      }
     }
   }
+
 }

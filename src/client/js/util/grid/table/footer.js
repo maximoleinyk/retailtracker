@@ -19,6 +19,7 @@ define(function (require) {
 
 			if (type === 'edit') {
 				return new ButtonCell(_.extend(options, {
+					template: require('hbs!./cells/buttons/createButton'),
 					action: function (e) {
 						var next = function (err) {
 							if (err) {
