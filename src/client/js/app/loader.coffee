@@ -39,8 +39,8 @@ define (require) ->
         throw new Error('This application cannot be started in this browser.')
 
       cookieEnabled = navigator.cookieEnabled or ('cookie' in document and (document.cookie.length > 0 or (document.cookie = 'test').indexOf.call(document.cookie,
-        'test') > -1))
-      document.documentElement.className += if cookieEnabled then ' cookies': ' no-cookies'
+          'test') > -1))
+      document.documentElement.className += if cookieEnabled then ' cookies' else ' no-cookies'
 
       url = getPath()
       firstModule = 'app/admin/main'
