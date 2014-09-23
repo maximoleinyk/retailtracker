@@ -40,6 +40,7 @@ define (require) ->
             title: 'Позиция'
             type: 'select'
             url: '/products/search'
+            placeholder: 'Выберите продукт'
             formatter: (value, model) ->
               model.get('productName')
             formatResult: (json) ->

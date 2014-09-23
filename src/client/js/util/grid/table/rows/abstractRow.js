@@ -74,6 +74,9 @@ define(function (require) {
 
         buildCellView: function (type, column, options) {
             throw 'Method not implemented';
+        },
+
+        removeItem: function(model) {
         }
 
     });

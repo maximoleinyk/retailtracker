@@ -42,7 +42,7 @@ define(function (require) {
 		},
 
 		getPlaceholder: function () {
-			return 'Choose something';
+			return this.options.column.get('placeholder');
 		},
 
 		onSelection: function (e) {
