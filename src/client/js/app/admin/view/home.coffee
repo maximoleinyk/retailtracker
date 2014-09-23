@@ -14,7 +14,9 @@ define (require) ->
 
     onCreate: (model, callback) ->
       console.log('Created on server!')
-      @options.collection.add(model)
+      existing = @collection.findWhere({product: +model.get('product')})
+      count = +existing.get('count')
+      existing.set('count', ++count)
       callback()
 
     onSave: (model, callback) ->
@@ -23,12 +25,12 @@ define (require) ->
 
     onDelete: (model, callback) ->
       console.log('Server removed item')
-      @options.collection.remove(model)
+      @collection.remove(model)
       callback()
 
     onShow: ->
       @container.show(new Grid({
-        collection: @options.collection
+        collection: @collection
         numerable: true
         editable: true
         onCreate: _.bind(@onCreate, @)
