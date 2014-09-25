@@ -13,10 +13,9 @@ define (require) ->
       container: '[data-id="grid-wrapper"]'
 
     onCreate: (model, callback) ->
-      console.log('Created on server!')
-      existing = @collection.findWhere({product: +model.get('product')})
-      count = +existing.get('count')
-      existing.set('count', ++count)
+      return callback(model.validationError) if not model.isValid()
+
+      @collection.add(model)
       callback()
 
     onSave: (model, callback) ->

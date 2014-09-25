@@ -1,7 +1,8 @@
 define(function (require) {
 
     var Backbone = require('backbone'),
-        Marionette = require('marionette');
+        Marionette = require('marionette'),
+        ValidationRow = require('./validationRow');
 
     return Marionette.CollectionView.extend({
 
@@ -12,6 +13,20 @@ define(function (require) {
         initialize: function (options) {
             this.state = options.state || false;
             this.collection = new Backbone.Collection(this.options.columns);
+        },
+
+        handle: function(err, callback) {
+            if (!err) {
+                return callback();
+            }
+
+            var row = new ValidationRow({
+                columns: this.options.columns,
+                row: this,
+                errors: err
+            });
+
+            return this.$el.after(row.render().el);
         },
 
 		changeState: function(state) {

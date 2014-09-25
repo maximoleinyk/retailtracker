@@ -38,14 +38,14 @@ define(function (require) {
                 return new ButtonCell(_.extend(options, {
 					template: require('hbs!../cells/buttons/saveButton'),
                     action: function () {
-						var next = function() {
-							self.changeState('view');
+						var next = function(err) {
+                            self.handle(err, function() {
+                                self.changeState('view');
+                            });
 						};
-
 						if (self.options.onSave) {
 							return self.options.onSave(self.model, next);
 						}
-
 						next();
                     }
                 }));

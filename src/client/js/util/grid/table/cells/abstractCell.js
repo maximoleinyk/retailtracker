@@ -12,6 +12,14 @@ define(function (require) {
 			this.listenEvents();
 		},
 
+        invalid: function() {
+            this.$el.addClass('has-error');
+        },
+
+        valid: function() {
+            this.$el.removeClass('has-error');
+        },
+
 		bindEvents: function () {
 			var field = this.options.column.get('field');
 

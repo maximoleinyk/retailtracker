@@ -22,18 +22,14 @@ define(function (require) {
 					template: require('hbs!./cells/buttons/createButton'),
 					action: function () {
 						var next = function (err) {
-							if (err) {
-								// TODO: do something with errors
-								return;
-							}
-							self.model = new self.options.items.model({});
-							self.render();
+                            self.handle(err, function() {
+                                self.model = new self.options.items.model({});
+                                self.render();
+                            });
 						};
-
 						if (self.options.onCreate) {
 							return self.options.onCreate(self.model, next);
 						}
-
 						next();
 					}
 				}));

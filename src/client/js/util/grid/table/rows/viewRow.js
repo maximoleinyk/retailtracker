@@ -16,14 +16,14 @@ define(function (require) {
                 case 'edit':
                     return new DropdownButtonCell(_.extend(options, {
 						onDelete: function() {
-							var next = function() {
-								self.removeItem(self.model);
+							var next = function(err) {
+                                self.handle(err, function() {
+                                    self.removeItem(self.model);
+                                });
 							};
-
 							if (self.options.onDelete) {
 								return self.options.onDelete(self.model, next);
 							}
-
 							next();
 						},
                         action: function () {
