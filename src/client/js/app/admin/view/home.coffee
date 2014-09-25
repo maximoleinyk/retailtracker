@@ -14,12 +14,11 @@ define (require) ->
 
     onCreate: (model, callback) ->
       return callback(model.validationError) if not model.isValid()
-
       @collection.add(model)
       callback()
 
     onSave: (model, callback) ->
-      console.log('Saved on server!')
+      return callback(model.validationError) if not model.isValid()
       callback()
 
     onDelete: (model, callback) ->
@@ -57,6 +56,8 @@ define (require) ->
             field: 'count'
             title: 'Кол-во'
             type: 'number'
+            formatter: (value) ->
+              numeral(value).format('0')
             width: 100
           }
           {

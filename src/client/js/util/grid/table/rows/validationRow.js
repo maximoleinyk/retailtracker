@@ -8,20 +8,65 @@ define(function (require) {
         template: require('hbs!./validationRow'),
         tagName: 'tr',
 
-        templateHelpers: function() {
+        templateHelpers: function () {
             var self = this;
             return {
-                errors: function() {
-                    return _.values(self.options.errors);
+                errors: function () {
+                    var result = [];
+                    _.each(self.options.errors, function (value, key) {
+                        result.push({
+                            field: key,
+                            value: value
+                        });
+                    });
+                    return result;
                 }
             };
         },
 
-        onRender: function() {
-            this.options.row.children.each(function(itemView) {
-                itemView.invalid();
-            });
+        activate: function (e) {
+            e.preventDefault();
+
+            var field = $(e.currentTarget).attr('data-field'),
+                cellView = this.options.cellManager.getCell(field);
+
+            if (cellView) {
+                cellView.activate();
+            }
+        },
+
+        highlightCells: function () {
+            _.each(this.options.errors, function (value, field) {
+                this.options.cellManager.getCell(field).invalid();
+            }, this);
+        },
+
+        expandRow: function () {
             this.$el.children().first().attr('colspan', this.options.columns.length);
+        },
+
+        addValidationHandler: function(callback) {
+            this.listenTo(this, 'validate', callback);
+        },
+
+        addListeners: function () {
+            _.each(this.options.errors, function (value, field) {
+                this.listenTo(this.options.model, 'change:' + field, function () {
+                    this.options.cellManager.getCell(field).valid();
+                    delete this.options.errors[field];
+                    this.trigger('validate', _.isEmpty(this.options.errors));
+                    this.render();
+                }, this);
+            }, this);
+        },
+
+        onRender: function () {
+            if (_.isEmpty(this.options.errors)) {
+                return this.close();
+            }
+            this.highlightCells();
+            this.expandRow();
+            this.addListeners();
         }
 
     });

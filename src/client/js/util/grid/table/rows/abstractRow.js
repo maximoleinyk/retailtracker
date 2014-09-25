@@ -13,18 +13,30 @@ define(function (require) {
         initialize: function (options) {
             this.state = options.state || false;
             this.collection = new Backbone.Collection(this.options.columns);
+            this.valid = true;
         },
 
         handle: function(err, callback) {
             if (!err) {
                 return callback();
+            } else if (!this.valid) {
+                return;
             }
 
-            var row = new ValidationRow({
-                columns: this.options.columns,
-                row: this,
-                errors: err
+            var self = this,
+                row = new ValidationRow({
+                    columns: this.options.columns,
+                    row: this,
+                    errors: err,
+                    cellManager: this,
+                    model: this.model
+                });
+
+            row.addValidationHandler(function(valid) {
+                self.valid = valid;
             });
+
+            this.valid = false;
 
             return this.$el.after(row.render().el);
         },
@@ -59,6 +71,19 @@ define(function (require) {
 		first: function() {
 			return this.children.findByIndex(this.options.numerable ? 1 : 0);
 		},
+
+        getCell: function(field) {
+            var index = -1;
+
+            this.collection.each(function (model, i) {
+                if (model.get('field') === field) {
+                    index = i;
+                    return false;
+                }
+            });
+
+            return this.children.findByIndex(index);
+        },
 
 		next: function (column) {
 			var index = this.getCellIndex(column);

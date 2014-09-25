@@ -9,10 +9,10 @@ define (require) ->
       result = {}
 
       if not @get('product')
-        result['product'] = 'Select product'
+        result['product'] = 'Необходимо указать позицию'
 
-      if not @get('count')
-        result['count'] = 'Choose count'
+      if not +@get('count')
+        result['count'] = 'Укажите количество'
 
       if _.isEmpty(result) then undefined else result
   })

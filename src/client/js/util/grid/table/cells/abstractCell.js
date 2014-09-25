@@ -28,7 +28,7 @@ define(function (require) {
 				case 'editable':
 					break;
 				default:
-					this.model.on('change:' + field, _.bind(this.renderValue, this));
+					this.listenTo(this.model, 'change:' + field, this.renderValue, this);
 					break;
 			}
 		},
@@ -49,7 +49,19 @@ define(function (require) {
 			this.addAttributes();
 			this.setTextAlign();
 			this.applyColumnWidth();
+            this.bindInputEvents();
 		},
+
+        bindInputEvents: function() {
+            var rootElement = this.getRootElement();
+
+            rootElement.on('change', _.bind(function() {
+                var field = this.options.column.get('field'),
+                    value = rootElement.val();
+
+                this.model.set(field, value);
+            }, this));
+        },
 
 		setTextAlign: function () {
 			var map = {

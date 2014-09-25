@@ -1,7 +1,9 @@
 <td>
     <ul>
     {{#each errors}}
-        <li>{{this}}</li>
+        <li>
+            <a href="#" data-action="activate" data-field="{{field}}">{{value}}</a>
+        </li>
     {{/each}}
     </ul>
 </td>
