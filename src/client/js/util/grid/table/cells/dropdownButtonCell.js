@@ -12,8 +12,6 @@ define(function (require) {
 		},
 
 		templateHelpers: function () {
-			var self = this;
-
 			return {
 				actions: function() {
 					return [{

@@ -15,7 +15,7 @@ define(function (require) {
             this.addListeners();
         },
 
-        addListeners: function() {
+        addListeners: function () {
             this.listenTo(this.collection, 'remove', this.updateOrder, this);
         },
 
@@ -71,13 +71,13 @@ define(function (require) {
             this.states[model.cid] = state;
             this.order[options.index] = model.cid;
 
-            row.on('change:state', _.bind(this.handleStateChange, this));
+            row.addStateChangeHandler(_.bind(this.handleStateChange, this));
             row.on('destroy', _.bind(this.updateOrder, this));
 
             return row;
         },
 
-        updateOrder: function(model) {
+        updateOrder: function (model) {
             this.order.splice(this.order.indexOf(model.cid), 1);
         },
 

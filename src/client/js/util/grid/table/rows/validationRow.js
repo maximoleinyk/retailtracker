@@ -42,7 +42,7 @@ define(function (require) {
         },
 
         expandRow: function () {
-            this.$el.children().first().attr('colspan', this.options.columns.length);
+            this.$el.children().first().attr('colspan', this.options.cellManager.size());
         },
 
         addValidationHandler: function(callback) {

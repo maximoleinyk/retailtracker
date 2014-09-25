@@ -8,6 +8,7 @@ define(function (require) {
 		template: require('hbs!./viewCell'),
 
 		addAttributes: function () {
+            // do nothing
 		},
 
 		appendValue: function (value) {

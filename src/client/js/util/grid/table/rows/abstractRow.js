@@ -16,7 +16,7 @@ define(function (require) {
             this.valid = true;
         },
 
-        handle: function(err, callback) {
+        handle: function (err, callback) {
             if (!err) {
                 return callback();
             } else if (!this.valid) {
@@ -25,54 +25,42 @@ define(function (require) {
 
             var self = this,
                 row = new ValidationRow({
-                    columns: this.options.columns,
-                    row: this,
                     errors: err,
                     cellManager: this,
                     model: this.model
                 });
 
-            row.addValidationHandler(function(valid) {
+            this.valid = false;
+            row.addValidationHandler(function (valid) {
                 self.valid = valid;
             });
-
-            this.valid = false;
 
             return this.$el.after(row.render().el);
         },
 
-		changeState: function(state) {
-			this.state = state;
-			this.trigger('change:state', state, this, this.model);
-		},
+        changeState: function (state) {
+            this.state = state;
+            this.trigger('change:state', state, this, this.model);
+        },
 
-        render: function(index) {
+        addStateChangeHandler: function(callback) {
+            this.listenTo(this, 'change:state', callback);
+        },
+
+        render: function (index) {
             this.rowIndex = index;
             return Marionette.CollectionView.prototype.render.apply(this, arguments);
         },
 
-        getIndex: function() {
+        size: function() {
+            return this.options.columns.length;
+        },
+
+        getRowIndex: function () {
             return this.rowIndex;
         },
 
-		getCellIndex: function(column) {
-			var index = -1;
-
-			this.collection.each(function (model, i) {
-				if (model.get('field') === column.get('field')) {
-					index = i;
-					return false;
-				}
-			});
-
-			return index;
-		},
-
-		first: function() {
-			return this.children.findByIndex(this.options.numerable ? 1 : 0);
-		},
-
-        getCell: function(field) {
+        getCellIndex: function (field) {
             var index = -1;
 
             this.collection.each(function (model, i) {
@@ -82,21 +70,31 @@ define(function (require) {
                 }
             });
 
+            return index;
+        },
+
+        first: function () {
+            return this.children.findByIndex(this.options.numerable ? 1 : 0);
+        },
+
+        getCell: function (field) {
+            var index = this.getCellIndex(field);
+
             return this.children.findByIndex(index);
         },
 
-		next: function (column) {
-			var index = this.getCellIndex(column);
+        next: function (column) {
+            var index = this.getCellIndex(column.get('field'));
 
-			return this.children.findByIndex((this.collection.length - 1 === index) ? index : index + 1);
-		},
+            return this.children.findByIndex((this.collection.length - 1 === index) ? index : index + 1);
+        },
 
-		prev: function (column) {
-			var index = this.getCellIndex(column),
-				allowedIndex = this.options.numerable ? 1 : 0;
+        prev: function (column) {
+            var index = this.getCellIndex(column.get('field')),
+                allowedIndex = this.options.numerable ? 1 : 0;
 
-			return this.children.findByIndex((index === allowedIndex) ? allowedIndex : --index);
-		},
+            return this.children.findByIndex((index === allowedIndex) ? allowedIndex : --index);
+        },
 
         buildItemView: function (column, itemView, itemViewOptions) {
             itemViewOptions = itemViewOptions || {};
@@ -116,7 +114,7 @@ define(function (require) {
             throw 'Method not implemented';
         },
 
-        removeItem: function(model) {
+        removeItem: function (model) {
         }
 
     });

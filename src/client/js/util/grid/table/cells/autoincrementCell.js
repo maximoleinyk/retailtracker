@@ -6,7 +6,7 @@ define(function (require) {
 	return ViewCell.extend({
 
 		renderValue: function () {
-			this.appendValue(this.options.cellManager.getIndex() + 1);
+			this.appendValue(this.options.cellManager.getRowIndex() + 1);
 		}
 
 	});
