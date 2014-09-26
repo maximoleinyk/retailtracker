@@ -12,6 +12,25 @@ define(function (require) {
 
     return AbstractRow.extend({
 
+        initialize: function () {
+            AbstractRow.prototype.initialize.apply(this, arguments);
+            this.addKeyBindings();
+        },
+
+        addKeyBindings: function () {
+            var self = this;
+            this.$el.on('keydown', function (e) {
+                if (e.keyCode !== 27) {
+                    return;
+                }
+                self.discardChanges();
+            });
+        },
+
+        discardChanges: function () {
+            this.model.set(this.model.previousAttributes());
+        },
+
         buildCellView: function (type, column, options) {
             switch (type) {
                 case 'string':
@@ -30,23 +49,23 @@ define(function (require) {
         },
 
         buildCustomCell: function (type, options) {
-			var self = this;
+            var self = this;
 
             if (type === 'autoincrement') {
                 return new AutoincrementCell(options);
             } else if (type === 'edit') {
                 return new ButtonCell(_.extend(options, {
-					template: require('hbs!../cells/buttons/saveButton'),
+                    template: require('hbs!../cells/buttons/saveButton'),
                     action: function () {
-						var next = function(err) {
-                            self.handle(err, function() {
+                        var next = function (err) {
+                            self.handle(err, function () {
                                 self.changeState('view');
                             });
-						};
-						if (self.options.onSave) {
-							return self.options.onSave(self.model, next);
-						}
-						next();
+                        };
+                        if (self.options.onSave) {
+                            return self.options.onSave(self.model, next);
+                        }
+                        next();
                     }
                 }));
             } else {

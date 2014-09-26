@@ -37,25 +37,29 @@ define(function (require) {
 			return 'hidden';
 		},
 
-		getValue: function (object) {
-			return object.id;
-		},
-
 		getPlaceholder: function () {
 			return this.options.column.get('placeholder');
 		},
 
+        updateModel: function() {
+            // this.ui.$input.val() will be a formatted value
+        },
+
+        appendValue: function(value) {
+            InputCell.prototype.appendValue.apply(this, arguments);
+            if (!value) {
+                this.ui.$input.select2('val', '');
+            }
+        },
+
 		onSelection: function (e) {
 			var self = this,
 				column = this.options.column,
-				selectionHandler = column.get('onSelection'),
-				value = this.getValue(e.object);
+				selectionHandler = column.get('onSelection');
 
 			if (_.isFunction(selectionHandler)) {
 				selectionHandler(e.object, this.model);
 			}
-
-			this.model.set(column.get('field'), value);
 
 			setTimeout(function () {
 				self.nextCell();

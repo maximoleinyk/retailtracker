@@ -14,6 +14,10 @@ define(function (require) {
 			EditRow.prototype.initialize.apply(this, arguments);
 		},
 
+        discardChanges: function() {
+            this.model.clear();
+        },
+
 		buildCustomCell: function (type, options) {
 			var self = this;
 
