@@ -5,6 +5,13 @@ define (require) ->
   _ = require('underscore')
 
   Backbone.Model.extend({
+
+    initialize: ->
+      @originAttributes = _.clone(this.attributes)
+
+    revert: ->
+      this.set(@originAttributes)
+
     validate: ->
       result = {}
 

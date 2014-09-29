@@ -31,8 +31,14 @@ define(function (require) {
                 });
 
             this.valid = false;
+			this.$el.addClass('invalid');
+
             row.addValidationHandler(function (valid) {
                 self.valid = valid;
+
+				if (valid) {
+					self.$el.addClass('invalid');
+				}
             });
 
             return this.$el.after(row.render().el);

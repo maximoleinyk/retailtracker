@@ -27,12 +27,14 @@ module.exports = (router) ->
   router.get '/warehouse/items', authFilter, (req, res) ->
     res.send([
       {
+        id: 1
         product: 1
         productName: 'Apple watch'
         count: 1
         price: 300.0
       }
       {
+        id: 2
         product: 3
         productName: 'Nexus 5'
         count: 1

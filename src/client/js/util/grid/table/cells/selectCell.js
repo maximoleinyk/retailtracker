@@ -41,16 +41,9 @@ define(function (require) {
 			return this.options.column.get('placeholder');
 		},
 
-        updateModel: function() {
-            // this.ui.$input.val() will be a formatted value
-        },
-
-        appendValue: function(value) {
-            InputCell.prototype.appendValue.apply(this, arguments);
-            if (!value) {
-                this.ui.$input.select2('val', '');
-            }
-        },
+		updateModel: function () {
+			// this.ui.$input.val() will be a formatted value
+		},
 
 		onSelection: function (e) {
 			var self = this,
@@ -75,13 +68,6 @@ define(function (require) {
 				formatResult = column.get('formatResult');
 
 			return (formatResult) ? formatResult(object) : object[column.get('field')];
-		},
-
-		formatter: function (data) {
-			var column = this.options.column,
-				formatter = column.get('formatter');
-
-			return (formatter) ? formatter(data) : data[column.get('field')];
 		},
 
 		activate: function () {
