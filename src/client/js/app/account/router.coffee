@@ -4,9 +4,9 @@ define (require) ->
   BaseRouter = require('cs!app/common/router')
   BaseRouter.extend
     appRoutes:
-      'account/login': 'login'
-      'account/register': 'registration'
-      'account/register/:inviteKey': 'confirmRegistration'
-      'account/forgot': 'forgotPassword'
-      'account/forgot/:key': 'changeForgottenPassword'
+      'login': 'login'
+      'register': 'registration'
+      'register/:inviteKey': 'confirmRegistration'
+      'forgot': 'forgotPassword'
+      'forgot/:key': 'changeForgottenPassword'
 

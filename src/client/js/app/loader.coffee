@@ -10,7 +10,7 @@ define (require) ->
   sessionStore = require('util/sessionStore')
 
   (mappings) ->
-    getPath = ->
+    getPath = () ->
       origin = window.location.origin or window.location.protocol + '//' + window.location.host
       window.location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/').replace(/^\/page\/?/, '')
 
@@ -30,11 +30,11 @@ define (require) ->
 
       Backbone.history.start({
         pushState: true
-        root: '/page/'
+        root: options.root
       })
 
     {
-    loadModule: ->
+    loadModule: (name) ->
       if document.documentElement.className.indexOf('no-support') > -1
         throw new Error('This application cannot be started in this browser.')
 
@@ -43,7 +43,7 @@ define (require) ->
       document.documentElement.className += if cookieEnabled then ' cookies' else ' no-cookies'
 
       url = getPath()
-      firstModule = 'app/admin/main'
+      firstModule = 'app/' + name + '/main'
 
       for route of mappings
         do ->
@@ -51,41 +51,35 @@ define (require) ->
             firstModule = 'app/' + mappings[route] + '/main'
 
       require ['cs!' + firstModule], (module) ->
-        module.beforeStart or= (resolve) ->
-          resolve()
-
         startApp = (authenticated) ->
-          if not authenticated and url.indexOf('account') isnt 0
-            sessionStore.add('redirectUrl', url or 'default')
-            return window.location.replace('/page/account/login')
+          if authenticated
+            if url.indexOf('account') is 0
+              sessionStore.remove('redirectUrl')
+              return window.location.replace('/page/admin')
+          else
+            if url.indexOf('account') isnt 0
+              sessionStore.add('redirectUrl', url)
+              return window.location.replace('/page/account/login')
 
           App.start(_.extend(module, {
             isAuthenticated: authenticated
           }))
 
-        beforeStart = ->
-          resolve = ->
-            startApp(true)
-          reject = (err) ->
-            if err is 'Unauthorized'
-              startApp(false)
-            else
-              # handle properly this case
+        getMessages = new Promise (resolve, reject) ->
+          http.get '/i18n/messages/' + module.bundleName, (err, response) ->
+            if err then reject(err) else resolve(response)
 
-          module.beforeStart(resolve, reject)
-
-        loadMessages = (done) ->
-          getMessages = new Promise (resolve, reject) ->
-            http.get '/i18n/messages/' + module.bundleName, (err, response) ->
-              if err then reject(err) else resolve(response)
-
-          getMessages
-          .then (messages) ->
-            window.RetailTracker.i18n = messages;
-            done()
-          .then null, ->
+        getMessages
+        .then (messages) ->
+          window.RetailTracker.i18n = messages
+          new Promise (resolve, reject) ->
+            http.get '/user/fetch', (err, result) ->
+              if err then reject(err) else resolve(result)
+        .then ->
+          startApp(true)
+        .then null, (err) ->
+          if err is 'Unauthorized'
+            startApp(false)
+          else
             # handle properly this case
-
-        if module.bundleName then loadMessages(beforeStart) else beforeStart()
-
     }

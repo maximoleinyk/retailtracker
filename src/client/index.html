@@ -21,10 +21,10 @@
 		require(['/static/js/config.js'], function() {
 			require(['cs!app/loader'], function(ModuleLoader) {
                 var loader = new ModuleLoader({
-                    '': 'admin',
+                    'admin': 'admin',
                     'account': 'account'
                 });
-                loader.loadModule();
+                loader.loadModule('admin');
             });
 		});
 	</script>

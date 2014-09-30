@@ -26,8 +26,7 @@ define (require) ->
       authenticate
       .then =>
         url = sessionStore.get('redirectUrl')
-        redirectUrl = if not url then 'default' else url
-        @eventBus.trigger('router:navigate', redirectUrl, {trigger: true})
+        window.location.replace('/page/' + url)
       .then null, (err) =>
           @validation.show(err.errors)
 

@@ -57,5 +57,5 @@ define (require) ->
       @container.show(view)
 
     redirectToLogin: ->
-      sessionStore.add('redirectUrl', Backbone.history.fragment or 'default')
+      sessionStore.add('redirectUrl', Backbone.history.fragment)
       window.location.replace('/page/account/login')

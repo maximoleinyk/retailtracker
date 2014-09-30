@@ -36,7 +36,6 @@ define (require) ->
 
     initialize: (options) ->
       @options = options
-
       @appRoutes['logout'] = 'logout'
 
     routes:
@@ -44,10 +43,9 @@ define (require) ->
 
       '*404': ->
         redirectUrl = sessionStore.get('redirectUrl')
-        fragment = Backbone.history.fragment
 
-        if redirectUrl or fragment is 'default'
+        if _.isNull(redirectUrl) or _.isUndefined(redirectUrl)
           sessionStore.remove('redirectUrl')
-          window.location.replace('/page' + if not redirectUrl or redirectUrl is 'default' then '' else '/' + redirectUrl)
+          window.location.replace('/page' + if not redirectUrl then '' else '/' + redirectUrl)
         else
           window.location.replace('/404')
