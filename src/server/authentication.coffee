@@ -1,20 +1,24 @@
 LocalStrategy = require('passport-local')
-userService = inject('services/userService')
 
-module.exports = (passport) ->
+class Authentication
 
-  credentialsInfo = {
-    usernameField: 'login'
-    passwordField: 'password'
-  }
+  constructor: (@userService) ->
+    @credentialsInfo = {
+      usernameField: 'login'
+      passwordField: 'password'
+    }
 
-  handler = (email, password, done) ->
-    userService.findByCredentials(email, password, done)
+  use: (passport) ->
 
-  passport.serializeUser (user, done) ->
-    done(null, user._id)
+    passport.serializeUser (user, done) ->
+      done(null, user._id)
 
-  passport.deserializeUser (id, done) ->
-    userService.findById(id, done)
+    passport.deserializeUser (id, done) =>
+      @userService.findById(id, done)
 
-  passport.use(new LocalStrategy(credentialsInfo, handler))
+    strategy = new LocalStrategy @credentialsInfo, (email, password, done) =>
+      @userService.findByCredentials(email, password, done)
+
+    passport.use(strategy)
+
+module.exports = Authentication
