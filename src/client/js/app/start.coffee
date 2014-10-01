@@ -3,7 +3,7 @@ define (require) ->
 
   ModuleLoader = require('cs!./moduleLoader')
   Marionette = require('marionette')
-  Layout = require('cs!app/common/view/layout')
+  Layout = require('cs!app/common/views/layout')
   Backbone = require('backbone')
 
   App = new Marionette.Application
@@ -28,6 +28,7 @@ define (require) ->
   loader = new ModuleLoader('/page/', {
     'admin': 'admin',
     'account': 'account'
+    'organization': 'organization'
   })
 
   loader.loadModule 'admin', (options) ->

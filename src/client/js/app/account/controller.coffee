@@ -2,12 +2,12 @@ define (require) ->
   'use strict'
 
   Controller = require('cs!app/common/controller');
-  LoginPage = require('cs!./view/login')
-  RegistrationPage = require('cs!./view/registration/main')
-  RegistrationApprovePage = require('cs!./view/registration/approve')
-  ForgotPasswordPage = require('cs!./view/forgotPassword/main')
-  PasswordChangePage = require('cs!./view/forgotPassword/change')
-  Account = require('cs!./model/account')
+  LoginPage = require('cs!./views/login')
+  RegistrationPage = require('cs!./views/registration/main')
+  RegistrationApprovePage = require('cs!./views/registration/approve')
+  ForgotPasswordPage = require('cs!./views/forgotPassword/main')
+  PasswordChangePage = require('cs!./views/forgotPassword/change')
+  Account = require('cs!./models/account')
 
   Controller.extend
 

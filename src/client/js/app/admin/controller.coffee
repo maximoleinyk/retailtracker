@@ -2,9 +2,9 @@ define (require) ->
   'use strict'
 
   Controller = require('cs!app/common/controller');
-  HomePage = require('cs!./view/home')
-  SettingsPage = require('cs!./view/settings/main')
-  WarehouseItems = require('cs!app/admin/collection/warehouseItems')
+  HomePage = require('cs!./views/home')
+  SettingsPage = require('cs!./views/settings/main')
+  WarehouseItems = require('cs!app/admin/collections/warehouseItems')
   http = require('util/http')
 
   Controller.extend

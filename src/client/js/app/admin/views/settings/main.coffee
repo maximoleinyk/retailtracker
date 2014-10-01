@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  Settings = require('cs!app/admin/model/settings')
+  Settings = require('cs!app/admin/models/settings')
   UserInfo = require('util/userInfo')
   ProfileView = require('cs!./profile')
   SecurityView = require('cs!./security')

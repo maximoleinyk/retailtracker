@@ -8,7 +8,7 @@ define (require) ->
 
   Marionette.ItemView.extend
     template: require('hbs!./navigation')
-    tagNme: 'header'
+    tagName: 'header'
 
     ui:
       $firstNameLabel: '[data-hook="firstNameLabel"]'
