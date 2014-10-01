@@ -6,6 +6,7 @@ PageController = inject('controller')
 Authentication = inject('authentication')
 MongoDB = inject('database')
 userService = inject('services/userService')
+socket = inject('socket')
 
 class App
 
@@ -27,6 +28,8 @@ class App
 
       controller = new PageController(@router, passport)
       controller.register()
+
+      socket(@app)
 
       @app.listen @config.app.port, =>
         console.log 'Application started on port ' + config.app.port + ' in ' + process.env.NODE_ENV + ' mode'

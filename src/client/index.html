@@ -19,13 +19,7 @@
 	<script src="/static/js/libs/requirejs/require.js"></script>
 	<script>
 		require(['/static/js/config.js'], function() {
-			require(['cs!app/loader'], function(ModuleLoader) {
-                var loader = new ModuleLoader({
-                    'admin': 'admin',
-                    'account': 'account'
-                });
-                loader.loadModule('admin');
-            });
+			require(['cs!app/start']);
 		});
 	</script>
 </body>

@@ -12,4 +12,6 @@ define (require) ->
     Navigation: Navigation
     bundleName: 'admin'
     root: '/page/admin/'
+    onUserLoaded: (userInfo) ->
+      UserInfo.set(userInfo)
   })
