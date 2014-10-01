@@ -187,7 +187,7 @@ define(function (require) {
                 Backbone.$(link).removeClass('selected');
             });
             _.each(routeToLink, function (a, regexp) {
-                if (new RegExp(regexp).test(Backbone.history.fragment)) {
+                if (new RegExp(regexp).test('/' + Backbone.history.fragment)) {
                     a.addClass('selected');
                 }
             });
