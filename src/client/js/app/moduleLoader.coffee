@@ -30,7 +30,7 @@ define (require) ->
       @isBrowserSupported()
       @isCookies()
 
-      url = @getPath()
+      url = @getPath() or @mappings[defaultModuleName]
       firstModule = 'app/' + defaultModuleName + '/main'
 
       for route of @mappings
@@ -50,6 +50,7 @@ define (require) ->
               return window.location.replace(@root + 'account/login')
 
           start(_.extend(module, {
+            root: (@root + module.root).replace('//', '/')
             isAuthenticated: authenticated
           }));
 
