@@ -5,4 +5,5 @@ define (require) ->
   Router.extend
     appRoutes:
       '': 'home',
+      'uom': 'uom',
       'settings/:view': 'settings'

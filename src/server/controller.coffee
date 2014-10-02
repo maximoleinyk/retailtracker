@@ -3,6 +3,7 @@ SecurityController = inject('controllers/security')
 UserController = inject('controllers/user')
 SettingsController = inject('controllers/settings')
 ResourceController = inject('controllers/i18n')
+UomController = inject('controllers/uom')
 test = inject('controllers/test')
 authFilter = inject('util/authFilter')
 inviteService = inject('services/inviteService')
@@ -43,6 +44,9 @@ class PageController
 
     i18nController = new ResourceController(i18nService)
     i18nController.register(@router)
+
+    uomController = new UomController()
+    uomController.register(@router, authFilter)
 
     test(@router)
 
