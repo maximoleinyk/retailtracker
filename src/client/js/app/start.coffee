@@ -28,7 +28,7 @@ define (require) ->
   loader = new ModuleLoader('/page/', {
     'admin': 'admin',
     'account': 'account'
-    'organization': 'organization'
+    'company': 'company'
   })
 
   loader.loadModule 'admin', (options) ->

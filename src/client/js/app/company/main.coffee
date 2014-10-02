@@ -10,8 +10,8 @@ define (require) ->
     Router: Router
     Controller: Controller
     Navigation: Navigation
-    bundleName: 'organization'
-    root: '/organization/'
+    bundleName: 'company'
+    root: '/company/'
     onUserLoaded: (userInfo) ->
       UserInfo.set(userInfo)
   })
