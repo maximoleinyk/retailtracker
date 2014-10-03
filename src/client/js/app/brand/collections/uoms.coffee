@@ -2,8 +2,9 @@ define (require) ->
   'use strict'
 
   Backbone = require('backbone')
-  Uom = require('cs!app/admin/models/uom')
+  Uom = require('cs!app/brand/models/uom')
   http = require('util/http')
+  Promise = require('rsvp').Promise
 
   Backbone.Collection.extend
 
@@ -15,4 +16,4 @@ define (require) ->
           if err then reject(err) else resolve(result)
 
       load.then (result) =>
-        @set(result)
+        @reset(result)

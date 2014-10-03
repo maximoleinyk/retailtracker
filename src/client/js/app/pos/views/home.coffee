@@ -10,7 +10,7 @@ define (require) ->
     template: require('hbs!./home')
 
     regions:
-      container: '[data-id="grid-wrapper"]'
+      container: '[data-id="grid"]'
 
     onCreate: (model, callback) ->
       return callback(model.validationError) if not model.isValid()

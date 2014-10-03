@@ -26,10 +26,11 @@ define (require) ->
     })
 
   loader = new ModuleLoader('/page/', {
-    'admin': 'admin',
     'account': 'account'
+    'brand': 'brand'
     'company': 'company'
+    'pos': 'pos'
   })
 
-  loader.loadModule 'admin', (options) ->
+  loader.loadModule 'account', (options) ->
     App.start(options)

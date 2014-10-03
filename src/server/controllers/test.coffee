@@ -24,7 +24,7 @@ module.exports = (router) ->
     }
   ]
 
-  router.get '/warehouse/items', authFilter, (req, res) ->
+  router.get '/product/items', authFilter, (req, res) ->
     res.send([
       {
         product: 1

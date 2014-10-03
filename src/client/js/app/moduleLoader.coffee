@@ -43,7 +43,7 @@ define (require) ->
           if authenticated
             if url.indexOf('account') is 0
               sessionStore.remove('redirectUrl')
-              return window.location.replace(@root + 'admin')
+              return window.location.replace(@root + defaultModuleName)
           else
             if url.indexOf('account') isnt 0
               sessionStore.add('redirectUrl', url)
