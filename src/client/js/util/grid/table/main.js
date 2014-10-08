@@ -32,7 +32,7 @@ define(function (require) {
 		},
 
 		buildContent: function () {
-			var view = new Content({
+			this.contentView = new Content({
 				el: this.ui.$content,
 				columns: this.options.columns,
 				collection: this.options.collection,
@@ -40,9 +40,10 @@ define(function (require) {
 				editable: this.options.editable,
 				state: this.options.state,
 				onSave: this.options.onSave,
-				onDelete: this.options.onDelete
+				onDelete: this.options.onDelete,
+                onCreate: this.options.onCreate
 			});
-			view.render();
+			this.contentView.render();
 		},
 
 		buildFooter: function () {
@@ -62,7 +63,11 @@ define(function (require) {
 			this.buildHeader();
 			this.buildContent();
 			this.buildFooter();
-		}
+		},
+
+        onClose: function() {
+            this.contentView.close();
+        }
 
 	});
 

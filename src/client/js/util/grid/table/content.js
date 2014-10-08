@@ -2,7 +2,8 @@ define(function (require) {
 
     var Marionette = require('marionette'),
         EditRow = require('./rows/editRow'),
-        ViewRow = require('./rows/viewRow');
+        ViewRow = require('./rows/viewRow'),
+        _ = require('underscore');
 
     return Marionette.CollectionView.extend({
 
@@ -12,11 +13,84 @@ define(function (require) {
         initialize: function () {
             this.order = [];
             this.states = {}; // model cid to state
+            this.selected = null; // model's cid
             this.addListeners();
+        },
+
+        onKeyUp: function (e) {
+            var self = this,
+                currentIndex = this.selected ? self.order.indexOf(this.selected) : -1;
+
+            switch (e.keyCode) {
+                // UP
+                case 104:
+                case 38:
+                    if (this.selected) {
+                        if (currentIndex > 0) {
+                            this.getSelectedView().$el.removeClass('selected');
+                            this.selected = this.children.find(function (view) {
+                                return view.model.cid === self.order[currentIndex - 1];
+                            }).model.cid;
+                            this.getSelectedView().$el.addClass('selected');
+                        }
+                    } else {
+                        this.selected = this.order[this.order.length - 1] ? this.children.find(function (view) {
+                            return view.model.cid === self.order[self.order.length - 1];
+                        }).model.cid : null;
+
+                        if (this.selected) {
+                            this.getSelectedView().$el.addClass('selected');
+                        }
+                    }
+                    break;
+
+                // DOWN
+                case 40:
+                case 98:
+                    if (this.selected) {
+                        if (this.children.length - 1 > currentIndex) {
+                            this.getSelectedView().$el.removeClass('selected');
+                            this.selected = this.children.find(function (view) {
+                                return view.model.cid === self.order[currentIndex + 1];
+                            }).model.cid;
+                            this.getSelectedView().$el.addClass('selected');
+                        }
+                    } else {
+                        this.selected = this.order[0] ? this.children.find(function (view) {
+                            return view.model.cid === self.order[0];
+                        }).model.cid : null;
+
+                        if (this.selected) {
+                            this.getSelectedView().$el.addClass('selected');
+                        }
+                    }
+                    break;
+
+                // ESC
+                case 27:
+                    if (this.selected) {
+                        this.getSelectedView().$el.removeClass('selected');
+                        this.selected = null;
+                    }
+                    break;
+            }
+        },
+
+        getSelectedView: function () {
+            var self = this;
+            return this.children.find(function (view) {
+                return view.model.cid === self.selected;
+            });
         },
 
         addListeners: function () {
             this.listenTo(this.collection, 'remove', this.updateOrder, this);
+            this.listenTo(this, 'render', function () {
+                $(document).on('keyup', _.bind(this.onKeyUp, this));
+            }, this);
+            this.listenTo(this, 'close', function () {
+                $(document).off('keyup', _.bind(this.onKeyUp, this));
+            }, this);
         },
 
         // @Override
@@ -65,6 +139,7 @@ define(function (require) {
                 editable: this.options.editable,
                 onSave: this.options.onSave,
                 onDelete: this.options.onDelete,
+                numerable: this.options.numerable,
                 state: state
             });
 
@@ -109,6 +184,15 @@ define(function (require) {
             this.removeItemView(model);
             this.addItemView(model, true, index);
             this.itemViewOptions = originItemViewOptions;
+
+            var newView = this.children.find(function (view) {
+                    return view.model.cid === model.cid;
+                }),
+                first = newView.first();
+
+            if (first) {
+                first.activate();
+            }
         },
 
         closeViewInEditState: function () {

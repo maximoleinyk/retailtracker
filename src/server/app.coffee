@@ -2,29 +2,36 @@ express = require('express')
 bodyParser = require('body-parser')
 cookieParser = require('cookie-parser')
 passport = require('passport')
-rest = inject('rest')
+PageController = inject('controller')
+Authentication = inject('authentication')
+MongoDB = inject('database')
+userService = inject('services/userService')
 socket = inject('socket')
-authentication = inject('authentication')
-database = inject('database')
 
-module.exports = {
+class App
 
-  start: (config) ->
-    app = express()
-    router = express.Router()
+  constructor: (@config) ->
+    @app = express()
+    @router = express.Router()
+    @store = new MongoDB()
 
-    database.connect app, ->
-      app.use '/static', express.static config.app.staticDir
-      app.use bodyParser.json()
-      app.use passport.initialize()
-      app.use passport.session()
-      app.use(router)
+  start: ->
+    @store.connect @app, =>
+      @app.use '/static', express.static @config.app.staticDir
+      @app.use bodyParser.json()
+      @app.use passport.initialize()
+      @app.use passport.session()
+      @app.use(@router)
 
-      authentication(passport)
-      rest(router, passport)
-      socket(app)
+      authenticator = new Authentication(userService, passport)
+      authenticator.use(passport)
 
-      app.listen config.app.port, ->
+      controller = new PageController(@router, passport)
+      controller.register()
+
+      socket(@app)
+
+      @app.listen @config.app.port, =>
         console.log 'Application started on port ' + config.app.port + ' in ' + process.env.NODE_ENV + ' mode'
 
-}
+module.exports = App

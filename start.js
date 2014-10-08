@@ -37,4 +37,6 @@ var path = require('path'),
 
 global.config = config;
 
-inject('app').start(config);
+var App = inject('app');
+
+new App(config).start();

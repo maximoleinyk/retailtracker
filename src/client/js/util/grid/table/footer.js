@@ -26,7 +26,7 @@ define(function (require) {
 					template: require('hbs!./cells/buttons/createButton'),
 					action: function () {
 						var next = function (err) {
-                            self.handle(err, function() {
+                            self.validate(err, function() {
                                 self.model = new self.options.items.model({});
                                 self.render();
                             });

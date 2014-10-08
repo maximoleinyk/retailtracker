@@ -14,27 +14,27 @@ define(function (require) {
 
 		initialize: function () {
 			AbstractRow.prototype.initialize.apply(this, arguments);
-			this.addKeyBindings();
+			this.addListeners();
 		},
 
-		addKeyBindings: function () {
-			var self = this,
-				keyHandler = function (e) {
-					if (e.keyCode !== 27) {
-						return;
-					}
-					self.discardChanges();
-					self.render(self.getRowIndex());
-				};
-
-			this.listenTo(this, 'render', function () {
-				$(document).on('keydown', keyHandler);
-			});
-			this.listenTo(this, 'close', function () {
-				$(document).off('keydown', keyHandler);
-			});
+        addListeners: function () {
+            this.listenTo(this, 'render', function() {
+                $(document).on('keyup', _.bind(this.handleKeyUp, this));
+            }, this);
+            this.listenTo(this, 'close', function() {
+                $(document).off('keyup', _.bind(this.handleKeyUp, this));
+            }, this);
 		},
 
+        handleKeyUp: function (e) {
+            switch(e.keyCode) {
+                // ESC
+                case 27:
+                    this.discardChanges();
+                    break;
+            }
+        },
+        
 		discardChanges: function () {
 			this.model.revert();
 			this.changeState('view');
