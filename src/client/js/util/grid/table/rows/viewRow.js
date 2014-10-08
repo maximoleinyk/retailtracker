@@ -25,7 +25,7 @@ define(function (require) {
 						],
 						onDelete: function () {
 							var next = function (err) {
-								self.handle(err, function () {
+								self.validate(err, function () {
 									self.removeItem(self.model);
 								});
 							};
