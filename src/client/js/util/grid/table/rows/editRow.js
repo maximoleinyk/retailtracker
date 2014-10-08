@@ -58,7 +58,7 @@ define(function (require) {
                     template: require('hbs!../cells/buttons/saveButton'),
                     action: function () {
                         var next = function (err) {
-                            self.handle(err, function () {
+                            self.validate(err, function () {
                                 self.changeState('view');
                             });
                         };

@@ -16,7 +16,7 @@ define(function (require) {
             this.valid = true;
         },
 
-        handle: function (err, callback) {
+        validate: function (err, callback) {
             if (!err) {
                 return callback();
             } else if (!this.valid) {

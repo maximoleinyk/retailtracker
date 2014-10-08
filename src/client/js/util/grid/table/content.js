@@ -2,7 +2,8 @@ define(function (require) {
 
     var Marionette = require('marionette'),
         EditRow = require('./rows/editRow'),
-        ViewRow = require('./rows/viewRow');
+        ViewRow = require('./rows/viewRow'),
+        _ = require('underscore');
 
     return Marionette.CollectionView.extend({
 
@@ -12,10 +13,88 @@ define(function (require) {
         initialize: function () {
             this.order = [];
             this.states = {}; // model cid to state
-            this.addListeners();
+            this.selected = null;
+            this.addUpdateOrderListener();
+            this.bindKeyboardListeners();
         },
 
-        addListeners: function () {
+        onKeyUp: function (e) {
+            if (!e.ctrlKey) {
+                return;
+            }
+
+            var self = this,
+                currentIndex = this.selected ? self.order.indexOf(this.selected.model.cid) : -1;
+
+            switch (e.keyCode) {
+                // UP
+                case 104:
+                case 38:
+                    if (this.selected) {
+                        if (currentIndex > 0) {
+                            this.selected.$el.removeClass('selected');
+                            this.selected = this.children.find(function(view) {
+                                return view.model.cid === self.order[currentIndex - 1];
+                            });
+                            this.selected.$el.addClass('selected');
+                        }
+                    } else {
+                        this.selected = this.order[this.order.length - 1] ? this.children.find(function(view) {
+                            return view.model.cid === self.order[self.order.length - 1];
+                        }) : null;
+
+                        if (this.selected) {
+                            this.selected.$el.addClass('selected');
+                        }
+                    }
+                    break;
+
+                // DOWN
+                case 40:
+                case 98:
+                    if (this.selected) {
+                        if (this.children.length - 1 > currentIndex) {
+                            this.selected.$el.removeClass('selected');
+                            this.selected = this.children.find(function(view) {
+                                return view.model.cid === self.order[currentIndex + 1];
+                            });
+                            this.selected.$el.addClass('selected');
+                        }
+                    } else {
+                        this.selected = this.order[0] ? this.children.find(function(view) {
+                            return view.model.cid === self.order[0];
+                        }) : null;
+
+                        if (this.selected) {
+                            this.selected.$el.addClass('selected');
+                        }
+                    }
+                    break;
+
+                // ESC
+                case 27:
+                    break;
+
+                // ENTER
+                case 13:
+                    break;
+
+                // DELETE
+                case 46:
+                    break;
+            }
+        },
+
+        bindKeyboardListeners: function () {
+            this.listenTo(this, 'render', function () {
+                $(document).on('keyup', _.bind(this.onKeyUp, this));
+            }, this);
+            this.listenTo(this, 'close', function () {
+                $(document).off('keyup', _.bind(this.onKeyUp, this));
+            }, this);
+        },
+
+        addUpdateOrderListener: function () {
             this.listenTo(this.collection, 'remove', this.updateOrder, this);
         },
 
