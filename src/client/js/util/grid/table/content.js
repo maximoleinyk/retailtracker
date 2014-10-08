@@ -13,17 +13,13 @@ define(function (require) {
         initialize: function () {
             this.order = [];
             this.states = {}; // model cid to state
-            this.selected = null;
+            this.selected = null; // model's cid
             this.addListeners();
         },
 
         onKeyUp: function (e) {
-            if (!e.ctrlKey) {
-                return;
-            }
-
             var self = this,
-                currentIndex = this.selected ? self.order.indexOf(this.selected.model.cid) : -1;
+                currentIndex = this.selected ? self.order.indexOf(this.selected) : -1;
 
             switch (e.keyCode) {
                 // UP
@@ -31,19 +27,19 @@ define(function (require) {
                 case 38:
                     if (this.selected) {
                         if (currentIndex > 0) {
-                            this.selected.$el.removeClass('selected');
+                            this.getSelectedView().$el.removeClass('selected');
                             this.selected = this.children.find(function (view) {
                                 return view.model.cid === self.order[currentIndex - 1];
-                            });
-                            this.selected.$el.addClass('selected');
+                            }).model.cid;
+                            this.getSelectedView().$el.addClass('selected');
                         }
                     } else {
                         this.selected = this.order[this.order.length - 1] ? this.children.find(function (view) {
                             return view.model.cid === self.order[self.order.length - 1];
-                        }) : null;
+                        }).model.cid : null;
 
                         if (this.selected) {
-                            this.selected.$el.addClass('selected');
+                            this.getSelectedView().$el.addClass('selected');
                         }
                     }
                     break;
@@ -53,23 +49,38 @@ define(function (require) {
                 case 98:
                     if (this.selected) {
                         if (this.children.length - 1 > currentIndex) {
-                            this.selected.$el.removeClass('selected');
+                            this.getSelectedView().$el.removeClass('selected');
                             this.selected = this.children.find(function (view) {
                                 return view.model.cid === self.order[currentIndex + 1];
-                            });
-                            this.selected.$el.addClass('selected');
+                            }).model.cid;
+                            this.getSelectedView().$el.addClass('selected');
                         }
                     } else {
                         this.selected = this.order[0] ? this.children.find(function (view) {
                             return view.model.cid === self.order[0];
-                        }) : null;
+                        }).model.cid : null;
 
                         if (this.selected) {
-                            this.selected.$el.addClass('selected');
+                            this.getSelectedView().$el.addClass('selected');
                         }
                     }
                     break;
+
+                // ESC
+                case 27:
+                    if (this.selected) {
+                        this.getSelectedView().$el.removeClass('selected');
+                        this.selected = null;
+                    }
+                    break;
             }
+        },
+
+        getSelectedView: function () {
+            var self = this;
+            return this.children.find(function (view) {
+                return view.model.cid === self.selected;
+            });
         },
 
         addListeners: function () {
@@ -78,8 +89,8 @@ define(function (require) {
                 $(document).on('keyup', _.bind(this.onKeyUp, this));
             }, this);
             this.listenTo(this, 'close', function () {
-                    $(document).off('keyup', _.bind(this.onKeyUp, this));
-                }, this);
+                $(document).off('keyup', _.bind(this.onKeyUp, this));
+            }, this);
         },
 
         // @Override
@@ -128,6 +139,7 @@ define(function (require) {
                 editable: this.options.editable,
                 onSave: this.options.onSave,
                 onDelete: this.options.onDelete,
+                numerable: this.options.numerable,
                 state: state
             });
 
@@ -172,6 +184,15 @@ define(function (require) {
             this.removeItemView(model);
             this.addItemView(model, true, index);
             this.itemViewOptions = originItemViewOptions;
+
+            var newView = this.children.find(function (view) {
+                    return view.model.cid === model.cid;
+                }),
+                first = newView.first();
+
+            if (first) {
+                first.activate();
+            }
         },
 
         closeViewInEditState: function () {

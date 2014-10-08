@@ -26,7 +26,7 @@ define(function (require) {
 			this.options.action(e);
 		},
 
-		onDelete: function() {
+		onDelete: function(e) {
 			this.options.onDelete();
 		}
 

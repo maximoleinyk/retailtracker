@@ -14,21 +14,30 @@ define(function (require) {
 
         initialize: function () {
             AbstractRow.prototype.initialize.apply(this, arguments);
-            this.addKeyBindings();
+            this.addListeners();
         },
 
-        addKeyBindings: function () {
-            var self = this;
-            this.$el.on('keydown', function (e) {
-                if (e.keyCode !== 27) {
-                    return;
-                }
-                self.discardChanges();
-            });
+        addListeners: function() {
+            this.listenTo(this, 'render', function() {
+                $(document).on('keyup', _.bind(this.handleKeyUp, this));
+            }, this);
+            this.listenTo(this, 'close', function() {
+                $(document).off('keyup', _.bind(this.handleKeyUp, this));
+            }, this);
+        },
+
+        handleKeyUp: function (e) {
+            switch(e.keyCode) {
+                // ESC
+                case 27:
+                    this.discardChanges();
+                    break;
+            }
         },
 
         discardChanges: function () {
             this.model.set(this.model.previousAttributes());
+            this.changeState('view');
         },
 
         buildCellView: function (type, column, options) {
