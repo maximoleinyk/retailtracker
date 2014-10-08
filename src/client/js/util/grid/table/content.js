@@ -14,8 +14,7 @@ define(function (require) {
             this.order = [];
             this.states = {}; // model cid to state
             this.selected = null;
-            this.addUpdateOrderListener();
-            this.bindKeyboardListeners();
+            this.addListeners();
         },
 
         onKeyUp: function (e) {
@@ -33,13 +32,13 @@ define(function (require) {
                     if (this.selected) {
                         if (currentIndex > 0) {
                             this.selected.$el.removeClass('selected');
-                            this.selected = this.children.find(function(view) {
+                            this.selected = this.children.find(function (view) {
                                 return view.model.cid === self.order[currentIndex - 1];
                             });
                             this.selected.$el.addClass('selected');
                         }
                     } else {
-                        this.selected = this.order[this.order.length - 1] ? this.children.find(function(view) {
+                        this.selected = this.order[this.order.length - 1] ? this.children.find(function (view) {
                             return view.model.cid === self.order[self.order.length - 1];
                         }) : null;
 
@@ -55,13 +54,13 @@ define(function (require) {
                     if (this.selected) {
                         if (this.children.length - 1 > currentIndex) {
                             this.selected.$el.removeClass('selected');
-                            this.selected = this.children.find(function(view) {
+                            this.selected = this.children.find(function (view) {
                                 return view.model.cid === self.order[currentIndex + 1];
                             });
                             this.selected.$el.addClass('selected');
                         }
                     } else {
-                        this.selected = this.order[0] ? this.children.find(function(view) {
+                        this.selected = this.order[0] ? this.children.find(function (view) {
                             return view.model.cid === self.order[0];
                         }) : null;
 
@@ -70,32 +69,17 @@ define(function (require) {
                         }
                     }
                     break;
-
-                // ESC
-                case 27:
-                    break;
-
-                // ENTER
-                case 13:
-                    break;
-
-                // DELETE
-                case 46:
-                    break;
             }
         },
 
-        bindKeyboardListeners: function () {
+        addListeners: function () {
+            this.listenTo(this.collection, 'remove', this.updateOrder, this);
             this.listenTo(this, 'render', function () {
                 $(document).on('keyup', _.bind(this.onKeyUp, this));
             }, this);
             this.listenTo(this, 'close', function () {
-                $(document).off('keyup', _.bind(this.onKeyUp, this));
-            }, this);
-        },
-
-        addUpdateOrderListener: function () {
-            this.listenTo(this.collection, 'remove', this.updateOrder, this);
+                    $(document).off('keyup', _.bind(this.onKeyUp, this));
+                }, this);
         },
 
         // @Override

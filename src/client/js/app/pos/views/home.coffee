@@ -31,6 +31,7 @@ define (require) ->
         collection: @collection
         numerable: true
         editable: true
+        hideCrudButtons: true
         onCreate: _.bind(@onCreate, @)
         onSave: _.bind(@onSave, @)
         onDelete: _.bind(@onDelete, @)
