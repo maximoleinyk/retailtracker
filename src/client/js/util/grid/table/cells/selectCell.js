@@ -72,7 +72,15 @@ define(function (require) {
 
 		activate: function () {
 			this.ui.$input.select2('open');
-		}
+		},
+
+        disable: function() {
+            this.ui.$input.select2('enable', false);
+        },
+
+        enabled: function() {
+            this.ui.$input.select2('enable', true);
+        }
 
 	});
 

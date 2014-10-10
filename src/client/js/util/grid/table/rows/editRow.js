@@ -34,7 +34,19 @@ define(function (require) {
                     break;
             }
         },
-        
+
+        disableInputs: function() {
+            _.each(this.options.columns, function(column) {
+                this.getCell(column.field).disable();
+            }, this);
+        },
+
+        enableInputs: function() {
+            _.each(this.options.columns, function(column) {
+                this.getCell(column.field).enable();
+            }, this);
+        },
+
 		discardChanges: function () {
 			this.model.revert();
 			this.changeState('view');
@@ -77,10 +89,12 @@ define(function (require) {
 					},
 					onAction: function () {
 						var next = function (err) {
+                            self.enableInputs();
 							self.validate(err, function () {
 								self.changeState('view');
 							});
 						};
+                        self.disableInputs();
 						if (self.options.onSave) {
 							return self.options.onSave(self.model, next);
 						}

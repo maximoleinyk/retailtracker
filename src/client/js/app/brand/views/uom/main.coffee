@@ -15,9 +15,10 @@ define (require) ->
       @collection = options.collection
 
     onCreate: (model, callback) ->
-      return callback(model.validationError) if not model.isValid()
-      @collection.add(model)
-      callback()
+      model.create (err, model) =>
+        return callback(err) if err
+        @collection.add(model)
+        callback(null)
 
     onSave: (model, callback) ->
       return callback(model.validationError) if not model.isValid()
@@ -35,17 +36,10 @@ define (require) ->
       @grid.show(new Grid({
         collection: @collection
         editable: true
-        numerable: true
         onCreate: _.bind(@onCreate, @)
         onSave: _.bind(@onSave, @)
         onDelete: _.bind(@onDelete, @)
         columns: [
-          {
-            field: 'code'
-            title: window.RetailTracker.i18n.code
-            type: 'string'
-            width: 100
-          }
           {
             field: 'name'
             title: window.RetailTracker.i18n.name

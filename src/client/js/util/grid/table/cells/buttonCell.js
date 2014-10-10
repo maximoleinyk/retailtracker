@@ -16,10 +16,6 @@ define(function (require) {
 			}
 		},
 
-		getRootElement: function () {
-			return this.ui.$button;
-		},
-
 		getLabel: function () {
 			return this.options.label;
 		},

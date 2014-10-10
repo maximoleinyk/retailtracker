@@ -14,11 +14,21 @@ define(function (require) {
             'change @ui.$input': 'updateModel'
         },
 
-		getRootElement: function() {
-			return this.ui.$input;
-		},
+        onRender: function () {
+            AbstractCell.prototype.onRender.apply(this, arguments);
+            this.bindInputEvents();
+        },
 
-        templateHelpers: function() {
+        bindInputEvents: function () {
+            this.ui.$input.on('change', _.bind(function () {
+                var field = this.options.column.get('field'),
+                    value = this.ui.$input.val();
+
+                this.model.set(field, value);
+            }, this));
+        },
+
+        templateHelpers: function () {
             return {
                 type: _.bind(this.getType, this),
                 name: _.bind(this.getName, this),
@@ -37,20 +47,28 @@ define(function (require) {
             this.ui.$input.val(value);
         },
 
-        getPlaceholder: function() {
+        getPlaceholder: function () {
             return '';
         },
 
-        getName: function() {
+        getName: function () {
             return this.options.column.get('field');
         },
 
-        getType: function() {
+        getType: function () {
             return 'text';
         },
 
         activate: function () {
-			this.ui.$input.focus().select();
+            this.ui.$input.focus().select();
+        },
+
+        disable: function () {
+            this.ui.$input.attr('disabled', true);
+        },
+
+        enable: function () {
+            this.ui.$input.removeAttr('disabled');
         }
 
     });

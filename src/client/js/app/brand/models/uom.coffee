@@ -1,6 +1,13 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  MongoModel = require('cs!app/common/mongoModel')
 
-  Backbone.Model.extend({})
+  class Uom extends MongoModel
+
+    create: (callback) ->
+      @request('post', '/uom/create', @toJSON())
+      .then (result) =>
+        @set(result, {parse: true})
+        callback(null, @)
+      .then(null, callback)

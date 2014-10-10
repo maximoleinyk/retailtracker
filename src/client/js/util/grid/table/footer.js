@@ -2,7 +2,8 @@ define(function (require) {
 
 	var EditRow = require('./rows/editRow'),
 		ButtonCell = require('./cells/buttonCell'),
-		ViewCell = require('./cells/viewCell');
+		ViewCell = require('./cells/viewCell'),
+        _ = require('underscore');
 
 	return EditRow.extend({
 
@@ -26,11 +27,13 @@ define(function (require) {
 					template: require('hbs!./cells/buttons/createButton'),
 					action: function () {
 						var next = function (err) {
+                            self.enableInputs();
                             self.validate(err, function() {
                                 self.model = new self.options.items.model({});
                                 self.render();
                             });
 						};
+                        self.disableInputs();
 						if (self.options.onCreate) {
 							return self.options.onCreate(self.model, next);
 						}
@@ -44,9 +47,9 @@ define(function (require) {
 
 		onRender: function () {
 			var self = this;
-			setTimeout(function () {
+            _.defer(function () {
 				self.first().activate();
-			}, 0)
+			});
 		}
 
 	});

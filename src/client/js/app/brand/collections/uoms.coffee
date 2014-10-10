@@ -6,7 +6,7 @@ define (require) ->
   http = require('util/http')
   Promise = require('rsvp').Promise
 
-  Backbone.Collection.extend
+  class Uoms extends Backbone.Collection
 
     model: Uom
 
@@ -16,4 +16,4 @@ define (require) ->
           if err then reject(err) else resolve(result)
 
       load.then (result) =>
-        @reset(result)
+        @reset(result, {parse: true})

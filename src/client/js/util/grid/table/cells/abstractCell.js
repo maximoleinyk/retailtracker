@@ -1,137 +1,127 @@
 define(function (require) {
 
-	var Marionette = require('marionette');
+    var Marionette = require('marionette');
 
-	return Marionette.ItemView.extend({
+    return Marionette.ItemView.extend({
 
-		tagName: 'td',
+        tagName: 'td',
 
-		initialize: function () {
-			this.canBeFormatted = true;
-			this.bindEvents();
-			this.listenEvents();
-		},
+        initialize: function () {
+            this.canBeFormatted = true;
+            this.bindEvents();
+            this.listenEvents();
+        },
 
-        invalid: function() {
+        invalid: function () {
             this.$el.addClass('has-error');
         },
 
-        valid: function() {
+        valid: function () {
             this.$el.removeClass('has-error');
         },
 
-		bindEvents: function () {
-			var field = this.options.column.get('field');
+        bindEvents: function () {
+            var field = this.options.column.get('field');
 
-			switch (field) {
-				case 'numerable':
-				case 'editable':
-					break;
-				default:
-					this.listenTo(this.model, 'change:' + field, this.renderValue, this);
-					break;
-			}
-		},
-
-		listenEvents: function () {
-			var self = this;
-
-			this.$el.on('keydown', function (e) {
-				if (e.keyCode !== 13) {
-					return;
-				}
-				self[e.shiftKey ? 'prevCell' : 'nextCell']();
-			});
-		},
-
-		onRender: function () {
-			this.renderValue();
-			this.addAttributes();
-			this.setTextAlign();
-			this.applyColumnWidth();
-            this.bindInputEvents();
-		},
-
-        bindInputEvents: function() {
-            var rootElement = this.getRootElement();
-
-            rootElement.on('change', _.bind(function() {
-                var field = this.options.column.get('field'),
-                    value = rootElement.val();
-
-                this.model.set(field, value);
-            }, this));
+            switch (field) {
+                case 'numerable':
+                case 'editable':
+                    break;
+                default:
+                    this.listenTo(this.model, 'change:' + field, this.renderValue, this);
+                    break;
+            }
         },
 
-		setTextAlign: function () {
-			var map = {
-					autoincrement: 'increment',
-					number: 'numeric',
-					edit: 'action'
-				},
-				type = this.options.column.get('type'),
-				className = map[type];
+        listenEvents: function () {
+            var self = this;
 
-			if (className) {
-				this.$el.addClass(className);
-			}
-		},
+            this.$el.on('keydown', function (e) {
+                if (e.keyCode !== 13) {
+                    return;
+                }
+                self[e.shiftKey ? 'prevCell' : 'nextCell']();
+            });
+        },
 
-		applyColumnWidth: function () {
-			var width = this.options.column.get('width');
+        onRender: function () {
+            this.renderValue();
+            this.addAttributes();
+            this.setTextAlign();
+            this.applyColumnWidth();
+        },
 
-			if (width) {
-				this.$el.css({width: width});
-			}
-		},
+        setTextAlign: function () {
+            var map = {
+                    autoincrement: 'increment',
+                    number: 'numeric',
+                    edit: 'action'
+                },
+                type = this.options.column.get('type'),
+                className = map[type];
 
-		addAttributes: function () {
-			var attributes = this.options.column.get('attributes') || {};
+            if (className) {
+                this.$el.addClass(className);
+            }
+        },
 
-			_.each(attributes, function (value, key) {
-				this.getRootElement().attr(key, value);
-			}, this);
-		},
+        applyColumnWidth: function () {
+            var width = this.options.column.get('width');
 
-		getRootElement: function () {
-			return this.$el;
-		},
+            if (width) {
+                this.$el.css({width: width});
+            }
+        },
 
-		renderValue: function () {
-			var value = this.model.get(this.options.column.get('field')),
-				formatter = this.options.column.get('formatter');
+        addAttributes: function () {
+            var attributes = this.options.column.get('attributes') || {};
 
-			if (this.canBeFormatted && _.isFunction(formatter)) {
-				value = formatter(value, this.model);
-			}
+            _.each(attributes, function (value, key) {
+                this.$el.attr(key, value);
+            }, this);
+        },
 
-			this.appendValue(value);
-		},
+        renderValue: function () {
+            var value = this.model.get(this.options.column.get('field')),
+                formatter = this.options.column.get('formatter');
 
-		appendValue: function (value) {
-			// abstract method
-		},
+            if (this.canBeFormatted && _.isFunction(formatter)) {
+                value = formatter(value, this.model);
+            }
 
-		nextCell: function () {
-			var nextCell = this.options.cellManager.next(this.options.column);
+            this.appendValue(value);
+        },
 
-			if (nextCell) {
-				nextCell.activate();
-			}
-		},
+        appendValue: function (value) {
+            // abstract method
+        },
 
-		prevCell: function () {
-			var nextCell = this.options.cellManager.prev(this.options.column);
+        nextCell: function () {
+            var nextCell = this.options.cellManager.next(this.options.column);
 
-			if (nextCell) {
-				nextCell.activate();
-			}
-		},
+            if (nextCell) {
+                nextCell.activate();
+            }
+        },
 
-		activate: function () {
-			// abstract method
-		}
+        prevCell: function () {
+            var nextCell = this.options.cellManager.prev(this.options.column);
 
-	});
+            if (nextCell) {
+                nextCell.activate();
+            }
+        },
+
+        disable: function () {
+        },
+
+        enable: function () {
+        },
+
+        activate: function () {
+            // abstract method
+        }
+
+    });
 
 });

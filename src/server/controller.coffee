@@ -11,6 +11,8 @@ linkService = inject('services/linkService')
 userService = inject('services/userService')
 i18nService = inject('services/i18nService')
 settingsService = inject('services/settingsService')
+UomService = inject('services/uomService')
+UomStore = inject('persistence/uomStore')
 
 class PageController
 
@@ -45,7 +47,7 @@ class PageController
     i18nController = new ResourceController(i18nService)
     i18nController.register(@router)
 
-    uomController = new UomController()
+    uomController = new UomController(new UomService(new UomStore))
     uomController.register(@router, authFilter)
 
     test(@router)
