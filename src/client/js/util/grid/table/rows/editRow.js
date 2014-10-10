@@ -53,8 +53,8 @@ define(function (require) {
                     !silent && self.changeState('view');
                 };
 
-            if (this.options.onCancel) {
-                this.options.onCancel(self.model, next);
+            if (this.options.editable.onCancel) {
+                this.options.editable.onCancel(self.model, next);
             } else {
                 next();
             }
@@ -103,8 +103,8 @@ define(function (require) {
                             });
                         };
                         self.disableInputs();
-                        if (self.options.onSave) {
-                            return self.options.onSave(self.model, next);
+                        if (self.options.editable.onSave) {
+                            return self.options.editable.onSave(self.model, next);
                         }
                         next();
                     }

@@ -12,8 +12,10 @@ define(function (require) {
 
         initialize: function () {
             this.order = [];
-            this.states = {}; // model cid to state
-            this.selected = null; // model's cid
+            // model.cid: state
+            this.states = {};
+            // model.cid
+            this.selected = null;
             this.addListeners();
         },
 
@@ -93,13 +95,11 @@ define(function (require) {
             }, this);
         },
 
-        // @Override
         renderItemView: function (view, index) {
             view.render(index);
             this.appendHtml(this, view, index);
         },
 
-        // @Override
         appendHtml: function (collectionView, itemView, index) {
             var children = collectionView.$el.children();
 
@@ -137,9 +137,6 @@ define(function (require) {
                 columns: this.options.columns,
                 items: this.options.collection,
                 editable: this.options.editable,
-                onSave: this.options.onSave,
-                onDelete: this.options.onDelete,
-                onCancel: this.options.onCancel,
                 numerable: this.options.numerable,
                 state: state
             });
@@ -167,7 +164,7 @@ define(function (require) {
         getState: function (options) {
             options = options || {};
 
-            return options.state ? options.state : this.options.state;
+            return options.state ? options.state : 'view';
         },
 
         handleStateChange: function (state, view, model) {

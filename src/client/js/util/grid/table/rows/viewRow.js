@@ -29,8 +29,8 @@ define(function (require) {
 									self.removeItem(self.model);
 								});
 							};
-							if (self.options.onDelete) {
-								return self.options.onDelete(self.model, next);
+							if (self.options.editable.onDelete) {
+								return self.options.editable.onDelete(self.model, next);
 							}
 							next();
 						},

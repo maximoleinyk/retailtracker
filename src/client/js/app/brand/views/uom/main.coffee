@@ -37,11 +37,11 @@ define (require) ->
     onRender: ->
       @grid.show(new Grid({
         collection: @collection
-        editable: true
-        onCreate: _.bind(@onCreate, @)
-        onSave: _.bind(@onSave, @)
-        onDelete: _.bind(@onDelete, @)
-        onCancel: _.bind(@onCancel, @)
+        editable:
+          onCreate: _.bind(@onCreate, @)
+          onSave: _.bind(@onSave, @)
+          onDelete: _.bind(@onDelete, @)
+          onCancel: _.bind(@onCancel, @)
         columns: [
           {
             field: 'name'

@@ -92,10 +92,6 @@ define(function (require) {
             this.appendValue(value);
         },
 
-        appendValue: function (value) {
-            // abstract method
-        },
-
         nextCell: function () {
             var nextCell = this.options.cellManager.next(this.options.column);
 
@@ -112,10 +108,16 @@ define(function (require) {
             }
         },
 
+        appendValue: function (value) {
+            // abstract method
+        },
+
         disable: function () {
+            // abstract method
         },
 
         enable: function () {
+            // abstract method
         },
 
         activate: function () {

@@ -1,57 +1,57 @@
 define(function (require) {
 
-	var EditRow = require('./rows/editRow'),
-		ButtonCell = require('./cells/buttonCell'),
-		ViewCell = require('./cells/viewCell'),
+    var EditRow = require('./rows/editRow'),
+        ButtonCell = require('./cells/buttonCell'),
+        ViewCell = require('./cells/viewCell'),
         _ = require('underscore');
 
-	return EditRow.extend({
+    return EditRow.extend({
 
-		initialize: function (options) {
-			options = options || {};
-			options.state = 'edit';
+        initialize: function (options) {
+            options = options || {};
+            options.state = 'edit';
 
-			this.model = new this.options.items.model({});
-			EditRow.prototype.initialize.apply(this, arguments);
-		},
+            this.model = new this.options.items.model({});
+            EditRow.prototype.initialize.apply(this, arguments);
+        },
 
-        discardChanges: function() {
+        discardChanges: function () {
             this.model.clear();
         },
 
-		buildCustomCell: function (type, options) {
-			var self = this;
+        buildCustomCell: function (type, options) {
+            var self = this;
 
-			if (type === 'edit') {
-				return new ButtonCell(_.extend(options, {
-					template: require('hbs!./cells/buttons/createButton'),
-					action: function () {
-						var next = function (err) {
+            if (type === 'edit') {
+                return new ButtonCell(_.extend(options, {
+                    template: require('hbs!./cells/buttons/createButton'),
+                    action: function () {
+                        var next = function (err) {
                             self.enableInputs();
-                            self.validate(err, function() {
+                            self.validate(err, function () {
                                 self.model = new self.options.items.model({});
                                 self.render();
                             });
-						};
+                        };
                         self.disableInputs();
-						if (self.options.onCreate) {
-							return self.options.onCreate(self.model, next);
-						}
-						next();
-					}
-				}));
-			} else {
-				return new ViewCell(options);
-			}
-		},
+                        if (self.options.editable.onCreate) {
+                            return self.options.editable.onCreate(self.model, next);
+                        }
+                        next();
+                    }
+                }));
+            } else {
+                return new ViewCell(options);
+            }
+        },
 
-		onRender: function () {
-			var self = this;
+        onRender: function () {
+            var self = this;
             _.defer(function () {
-				self.first().activate();
-			});
-		}
+                self.first().activate();
+            });
+        }
 
-	});
+    });
 
 });
