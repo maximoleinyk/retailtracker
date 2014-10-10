@@ -60,7 +60,8 @@ define(function (require) {
 				state: this.state,
 				onCreate: this.options.onCreate,
 				onSave: this.options.onSave,
-				onDelete: this.options.onDelete
+				onDelete: this.options.onDelete,
+                onCancel: this.options.onCancel
 			}));
 		},
 

@@ -81,9 +81,9 @@ define(function (require) {
             eventBus.trigger('sync:start');
             return request('POST', url, data, callback, options);
         },
-        del: function (url, callback, options) {
+        del: function (url, data, callback, options) {
             eventBus.trigger('sync:start');
-            return request('DELETE', url, callback, options);
+            return request('DELETE', url, data, callback, options);
         }
     };
 

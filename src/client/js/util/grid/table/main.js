@@ -41,7 +41,8 @@ define(function (require) {
 				state: this.options.state,
 				onSave: this.options.onSave,
 				onDelete: this.options.onDelete,
-                onCreate: this.options.onCreate
+                onCreate: this.options.onCreate,
+                onCancel: this.options.onCancel
 			});
 			this.contentView.render();
 		},

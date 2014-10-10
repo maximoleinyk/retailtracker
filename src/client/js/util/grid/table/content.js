@@ -139,6 +139,7 @@ define(function (require) {
                 editable: this.options.editable,
                 onSave: this.options.onSave,
                 onDelete: this.options.onDelete,
+                onCancel: this.options.onCancel,
                 numerable: this.options.numerable,
                 state: state
             });
@@ -210,7 +211,7 @@ define(function (require) {
 
             this.children.each(function (view) {
                 if (view.model.cid === cid) {
-                    view.model.set(view.model.previousAttributes(), {silent: true});
+                    view.discardChanges(true);
                     self.states[view.model.cid] = 'view';
                     view.trigger('change:state', 'view', view, view.model);
                 }

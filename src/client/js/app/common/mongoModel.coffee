@@ -7,7 +7,11 @@ define (require) ->
 
   class MongoModel extends Backbone.Model
 
-    idAttribute: '_id'
+    initialize: ->
+      @commit()
+
+    commit: ->
+      @origin = @toJSON()
 
     request: (method, url, data) ->
       new Promise (resolve, reject) ->
@@ -16,7 +20,18 @@ define (require) ->
 
     parse: ->
       origin = super
+
       version = origin.__v
+      id = origin._id
+
       this.version = version
-      delete origin.__v;
+
+      delete origin.__v
+      delete origin._id
+
+      origin.id = id
+
       origin
+
+    reset: ->
+      @set(@origin)

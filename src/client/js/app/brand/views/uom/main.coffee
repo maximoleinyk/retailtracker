@@ -4,7 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   Grid = require('util/grid/main')
 
-  Marionette.Layout.extend
+  class UomList extends Marionette.Layout
 
     template: require('hbs!./main')
 
@@ -21,24 +21,27 @@ define (require) ->
         callback(null)
 
     onSave: (model, callback) ->
-      return callback(model.validationError) if not model.isValid()
-      callback()
+      model.update (err) ->
+        if err then callback(err) else callback(null)
 
     onDelete: (model, callback) ->
-      console.log('Server removed item')
-      @collection.remove(model)
+      model.delete (err) =>
+        return callback(err) if err
+        @collection.remove(model)
+        callback(err)
+
+    onCancel: (model, callback) ->
+      model.reset()
       callback()
 
-    onShow: ->
-      @renderGrid()
-
-    renderGrid: ->
+    onRender: ->
       @grid.show(new Grid({
         collection: @collection
         editable: true
         onCreate: _.bind(@onCreate, @)
         onSave: _.bind(@onSave, @)
         onDelete: _.bind(@onDelete, @)
+        onCancel: _.bind(@onCancel, @)
         columns: [
           {
             field: 'name'
