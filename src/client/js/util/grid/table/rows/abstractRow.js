@@ -35,10 +35,7 @@ define(function (require) {
 
             row.addValidationHandler(function (valid) {
                 self.valid = valid;
-
-				if (valid) {
-					self.$el.addClass('invalid');
-				}
+                self.$el[valid ? 'removeClass' : 'addClass']('invalid');
             });
 
             return this.$el.after(row.render().el);

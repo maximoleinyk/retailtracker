@@ -1,8 +1,4 @@
 .grid {
-
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-
   table {
     width: 100%;
     border-collapse: collapse;
@@ -65,6 +61,34 @@
       }
     }
 
+    tr {
+
+      &:first-child.invalid,
+      &.invalid {
+        td {
+          border-top: 2px solid #eea236 !important;
+          background-color: #feb;
+        }
+      }
+
+      &.validation {
+        ul {
+          padding: 0 15px;
+          margin: 0 !important;
+
+          * {
+            font-size: 13px;
+            color: #888;
+          }
+        }
+        td {
+          border-top: none !important;
+          border-bottom: 2px solid #eea236;
+          background-color: #feb;
+        }
+      }
+    }
+
     td, th {
       padding: 10px;
 
@@ -100,5 +124,4 @@
       }
     }
   }
-
 }

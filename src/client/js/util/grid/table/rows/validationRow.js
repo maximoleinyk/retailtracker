@@ -7,6 +7,7 @@ define(function (require) {
 
         template: require('hbs!./validationRow'),
         tagName: 'tr',
+        className: 'validation',
 
         templateHelpers: function () {
             var self = this;
