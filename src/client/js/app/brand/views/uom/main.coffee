@@ -40,14 +40,14 @@ define (require) ->
         editable: this
         columns: [
           {
-            field: 'name'
-            title: window.RetailTracker.i18n.name
+            field: 'shortName'
+            title: window.RetailTracker.i18n.shortName
             type: 'string'
             width: 250
           }
           {
-            field: 'description'
-            title: window.RetailTracker.i18n.description
+            field: 'fullName'
+            title: window.RetailTracker.i18n.fullName
             type: 'string'
           }
         ]

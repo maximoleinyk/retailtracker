@@ -1,9 +1,9 @@
 mongoose = require('mongoose')
 
 schema = mongoose.Schema
-  name:
+  shortName:
     type: String
     required: true
-  description: String
+  fullName: String
 
 module.exports = mongoose.model('Uom', schema)

@@ -15,13 +15,13 @@ class UomService
       callback(null)
 
   update: (data, callback) ->
-    return callback({ name: @i18n.nameRequired }) if not data.name
+    return callback({ shortName: @i18n.shortNameRequired }) if not data.shortName
     @uomStore.update data, (err, result) ->
       return callback({ generic: err }) if err
       callback(null, result)
 
   create: (data, callback) ->
-    return callback({ name: @i18n.nameRequired }) if not data.name
+    return callback({ shortName: @i18n.shortNameRequired }) if not data.shortName
     @uomStore.create data, (err, result) ->
       return callback({ generic: err }) if err
       callback(null, result)
