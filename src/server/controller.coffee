@@ -13,6 +13,9 @@ i18nService = inject('services/i18nService')
 settingsService = inject('services/settingsService')
 UomService = inject('services/uomService')
 UomStore = inject('persistence/uomStore')
+CurrencyController = inject('controllers/currency')
+CurrencyService = inject('services/currencyService')
+CurrencyStore = inject('persistence/currencyStore')
 
 class PageController
 
@@ -49,6 +52,9 @@ class PageController
 
     uomController = new UomController(new UomService(new UomStore))
     uomController.register(@router, authFilter)
+
+    currencyController = new CurrencyController(new CurrencyService(new CurrencyStore))
+    currencyController.register(@router, authFilter)
 
     test(@router)
 

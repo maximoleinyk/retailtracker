@@ -5,7 +5,9 @@ define (require) ->
   HomePage = require('cs!./views/home')
   SettingsPage = require('cs!./views/settings/main')
   Uom = require('cs!./collections/uoms')
-  UomPage = require('cs!./views/uom/main')
+  UomPage = require('cs!./views/uom')
+  Currencies = require('cs!./collections/currencies')
+  CurrenciesPage = require('cs!./views/currencies')
 
   Controller.extend
 
@@ -17,6 +19,14 @@ define (require) ->
       collection.fetch()
       .then =>
         @openPage new UomPage({
+          collection: collection
+        })
+
+    currency: ->
+      collection = new Currencies
+      collection.fetch()
+      .then =>
+        @openPage new CurrenciesPage({
           collection: collection
         })
 

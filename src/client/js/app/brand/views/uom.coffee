@@ -6,7 +6,7 @@ define (require) ->
 
   class UomList extends Marionette.Layout
 
-    template: require('hbs!./main')
+    template: require('hbs!./uom')
 
     regions:
       grid: '[data-id="grid"]'

@@ -3,7 +3,6 @@ define (require) ->
 
   http = require('util/http')
   _ = require('underscore')
-  eventBus = require('util/eventBus')
   sessionStore = require('util/sessionStore')
 
   class ModuleLoader
