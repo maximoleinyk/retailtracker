@@ -49,13 +49,13 @@ define (require) ->
             field: 'code'
             title: window.RetailTracker.i18n.code
             type: 'string'
-            width: 300
+            width: 250
           }
           {
             field: 'rate'
             title: window.RetailTracker.i18n.rate
-            type: 'string'
-            width: 200
+            type: 'number'
+            width: 150
           }
         ]
       })

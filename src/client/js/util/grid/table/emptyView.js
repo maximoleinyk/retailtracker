@@ -5,7 +5,6 @@ define(function (require) {
     return Marionette.ItemView.extend({
 
         template: require('hbs!./emptyView'),
-        tagName: 'tr',
 
         onRender: function () {
             this.$el.find('td').attr('colspan', this.options.columns.length);
