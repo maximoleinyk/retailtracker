@@ -37,7 +37,8 @@ define (require) ->
     onRender: ->
       @grid.show(new Grid({
         collection: @collection
-        editable: this
+        editable: @
+        defaultEmptyText: 'Вы еще не создали ни одной единицы измерения'
         columns: [
           {
             field: 'shortName'

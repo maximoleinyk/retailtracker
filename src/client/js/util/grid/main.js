@@ -55,7 +55,8 @@ define(function (require) {
                 columns: this.options.columns,
                 collection: this.options.collection,
                 numerable: this.numerable,
-                editable: this.editable
+                editable: this.editable,
+                defaultEmptyText: this.options.defaultEmptyText
             }));
         },
 

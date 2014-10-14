@@ -1,19 +1,14 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  MongoCollection = require('cs!app/common/mongoCollection')
   Uom = require('cs!app/brand/models/uom')
-  http = require('util/http')
-  Promise = require('rsvp').Promise
+  request = require('util/request')
 
-  class Uoms extends Backbone.Collection
+  class Uoms extends MongoCollection
 
     model: Uom
 
     fetch: ->
-      load = new Promise (resolve, reject) ->
-        http.get '/uom/all', (err, result) ->
-          if err then reject(err) else resolve(result)
-
-      load.then (result) =>
+      request.get('/uom/all').then (result) =>
         @reset(result, {parse: true})

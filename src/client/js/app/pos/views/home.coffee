@@ -30,11 +30,7 @@ define (require) ->
       @container.show(new Grid({
         collection: @collection
         numerable: true
-        editable: true
-        hideCrudButtons: true
-        onCreate: _.bind(@onCreate, @)
-        onSave: _.bind(@onSave, @)
-        onDelete: _.bind(@onDelete, @)
+        editable: @
         columns: [
           {
             field: 'product'

@@ -4,6 +4,7 @@ define(function (require) {
         Header = require('./header'),
         Content = require('./content'),
         Footer = require('./footer'),
+        EmptyView = require('./emptyView'),
         _ = require('underscore');
 
     return Marionette.Layout.extend({
@@ -11,17 +12,43 @@ define(function (require) {
         template: require('hbs!./main'),
         tagName: 'table',
 
-        ui: {
-            $content: 'tbody'
-        },
-
         regions: {
             header: 'thead',
             footer: 'tfoot'
         },
 
+        initialize: function () {
+            this.wasEmpty = true;
+        },
+
         onRender: function () {
+            this.addListeners();
             this.build();
+        },
+
+        addListeners: function () {
+            this.listenTo(this.options.collection, 'add remove reset', this.toggleEmptyView, this);
+        },
+
+        toggleEmptyView: function () {
+            if (this.options.collection.length > 0 && this.wasEmpty) {
+                this.destroyContentView();
+                this.buildContent();
+            } else if (!this.options.collection.length) {
+                this.destroyContentView();
+                this.buildEmptyView();
+            }
+        },
+
+        buildEmptyView: function () {
+            this.$el.find('thead').after(Marionette.$('<tbody/>'));
+            this.contentView = new EmptyView({
+                el: this.$el.find('tbody'),
+                columns: this.options.columns,
+                title: this.options.defaultEmptyText
+            });
+            this.contentView.render();
+            this.wasEmpty = true;
         },
 
         buildHeader: function () {
@@ -33,14 +60,16 @@ define(function (require) {
         },
 
         buildContent: function () {
+            this.$el.find('thead').after(Marionette.$('<tbody/>'));
             this.contentView = new Content({
-                el: this.ui.$content,
+                el: this.$el.find('tbody'),
                 columns: this.options.columns,
                 collection: this.options.collection,
                 numerable: this.options.numerable,
                 editable: this.options.editable
             });
             this.contentView.render();
+            this.wasEmpty = false;
         },
 
         buildFooter: function () {
@@ -58,12 +87,19 @@ define(function (require) {
 
         build: function () {
             this.buildHeader();
-            this.buildContent();
+            this.toggleEmptyView();
             this.buildFooter();
         },
 
         onClose: function () {
-            this.contentView.close();
+            this.destroyContentView();
+        },
+
+        destroyContentView: function () {
+            if (this.contentView) {
+                this.contentView.close();
+            }
+            this.contentView = null;
         }
 
     });
