@@ -1,87 +1,103 @@
 define(function (require) {
 
-	var InputCell = require('./inputCell'),
-		_ = require('underscore');
+    var InputCell = require('./inputCell'),
+        _ = require('underscore');
 
-	require('select2');
+    require('select2');
 
-	return InputCell.extend({
+    return InputCell.extend({
 
-		onRender: function () {
-			InputCell.prototype.onRender.apply(this, arguments);
-			var select2 = this.ui.$input.select2({
-				ajax: {
-					url: this.options.column.get('url'),
-					dataType: 'jsonp',
-					quietMillis: 100,
-					data: function (term) {
-						return {
-							q: term
-						}
-					},
-					results: function (data) {
-						return {
-							results: data
-						};
-					}
-				},
-				initSelection: _.bind(this.initSelection, this),
-				formatResult: _.bind(this.formatResult, this),
-				formatSelection: _.bind(this.formatResult, this)
-			});
-			select2.on('select2-selecting', _.bind(this.onSelection, this));
-		},
+        onRender: function () {
+            InputCell.prototype.onRender.apply(this, arguments);
 
-		// @Override
-		getType: function () {
-			return 'hidden';
-		},
+            var config = {};
 
-		getPlaceholder: function () {
-			return this.options.column.get('placeholder');
-		},
+            if (this.options.column.get('url')) {
+                config = _.extend(config, {
+                    ajax: {
+                        url: this.options.column.get('url'),
+                        dataType: 'jsonp',
+                        quietMillis: 100,
+                        data: function (term) {
+                            return {
+                                q: term
+                            }
+                        },
+                        results: function (data) {
+                            return {
+                                results: data
+                            };
+                        }
+                    }
+                });
+            } else if (this.options.column.get('data')) {
+                config = _.extend(config, {
+                    data: this.options.column.get('data')
+                });
+            } else {
+                throw 'Select cell should have at least \'url\' or \'data\' attributes.';
+            }
 
-		updateModel: function () {
-			// this.ui.$input.val() will be a formatted value
-		},
+            config = _.extend(config, {
+                initSelection: _.bind(this.initSelection, this),
+                formatResult: _.bind(this.formatResult, this),
+                formatSelection: _.bind(this.formatResult, this)
+            });
 
-		onSelection: function (e) {
-			var self = this,
-				column = this.options.column,
-				selectionHandler = column.get('onSelection');
+            var select2 = this.ui.$input.select2(config);
+            select2.on('select2-selecting', _.bind(this.onSelection, this));
+        },
 
-			if (_.isFunction(selectionHandler)) {
-				selectionHandler(e.object, this.model);
-			}
+        // @Override
+        getType: function () {
+            return 'hidden';
+        },
 
-			setTimeout(function () {
-				self.nextCell();
-			}, 0);
-		},
+        getPlaceholder: function () {
+            return this.options.column.get('placeholder');
+        },
 
-		initSelection: function ($el, callback) {
-			callback(this.model.toJSON());
-		},
+        updateModel: function () {
+            // this.ui.$input.val() will be a formatted value
+        },
 
-		formatResult: function (object) {
-			var column = this.options.column,
-				formatResult = column.get('formatResult');
+        onSelection: function (e) {
+            var self = this,
+                column = this.options.column,
+                selectionHandler = column.get('onSelection');
 
-			return (formatResult) ? formatResult(object) : object[column.get('field')];
-		},
+            if (_.isFunction(selectionHandler)) {
+                selectionHandler(e.object, this.model);
+            }
 
-		activate: function () {
-			this.ui.$input.select2('open');
-		},
+            setTimeout(function () {
+                self.nextCell();
+            }, 0);
+        },
 
-        disable: function() {
+        initSelection: function ($el, callback) {
+            callback(this.model.toJSON());
+        },
+
+        formatResult: function (object) {
+            var column = this.options.column,
+                formatResult = column.get('formatResult');
+
+            return (formatResult) ? formatResult(object) : object[column.get('field')];
+        },
+
+        activate: function () {
+            this.ui.$input.select2('open');
+        },
+
+        disable: function () {
             this.ui.$input.select2('enable', false);
         },
 
-        enabled: function() {
+        enabled: function () {
             this.ui.$input.select2('enable', true);
         }
 
-	});
+    });
 
 });

@@ -7,6 +7,4 @@ define (require) ->
 
     appRoutes:
       '': 'home'
-      'uom': 'uom'
-      'currency': 'currency'
       'settings/:view': 'settings'

@@ -1,6 +1,28 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  MongoModel = require('cs!app/common/mongoModel')
 
-  Backbone.Model.extend({})
+  class Company extends MongoModel
+
+    create: (callback) ->
+      @request('post', '/company/create', @toJSON())
+      .then (result) =>
+        @set @parse(result)
+        @commit()
+        callback(null, @)
+      .then(null, callback)
+
+    update: (callback) ->
+      @request('put', '/company/update', @toJSON())
+      .then (result) =>
+        @set @parse(result)
+        @commit()
+        callback(null, @)
+      .then(null, callback)
+
+    delete: (callback) ->
+      @request('del', '/company/delete', @toJSON())
+      .then ->
+        callback(null)
+      .then(null, callback)

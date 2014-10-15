@@ -3,6 +3,8 @@ define (require) ->
 
   Marionette = require('marionette')
   Grid = require('util/grid/main')
+  currencies = require('util/currencies')
+  _ = require('underscore')
 
   class Currencies extends Marionette.Layout
 
@@ -35,6 +37,12 @@ define (require) ->
       callback()
 
     onRender: ->
+      data = _.map _.keys(currencies), (code) ->
+        currency = currencies[code]
+        return {
+        id: currency.iso.code
+        text: '(' + currency.iso.code + ') ' + currency.units.major.symbol + ' ' + currency.units.major.name
+        }
       @grid.show new Grid({
         collection: @collection
         editable: @
@@ -48,8 +56,16 @@ define (require) ->
           {
             field: 'code'
             title: window.RetailTracker.i18n.code
-            type: 'string'
-            width: 250
+            placeholder: window.RetailTracker.i18n.currencyType
+            type: 'select'
+            data: data
+            formatter: (value) ->
+              value
+            formatResult: (json) ->
+              json?.text
+            onSelection: (object, model) ->
+              model.set('code', object.id)
+            width: 200
           }
           {
             field: 'rate'

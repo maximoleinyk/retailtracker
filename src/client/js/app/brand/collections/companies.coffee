@@ -2,13 +2,13 @@ define (require) ->
   'use strict'
 
   MongoCollection = require('cs!app/common/mongoCollection')
-  Currency = require('cs!app/brand/models/currency')
+  Company = require('cs!app/brand/models/company')
   request = require('util/request')
 
-  class Currencies extends MongoCollection
+  class Companies extends MongoCollection
 
-    model: Currency
+    model: Company
 
     fetch: ->
-      request.get('/currency/all').then (result) =>
+      request.get('/company/all').then (result) =>
         @reset(result, {parse: true})
