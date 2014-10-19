@@ -11,11 +11,8 @@ define (require) ->
     template: require('hbs!./main')
     binding: true
 
-    ui:
-      registerButton: '[data-id="register"]'
-
     events:
-      'click @ui.registerButton': 'register'
+      'click @ui.$registerButton': 'register'
 
     initialize: ->
       @model = new Backbone.Model()
@@ -23,10 +20,10 @@ define (require) ->
     register: (e) ->
       e.preventDefault()
 
-      originButtonLabel = @ui.registerButton.text()
+      originButtonLabel = @ui.$registerButton.text()
 
       @validation.reset()
-      @ui.registerButton.text('Регистрация...').attr('disabled', true)
+      @ui.$registerButton.text('Регистрация...').attr('disabled', true)
 
       register = new Promise (resolve, reject) =>
         http.post '/security/register', @model.toJSON(), (err, response) ->
@@ -37,5 +34,5 @@ define (require) ->
         @eventBus.trigger('open:page', new RegistrationSuccessPage)
       .then null, (err) =>
         @validation.show(err.errors)
-        @ui.registerButton.text(originButtonLabel).removeAttr('disabled')
+        @ui.$registerButton.text(originButtonLabel).removeAttr('disabled')
 

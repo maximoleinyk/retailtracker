@@ -1,16 +1,13 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
   numeral = require('numeral')
 
-  Marionette.Layout.extend
+  Layout.extend
 
     template: require('hbs!./home')
-
-    regions:
-      container: '[data-id="grid"]'
 
     onCreate: (model, callback) ->
       return callback(model.validationError) if not model.isValid()

@@ -2,16 +2,13 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
+  Layout = require('cs!app/common/layout')
   sessionStore = require('util/sessionStore')
 
-  Marionette.Layout.extend
+  Layout.extend
 
     el: '#app'
     template: require('hbs!./layout')
-
-    regions:
-      navigation: '#navigation'
-      container: '#container'
 
     appEvents:
       'router:navigate': 'hideNavigation'

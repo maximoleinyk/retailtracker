@@ -7,4 +7,9 @@ define (require) ->
 
     appRoutes:
       '': 'home'
+
+      'company/create': 'createCompany'
+      'company/:id': 'viewCompany'
+      'company/:id/edit': 'editCompany'
+
       'settings/:view': 'settings'

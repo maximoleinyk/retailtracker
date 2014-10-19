@@ -1,18 +1,15 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  Layout = require('cs!app/common/layout')
   Settings = require('cs!app/brand/models/settings')
   UserInfo = require('util/userInfo')
   ProfileView = require('cs!./profile')
   SecurityView = require('cs!./security')
 
-  Marionette.Layout.extend
+  Layout.extend
 
     template: require('hbs!./main')
-
-    regions:
-      content: '[data-id="content"]'
 
     initialize: (options) ->
       @view = options.view

@@ -1,17 +1,14 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
   currencies = require('util/currencies')
   _ = require('underscore')
 
-  class Currencies extends Marionette.Layout
+  Layout.extend
 
     template: require('hbs!./currencies')
-
-    regions:
-      grid: '[data-id="grid"]'
 
     initialize: (options) ->
       @collection = options.collection

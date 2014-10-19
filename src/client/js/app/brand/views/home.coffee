@@ -1,7 +1,33 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  Layout = require('cs!app/common/layout')
 
-  Marionette.Layout.extend
+  Layout.extend
+
     template: require('hbs!./home')
+
+    onRender: ->
+      @companies.show new Grid({
+        collection: @options.companies
+        defaultEmptyText: window.RetailTracker.i18n.emptyCompanyGridMessage
+        columns: [
+          {
+            field: 'name'
+            title: window.RetailTracker.i18n.name
+            type: 'string'
+            width: 250
+          }
+          {
+            field: 'description'
+            title: window.RetailTracker.i18n.description
+            type: 'string'
+          }
+          {
+            field: 'employeeCount'
+            title: window.RetailTracker.i18n.employeeCount
+            type: 'number'
+            width: 150
+          }
+        ]
+      })

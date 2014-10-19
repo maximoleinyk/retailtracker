@@ -6,7 +6,6 @@ define(function (require) {
         Backbone = require('backbone'),
         _ = require('underscore');
 
-
     if (typeof String.prototype.trim !== 'function') {
         String.prototype.trim = function () {
             return this.replace(/^\s+|\s+$/g, '');
@@ -75,19 +74,19 @@ define(function (require) {
     }
 
     var listeners = {
-        autofocus: function (el) {
-			if (el.data('select2')) {
-				return el.data('select2').select2('focus');
-			} else {
-				el.focus();
-			}
+            autofocus: function (el) {
+                if (el.data('select2')) {
+                    return el.data('select2').select2('focus');
+                } else {
+                    el.focus();
+                }
+            },
+            'data-hide': function (el) {
+                el.addClass('hidden').removeAttr('data-hide');
+            }
         },
-        'data-hide': function (el) {
-            el.addClass('hidden').removeAttr('data-hide');
-        }
-    };
+        viewConstructor = Marionette.View.prototype.constructor;
 
-    var constructor = Marionette.View.prototype.constructor;
     Marionette.View.prototype.constructor = function () {
         var self = this,
             routeToLink = {};
@@ -167,6 +166,17 @@ define(function (require) {
                 route = route.replace(new RegExp('^' + Backbone.history.root), '');
                 routeToLink[route] = $el;
             });
+            this.$el.find('[data-id]').each(function () {
+                var $el = Marionette.$(this),
+                    name = $el.attr('data-id'),
+                    ui = Marionette.getOption(self, 'ui');
+
+                if (!_.isObject(ui)) {
+                    self.ui = {};
+                }
+
+                self.ui['$' + name] = $el;
+            });
         }, this);
 
         this.listenTo(this, 'show', function () {
@@ -179,7 +189,7 @@ define(function (require) {
             if (this.binding) {
                 return unbind(this);
             }
-            this.$el.off('click', '[data-action]', this.handleActions);
+            this.$el.off('click', '[data-click]', this.handleActions);
         }, this);
 
         this.listenTo(this.eventBus, 'open:page', function () {
@@ -193,9 +203,9 @@ define(function (require) {
             });
         });
 
-        constructor.apply(this, arguments);
+        viewConstructor.apply(this, arguments);
 
-        this.$el.on('click', '[data-action]', this.handleActions);
+        this.$el.on('click', '[data-click]', this.handleActions);
     };
 
 });

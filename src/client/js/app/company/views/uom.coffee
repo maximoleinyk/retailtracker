@@ -1,15 +1,12 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
 
-  class UomList extends Marionette.Layout
+  Layout.extend
 
     template: require('hbs!./uom')
-
-    regions:
-      grid: '[data-id="grid"]'
 
     initialize: (options) ->
       @collection = options.collection
