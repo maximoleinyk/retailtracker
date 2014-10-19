@@ -9,8 +9,14 @@ define(function (require) {
 		template: require('hbs!../cells/buttons/dropdownButton'),
 
 		ui: {
-			$button: '[data-id="button"]'
+			$button: '[data-id="button"]',
+            $item: '[data-id="item"]'
 		},
+
+        events: {
+            'click @ui.$button': 'action',
+            'click @ui.$item': 'applyItemAction'
+        },
 
 		templateHelpers: function () {
 			var self = this;
@@ -22,7 +28,7 @@ define(function (require) {
 			}
 		},
 
-		onButtonClick: function () {
+		action: function () {
 			var action = this.options.onAction;
 
 			if (action) {
@@ -30,7 +36,7 @@ define(function (require) {
 			}
 		},
 
-		onItemClick: function (e) {
+		applyItemAction: function (e) {
 			var methodName = Marionette.$(e.currentTarget).attr('data-action-id'),
 				method = this.options[methodName];
 

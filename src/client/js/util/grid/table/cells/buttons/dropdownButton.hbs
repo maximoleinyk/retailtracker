@@ -1,5 +1,5 @@
 <div class="btn-group pull-right">
-    <button class="btn {{buttonClassName}}" data-action="onButtonClick" data-id="button">
+    <button class="btn {{buttonClassName}}" data-id="button">
         <span class="fa {{buttonIcon}}"></span>
     </button>
     <button class="btn {{buttonClassName}} dropdown-toggle" data-toggle="dropdown">
@@ -9,7 +9,7 @@
     <ul class="dropdown-menu">
 		{{#each actions}}
             <li>
-                <a href="#" data-action="onItemClick" data-action-id="{{methodName}}">{{label}}</a>
+                <a href="#" data-id="item" data-action-id="{{methodName}}">{{label}}</a>
             </li>
 		{{/each}}
     </ul>

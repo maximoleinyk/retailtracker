@@ -7,8 +7,12 @@ define(function (require) {
 		template: require('hbs!./buttons/defaultButton'),
 
 		ui: {
-			$button: 'button'
+			$button: '[data-id="button"]'
 		},
+
+        events: {
+            'click @ui.$button': 'action'
+        },
 
 		templateHelpers: function () {
 			return {

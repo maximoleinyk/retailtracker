@@ -9,6 +9,14 @@ define(function (require) {
         tagName: 'tr',
         className: 'validation',
 
+        ui: {
+            $errorLink: '[data-id="link"]'
+        },
+
+        events: {
+            'click @ui.$errorLink': 'activate'
+        },
+
         templateHelpers: function () {
             var self = this;
             return {
