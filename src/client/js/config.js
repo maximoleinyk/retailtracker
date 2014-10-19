@@ -10,11 +10,10 @@ require.config({
         'backbone.babysitter': 'libs/backbone.babysitter/lib/backbone.babysitter',
         marionette: 'libs/marionette/lib/core/amd/backbone.marionette',
         handlebars: 'libs/handlebars/handlebars',
-        'handlebars-compiler': 'libs/handlebars/handlebars.runtime',
+        hbs: 'util/hbs',
         rivets: 'libs/rivets/dist/rivets',
         cs: 'libs/require-cs/cs',
         'coffee-script': 'libs/coffee-script/extras/coffee-script',
-        text: 'libs/requirejs-text/text',
         bootstrap: 'libs/bootstrap/dist/js/bootstrap',
         'socket.io': 'libs/socket.io-client/socket.io',
         rsvp: 'libs/rsvp/rsvp.amd',
@@ -23,14 +22,6 @@ require.config({
         moment: 'libs/moment/moment',
         numeral: 'libs/numeral/numeral'
     },
-
-    packages: [
-        {
-            name: 'hbs',
-            location: 'libs/requirejs-hbs',
-            main: 'hbs'
-        }
-    ],
 
     shim: {
         jquery: {
@@ -59,7 +50,7 @@ require.config({
             deps: ['coffee-script']
         },
         hbs: {
-            deps: ['text', 'handlebars']
+            deps: ['handlebars']
         },
         bootstrap: {
             deps: ['jquery']

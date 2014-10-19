@@ -1,10 +1,11 @@
 HttpStatus = require('http-status-codes')
+authFilter = inject('util/authFilter')
 
 class SettingsController
 
   constructor: (@settingsService) ->
 
-  register: (router, authFilter) ->
+  register: (router) ->
     router.post '/settings/change/profile', authFilter, (req, res) =>
       @settingsService.changeProfile req.body, (err) ->
         return res.status(HttpStatus.BAD_REQUEST).send({errors: err}) if err

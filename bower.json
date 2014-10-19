@@ -14,8 +14,6 @@
     "coffee-script": "1.7.1",
     "requirejs": "2.1.11",
     "require-cs": "https://github.com/guybedford/require-coffee.git",
-    "requirejs-text": "https://github.com/requirejs/text.git",
-    "requirejs-hbs": "~0.1.1",
     "handlebars": "1.3.0",
     "numeral": "~1.5.3",
     "moment": "~2.8.1",

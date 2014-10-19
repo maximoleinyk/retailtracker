@@ -2,10 +2,14 @@ define (require) ->
   'use strict'
 
   Layout = require('cs!app/common/layout')
+  Grid = require('util/grid/main')
 
   Layout.extend
 
     template: require('hbs!./home')
+
+    createCompany: ->
+      @navigate('company/create')
 
     onRender: ->
       @companies.show new Grid({

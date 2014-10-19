@@ -95,7 +95,7 @@ define(function (require) {
             e.preventDefault();
             e.stopPropagation();
 
-            this[Backbone.$(e.currentTarget).data('action')](e);
+            this[Backbone.$(e.currentTarget).attr('data-click')](e);
         }, this);
 
         this.validation = {
@@ -206,6 +206,10 @@ define(function (require) {
         viewConstructor.apply(this, arguments);
 
         this.$el.on('click', '[data-click]', this.handleActions);
+    };
+
+    Marionette.View.prototype.navigate = function(route) {
+        this.eventBus.trigger('router:navigate', route, {trigger: true});
     };
 
 });

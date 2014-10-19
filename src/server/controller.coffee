@@ -5,7 +5,6 @@ SettingsController = inject('controllers/settings')
 ResourceController = inject('controllers/i18n')
 UomController = inject('controllers/uom')
 test = inject('controllers/test')
-authFilter = inject('util/authFilter')
 inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
 userService = inject('services/userService')
@@ -16,6 +15,9 @@ UomStore = inject('persistence/uomStore')
 CurrencyController = inject('controllers/currency')
 CurrencyService = inject('services/currencyService')
 CurrencyStore = inject('persistence/currencyStore')
+CompanyController = inject('controllers/company')
+CompanyService = inject('services/companyService')
+CompanyStore = inject('persistence/companyStore')
 
 class PageController
 
@@ -39,22 +41,25 @@ class PageController
       res.status(HttpStatus.NOT_FOUND).end()
 
     securityController = new SecurityController(inviteService, linkService, userService)
-    securityController.register(@router, authFilter, @passport)
+    securityController.register(@router, @passport)
 
     userController = new UserController()
-    userController.register(@router, authFilter)
+    userController.register(@router)
 
     settingsController = new SettingsController(settingsService)
-    settingsController.register(@router, authFilter)
+    settingsController.register(@router)
 
     i18nController = new ResourceController(i18nService)
     i18nController.register(@router)
 
     uomController = new UomController(new UomService(new UomStore))
-    uomController.register(@router, authFilter)
+    uomController.register(@router)
 
     currencyController = new CurrencyController(new CurrencyService(new CurrencyStore))
-    currencyController.register(@router, authFilter)
+    currencyController.register(@router)
+
+    companyController = new CompanyController(new CompanyService(new CompanyStore))
+    companyController.register(@router)
 
     test(@router)
 

@@ -1,1 +1,13 @@
 <h3>Create company</h3>
+
+<div class="container-fluid">
+    <div class="row">
+        {{> app/brand/views/company/form }}
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-primary">{{i18n.create}}</button>
+            <button type="button" class="btn btn-default" data-click>{{i18n.cancel}}</button>
+        </div>
+    </div>
+</div>

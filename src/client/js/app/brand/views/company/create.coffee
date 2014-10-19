@@ -4,4 +4,6 @@ define (require) ->
   Marionette = require('marionette')
 
   Marionette.ItemView.extend
+
     template: require('hbs!./create')
+    tagName: 'form'

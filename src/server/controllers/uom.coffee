@@ -1,10 +1,11 @@
 HttpStatus = require('http-status-codes')
+authFilter = inject('util/authFilter')
 
 class UomController
 
   constructor: (@uomService) ->
 
-  register: (@router, authFilter) ->
+  register: (@router) ->
     @router.get '/uom/all', authFilter, (req, res) =>
       @uomService.findAll (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err

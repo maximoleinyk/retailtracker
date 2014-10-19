@@ -1,11 +1,12 @@
 HttpStatus = require('http-status-codes')
 _ = require('underscore')
+authFilter = inject('util/authFilter')
 
 class SecurityController
 
   constructor: (@inviteService, @linkService, @userService) ->
 
-  register: (router, authFilter, passport) ->
+  register: (router, passport) ->
     router.get '/security/invite/:key', (req, res) =>
       @inviteService.find req.params.key, (err, invite) ->
         return res.status(HttpStatus.NOT_FOUND).end() if err or not invite
