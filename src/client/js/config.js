@@ -10,17 +10,17 @@ require.config({
         'backbone.babysitter': 'libs/backbone.babysitter/lib/backbone.babysitter',
         marionette: 'libs/marionette/lib/core/amd/backbone.marionette',
         handlebars: 'libs/handlebars/handlebars',
-        hbs: 'util/hbs',
         rivets: 'libs/rivets/dist/rivets',
         cs: 'libs/require-cs/cs',
         'coffee-script': 'libs/coffee-script/extras/coffee-script',
         bootstrap: 'libs/bootstrap/dist/js/bootstrap',
         'socket.io': 'libs/socket.io-client/socket.io',
         rsvp: 'libs/rsvp/rsvp.amd',
-        select2: 'libs/select2/select2',
         respond: 'libs/respond/dest/respond.src',
+        select2: 'libs/select2/select2',
         moment: 'libs/moment/moment',
-        numeral: 'libs/numeral/numeral'
+        numeral: 'libs/numeral/numeral',
+        hbs: 'util/plugins/hbs'
     },
 
     shim: {

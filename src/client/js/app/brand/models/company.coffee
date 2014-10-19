@@ -5,6 +5,10 @@ define (require) ->
 
   class Company extends MongoModel
 
+    defaults: {
+      invitees: []
+    }
+
     create: (callback) ->
       @request('post', '/company/create', @toJSON())
       .then (result) =>

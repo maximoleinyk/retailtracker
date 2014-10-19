@@ -41,6 +41,9 @@ define(function (require) {
                     return;
                 }
                 self[e.shiftKey ? 'prevCell' : 'nextCell']();
+                if (e.target.tagName !== 'BUTTON') {
+                    e.preventDefault();
+                }
             });
         },
 

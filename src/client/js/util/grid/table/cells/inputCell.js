@@ -48,7 +48,7 @@ define(function (require) {
         },
 
         getPlaceholder: function () {
-            return '';
+            return this.options.column.get('placeholder');
         },
 
         getName: function () {

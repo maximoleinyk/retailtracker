@@ -1,6 +1,21 @@
-<div class="col-lg-6">
-    Left
-</div>
-<div class="col-lg-6">
-    Right
+<div class="col-sm-6">
+    <fieldset>
+        <legend>{{i18n.nameAndDescription}}</legend>
+        <div class="form-group">
+            <label for="name" class="control-label">{{i18n.name}}</label>
+            <input type="text" id="name" name="name" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="description" class="control-label">{{i18n.description}}</label>
+            <textarea id="description" name="description" rows="5" class="form-control"></textarea>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{i18n.currency}}</legend>
+
+    </fieldset>
+    <fieldset>
+        <legend>{{i18n.invitees}}</legend>
+        <div data-region="invitees"></div>
+    </fieldset>
 </div>
