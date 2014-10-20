@@ -20,6 +20,7 @@ define(function (require) {
 
             this.editable = options.editable || void(0);
             this.numerable = options.numerable || false;
+            this.withoutHeader = options.withoutHeader || false;
         },
 
         onRender: function () {
@@ -56,6 +57,7 @@ define(function (require) {
                 collection: this.options.collection,
                 numerable: this.numerable,
                 editable: this.editable,
+                withoutHeader: this.withoutHeader,
                 defaultEmptyText: this.options.defaultEmptyText
             }));
         },

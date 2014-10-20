@@ -7,6 +7,7 @@ define(function (require) {
         BoolCell = require('../cells/boolCell'),
         NumberCell = require('../cells/numberCell'),
         SelectCell = require('../cells/selectCell'),
+        EmailCell = require('../cells/emailCell'),
         AutoincrementCell = require('../cells/autoincrementCell'),
         DropdownButtonCell = require('../cells/dropdownButtonCell');
 
@@ -72,6 +73,8 @@ define(function (require) {
                     return new BoolCell(options);
                 case 'select':
                     return new SelectCell(options);
+                case 'email':
+                    return new EmailCell(options);
                 default:
                     return this.buildCustomCell(type, options);
             }

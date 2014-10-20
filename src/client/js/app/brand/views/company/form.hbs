@@ -1,21 +1,48 @@
-<div class="col-sm-6">
+<div class="col-md-6">
     <fieldset>
         <legend>{{i18n.nameAndDescription}}</legend>
         <div class="form-group">
-            <label for="name" class="control-label">{{i18n.name}}</label>
-            <input type="text" id="name" name="name" class="form-control"/>
+            <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
+
+            <div class="col-md-8">
+                <input type="text" id="name" name="name" class="form-control"/>
+            </div>
         </div>
         <div class="form-group">
-            <label for="description" class="control-label">{{i18n.description}}</label>
-            <textarea id="description" name="description" rows="5" class="form-control"></textarea>
+            <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
+
+            <div class="col-md-8">
+                <textarea id="description" name="description" rows="5" class="form-control"></textarea>
+            </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>{{i18n.currency}}</legend>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="currency">{{i18n.currency}}</label>
 
+            <div class="col-md-4">
+                <select id="currency" class="form-control" name="currency" data-id="select"
+                        data-placeholder="{{i18n.currencyType}}">
+                    <option selected></option>
+                    {{#each currencyCodes}}
+                        <option value="{{id}}">{{text}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="rate">Курс</label>
+
+            <div class="col-md-4">
+                <input type="text" id="rate" name="rate" class="form-control" value="1.00000" readonly/>
+            </div>
+        </div>
     </fieldset>
     <fieldset>
         <legend>{{i18n.invitees}}</legend>
         <div data-region="invitees"></div>
     </fieldset>
+</div>
+<div class="col-md-6">
 </div>

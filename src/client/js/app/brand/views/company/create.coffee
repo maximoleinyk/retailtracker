@@ -10,26 +10,47 @@ define (require) ->
     template: require('hbs!./create')
 
     initialize: ->
-      @invites = new Invites()
+      @inviteesCollection = new Invites()
 
     onRender: ->
       @renderGrid()
+      @renderSelect()
 
-    onCreate: (invitee, callback) ->
-      @invites.add(invitee)
-      callback()
+    renderSelect: ->
+      @ui.$select.select2()
+
+    cancel: ->
+      @navigate('')
+
+    onSubmit: (e) ->
+      e.preventDefault()
+
+      @model.set('invitees', @inviteesCollection.toJSON())
+      @model.create()
+      .then =>
+        @navigate('')
+      .then null, (err) =>
+
 
     renderGrid: ->
       @invitees.show new Grid({
-        collection: @invites
+        collection: @inviteesCollection
         defaultEmptyText: window.RetailTracker.i18n.emptyInvitesGrid
+        withoutHeader: true
         editable: @
         columns: [
           {
             field: 'email'
-            title: window.RetailTracker.i18n.email
-            type: 'string'
+            type: 'email'
             placeholder: 'email@example.com'
           }
         ]
       })
+
+    onCreate: (invitee, callback) ->
+      @inviteesCollection.add(invitee)
+      callback()
+
+    onDelete: (invitee, callback) ->
+      @inviteesCollection.remove(invitee)
+      callback()

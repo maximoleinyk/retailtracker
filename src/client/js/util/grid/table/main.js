@@ -52,11 +52,14 @@ define(function (require) {
         },
 
         buildHeader: function () {
+            if (this.options.withoutHeader) {
+                return;
+            }
             this.header.show(new Header({
                 columns: this.options.columns,
                 items: this.options.collection,
                 numerable: this.options.numerable
-            }))
+            }));
         },
 
         buildContent: function () {
