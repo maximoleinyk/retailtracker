@@ -25,7 +25,7 @@ define(function (require) {
 				actions: self.options.actions,
 				buttonClassName: self.options.buttonClassName,
 				buttonIcon: self.options.buttonIcon
-			}
+			};
 		},
 
 		action: function () {

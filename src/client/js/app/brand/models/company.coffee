@@ -7,6 +7,7 @@ define (require) ->
 
     defaults: {
       invitees: []
+      currencyCode: 'UAH'
     }
 
     create: (callback) ->

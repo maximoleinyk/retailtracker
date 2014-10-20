@@ -2,7 +2,8 @@ define(function (require) {
 
     var Backbone = require('backbone'),
         Marionette = require('marionette'),
-        ValidationRow = require('./validationRow');
+        ValidationRow = require('./validationRow'),
+        _ = require('underscore');
 
     return Marionette.CollectionView.extend({
 
@@ -23,8 +24,8 @@ define(function (require) {
                 return;
             }
 
-            var self = this,
-                row = new ValidationRow({
+            var self = this;
+            this.validationRow = new ValidationRow({
                     errors: err,
                     cellManager: this,
                     model: this.model
@@ -33,12 +34,12 @@ define(function (require) {
             this.valid = false;
 			this.$el.addClass('invalid');
 
-            row.addValidationHandler(function (valid) {
+            this.validationRow.addValidationHandler(function (valid) {
                 self.valid = valid;
                 self.$el[valid ? 'removeClass' : 'addClass']('invalid');
             });
 
-            return this.$el.after(row.render().el);
+            return this.$el.after(this.validationRow.render().el);
         },
 
         changeState: function (state) {
@@ -110,7 +111,7 @@ define(function (require) {
                     cellManager: this
                 });
 
-            return this.buildCellView(type, column, options)
+            return this.buildCellView(type, column, options);
         },
 
         buildCellView: function (type, column, options) {

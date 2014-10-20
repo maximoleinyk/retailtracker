@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var AbstractRow = require('./abstractRow'),
+    var $ = require('jquery'),
+        AbstractRow = require('./abstractRow'),
         ViewCell = require('../cells/viewCell'),
         InputCell = require('../cells/inputCell'),
         DateCell = require('../cells/dateCell'),
@@ -9,7 +10,8 @@ define(function (require) {
         SelectCell = require('../cells/selectCell'),
         EmailCell = require('../cells/emailCell'),
         AutoincrementCell = require('../cells/autoincrementCell'),
-        DropdownButtonCell = require('../cells/dropdownButtonCell');
+        DropdownButtonCell = require('../cells/dropdownButtonCell'),
+        _ = require('underscore');
 
     return AbstractRow.extend({
 
@@ -51,6 +53,11 @@ define(function (require) {
         discardChanges: function (silent) {
             var self = this,
                 next = function () {
+                    if (!self.valid) {
+                        self.validationRow.close();
+                        self.valid = true;
+                        self.$el.removeClass('invalid');
+                    }
                     !silent && self.changeState('view');
                 };
 
@@ -87,7 +94,7 @@ define(function (require) {
                 return new AutoincrementCell(options);
             } else if (type === 'edit') {
                 return new DropdownButtonCell(_.extend(options, {
-                    buttonClassName: 'btn-success',
+                    buttonClassName: 'btn-default',
                     buttonIcon: 'fa-save',
                     actions: [
                         {

@@ -36,7 +36,7 @@ define(function (require) {
         activate: function (e) {
             e.preventDefault();
 
-            var field = $(e.currentTarget).attr('data-field'),
+            var field = Marionette.$(e.currentTarget).attr('data-field'),
                 cellView = this.options.cellManager.getCell(field);
 
             if (cellView) {

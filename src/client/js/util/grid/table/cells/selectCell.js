@@ -21,7 +21,7 @@ define(function (require) {
                         data: function (term) {
                             return {
                                 q: term
-                            }
+                            };
                         },
                         results: function (data) {
                             return {

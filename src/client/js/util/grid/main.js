@@ -10,9 +10,9 @@ define(function (require) {
         className: 'grid',
 
         regions: {
-            header: 'header',
-            content: 'section',
-            footer: 'footer'
+            header: '.header',
+            content: '.body',
+            footer: '.footer'
         },
 
         initialize: function (options) {
@@ -34,14 +34,14 @@ define(function (require) {
                     field: 'numerable',
                     type: 'autoincrement',
                     title: '#'
-                })
+                });
             }
             if (_.isObject(this.editable)) {
                 this.options.columns.push({
                     field: 'editable',
                     type: 'edit',
                     title: ''
-                })
+                });
             }
         },
 

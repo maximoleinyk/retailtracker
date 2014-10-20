@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var AbstractCell = require('./abstractCell');
+    var AbstractCell = require('./abstractCell'),
+        _ = require('underscore');
 
     return AbstractCell.extend({
 
@@ -33,7 +34,7 @@ define(function (require) {
                 type: _.bind(this.getType, this),
                 name: _.bind(this.getName, this),
                 placeholder: _.bind(this.getPlaceholder, this)
-            }
+            };
         },
 
         updateModel: function () {

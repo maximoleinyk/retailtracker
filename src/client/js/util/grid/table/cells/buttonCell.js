@@ -1,6 +1,7 @@
 define(function (require) {
 
-	var AbstractCell = require('./abstractCell');
+	var AbstractCell = require('./abstractCell'),
+        _ = require('underscore');
 
 	return AbstractCell.extend({
 
@@ -17,7 +18,7 @@ define(function (require) {
 		templateHelpers: function () {
 			return {
 				label: _.bind(this.getLabel, this)
-			}
+			};
 		},
 
 		getLabel: function () {

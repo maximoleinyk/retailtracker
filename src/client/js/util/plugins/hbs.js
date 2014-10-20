@@ -1,4 +1,5 @@
 /*global ActiveXObject*/
+/*global process*/
 define(['handlebars'], function (Handlebars) {
     'use strict';
 

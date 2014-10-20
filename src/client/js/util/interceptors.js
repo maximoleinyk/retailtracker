@@ -177,6 +177,14 @@ define(function (require) {
 
                 self.ui['$' + name] = $el;
             });
+            this.$el.find('form').on('submit', function(e) {
+                var $el = Marionette.$(this),
+                    methodName = $el.attr('data-submit');
+
+                if (typeof self[methodName] === 'function') {
+                    self[methodName](e);
+                }
+            });
         }, this);
 
         this.listenTo(this, 'show', function () {

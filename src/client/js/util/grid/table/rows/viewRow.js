@@ -3,7 +3,8 @@ define(function (require) {
 	var AbstractRow = require('./abstractRow'),
 		ViewCell = require('../cells/viewCell'),
 		AutoincrementCell = require('../cells/autoincrementCell'),
-		DropdownButtonCell = require('../cells/dropdownButtonCell');
+		DropdownButtonCell = require('../cells/dropdownButtonCell'),
+        _ = require('underscore');
 
 	return AbstractRow.extend({
 

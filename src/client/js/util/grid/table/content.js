@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Marionette = require('marionette'),
+    var $ = require('jquery'),
+        Marionette = require('marionette'),
         EditRow = require('./rows/editRow'),
         ViewRow = require('./rows/viewRow'),
         _ = require('underscore');
@@ -158,7 +159,7 @@ define(function (require) {
             return {
                 state: this.getState(),
                 index: index
-            }
+            };
         },
 
         getState: function (options) {
@@ -177,7 +178,7 @@ define(function (require) {
                 return {
                     state: state,
                     index: index
-                }
+                };
             };
             this.removeItemView(model);
             this.addItemView(model, true, index);
