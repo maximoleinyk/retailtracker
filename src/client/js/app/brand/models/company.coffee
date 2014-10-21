@@ -5,29 +5,22 @@ define (require) ->
 
   class Company extends MongoModel
 
-    defaults: {
+    defaults:
       invitees: []
       currencyCode: 'UAH'
-    }
+      currencyRate: 1
 
-    create: (callback) ->
+    create: () ->
       @request('post', '/company/create', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .then(null, callback)
 
-    update: (callback) ->
+    update: () ->
       @request('put', '/company/update', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .then(null, callback)
 
-    delete: (callback) ->
+    delete: () ->
       @request('del', '/company/delete', @toJSON())
-      .then ->
-        callback(null)
-      .then(null, callback)

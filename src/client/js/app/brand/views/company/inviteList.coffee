@@ -10,14 +10,14 @@ define (require) ->
     template: require('hbs!./inviteList')
 
     initialize: ->
-      @inviteesCollection = new Invites()
+      @collection = new Invites()
 
     onRender: ->
       @renderGrid()
 
     renderGrid: ->
       @invitees.show new Grid({
-        collection: @inviteesCollection
+        collection: @collection
         defaultEmptyText: window.RetailTracker.i18n.emptyInvitesGrid
         withoutHeader: true
         editable: @
@@ -30,15 +30,21 @@ define (require) ->
         ]
       })
 
+    updateInvitees: ->
+      @model.set 'invitees', @collection.map (model) ->
+        model.get('email')
+
     onCreate: (invitee, callback) ->
       return callback({ email: window.RetailTracker.i18n.invalidEmail }) if not invitee.get('email')
       invitee.commit()
-      @inviteesCollection.add(invitee)
+      @collection.add(invitee)
+      @updateInvitees()
       callback()
 
     onSave: (invitee, callback) ->
       return callback({ email: window.RetailTracker.i18n.invalidEmail }) if not invitee.get('email')
       invitee.commit()
+      @updateInvitees()
       callback()
 
     onCancel: (invitee, callback) ->
@@ -46,5 +52,6 @@ define (require) ->
       callback()
 
     onDelete: (invitee, callback) ->
-      @inviteesCollection.remove(invitee)
+      @collection.remove(invitee)
+      @updateInvitees()
       callback()

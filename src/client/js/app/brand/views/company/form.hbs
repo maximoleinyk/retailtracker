@@ -5,14 +5,14 @@
             <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
 
             <div class="col-md-8">
-                <input type="text" id="name" name="name" class="form-control"/>
+                <input type="text" id="name" name="name" class="form-control" data-bind/>
             </div>
         </div>
         <div class="form-group">
             <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
 
             <div class="col-md-8">
-                <textarea id="description" name="description" rows="5" class="form-control"></textarea>
+                <textarea id="description" name="description" rows="5" class="form-control" data-bind></textarea>
             </div>
         </div>
     </fieldset>
@@ -26,7 +26,7 @@
             <label class="col-md-4 control-label" for="currencyCode">{{i18n.currencyCode}}</label>
 
             <div class="col-md-4">
-                <select id="currencyCode" class="form-control" name="currencyCode" data-id="select">
+                <select id="currencyCode" class="form-control" name="currencyCode" data-id="select" data-bind>
                     {{#each currencyCodes}}
                         <option value="{{id}}">{{text}}</option>
                     {{/each}}
@@ -37,7 +37,7 @@
             <label class="col-md-4 control-label" for="currencyRate">{{i18n.currencyRate}}</label>
 
             <div class="col-md-4">
-                <input type="text" id="currencyRate" name="currencyRate" class="form-control" value="1.00000" readonly/>
+                <input type="text" id="currencyRate" name="currencyRate" class="form-control" data-bind readonly/>
             </div>
         </div>
     </fieldset>
