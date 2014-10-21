@@ -32,5 +32,5 @@ define (require) ->
     'pos': 'pos'
   })
 
-  loader.loadModule 'account', (options) ->
+  loader.loadModule 'brand', (options) ->
     App.start(options)

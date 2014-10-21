@@ -64,7 +64,7 @@ define (require) ->
             http.get '/user/fetch', (err, result) ->
               if err then reject(err) else resolve(result)
         .then (result) ->
-          module?.onUserLoaded(result)
+          module.onUserLoaded(result) if module.onUserLoaded
           startApp(true)
         .then null, (err) ->
           if err is 'Unauthorized'
