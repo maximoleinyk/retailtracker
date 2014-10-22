@@ -21,6 +21,7 @@ define (require) ->
         defaultEmptyText: window.RetailTracker.i18n.emptyInvitesGrid
         withoutHeader: true
         editable: @
+        initialAutoFocus: true,
         columns: [
           {
             field: 'email'

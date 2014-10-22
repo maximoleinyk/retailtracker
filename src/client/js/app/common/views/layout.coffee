@@ -18,6 +18,8 @@ define (require) ->
     initialize: (options) ->
       @options = options
 
+      this.$el.addClass(options.className) if options.className
+
       syncCount = 0
 
       Marionette.$(document).delegate 'a[href^="/"]', 'click', (e) =>

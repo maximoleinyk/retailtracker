@@ -19,6 +19,7 @@ define(function (require) {
 
         initialize: function () {
             this.wasEmpty = true;
+            this.initialAutoFocus = this.options.initialAutoFocus || false;
         },
 
         onRender: function () {
@@ -84,7 +85,8 @@ define(function (require) {
                 columns: this.options.columns,
                 items: this.options.collection,
                 numerable: this.options.numerable,
-                editable: this.options.editable
+                editable: this.options.editable,
+                initialAutoFocus: this.initialAutoFocus
             }));
         },
 

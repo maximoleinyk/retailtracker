@@ -8,5 +8,6 @@ define (require) ->
     Router: Router
     Controller: Controller
     bundleName: 'account'
+    className: 'account'
     root: '/account/'
   })

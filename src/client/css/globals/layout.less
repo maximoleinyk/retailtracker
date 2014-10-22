@@ -1,24 +1,35 @@
 @import "./variables";
 
 .app {
-  .navigation > * {
-    background-color: @navBackgroundColor;
-    border-bottom: 1px solid @borderColor;
-    padding: 15px 0;
-    padding-bottom: @navMargin;
-    margin-bottom: 15px;
-    .logo {
-      font-size: 18px;
-    }
-    .menu {
-      margin: 2px 0 0 0;
+  .page-title {
+    margin-bottom: 20px;
+    .link-back {
+      &:before {
+        content: '\2190\0020';
+      }
+      color: #4183c4;
     }
   }
-  .content > * {
-    margin-top: -@navMargin;
-    background-color: #fff;
-    box-shadow: 0 0 3px @boxShadowColor;
-    min-height: 100%;
-    margin-bottom: 50px;
+  &.brand {
+    .navigation > * {
+      background-color: @navBackgroundColor;
+      border-bottom: 1px solid @borderColor;
+      padding: 15px 0;
+      padding-bottom: @navMargin;
+      margin-bottom: 15px;
+      .logo {
+        font-size: 18px;
+      }
+      .menu {
+        margin: 2px 0 0 0;
+      }
+    }
+    .content > * {
+      margin-top: -@navMargin;
+      background-color: #fff;
+      box-shadow: 0 0 3px @boxShadowColor;
+      min-height: 100%;
+      margin-bottom: 50px;
+    }
   }
 }

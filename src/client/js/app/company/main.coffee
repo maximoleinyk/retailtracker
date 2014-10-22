@@ -11,6 +11,7 @@ define (require) ->
     Controller: Controller
     Navigation: Navigation
     bundleName: 'company'
+    className: 'company'
     root: '/company/'
     onUserLoaded: (userInfo) ->
       UserInfo.set(userInfo)

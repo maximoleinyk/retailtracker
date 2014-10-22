@@ -58,7 +58,8 @@ define(function (require) {
                 numerable: this.numerable,
                 editable: this.editable,
                 withoutHeader: this.withoutHeader,
-                defaultEmptyText: this.options.defaultEmptyText
+                defaultEmptyText: this.options.defaultEmptyText,
+                initialAutoFocus: this.options.initialAutoFocus
             }));
         },
 

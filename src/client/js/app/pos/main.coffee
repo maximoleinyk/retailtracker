@@ -9,6 +9,7 @@ define (require) ->
     Router: Router
     Controller: Controller
     bundleName: 'pos'
+    className: 'point-of-sale'
     root: '/pos/'
     onUserLoaded: (userInfo) ->
       UserInfo.set(userInfo)
