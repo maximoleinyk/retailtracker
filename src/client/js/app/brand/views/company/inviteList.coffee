@@ -10,7 +10,7 @@ define (require) ->
     template: require('hbs!./inviteList')
 
     initialize: ->
-      @collection = new Invites()
+      @collection = new Invites(@model.get('invitees'))
 
     onRender: ->
       @renderGrid()
@@ -31,8 +31,7 @@ define (require) ->
       })
 
     updateInvitees: ->
-      @model.set 'invitees', @collection.map (model) ->
-        model.get('email')
+      @model.set('invitees', @collection.pluck('email'))
 
     onCreate: (invitee, callback) ->
       return callback({ email: window.RetailTracker.i18n.invalidEmail }) if not invitee.get('email')

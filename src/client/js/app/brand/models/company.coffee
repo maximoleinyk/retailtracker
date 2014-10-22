@@ -6,6 +6,7 @@ define (require) ->
   class Company extends MongoModel
 
     defaults:
+      employees: []
       invitees: []
       currencyCode: 'UAH'
       currencyRate: 1
@@ -21,6 +22,3 @@ define (require) ->
       .then (result) =>
         @set @parse(result)
         @commit()
-
-    delete: () ->
-      @request('del', '/company/delete', @toJSON())

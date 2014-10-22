@@ -20,6 +20,11 @@ define (require) ->
             id: object.iso.code
             text: object.iso.code
 
+    renderInvitees: ->
+      @inviteList.show new InviteList({
+        model: @model
+      })
+
     renderSelect: ->
       @ui.$select.select2()
 
@@ -28,13 +33,10 @@ define (require) ->
 
     create: (e) ->
       e.preventDefault()
+      @validation.reset()
 
       @model.create()
       .then =>
         @navigate('')
       .then null, (err) =>
-
-    renderInvitees: ->
-      @inviteList.show new InviteList({
-        model: @model
-      })
+        @validation.show(err)

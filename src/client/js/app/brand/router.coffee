@@ -6,10 +6,9 @@ define (require) ->
   Router.extend
 
     appRoutes:
-      '': 'home'
+      '': 'dashboard'
 
       'company/create': 'createCompany'
-      'company/:id': 'viewCompany'
       'company/:id/edit': 'editCompany'
 
       'settings/:view': 'settings'
