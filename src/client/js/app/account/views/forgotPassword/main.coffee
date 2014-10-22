@@ -6,16 +6,14 @@ define (require) ->
   sessionStore = require('util/sessionStore')
   Promise = require('rsvp').Promise
   ForgotPasswordSuccessPage = require('cs!./sent')
+  Backbone = require('backbone')
 
   Marionette.ItemView.extend
+
     template: require('hbs!./main')
-    binding: true
 
     initialize: ->
       @model = new Backbone.Model()
-
-    events:
-      'submit': 'sendEmail'
 
     sendEmail: (e) ->
       e.preventDefault();

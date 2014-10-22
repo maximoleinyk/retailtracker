@@ -19,7 +19,5 @@ define (require) ->
           if err then reject(err) else resolve(response)
 
       changeProfileSettings
-      .then =>
-        console.log('Success')
       .then null, (err) =>
         @validation.show(err.errors)

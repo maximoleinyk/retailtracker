@@ -10,7 +10,6 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./login')
-    binding: true
 
     initialize: ->
       @model = new Backbone.Model()

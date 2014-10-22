@@ -1,15 +1,14 @@
 <div class="page-title">{{i18n.profileSettings}}</div>
 <div class="content">
     <div class="warning" data-validation="generic" data-hide></div>
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" data-submit="save">
         <fieldset>
             <legend>{{i18n.personalData}}</legend>
             <div class="form-group">
                 <label for="firstName" class="col-sm-3 control-label">{{i18n.firstName}}</label>
 
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" id="firstName" name="firstName" data-value="model.firstName"
-                           autofocus>
+                    <input type="text" class="form-control" id="firstName" name="firstName" autofocus data-bind>
 
                     <div class="help-block" data-validation="firstName"></div>
                 </div>
@@ -18,14 +17,14 @@
                 <label for="lastName" class="col-sm-3 control-label">{{i18n.lastName}}</label>
 
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" id="lastName" name="lastName" data-value="model.lastName">
+                    <input type="text" class="form-control" id="lastName" name="lastName" data-bind>
 
                     <div class="help-block" data-validation="lastName"></div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-3">
-                    <button type="submit" class="btn btn-success" data-click="save" data-disable-on-sync>{{i18n.save}}</button>
+                    <button type="submit" class="btn btn-success" data-disable-on-sync>{{i18n.save}}</button>
                 </div>
             </div>
         </fieldset>

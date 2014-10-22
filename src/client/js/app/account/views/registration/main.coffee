@@ -5,14 +5,11 @@ define (require) ->
   Marionette = require('marionette')
   Promise = require('rsvp').Promise
   RegistrationSuccessPage = require('cs!./sent')
+  Backbone = require('backbone')
 
   Marionette.ItemView.extend
 
     template: require('hbs!./main')
-    binding: true
-
-    events:
-      'click @ui.$registerButton': 'register'
 
     initialize: ->
       @model = new Backbone.Model()

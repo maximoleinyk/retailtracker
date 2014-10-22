@@ -2,11 +2,11 @@
     <header>{{i18n.forgotPassword}}</header>
     <section>
         <div class="warning" data-validation="generic" data-hide></div>
-        <form>
+        <form data-submit="sendEmail">
             <div class="form-group">
                 <label for="email">{{i18n.email}}</label>
-                <input type="email" id="email" name="email" data-value="model.email" class="form-control"
-                       placeholder="Почтовый адрес" title="Почтовый адрес" autofocus/>
+                <input type="email" id="email" name="email" class="form-control" placeholder="{{i18n.emailAddress}}"
+                       title="{{i18n.emailAddress}}" autofocus data-bind/>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success center-block" data-disable-on-sync>{{i18n.send}}</button>

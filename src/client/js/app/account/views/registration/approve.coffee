@@ -7,11 +7,8 @@ define (require) ->
   RegistrationCompleted = require('cs!./completed')
 
   Marionette.ItemView.extend
-    template: require('hbs!./approve')
-    binding: true
 
-    events:
-      'submit': 'approve'
+    template: require('hbs!./approve')
 
     approve: (e) ->
       e.preventDefault()

@@ -6,9 +6,9 @@ define (require) ->
   Promise = require('rsvp').Promise
 
   Marionette.ItemView.extend
+
     template: require('hbs!./security')
     className: 'blank'
-    binding: true
 
     save: (e) ->
       e.preventDefault()

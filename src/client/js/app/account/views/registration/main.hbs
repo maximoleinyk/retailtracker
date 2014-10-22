@@ -2,23 +2,24 @@
     <header>{{i18n.registration}}</header>
     <section>
         <div class="warning" data-validation="generic" data-hide></div>
-        <form>
+        <form data-submit="register">
             <div class="form-group">
                 <label for="firstName">{{i18n.firstName}}</label>
-                <input type="text" id="firstName" name="firstName" data-value="model.firstName" class="form-control"
-                       autofocus title="Имя пользователя" placeholder="Как к вам обращаться?"/>
+                <input type="text" id="firstName" name="firstName" class="form-control"
+                       autofocus title="{{i18n.userName}}" placeholder="{{i18n.howShouldWeCallYou}}" data-bind/>
 
                 <div class="help-block" data-validation="firstName"></div>
             </div>
             <div class="form-group">
                 <label for="email">{{i18n.emailAddress}}</label>
-                <input type="email" id="email" name="email" data-value="model.email"
-                       class="form-control" title="Почтовый адрес" placeholder="Укажите ваш email"/>
+                <input type="email" id="email" name="email" class="form-control" title="{{i18n.emailAddress}}"
+                       placeholder="{{i18n.emailAddress}}" data-bind/>
 
                 <div class="help-block" data-validation="email"></div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success center-block" data-id="registerButton" data-disable-on-sync>{{i18n.register}}</button>
+                <button type="submit" class="btn btn-success center-block" data-id="registerButton"
+                        data-disable-on-sync>{{i18n.register}}</button>
             </div>
         </form>
     </section>

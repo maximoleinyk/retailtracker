@@ -7,11 +7,8 @@ define (require) ->
   PasswordSuccessfullyChanged = require('cs!./success')
 
   Marionette.ItemView.extend
-    template: require('hbs!./change')
-    binding: true
 
-    events:
-      'submit': 'change'
+    template: require('hbs!./change')
 
     change: (e) ->
       e.preventDefault()

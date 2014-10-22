@@ -2,17 +2,17 @@
     <header>{{i18n.registrationConfirm}}</header>
     <section>
         <div class="warning" data-validation="generic" data-hide></div>
-        <form>
+        <form data-submit="approve">
             <div class="form-group">
                 <label for="password">{{i18n.password}}</label>
-                <input type="password" id="password" name="password" data-value="model.password"
-                       class="form-control" placeholder="Введите пароль" title="Введите пароль" autofocus/>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="{{i18n.enterPassword}}" title="{{i18n.enterPassword}}" autofocus data-bind/>
                 <span class="help-block" data-validation="password" data-hide></span>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">{{i18n.confirmPassword}}</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" data-value="model.confirmPassword"
-                       class="form-control" placeholder="Подтвердите пароль" title="Подтвердите пароль"/>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                       placeholder="{{i18n.confirmPassword}}" title="{{i18n.confirmPassword}}" data-bind/>
                 <span class="help-block" data-validation="confirmPassword" data-hide></span>
             </div>
             <div class="form-group">

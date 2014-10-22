@@ -19,7 +19,6 @@ define (require) ->
       callback()
 
     onDelete: (model, callback) ->
-      console.log('Server removed item')
       @collection.remove(model)
       callback()
 
