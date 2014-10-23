@@ -28,6 +28,7 @@ define (require) ->
 
     renderSelect: ->
       @ui.$select.select2()
+      @ui.$select.select2('enable', false)
 
     cancel: ->
       @navigate('')
