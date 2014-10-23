@@ -14,4 +14,8 @@ class CompanyService
 
     @companyStore.create(data, callback)
 
+  findById: (companyId, callback) ->
+    return callback({ generic: 'Company id is not specified' }) if not companyId
+    @companyStore.findById(companyId, callback)
+
 module.exports = CompanyService

@@ -1,17 +1,15 @@
-<form autocomplete="off" class="form-horizontal container" data-submit="update">
+<form autocomplete="off" class="form-horizontal" data-submit="update">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 page-title">
             <h3>{{i18n.editCompany}}</h3>
-            <a href="/" data-url-catch>{{i18n.dashboard}}</a>
+            <a href="/" class="link-back" data-url-catch>{{i18n.dashboard}}</a>
         </div>
     </div>
     {{> app/brand/views/company/form }}
     <div class="row">
-        <div class="col-md-12">
-            <div class="form-control-static">
-                <button type="submit" class="btn btn-primary">{{i18n.save}}</button>
-                <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
-            </div>
+        <div class="col-md-12 form-control-static">
+            <button type="submit" class="btn btn-primary">{{i18n.save}}</button>
+            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
         </div>
     </div>
 </form>

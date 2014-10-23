@@ -9,6 +9,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./edit')
+    className: 'container'
 
     onRender: ->
       @renderInvitees()

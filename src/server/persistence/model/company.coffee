@@ -16,6 +16,7 @@ schema = mongoose.Schema
   currencyRate:
     type: Number
     required: true
+  employees: [mongoose.Schema.Types.ObjectId]
   invitees: [String]
 
 module.exports = mongoose.model('Company', schema)

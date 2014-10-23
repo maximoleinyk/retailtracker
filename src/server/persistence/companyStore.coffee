@@ -9,4 +9,7 @@ class CompanyStore
     company = new Company(data)
     company.save(callback)
 
+  findById: (id, callback) ->
+    Company.findById(id, callback)
+
 module.exports = CompanyStore

@@ -24,7 +24,7 @@ define (require) ->
       })
 
     editCompany: (id) ->
-      model = new Company({ id: id }, { parse: true })
+      model = new Company({ _id: id }, { parse: true })
       model.fetch().then =>
         @openPage new EditCompanyPage({
           model: model

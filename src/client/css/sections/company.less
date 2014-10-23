@@ -1,0 +1,59 @@
+@import "../globals/bootstrap/mixins";
+
+.company-list {
+  padding-top: 20px;
+
+  .company-item {
+    min-height: 75px;
+    border: 1px solid #d5d5d5;
+    border-left: 4px solid #d5d5d5;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+    .border-bottom-radius(2px);
+    .border-top-radius(2px);
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    > * {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    a.title {
+      color: #4183c4;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .description {
+      color: #888;
+      font-style: italic;
+    }
+
+    a.edit {
+      .opacity(0.5);
+      &:hover {
+        .opacity(1);
+      }
+    }
+
+    .info {
+      margin: 15px 0 5px 0;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        margin-right: 15px;
+      }
+    }
+  }
+}
