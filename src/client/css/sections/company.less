@@ -4,6 +4,7 @@
   padding-top: 20px;
 
   .company-item {
+    position: relative;
     min-height: 75px;
     border: 1px solid #d5d5d5;
     border-left: 4px solid #d5d5d5;
@@ -26,7 +27,7 @@
       white-space: nowrap;
     }
 
-    a.title {
+    .title {
       color: #4183c4;
       text-decoration: underline;
       &:hover {
@@ -39,7 +40,9 @@
       font-style: italic;
     }
 
-    a.edit {
+    .edit {
+      position: absolute;
+      right: 15px;
       .opacity(0.5);
       &:hover {
         .opacity(1);

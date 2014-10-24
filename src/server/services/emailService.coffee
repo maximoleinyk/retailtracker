@@ -1,4 +1,9 @@
 module.exports = (mailer, templateService) ->
+  companyInvite: (data, callback) ->
+    subject = 'Приглашение в компанию'
+    template = templateService.template('companyInvite', data)
+    mailer.send(data.email, subject, template, callback)
+
   successfulRegistration: (data, callback) ->
     subject = 'Регистрация завершена'
     template = templateService.template('successfulRegistration', data)

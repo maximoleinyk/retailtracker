@@ -14,8 +14,7 @@ module.exports = {
 
   create: (email, callback) ->
     generatorLinkService.generateLink (err, generatedLink) ->
-      return console.log(err) if err
-
+      return callback(err) if err
       data = {
         email: email,
         link: generatedLink

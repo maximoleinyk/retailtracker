@@ -67,12 +67,7 @@ module.exports =
       return callback({ generic: 'Учетная запись уже существует' }) if user
 
       linkService.create data.email, (err, link) ->
-        inviteData = {
-          firstName: data.firstName
-          email: data.email
-          link: link.link
-        }
-        inviteService.create(inviteData, callback)
+        inviteService.create(data.firstName, data.email, link.link, callback)
 
   forgotPassword: (email, callback) ->
     return callback({ generic: '' }) if not email

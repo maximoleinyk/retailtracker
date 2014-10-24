@@ -23,4 +23,9 @@ class CompanyController
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
+    @router.put '/company/update', authFilter, (req, res) =>
+      @companyService.create req.body, (err, result) ->
+        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
+        res.status(HttpStatus.OK).send(result)
+
 module.exports = CompanyController

@@ -3,7 +3,6 @@ mongoose = require('mongoose')
 schema = mongoose.Schema
   firstName:
     type: String
-    required: true
   email:
     type: String
     unique: true
@@ -12,5 +11,6 @@ schema = mongoose.Schema
     type: String
     unique: true
     required: true
+  companyId: mongoose.Schema.Types.ObjectId
 
 module.exports = mongoose.model('Invite', schema)
