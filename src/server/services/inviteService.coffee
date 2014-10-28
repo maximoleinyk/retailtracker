@@ -20,8 +20,9 @@ module.exports = {
       mail = emailService(mailer, templateService)
       mail.registrationInvite(invite, callback)
 
-  createCompanyInvite: (email, link, companyId, callback) ->
+  createCompanyInvite: (firstName, email, link, companyId, callback) ->
     data = {
+      firstName: firstName
       email: email
       link: link
       companyId: companyId

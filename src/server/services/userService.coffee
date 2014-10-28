@@ -11,7 +11,7 @@ module.exports =
   changeForgottenPassword: (data, callback) ->
     @changePassword data, (err, user) ->
       linkService.removeByKey data.link, (err) ->
-        return console.log(err) if err
+        return callback(err) if err
         changePasswordData = {
           email: data.email
           firstName: user.firstName
@@ -29,12 +29,12 @@ module.exports =
     return callback({ generic: 'Пароли не совпадают' }) if password and confirmPassword and password isnt confirmPassword
 
     @findByEmail data.email, (err, user) =>
-      return console.log(err) if err
+      return callback(err) if err
       return callback({ generic: 'Такой учетной записи не сущетвует' }) if not user
 
       user.password = @encryptPassword(password)
       userStore.update user, (err) ->
-        return console.log(err) if err
+        return callback(err) if err
         callback(null, user)
 
   approveRegistration: (data, callback) ->
@@ -46,7 +46,7 @@ module.exports =
     return callback({ generic: 'Пароли не совпадают' }) if password and confirmPassword and password isnt confirmPassword
 
     inviteService.find data.link, (err, invite) =>
-      return console.log(err) if err
+      return callback(err) if err
       return callback({ generic: 'Вы уже подтверждали регистрацию' }) if not err and not invite
 
       user = {
@@ -55,7 +55,7 @@ module.exports =
         password: data.password
       }
       @create user, (err) ->
-        return console.log(err) if err
+        return callback(err) if err
         inviteService.remove(invite, callback)
 
   register: (data, callback) ->
@@ -63,7 +63,7 @@ module.exports =
     return callback({ email: '' }) if not data.email
 
     @findByEmail data.email, (err, user) ->
-      return console.log(err) if err
+      return callback(err) if err
       return callback({ generic: 'Учетная запись уже существует' }) if user
 
       linkService.create data.email, (err, link) ->
@@ -76,11 +76,11 @@ module.exports =
       return callback({ generic: 'Учетной записи не найдено' }) if not user
 
       linkService.findByEmail email, (err, link) ->
-        return console.log(err) if err
+        return callback(err) if err
         return callback({ generic: 'Письмо уже было отправлено' }) if link
 
         linkService.create email, (err, link) ->
-          return console.log(err) if err
+          return callback(err) if err
 
           mail = emailService(mailer, templateService)
           mail.changePassword(link, callback)

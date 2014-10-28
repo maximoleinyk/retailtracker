@@ -17,16 +17,19 @@ class CompanyService
     @companyStore.create data, (err, companyModel) =>
       return callback(err) if err
 
-      promises = _.map data.invitees, (email) =>
+      invites = _.map data.invitees, (employee) =>
+        email = employee.email
+
         createLink = new Promise (resolve, reject) =>
           @linkService.create email, (err, link) =>
             if err then reject(err) else resolve(link)
+
         createLink.then (linkModel) =>
           new Promise (resolve, reject) =>
-            @inviteService.createCompanyInvite linkModel.email, linkModel.link, companyModel._id, (err, response) =>
+            @inviteService.createCompanyInvite employee.firstName, email, linkModel.link, companyModel._id, (err, response) =>
               if err then reject(err) else resolve(response)
 
-      Promise.all(promises)
+      Promise.all(invites)
       .then ->
         callback(null, companyModel)
       .catch(callback)

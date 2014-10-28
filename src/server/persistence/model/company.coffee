@@ -16,7 +16,12 @@ schema = mongoose.Schema
   currencyRate:
     type: Number
     required: true
-  employees: [mongoose.Schema.Types.ObjectId]
-  invitees: [String]
+  employees: [
+    {
+      type: mongoose.Schema.Types.ObjectId
+      ref: 'User'
+    }
+  ]
+  invitees: mongoose.Schema.Types.Mixed
 
 module.exports = mongoose.model('Company', schema)

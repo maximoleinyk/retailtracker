@@ -1,6 +1,6 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  MongoModel = require('cs!app/common/mongoModel')
 
-  Backbone.Model.extend({})
+  class Employee extends MongoModel
