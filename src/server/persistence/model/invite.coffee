@@ -1,6 +1,6 @@
 mongoose = require('mongoose')
 
-schema = mongoose.Schema
+Schema = mongoose.Schema
   firstName:
     type: String
   email:
@@ -11,6 +11,10 @@ schema = mongoose.Schema
     type: String
     unique: true
     required: true
-  companyId: mongoose.Schema.Types.ObjectId
+  companyId:
+    type: mongoose.Schema.Types.ObjectId
+    ref: 'Company'
 
-module.exports = mongoose.model('Invite', schema)
+Schema.index({ email: 1, link: 1 }, { unique: true })
+
+module.exports = mongoose.model('Invite', Schema)

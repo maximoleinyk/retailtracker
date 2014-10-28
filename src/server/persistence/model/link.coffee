@@ -1,6 +1,6 @@
 mongoose = require('mongoose')
 
-schema = mongoose.Schema
+Schema = mongoose.Schema
   email:
     type: String
     unique: true
@@ -10,4 +10,6 @@ schema = mongoose.Schema
     unique: true
     required: true
 
-module.exports = mongoose.model('Link', schema)
+Schema.index({ email: 1, link: 1 }, { unique: true })
+
+module.exports = mongoose.model('Link', Schema)
