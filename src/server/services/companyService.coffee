@@ -19,16 +19,16 @@ class CompanyService
           @inviteService.createCompanyInvite employee.firstName, email, link.link, companyId, (err, response) =>
             if err then reject(err) else resolve(response)
 
-  findAllOwnedByUser: (userId, callback) ->
-    @companyStore.findAllOwnedByUser(userId, callback)
+  findAllOwnedByUser: (ns, userId, callback) ->
+    @companyStore.findAllOwnedByUser(ns, userId, callback)
 
-  update: (data, callback) ->
+  update: (ns, data, callback) ->
     return callback({ name: i18n.nameRequired }) if not data.name
     return callback({ currencyCode: i18n.currencyCode }) if not data.currencyCode
     return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
 
     loadCompany = new Promise (resolve, reject) =>
-      @companyStore.findById data._id, (err, result) =>
+      @companyStore.findById ns, data._id, (err, result) =>
         if err then reject(err) else resolve(result)
 
     loadCompany
@@ -46,7 +46,7 @@ class CompanyService
 
     .then =>
       new Promise (resolve, reject) =>
-        @companyStore.update data, (err, result) =>
+        @companyStore.update ns, data, (err, result) =>
           if err then reject(err) else resolve(result)
 
     .then (company) =>
@@ -61,13 +61,13 @@ class CompanyService
     .then(callback)
     .catch(callback)
 
-  create: (data, callback) ->
+  create: (ns, data, callback) ->
     return callback({ name: i18n.nameRequired }) if not data.name
     return callback({ currencyCode: i18n.currencyCode }) if not data.currencyCode
     return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
 
     createCompany = new Promise (resolve, reject) =>
-      @companyStore.create data, (err, result) ->
+      @companyStore.create ns, data, (err, result) ->
         if err then reject(err) else resolve(result)
 
     createCompany.then (company) =>
@@ -76,8 +76,8 @@ class CompanyService
     .then(callback)
     .catch(callback)
 
-  findById: (companyId, callback) ->
+  findById: (ns, companyId, callback) ->
     return callback({ generic: 'Company id is not specified' }) if not companyId
-    @companyStore.findById(companyId, callback)
+    @companyStore.findById(ns, companyId, callback)
 
 module.exports = CompanyService

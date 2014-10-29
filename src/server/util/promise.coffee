@@ -11,7 +11,7 @@ class Promise
     callback(resolve, reject)
     return deferred.promise
 
-Promise.all = ->
-  Q.all.apply(Q, arguments)
+  @all = ->
+    Q.all.apply(Q, arguments)
 
 module.exports = Promise

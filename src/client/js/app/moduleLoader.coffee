@@ -47,6 +47,8 @@ define (require) ->
             if url.indexOf('account') isnt 0
               sessionStore.add('redirectUrl', url)
               return window.location.replace(@root + 'account/login')
+            else
+              sessionStore.add('redirectUrl', 'brand')
 
           start(_.extend(module, {
             root: (@root + module.root).replace('//', '/')

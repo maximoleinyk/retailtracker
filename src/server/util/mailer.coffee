@@ -9,15 +9,19 @@ transporter = nodeMailer.createTransport
     pass: config.mailer.pass
 
 module.exports = {
+
   send: (to, subject, template, callback) ->
     template (err, html) ->
       return callback(err) if err
-      transporter.sendMail {
+
+      data = {
         from: config.mailer.user
         to: to
         subject: subject
         html: html
-      }, callback
+      }
+      transporter.sendMail(data, callback)
+
 }
 
 
