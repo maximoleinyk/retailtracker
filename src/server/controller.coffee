@@ -18,6 +18,9 @@ CurrencyStore = inject('persistence/currencyStore')
 CompanyController = inject('controllers/company')
 CompanyService = inject('services/companyService')
 CompanyStore = inject('persistence/companyStore')
+AccountController = inject('controllers/account')
+AccountService = inject('services/accountService')
+AccountStore = inject('persistence/accountStore')
 
 class PageController
 
@@ -39,6 +42,9 @@ class PageController
 
     @router.get '/404', (req, res) ->
       res.status(HttpStatus.NOT_FOUND).end()
+
+    accountController = new AccountController(new AccountService(new AccountStore), inviteService, userService, i18nService)
+    accountController.register(@router)
 
     securityController = new SecurityController(inviteService, linkService, userService)
     securityController.register(@router, @passport)

@@ -1,24 +1,18 @@
 define (require) ->
   'use strict'
 
-  http = require('util/http')
   Marionette = require('marionette')
-  Promise = require('rsvp').Promise
   RegistrationCompleted = require('cs!./completed')
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./approve')
+    template: require('hbs!./confirm')
 
-    approve: (e) ->
+    confirm: (e) ->
       e.preventDefault()
       @validation.reset()
 
-      register = new Promise (resolve, reject) =>
-        http.post '/security/approve', @model.toJSON(), (err, response) ->
-          if err then reject(err) else resolve(response)
-
-      register
+      @model.confirm()
       .then =>
         @eventBus.trigger('open:page', new RegistrationCompleted)
       .then null, (err) =>

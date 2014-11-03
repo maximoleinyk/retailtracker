@@ -1,9 +1,7 @@
 define (require) ->
   'use strict'
 
-  http = require('util/http')
   Marionette = require('marionette')
-  Promise = require('rsvp').Promise
   PasswordSuccessfullyChanged = require('cs!./success')
 
   Marionette.ItemView.extend
@@ -14,11 +12,7 @@ define (require) ->
       e.preventDefault()
       @validation.reset()
 
-      register = new Promise (resolve, reject) =>
-        http.post '/security/password/change', @model.toJSON(), (err, response) ->
-          if err then reject(err) else resolve(response)
-
-      register
+      @model.changePassword()
       .then =>
         @eventBus.trigger('open:page', new PasswordSuccessfullyChanged)
       .then null, (err) =>

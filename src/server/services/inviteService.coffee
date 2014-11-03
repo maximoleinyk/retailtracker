@@ -29,7 +29,6 @@ module.exports = {
         if err then reject(err) else resolve(link)
 
     createLink
-    # create link
     .then (link) =>
       new Promise (resolve, reject) =>
         data = {
@@ -40,7 +39,6 @@ module.exports = {
         inviteStore.create data, (err, invite) ->
           if err then reject(err) else resolve(invite)
 
-    # send email
     .then (invite) =>
       mail = emailService(mailer, templateService)
       new Promise (resolve, reject) =>

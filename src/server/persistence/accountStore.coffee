@@ -9,5 +9,8 @@ class AccountStore
   update: (data, callback) ->
     Account.update(data, callback)
 
+  findByLogin: (email, callback) ->
+    Account.findOne({ login: email }, callback)
+
 module.exports = AccountStore
 

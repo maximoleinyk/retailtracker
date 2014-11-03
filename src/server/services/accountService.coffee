@@ -1,6 +1,8 @@
 module.exports = AccountService
 
 encryptor = inject('util/encryptor')
+mailer = inject('util/mailer')
+templateService = inject('services/templateService')
 
 class AccountService
 
@@ -99,5 +101,36 @@ class AccountService
 
     .then(null, callback)
 
-  changeForgottenPassword: (email, link, newPassword, callback) ->
+  forgotPassword: (email, callback) ->
+    return callback({ email: @i18n.emailRequired }) if not email
+
+    findAccount = new Promise (resolve, reject) =>
+      @accountStore.findByLogin email, (err, account) ->
+        return reject(err) if err
+        return reject('Account not found') if not account
+
+        resolve(account)
+
+    findAccount
+    # TODO: remove previously created links
+    .then (account) =>
+      new Promise (resolve, reject) =>
+        @linkService.create email, (err, link) ->
+          if err then reject(err) else resolve({
+            link: link
+            account: account
+          })
+
+    .then (result) ->
+      new Promise (resolve, reject) ->
+        mail = emailService(mailer, templateService)
+        mail.changePassword result.link, (err, mail) ->
+          if err then reject(err) else resolve(mail)
+
+    .then (mail) ->
+      callback(null, mail)
+
+    .then(null, callback)
+
+  changeForgottenPassword: (key, email, newPassword) ->
 

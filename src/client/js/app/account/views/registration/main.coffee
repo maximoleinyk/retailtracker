@@ -1,18 +1,16 @@
 define (require) ->
   'use strict'
 
-  http = require('util/http')
   Marionette = require('marionette')
-  Promise = require('rsvp').Promise
   RegistrationSuccessPage = require('cs!./sent')
-  Backbone = require('backbone')
+  Account = require('app/account/models/account')
 
   Marionette.ItemView.extend
 
     template: require('hbs!./main')
 
     initialize: ->
-      @model = new Backbone.Model()
+      @model = new Account()
 
     register: (e) ->
       e.preventDefault()
@@ -22,11 +20,7 @@ define (require) ->
       @validation.reset()
       @ui.$registerButton.text('Регистрация...').attr('disabled', true)
 
-      register = new Promise (resolve, reject) =>
-        http.post '/security/register', @model.toJSON(), (err, response) ->
-          if err then reject(err) else resolve(response)
-
-      register
+      @model.register()
       .then =>
         @eventBus.trigger('open:page', new RegistrationSuccessPage)
       .then null, (err) =>
