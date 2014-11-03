@@ -1,11 +1,9 @@
 mongoose = require('mongoose')
 
 Schema = mongoose.Schema
-  firstName:
-    type: String
-  email:
-    type: String
-    unique: true
+  user:
+    type: mongoose.Schema.Types.ObjectId
+    ref: 'User'
     required: true
   link:
     type: String

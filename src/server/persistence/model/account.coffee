@@ -14,6 +14,12 @@ class AccountSchema extends AbstractSchema
         type: mongoose.Schema.Types.ObjectId
         ref: 'Account'
         default: null
+      login:
+        type: String
+        required: true
+      password:
+        type: String
+        required: true
       companies: [
         {
           ns:
