@@ -4,7 +4,7 @@ _ = require('underscore')
 
 class CompanyService
 
-  constructor: (@linkService, @inviteService, @companyStore) ->
+  constructor: (@inviteService, @companyStore) ->
 
   getInvitePromises: (invitees, companyId) ->
     _.map invitees, (employee) =>

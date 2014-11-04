@@ -80,9 +80,19 @@ module.exports = {
       callback({ generic: err })
 
   removeById: (invite, callback) ->
-    inviteStore.remove invite._id, (err) ->
-      return callback(err) if err
-      linkService.removeByKey invite.link, (err) ->
+    remove = new Promise (resolve, reject) =>
+      inviteStore.remove invite._id, (err, result) ->
+        if err then reject(err) else resolve(result)
+
+    remove
+    .then (result) ->
+      new Promise (resolve, reject) =>
         mail = emailService(mailer, templateCompiler)
-        mail.successfulRegistration(invite, callback)
+        mail.successfulRegistration invite, (err, result) ->
+          if err then reject(err) else resolve(result)
+
+    .then (result) ->
+      callback(null, result)
+
+    .then(null, callback)
 }

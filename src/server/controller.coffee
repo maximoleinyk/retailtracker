@@ -64,7 +64,7 @@ class PageController
     currencyController = new CurrencyController(new CurrencyService(new CurrencyStore))
     currencyController.register(@router)
 
-    companyController = new CompanyController(new CompanyService(linkService, inviteService, new CompanyStore))
+    companyController = new CompanyController(new CompanyService(inviteService, new CompanyStore))
     companyController.register(@router)
 
     test(@router)
