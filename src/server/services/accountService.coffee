@@ -1,8 +1,7 @@
-module.exports = AccountService
-
 encryptor = inject('util/encryptor')
 mailer = inject('util/mailer')
 templateService = inject('services/templateService')
+Promise = inject('util/promise')
 
 class AccountService
 
@@ -179,3 +178,4 @@ class AccountService
       callback(null, result)
     .then(null, callback)
 
+module.exports = AccountService

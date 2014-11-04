@@ -9,10 +9,10 @@ define (require) ->
       @request('post', '/account/confirm', @toJSON())
 
     register: ->
-      @request('post', '/account/register', @model.toJSON())
+      @request('post', '/account/register', @toJSON())
 
     changePassword: ->
-      @request('post', '/account/password/change', @model.toJSON())
+      @request('post', '/account/password/change', @toJSON())
 
     forgotPassword: ->
-      @request('post', '/account/password/forgot', @model.toJSON())
+      @request('post', '/account/password/forgot', @toJSON())

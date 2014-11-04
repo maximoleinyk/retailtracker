@@ -43,7 +43,7 @@ class PageController
     @router.get '/404', (req, res) ->
       res.status(HttpStatus.NOT_FOUND).end()
 
-    accountController = new AccountController(new AccountService(new AccountStore), inviteService, userService, i18nService)
+    accountController = new AccountController(new AccountService(new AccountStore, inviteService, userService, i18nService))
     accountController.register(@router)
 
     securityController = new SecurityController(inviteService, linkService, userService)

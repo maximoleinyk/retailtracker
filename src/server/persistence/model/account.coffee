@@ -1,44 +1,34 @@
 mongoose = require('mongoose')
+_ = require('underscore')
 
-AbstractSchema = inject('util/abstractSchema')
-
-class AccountSchema extends AbstractSchema
-
-  getSchema: ->
-    mongoose.Schema
-      owner:
+schema = mongoose.Schema
+  owner:
+    type: mongoose.Schema.Types.ObjectId
+    ref: 'User'
+    required: true
+  dependsFrom:
+    type: mongoose.Schema.Types.ObjectId
+    ref: 'Account'
+    default: null
+  status:
+    type: String
+    required: true
+    default: 'OWN'
+  login:
+    type: String
+    required: true
+  password:
+    type: String
+    required: true
+  companies: [
+    {
+      ns:
+        type: String
+        required: true
+      company:
         type: mongoose.Schema.Types.ObjectId
-        ref: 'User'
-        required: true
-      dependsFrom:
-        type: mongoose.Schema.Types.ObjectId
-        ref: 'Account'
-        default: null
-      status:
-        type: String
-        required: true
-        default: 'OWN'
-      login:
-        type: String
-        required: true
-      password:
-        type: String
-        required: true
-      companies: [
-        {
-          ns:
-            type: String
-            required: true
-          company:
-            type: mongoose.Schema.Types.ObjectId
-            ref: 'Company'
-        }
-      ]
+        ref: 'Company'
+    }
+  ]
 
-  getName: ->
-    'Account'
-
-  getCollectionName: ->
-    'accounts'
-
-module.exports = AccountSchema
+module.exports = mongoose.model('Account', schema)
