@@ -6,7 +6,7 @@ define (require) ->
   class Uom extends MongoModel
 
     create: (callback) ->
-      @request('post', '/uom/create', @toJSON())
+      @promise('post', '/uom/create', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
@@ -14,7 +14,7 @@ define (require) ->
       .then(null, callback)
 
     update: (callback) ->
-      @request('put', '/uom/update', @toJSON())
+      @promise('put', '/uom/update', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
@@ -22,7 +22,7 @@ define (require) ->
       .then(null, callback)
 
     delete: (callback) ->
-      @request('del', '/uom/delete', @toJSON())
+      @promise('del', '/uom/delete', @toJSON())
       .then ->
         callback(null)
       .then(null, callback)

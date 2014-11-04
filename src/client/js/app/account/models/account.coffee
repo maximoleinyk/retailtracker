@@ -6,13 +6,13 @@ define (require) ->
   class Account extends MongoModel
 
     confirm: ->
-      @request('post', '/account/confirm', @toJSON())
+      @promise('post', '/account/confirm', @toJSON())
 
     register: ->
-      @request('post', '/account/register', @toJSON())
+      @promise('post', '/account/register', @toJSON())
 
     changePassword: ->
-      @request('post', '/account/password/change', @toJSON())
+      @promise('post', '/account/password/change', @toJSON())
 
     forgotPassword: ->
-      @request('post', '/account/password/forgot', @toJSON())
+      @promise('post', '/account/password/forgot', @toJSON())

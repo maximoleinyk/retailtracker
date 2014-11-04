@@ -13,7 +13,7 @@ define (require) ->
     commit: ->
       @origin = @toJSON()
 
-    request: (method, url, data) ->
+    promise: (method, url, data) ->
       new Promise (resolve, reject) ->
         http[method] url, data, (err, result) ->
           if err then reject(err) else resolve(result)

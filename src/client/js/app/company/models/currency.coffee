@@ -6,7 +6,7 @@ define (require) ->
   Backbone.Model.extend
 
     create: (callback) ->
-      @request('post', '/currency/create', @toJSON())
+      @promise('post', '/currency/create', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
@@ -14,7 +14,7 @@ define (require) ->
       .then(null, callback)
 
     update: (callback) ->
-      @request('put', '/currency/update', @toJSON())
+      @promise('put', '/currency/update', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
@@ -22,7 +22,7 @@ define (require) ->
       .then(null, callback)
 
     delete: (callback) ->
-      @request('del', '/currency/delete', @toJSON())
+      @promise('del', '/currency/delete', @toJSON())
       .then ->
         callback(null)
       .then(null, callback)
