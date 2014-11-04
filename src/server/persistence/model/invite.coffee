@@ -9,9 +9,10 @@ Schema = mongoose.Schema
     type: String
     unique: true
     required: true
-  companyId:
+  company:
     type: mongoose.Schema.Types.ObjectId
     ref: 'Company'
+    default: null
 
 Schema.index({ email: 1, link: 1 }, { unique: true })
 

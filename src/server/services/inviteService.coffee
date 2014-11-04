@@ -1,14 +1,15 @@
 inviteStore = inject('persistence/inviteStore')
 emailService = inject('services/emailService')
 mailer = inject('util/mailer')
-templateService = inject('services/templateService')
+templateCompiler = inject('services/templateService')
 linkService = inject('services/linkService')
 Promise = inject('util/promise')
+generatorLinkService = inject('util/linkGenerator')
 
 module.exports = {
 
-  find: (key, callback) ->
-    inviteStore.findByKey(key, callback)
+  findByLink: (key, callback) ->
+    inviteStore.find(key, callback)
 
   create: (firstName, email, link, callback) ->
     data = {
@@ -18,29 +19,28 @@ module.exports = {
     }
     inviteStore.create data, (err, invite) ->
       return callback(err) if err
-      mail = emailService(mailer, templateService)
+      mail = emailService(mailer, templateCompiler)
       mail.registrationInvite(invite, callback)
 
   createAccountInvite: (user, callback) ->
     return callback({ generic: 'User object must be provided' }) if not user
 
-    createLink = new Promise (resolve, reject) =>
-      linkService.create user.email, (err, link) ->
+    generateLink = new Promise (resolve, reject) =>
+      generatorLinkService.generateLink (err, link) ->
         if err then reject(err) else resolve(link)
 
-    createLink
+    generateLink
     .then (link) =>
       new Promise (resolve, reject) =>
         data = {
-          firstName: user.firstName
-          email: user.email
-          link: link.link
+          user: user._id
+          link: link
         }
         inviteStore.create data, (err, invite) ->
           if err then reject(err) else resolve(invite)
 
     .then (invite) =>
-      mail = emailService(mailer, templateService)
+      mail = emailService(mailer, templateCompiler)
       new Promise (resolve, reject) =>
         mail.registrationInvite invite, (err, result) ->
           if err then reject(err) else resolve(result)
@@ -51,25 +51,38 @@ module.exports = {
     .then null, (err) ->
       callback({ generic: err })
 
-  createCompanyInvite: (firstName, email, link, companyId, callback) ->
-    data = {
-      firstName: firstName
-      email: email
-      link: link
-      companyId: companyId
-    }
-    inviteStore.create data, (err, invite) ->
-      return callback(err) if err
-      mail = emailService(mailer, templateService)
-      mail.companyInvite(invite, callback)
+  createCompanyInvite: (user, company, callback) ->
+    generateLink = new Promise (resolve, reject) =>
+      generatorLinkService.generateLink (err, link) ->
+        if err then reject(err) else resolve(link)
 
-  findByLink: (link, callback) ->
-    inviteStore.findByLink(link, callback)
+    generateLink
+    .then (link) =>
+      new Promise (resolve, reject) =>
+        data = {
+          user: user
+          link: link
+          company: company
+        }
+        inviteStore.create data, (err, invite) ->
+          if err then reject(err) else resolve(invite)
 
-  remove: (data, callback) ->
-    inviteStore.remove data._id, (err) ->
+    .then (invite) =>
+      new Promise (resolve, reject) =>
+        mail = emailService(mailer, templateCompiler)
+        mail.companyInvite invite, (err, result) ->
+          if err then reject(err) else resolve(result)
+
+    .then (result) ->
+      callback(null, result)
+
+    .then null, (err) ->
+      callback({ generic: err })
+
+  removeById: (invite, callback) ->
+    inviteStore.remove invite._id, (err) ->
       return callback(err) if err
-      linkService.removeByKey data.link, (err) ->
-        mail = emailService(mailer, templateService)
-        mail.successfulRegistration(data, callback)
+      linkService.removeByKey invite.link, (err) ->
+        mail = emailService(mailer, templateCompiler)
+        mail.successfulRegistration(invite, callback)
 }

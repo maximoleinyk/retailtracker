@@ -13,11 +13,27 @@ class AccountService
     return callback({ firstName: @i18n.firstNameRequired }) if not firstName
     return callback({ email: @i18n.emailRequired }) if not email
 
-    findUser = new Promise (resolve, reject) =>
-      @userService.findByEmail email, (err, account) ->
-        if err then reject(err) else resolve(account)
+    findAccount = new Promise (resolve, reject) =>
+      @accountStore.findByLogin email, (err, account) =>
+        return reject(err) if err
+        if account
+          switch account.status
+            when 'DEPENDANT' then return new Promise (resolve, reject) =>
+              account.status = 'OWN'
+              account.dependsFrom = null
+              @accountStore.update account, (err, account) ->
+                if err then reject(err) else resolve(account)
+            else
+              reject('Such account already exists')
+        else
+          resolve(account)
 
-    findUser
+    findAccount
+    .then (account) =>
+      new Promise (resolve, reject) =>
+        @userService.findByEmail account.login, (err, user) ->
+          if err then reject(err) else resolve(user)
+
     .then (user) =>
       if not user
         return new Promise (resolve, reject) =>
@@ -67,7 +83,7 @@ class AccountService
 
     .then (response) =>
       new Promise (resolve, reject) =>
-        @inviteService.remove response.invite._id, (err) ->
+        @inviteService.remove response.invite, (err) ->
           if err then reject(err) else resolve(response.account)
 
     .then (account) ->
@@ -82,7 +98,7 @@ class AccountService
     return callback({ generic: 'Passwords do not match to each other' }) if oldPassword isnt encryptor.encode(newPassword)
 
     findAccount = new Promise (resolve, reject) =>
-      @accountStore.findByOwner email, (err, account) ->
+      @accountStore.findByLogin email, (err, account) ->
         return reject(err) if err
         return reject({ generic: 'Account cannot be found' }) if not account
 
@@ -132,5 +148,34 @@ class AccountService
 
     .then(null, callback)
 
-  changeForgottenPassword: (key, email, newPassword) ->
+  changeForgottenPassword: (key, email, newPassword, callback) ->
+    return callback({ email: @i18n.emailRequired }) if not email
+    return callback({ key: @i18n.linkRequired }) if not key
+    return callback({ newPassword: @i18n.newPasswordRequired }) if not newPassword
+
+    findLink = new Promise (resolve, reject) =>
+      @linkService.findByKey key, (err, key) ->
+        return reject(err) if err
+        return reject({ generic: 'Change password request was not found' }) if not key
+
+        resolve(key)
+
+    findLink
+    .then (key) =>
+      new Promise (resolve, reject) =>
+        @accountStore.findByLogin email, (err, account) ->
+          return reject(err) if err
+          return reject({ generic: 'Account cannot be found' }) if not account
+          resolve(account)
+
+    .then (account) =>
+      accountData = account.toJSON()
+      accountData.password = encryptor.encode(newPassword)
+      new Promise (resolve, reject) =>
+        @accountStore.update accountData, (err, account) ->
+          if err then reject(err) else resolve(account)
+
+    .then (result) ->
+      callback(null, result)
+    .then(null, callback)
 

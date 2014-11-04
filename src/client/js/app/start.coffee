@@ -13,8 +13,7 @@ define (require) ->
     }))
 
   App.addInitializer (options) ->
-    layout = new Layout(options)
-    layout.render()
+    new Layout(options).render()
 
     new options.Router({
       controller: new options.Controller(options)

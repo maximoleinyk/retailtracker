@@ -8,16 +8,9 @@ class CompanyService
 
   getInvitePromises: (invitees, companyId) ->
     _.map invitees, (employee) =>
-      email = employee.email
-
-      createLink = new Promise (resolve, reject) =>
-        @linkService.create email, (err, link) =>
-          if err then reject(err) else resolve(link)
-
-      createLink.then (link) =>
-        new Promise (resolve, reject) =>
-          @inviteService.createCompanyInvite employee.firstName, email, link.link, companyId, (err, response) =>
-            if err then reject(err) else resolve(response)
+      new Promise (resolve, reject) =>
+        @inviteService.createCompanyInvite null, companyId, (err, response) =>
+          if err then reject(err) else resolve(response)
 
   findAllOwnedByUser: (ns, userId, callback) ->
     @companyStore.findAllOwnedByUser(ns, userId, callback)

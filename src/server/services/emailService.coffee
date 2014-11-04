@@ -1,26 +1,26 @@
-module.exports = (mailer, templateService) ->
+module.exports = (mailer, compile) ->
   companyInvite: (data, callback) ->
     subject = 'Приглашение в компанию'
-    template = templateService.template('companyInvite', data)
+    template = compile('companyInvite', data)
     mailer.send(data.email, subject, template, callback)
 
   successfulRegistration: (data, callback) ->
     subject = 'Регистрация завершена'
-    template = templateService.template('successfulRegistration', data)
+    template = compile('successfulRegistration', data)
     mailer.send(data.email, subject, template, callback)
 
   registrationInvite: (data, callback) ->
     subject = 'Регистрация'
-    template = templateService.template('registrationInvite', data)
+    template = compile('registrationInvite', data)
     mailer.send(data.email, subject, template, callback)
 
   changePassword: (data, callback) ->
     subject = 'Забыли пароль?'
-    template = templateService.template('forgotPassword', data)
+    template = compile('forgotPassword', data)
     mailer.send(data.email, subject, template, callback)
 
   passwordChanged: (data, callback) ->
     subject = 'Пароль изменен'
-    template = templateService.template('passwordChanged', data)
+    template = compile('passwordChanged', data)
     mailer.send(data.email, subject, template, callback)
 
