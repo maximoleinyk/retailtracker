@@ -13,8 +13,13 @@ class SecurityController
     router.post '/security/login', (req, res, next) =>
       authCallback = @securityService.authenticate req.body, (err, account) =>
         return @forbidden(err, res) if err
-        req.login account, (err) ->
+        ns = account._id.toString()
+        req.login account, (err) =>
           return next(err) if err
+
+          req.session.cookies.ns = ns
+          req.session.save()
+
           res.status(HttpStatus.NO_CONTENT).end()
 
       authCallback(req, res, next) if authCallback
