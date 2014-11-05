@@ -1,9 +1,9 @@
-i18nService = inject('services/i18nService')
+i18n = inject('i18n')
 
 class CurrencyService
 
   constructor: (@currencyStore) ->
-    @i18n = i18nService.bundle('validation')
+    @i18n = i18n.bundle('validation')
 
   findAll: (callback) ->
     @currencyStore.findAll(callback)

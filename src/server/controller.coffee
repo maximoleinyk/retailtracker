@@ -8,7 +8,7 @@ test = inject('controllers/test')
 inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
 UserService = inject('services/userService')
-i18nService = inject('services/i18nService')
+i18n = inject('i18n')
 settingsService = inject('services/settingsService')
 UomService = inject('services/uomService')
 UomStore = inject('persistence/uomStore')
@@ -32,7 +32,7 @@ class PageController
 
     userService = new UserService(new UserStore)
 
-    accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18nService)
+    accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18n)
 
     authenticator = new Authentication(accountService)
     authenticator.applyLocalStrategy(@passport)
@@ -65,7 +65,7 @@ class PageController
     settingsController = new SettingsController(settingsService)
     settingsController.register(@router)
 
-    i18nController = new ResourceController(i18nService)
+    i18nController = new ResourceController(i18n)
     i18nController.register(@router)
 
     uomController = new UomController(new UomService(new UomStore))

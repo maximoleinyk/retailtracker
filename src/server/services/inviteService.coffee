@@ -1,7 +1,7 @@
 inviteStore = inject('persistence/inviteStore')
-emailService = inject('services/emailService')
-mailer = inject('util/mailer')
-templateCompiler = inject('services/templateService')
+emailTemplates = inject('email/templates/mapper')
+mailer = inject('email/mailer')
+templateCompiler = inject('email/templateCompiler')
 linkService = inject('services/linkService')
 Promise = inject('util/promise')
 generatorLinkService = inject('util/linkGenerator')
@@ -19,7 +19,7 @@ module.exports = {
     }
     inviteStore.create data, (err, invite) ->
       return callback(err) if err
-      mail = emailService(mailer, templateCompiler)
+      mail = emailTemplates(mailer, templateCompiler)
       mail.registrationInvite(invite, callback)
 
   createAccountInvite: (user, callback) ->
@@ -40,7 +40,7 @@ module.exports = {
           if err then reject(err) else resolve(invite)
 
     .then (invite) =>
-      mail = emailService(mailer, templateCompiler)
+      mail = emailTemplates(mailer, templateCompiler)
       new Promise (resolve, reject) =>
         mail.registrationInvite invite, (err, result) ->
           if err then reject(err) else resolve(result)
@@ -69,7 +69,7 @@ module.exports = {
 
     .then (invite) =>
       new Promise (resolve, reject) =>
-        mail = emailService(mailer, templateCompiler)
+        mail = emailTemplates(mailer, templateCompiler)
         mail.companyInvite invite, (err, result) ->
           if err then reject(err) else resolve(result)
 
@@ -87,7 +87,7 @@ module.exports = {
     remove
     .then (result) ->
       new Promise (resolve, reject) =>
-        mail = emailService(mailer, templateCompiler)
+        mail = emailTemplates(mailer, templateCompiler)
         mail.successfulRegistration invite, (err, result) ->
           if err then reject(err) else resolve(result)
 

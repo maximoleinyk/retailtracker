@@ -1,8 +1,8 @@
 Encryptor = inject('util/Encryptor')
-mailer = inject('util/mailer')
-templateService = inject('services/templateService')
+mailer = inject('email/mailer')
+templateCompiler = inject('email/templatesCompiler')
 Promise = inject('util/promise')
-emailService = inject('services/emailService')
+emailTemplates = inject('email/templates/mapper')
 
 class AccountService
 
@@ -140,7 +140,7 @@ class AccountService
 
     .then (result) ->
       new Promise (resolve, reject) ->
-        mail = emailService(mailer, templateService)
+        mail = emailTemplates(mailer, templateCompiler)
         mail.changePassword result.link, (err, mail) ->
           if err then reject(err) else resolve(mail)
 

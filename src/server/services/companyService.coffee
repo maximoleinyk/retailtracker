@@ -1,4 +1,4 @@
-i18n = inject('services/i18nService').bundle('validation')
+i18n = inject('i18n').bundle('validation')
 Promise = inject('util/promise')
 _ = require('underscore')
 
