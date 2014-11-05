@@ -59,8 +59,7 @@ class PageController
     accountController = new AccountController(accountService)
     accountController.register(@router)
 
-
-    userController = new UserController()
+    userController = new UserController(userService)
     userController.register(@router)
 
     settingsController = new SettingsController(settingsService)

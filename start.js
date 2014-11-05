@@ -24,7 +24,7 @@ var path = require('path'),
 			name: 'retailtracker'
 		},
 		mailer: {
-			templatesDir: path.resolve(__dirname + '/src/server/services/templates'),
+			templatesDir: path.resolve(__dirname + '/src/server/email/templates'),
 			host: 'smtp.gmail.com',
 			port: 587,
 			user: 'retailtracker.noreply@gmail.com',

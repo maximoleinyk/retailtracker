@@ -24,7 +24,7 @@ class AccountService
               @accountStore.update account, (err, account) ->
                 if err then reject(err) else resolve(account)
             else
-              reject(@i18n.accountAlreadyExists)
+              reject({ generic: @i18n.accountAlreadyExists })
         else
           resolve(account)
 
@@ -54,8 +54,7 @@ class AccountService
     .then (result) ->
       callback(null, result)
 
-    .then null, (err) ->
-      callback({ generic: err })
+    .then(null, callback)
 
   approve: (link, password, callback) ->
     return callback({ link: @i18n.linkRequired }) if not link

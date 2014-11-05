@@ -16,16 +16,14 @@ class SecurityController
         ns = account._id.toString()
         req.login account, (err) =>
           return next(err) if err
-
-          req.session.cookies.ns = ns
-          req.session.save()
-
+          req.session.ns = ns
           res.status(HttpStatus.NO_CONTENT).end()
 
       authCallback(req, res, next) if authCallback
 
     router.delete '/security/logout', authFilter, (req, res) ->
       req.logout()
+      req.session.ns = null
       res.status(HttpStatus.NO_CONTENT).end()
 
 module.exports = SecurityController
