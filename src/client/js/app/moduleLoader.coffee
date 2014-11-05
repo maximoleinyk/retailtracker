@@ -4,6 +4,7 @@ define (require) ->
   http = require('util/http')
   _ = require('underscore')
   sessionStore = require('util/sessionStore')
+  Promise = require('rsvp').Promise
 
   class ModuleLoader
 
