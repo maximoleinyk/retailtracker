@@ -1,10 +1,9 @@
 HttpStatus = require('http-status-codes')
 SecurityController = inject('controllers/security')
+SecurityService = inject('services/securityService')
 UserController = inject('controllers/user')
 SettingsController = inject('controllers/settings')
-ResourceController = inject('controllers/i18n')
 UomController = inject('controllers/uom')
-test = inject('controllers/test')
 inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
 UserService = inject('services/userService')
@@ -21,7 +20,6 @@ CompanyStore = inject('persistence/companyStore')
 AccountController = inject('controllers/account')
 AccountService = inject('services/accountService')
 AccountStore = inject('persistence/accountStore')
-Authentication = inject('authentication')
 UserStore = inject('persistence/userStore')
 
 class PageController
@@ -34,8 +32,11 @@ class PageController
 
     accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18n)
 
-    authenticator = new Authentication(accountService)
-    authenticator.applyLocalStrategy(@passport)
+    securityService = new SecurityService(@passport, accountService, i18n)
+    securityService.applyLocalStrategy()
+
+    securityController = new SecurityController(securityService)
+    securityController.register(@router)
 
     # redirect from login page if user is authenticated
     @router.get '/page/account/login', (req, res, next) ->
@@ -52,21 +53,18 @@ class PageController
     @router.get '/404', (req, res) ->
       res.status(HttpStatus.NOT_FOUND).end()
 
+    @router.get '/i18n/messages/:batch', (req, res) =>
+      res.send(i18n.bundle(req.params.batch))
 
     accountController = new AccountController(accountService)
     accountController.register(@router)
 
-    securityController = new SecurityController(inviteService, linkService, userService)
-    securityController.register(@router, @passport)
 
     userController = new UserController()
     userController.register(@router)
 
     settingsController = new SettingsController(settingsService)
     settingsController.register(@router)
-
-    i18nController = new ResourceController(i18n)
-    i18nController.register(@router)
 
     uomController = new UomController(new UomService(new UomStore))
     uomController.register(@router)
@@ -76,7 +74,5 @@ class PageController
 
     companyController = new CompanyController(new CompanyService(inviteService, new CompanyStore))
     companyController.register(@router)
-
-    test(@router)
 
 module.exports = PageController

@@ -4,7 +4,6 @@ cookieParser = require('cookie-parser')
 passport = require('passport')
 PageController = inject('controller')
 MongoDB = inject('database')
-userService = inject('services/userService')
 socket = inject('socket')
 
 class App

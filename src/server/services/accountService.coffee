@@ -1,6 +1,6 @@
 Encryptor = inject('util/Encryptor')
 mailer = inject('email/mailer')
-templateCompiler = inject('email/templatesCompiler')
+templateCompiler = inject('email/templateCompiler')
 Promise = inject('util/promise')
 emailTemplates = inject('email/templates/mapper')
 
