@@ -166,14 +166,25 @@ class AccountService
         @accountStore.findByLogin link.email, (err, account) ->
           return reject(err) if err
           return reject({ generic: @i18n.accountCouldNotBeFound }) if not account
-          resolve(account)
+          resolve({
+            link: link
+            account: account
+          })
 
-    .then (account) =>
-      accountData = account.toJSON()
+    .then (response) =>
+      accountData = response.account.toJSON()
       accountData.password = Encryptor.md5(newPassword)
       new Promise (resolve, reject) =>
         @accountStore.update accountData, (err, account) ->
-          if err then reject(err) else resolve(account)
+          if err then reject(err) else resolve({
+            link: response.link
+            account: account
+          })
+
+    .then (response) =>
+      new Promise (resolve, reject) =>
+        @linkService.remove response.link, (err) ->
+          if err then reject(err) else resolve(response.account)
 
     .then (result) ->
       callback(null, result)
