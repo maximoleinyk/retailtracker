@@ -189,8 +189,14 @@ class AccountService
       callback(null, result)
     .then(null, callback)
 
+  update: (account, callback) ->
+    @accountStore.update(account, callback)
+
   findById: (id, callback) ->
     @accountStore.findById(id, callback).populate('user')
+
+  findByOwner: (owner, callback) ->
+    @accountStore.findByOwner(owner, callback)
 
   findByCredentials: (login, password, callback) ->
     @accountStore.findByCredentials(login, Encryptor.md5(password), callback).populate('user')

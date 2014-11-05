@@ -5,8 +5,8 @@ class CompanyStore
   constructor: ->
     @model = new Model
 
-  findAllOwnedByUser: (ns, userId, callback) ->
-    @model.get(ns).find({ owner: userId }, callback)
+  findAll: (ns, callback) ->
+    @model.get(ns).find(callback)
 
   create: (ns, data, callback) ->
     Company = @model.get(ns)

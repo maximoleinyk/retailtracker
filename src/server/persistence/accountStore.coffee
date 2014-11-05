@@ -12,6 +12,9 @@ class AccountStore
   findByLogin: (email, callback) ->
     Account.findOne({ login: email }, callback)
 
+  findByOwner: (owner, callback) ->
+    Account.findOne({ owner: owner }, callback)
+
   findByCredentials: (login, password, callback) ->
     criteria =
       login: login

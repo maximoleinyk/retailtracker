@@ -2,10 +2,12 @@ define (require) ->
   'use strict'
 
   MongoModel = require('cs!app/common/mongoModel')
+  CurrentUser = require('util/userInfo')
 
   class Company extends MongoModel
 
-    defaults:
+    defaults: ->
+      owner: CurrentUser.id
       employees: []
       invitees: []
       currencyCode: 'UAH'

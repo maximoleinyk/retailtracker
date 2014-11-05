@@ -29,6 +29,6 @@ class CompanySchema
     return @
 
   get: (namespace) ->
-    mongoose.model('Company', @schema, namespace + '.companies')
+    mongoose.model('Company', @schema, namespace('companies'))
 
 module.exports = CompanySchema
