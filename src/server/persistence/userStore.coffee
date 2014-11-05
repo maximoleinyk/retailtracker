@@ -1,6 +1,6 @@
 User = inject('persistence/model/user')
 
-module.exports = {
+class UserStore
 
   create: (data, callback) ->
     new User(data).save(callback)
@@ -14,4 +14,4 @@ module.exports = {
   findByEmail: (email, callback) ->
     User.findOne({email: email}, callback)
 
-}
+module.exports = UserStore

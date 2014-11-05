@@ -1,11 +1,3 @@
-crypto = require('crypto')
-userStore = inject('persistence/userStore')
-inviteService = inject('services/inviteService')
-emailService = inject('services/emailService')
-mailer = inject('util/mailer')
-templateService = inject('services/templateService')
-linkService = inject('services/linkService')
-
 class UserService
 
   constructor: (@userStore) ->
@@ -23,6 +15,6 @@ class UserService
     @userStore.findByEmail(email, callback)
 
   suspendUser: (user, callback) ->
-
+    # TODO implement
 
 module.exports = UserService

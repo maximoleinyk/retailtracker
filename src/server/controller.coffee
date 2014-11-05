@@ -7,7 +7,7 @@ UomController = inject('controllers/uom')
 test = inject('controllers/test')
 inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
-userService = inject('services/userService')
+UserService = inject('services/userService')
 i18nService = inject('services/i18nService')
 settingsService = inject('services/settingsService')
 UomService = inject('services/uomService')
@@ -22,12 +22,15 @@ AccountController = inject('controllers/account')
 AccountService = inject('services/accountService')
 AccountStore = inject('persistence/accountStore')
 Authentication = inject('authentication')
+UserStore = inject('persistence/userStore')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+
+    userService = new UserService(new UserStore)
 
     accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18nService)
 
