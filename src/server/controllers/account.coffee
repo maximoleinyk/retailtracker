@@ -10,12 +10,10 @@ class AccountController
     res.status(HttpStatus.BAD_REQUEST).send({errors: err})
 
   register: (router) ->
-
     router.post '/account/password/confirm', (req, res) =>
       key = req.body.key
-      email = req.body.email
-      newPassword = req.body.newPassword
-      @accountService.changeForgottenPassword key, email, newPassword, (err) =>
+      newPassword = req.body.password
+      @accountService.changeForgottenPassword key, newPassword, (err) =>
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
     router.post '/account/password/forgot', (req, res) =>
@@ -31,10 +29,9 @@ class AccountController
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
     router.post '/account/confirm', (req, res) =>
-      email = req.body.email
       link = req.body.link
       password = req.body.password
-      @accountService.approve email, link, password, (err) =>
+      @accountService.approve link, password, (err) =>
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
     router.post '/account/register', (req, res) =>

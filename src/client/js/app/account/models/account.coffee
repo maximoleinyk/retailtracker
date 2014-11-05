@@ -16,3 +16,6 @@ define (require) ->
 
     forgotPassword: ->
       @promise('post', '/account/password/forgot', @toJSON())
+
+    changeForgottenPassword: ->
+      @promise('post', '/account/password/confirm', @toJSON())

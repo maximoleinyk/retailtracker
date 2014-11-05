@@ -13,7 +13,7 @@ define (require) ->
       @model = new Account()
 
     sendEmail: (e) ->
-      e.preventDefault();
+      e.preventDefault()
       @validation.reset()
 
       @model.forgotPassword()

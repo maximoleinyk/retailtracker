@@ -1,11 +1,12 @@
-encryptor = inject('util/encryptor')
+Encryptor = inject('util/Encryptor')
 mailer = inject('util/mailer')
 templateService = inject('services/templateService')
 Promise = inject('util/promise')
+emailService = inject('services/emailService')
 
 class AccountService
 
-  constructor: (@accountStore, @inviteService, @userService, @i18nService) ->
+  constructor: (@accountStore, @linkService, @inviteService, @userService, @i18nService) ->
     @i18n = i18nService.bundle('validation')
 
   register: (email, firstName, callback) ->
@@ -23,14 +24,14 @@ class AccountService
               @accountStore.update account, (err, account) ->
                 if err then reject(err) else resolve(account)
             else
-              reject('Such account already exists')
+              reject(@i18n.accountAlreadyExists)
         else
           resolve(account)
 
     findAccount
-    .then (account) =>
+    .then =>
       new Promise (resolve, reject) =>
-        @userService.findByEmail account.login, (err, user) ->
+        @userService.findByEmail email, (err, user) ->
           if err then reject(err) else resolve(user)
 
     .then (user) =>
@@ -42,27 +43,28 @@ class AccountService
           }
           @userService.create userData, (err, user) ->
             if err then reject(err) else resolve(user)
+      else
+        return Promise.empty(user)
 
     .then (user) =>
       new Promise (resolve, reject) =>
-        @inviteService.createAccountInvite user, (err, invite) ->
-          if err then reject(err) else resolve(invite)
+        @inviteService.createAccountInvite user, (err, result) ->
+          if err then reject(err) else resolve(result)
 
-    .then (invite) ->
-      callback(null, invite)
+    .then (result) ->
+      callback(null, result)
 
     .then null, (err) ->
       callback({ generic: err })
 
-  approve: (email, link, password, callback) ->
-    return callback({ email: @i18n.emailRequired }) if not email
+  approve: (link, password, callback) ->
     return callback({ link: @i18n.linkRequired }) if not link
     return callback({ password: @i18n.passwordRequired }) if not password
 
     findInvite = new Promise (resolve, reject) =>
       @inviteService.findByLink link, (err, invite) ->
         return reject(err) if err
-        return reject({ generic: 'Invite cannot be found' }) if not invite
+        return reject({ generic: @i18n.inviteCannotBeFound }) if not invite
 
         resolve(invite)
 
@@ -71,8 +73,8 @@ class AccountService
       new Promise (resolve, reject) =>
         accountData = {
           owner: invite.user._id,
-          login: email
-          password: encryptor.md5(password)
+          login: invite.user.email
+          password: Encryptor.md5(password)
         }
         @accountStore.create accountData, (err, account) ->
           if err then reject(err) else resolve({
@@ -94,19 +96,19 @@ class AccountService
     return callback({ email: @i18n.emailRequired }) if not email
     return callback({ oldPassword: @i18n.oldPasswordlRequired }) if not oldPassword
     return callback({ newPassword: @i18n.newPasswordRequired }) if not newPassword
-    return callback({ generic: 'Passwords do not match to each other' }) if oldPassword isnt encryptor.encode(newPassword)
+    return callback({ generic: @i18n.passwordsDoNotMatch}) if oldPassword isnt Encryptor.md5(newPassword)
 
     findAccount = new Promise (resolve, reject) =>
       @accountStore.findByLogin email, (err, account) ->
         return reject(err) if err
-        return reject({ generic: 'Account cannot be found' }) if not account
+        return reject({ generic: @i18n.accountDoesNotExist }) if not account
 
         resolve(account)
 
     findAccount
     .then (account) =>
       accountData = account.toJSON()
-      accountData.password = encryptor.encode(newPassword)
+      accountData.password = Encryptor.md5(newPassword)
       new Promise (resolve, reject) =>
         @accountStore.update accountData, (err, account) ->
           if err then reject(err) else resolve(account)
@@ -117,12 +119,12 @@ class AccountService
     .then(null, callback)
 
   forgotPassword: (email, callback) ->
-    return callback({ email: @i18n.emailRequired }) if not email
+    return callback({ generic: @i18n.emailRequired }) if not email
 
     findAccount = new Promise (resolve, reject) =>
       @accountStore.findByLogin email, (err, account) ->
         return reject(err) if err
-        return reject('Account not found') if not account
+        return reject(@i18n.accountDoesNotExist) if not account
 
         resolve(account)
 
@@ -147,29 +149,28 @@ class AccountService
 
     .then(null, callback)
 
-  changeForgottenPassword: (key, email, newPassword, callback) ->
-    return callback({ email: @i18n.emailRequired }) if not email
-    return callback({ key: @i18n.linkRequired }) if not key
-    return callback({ newPassword: @i18n.newPasswordRequired }) if not newPassword
+  changeForgottenPassword: (key, newPassword, callback) ->
+    return callback({ generic: @i18n.linkRequired }) if not key
+    return callback({ generic: @i18n.newPasswordRequired }) if not newPassword
 
     findLink = new Promise (resolve, reject) =>
-      @linkService.findByKey key, (err, key) ->
+      @linkService.findByKey key, (err, link) ->
         return reject(err) if err
-        return reject({ generic: 'Change password request was not found' }) if not key
+        return reject({ generic: @i18n.changePasswordRequestCannotBeFound }) if not link
 
-        resolve(key)
+        resolve(link)
 
     findLink
-    .then (key) =>
+    .then (link) =>
       new Promise (resolve, reject) =>
-        @accountStore.findByLogin email, (err, account) ->
+        @accountStore.findByLogin link.email, (err, account) ->
           return reject(err) if err
-          return reject({ generic: 'Account cannot be found' }) if not account
+          return reject({ generic: @i18n.accountCouldNotBeFound }) if not account
           resolve(account)
 
     .then (account) =>
       accountData = account.toJSON()
-      accountData.password = encryptor.encode(newPassword)
+      accountData.password = Encryptor.md5(newPassword)
       new Promise (resolve, reject) =>
         @accountStore.update accountData, (err, account) ->
           if err then reject(err) else resolve(account)
@@ -177,5 +178,11 @@ class AccountService
     .then (result) ->
       callback(null, result)
     .then(null, callback)
+
+  findById: (id, callback) ->
+    @accountStore.findById(id, callback).populate('user')
+
+  findByCredentials: (login, password, callback) ->
+    @accountStore.findByCredentials(login, Encryptor.md5(password), callback).populate('user')
 
 module.exports = AccountService

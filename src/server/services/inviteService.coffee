@@ -8,8 +8,8 @@ generatorLinkService = inject('util/linkGenerator')
 
 module.exports = {
 
-  findByLink: (key, callback) ->
-    inviteStore.find(key, callback)
+  findByLink: (link, callback) ->
+    inviteStore.findByLink(link, callback)
 
   create: (firstName, email, link, callback) ->
     data = {
@@ -79,7 +79,7 @@ module.exports = {
     .then null, (err) ->
       callback({ generic: err })
 
-  removeById: (invite, callback) ->
+  remove: (invite, callback) ->
     remove = new Promise (resolve, reject) =>
       inviteStore.remove invite._id, (err, result) ->
         if err then reject(err) else resolve(result)

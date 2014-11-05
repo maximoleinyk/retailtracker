@@ -14,4 +14,7 @@ class Promise
   @all = ->
     Q.all.apply(Q, arguments)
 
+  @empty: (value) ->
+    Q.when(value)
+
 module.exports = Promise

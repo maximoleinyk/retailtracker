@@ -21,12 +21,18 @@ CompanyStore = inject('persistence/companyStore')
 AccountController = inject('controllers/account')
 AccountService = inject('services/accountService')
 AccountStore = inject('persistence/accountStore')
+Authentication = inject('authentication')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+
+    accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18nService)
+
+    authenticator = new Authentication(accountService)
+    authenticator.applyLocalStrategy(@passport)
 
     # redirect from login page if user is authenticated
     @router.get '/page/account/login', (req, res, next) ->
@@ -43,7 +49,8 @@ class PageController
     @router.get '/404', (req, res) ->
       res.status(HttpStatus.NOT_FOUND).end()
 
-    accountController = new AccountController(new AccountService(new AccountStore, inviteService, userService, i18nService))
+
+    accountController = new AccountController(accountService)
     accountController.register(@router)
 
     securityController = new SecurityController(inviteService, linkService, userService)

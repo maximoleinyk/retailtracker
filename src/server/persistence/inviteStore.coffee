@@ -4,7 +4,9 @@ module.exports = {
 
   create: (data, callback) ->
     invite = new Invite(data)
-    invite.save(callback)
+    invite.save (err, doc) ->
+      return callback(err) if err
+      Invite.findOne(doc._id, callback).populate('user')
 
   findByLink: (link, callback) ->
     Invite.findOne({ link: link }, callback).populate('user')

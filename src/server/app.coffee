@@ -3,7 +3,6 @@ bodyParser = require('body-parser')
 cookieParser = require('cookie-parser')
 passport = require('passport')
 PageController = inject('controller')
-Authentication = inject('authentication')
 MongoDB = inject('database')
 userService = inject('services/userService')
 socket = inject('socket')
@@ -22,9 +21,6 @@ class App
       @app.use passport.initialize()
       @app.use passport.session()
       @app.use(@router)
-
-      authenticator = new Authentication(userService, passport)
-      authenticator.use(passport)
 
       controller = new PageController(@router, passport)
       controller.register()

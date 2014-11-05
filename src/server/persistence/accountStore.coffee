@@ -12,5 +12,14 @@ class AccountStore
   findByLogin: (email, callback) ->
     Account.findOne({ login: email }, callback)
 
+  findByCredentials: (login, password, callback) ->
+    criteria =
+      login: login
+      password: password
+    Account.findOne(criteria, callback)
+
+  findById: (id, callback) ->
+    Account.findById(id, callback)
+
 module.exports = AccountStore
 

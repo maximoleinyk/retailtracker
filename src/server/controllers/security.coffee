@@ -4,23 +4,22 @@ authFilter = inject('util/authFilter')
 
 class SecurityController
 
+  error: (err, res) ->
+    res.status(HttpStatus.BAD_REQUEST).send({errors: err})
+
   register: (router, passport) ->
+    router.post '/security/login', (req, res, next) =>
+      return @error('Invalid login/password', res) if not req.body.login or not req.body.password
 
-    router.post '/security/login', (req, res, next) ->
-      errors = {}
-      errors.login = '' if not req.body.login
-      errors.password = '' if not req.body.password
-      return res.status(HttpStatus.BAD_REQUEST).send({errors: errors}) if not _.isEmpty(errors)
-
-      loginHandler = (err, user) ->
+      loginHandler = (err, account) ->
         return res.status(HttpStatus.FORBIDDEN).send({
           errors:
-            generic: 'Логин или пароль не совпадают'
-        }) if not user
+            generic: 'Учетной записи не существует'
+        }) if not account
 
-        req.login user, (err) ->
+        req.login account, (err) ->
           return next(err) if err
-          res.status(HttpStatus.OK).send(user)
+          res.status(HttpStatus.NO_CONTENT).end()
 
       passport.authenticate('local', loginHandler)(req, res, next)
 

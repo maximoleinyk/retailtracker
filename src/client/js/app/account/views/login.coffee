@@ -1,9 +1,7 @@
 define (require) ->
   'use strict'
 
-  Promise = require('rsvp').Promise
-  http = require('util/http')
-  Backbone = require('backbone')
+  Security = require('cs!app/account/models/security')
   Marionette = require('marionette')
   sessionStore = require('util/sessionStore')
 
@@ -12,17 +10,13 @@ define (require) ->
     template: require('hbs!./login')
 
     initialize: ->
-      @model = new Backbone.Model()
+      @model = new Security()
 
     login: (e) ->
       e.preventDefault();
       @validation.reset()
 
-      authenticate = new Promise (resolve, reject) =>
-        http.post '/security/login', @model.toJSON(), (err, response) ->
-          if err then reject(err) else resolve(response)
-
-      authenticate
+      this.model.login()
       .then =>
         url = sessionStore.get('redirectUrl')
         window.location.replace('/page/' + url)
