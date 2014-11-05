@@ -25,7 +25,15 @@ class CompanySchema
           ref: 'User'
         }
       ]
-      invitees: mongoose.Schema.Types.Mixed
+      invitees: [{
+        firstName:
+          type: String
+          required: true
+        email:
+          type: String
+          required: true
+        role: String
+      }]
     return @
 
   get: (namespace) ->

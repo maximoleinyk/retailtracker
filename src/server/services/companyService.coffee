@@ -7,12 +7,6 @@ class CompanyService
 
   constructor: (@companyStore, @inviteService, @accountService) ->
 
-  getInvitePromises: (invitees, companyId) ->
-    _.map invitees, (employee) =>
-      new Promise (resolve, reject) =>
-        @inviteService.createCompanyInvite null, companyId, (err, response) =>
-          if err then reject(err) else resolve(response)
-
   findAll: (userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
       @accountService.findByOwner userId, (err, account) ->
@@ -29,6 +23,76 @@ class CompanyService
       callback(null, companies)
 
     .catch(callback)
+
+  create: (ns, data, callback) ->
+    return callback({ name: i18n.nameRequired }) if not data.name
+    return callback({ currencyCode: i18n.currencyCode }) if not data.currencyCode
+    return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
+    return callback({ owner: i18n.ownerIsRequired }) if not data.owner
+
+    createCompany = new Promise (resolve, reject) =>
+      @companyStore.create ns, data, (err, result) ->
+        if err then reject(err) else resolve(result)
+
+    createCompany
+    .then (company) =>
+      new Promise (resolve, reject) =>
+        @accountService.findByOwner company.owner, (err, account) ->
+          if err then reject(err) else resolve({
+            account: account
+            company: company
+          })
+
+    .then (result) =>
+      result.account.companies.push({
+        ns: result.account._id.toString()
+        company: result.company._id
+      })
+      new Promise (resolve, reject) =>
+        @accountService.update result.account.toObject(), (err) ->
+          if err then reject(err) else resolve(result.company)
+
+    .then (company) ->
+      Promise.all _.map company.invitees, (invite) =>
+
+        findUser = new Promise (resolve, reject) =>
+          @userService.findByEmail invite.email, (err, user) =>
+            if err then reject(err) else resolve({
+              invite: invite
+              user: user
+            })
+
+        findUser
+        .then (result) =>
+          if not result.user
+            return new Promise (resolve, reject) =>
+              userData = {
+                firstName: result.invite.firstName
+                email: invite.result.email
+              }
+              @userService.create userData, (err, user) ->
+                if err then reject(err) else resolve(user)
+          else
+            return Promise.empty(result.user)
+
+        .then (user) =>
+          new Promise (resolve, reject) =>
+            @inviteService.createCompanyInvite user._id, company._id, (err, result) ->
+              if err then reject(err) else resolve(result)
+
+    .then (company) ->
+      callback(null, company)
+
+    .catch(callback)
+
+  findById: (ns, companyId, callback) ->
+    @companyStore.findById(ns, companyId, callback)
+
+  getInvitePromises: (invitees, companyId) ->
+    _.map invitees, (employee) =>
+      new Promise (resolve, reject) =>
+        @inviteService.createCompanyInvite null, companyId, (err, response) =>
+          if err then reject(err) else resolve(response)
 
   update: (ns, data, callback) ->
     return callback({ name: i18n.nameRequired }) if not data.name
@@ -68,42 +132,5 @@ class CompanyService
 
     .then(callback)
     .catch(callback)
-
-  create: (ns, data, callback) ->
-    return callback({ name: i18n.nameRequired }) if not data.name
-    return callback({ currencyCode: i18n.currencyCode }) if not data.currencyCode
-    return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
-    return callback({ owner: i18n.ownerIsRequired }) if not data.owner
-
-    createCompany = new Promise (resolve, reject) =>
-      @companyStore.create ns, data, (err, result) ->
-        if err then reject(err) else resolve(result)
-
-    createCompany
-    .then (company) =>
-      new Promise (resolve, reject) =>
-        @accountService.findByOwner company.owner, (err, account) ->
-          if err then reject(err) else resolve({
-            account: account
-            company: company
-          })
-
-    .then (result) =>
-      result.account.companies.push({
-        ns: result.account._id.toString()
-        company: result.company._id
-      })
-      new Promise (resolve, reject) =>
-        @accountService.update result.account.toObject(), (err) ->
-          if err then reject(err) else resolve(result.company)
-
-    .then (company) ->
-      callback(null, company)
-
-    .catch(callback)
-
-  findById: (ns, companyId, callback) ->
-    return callback({ generic: 'Company id is not specified' }) if not companyId
-    @companyStore.findById(ns, companyId, callback)
 
 module.exports = CompanyService
