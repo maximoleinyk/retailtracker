@@ -5,7 +5,7 @@ accountNamespace = inject('util/namespace/account')
 
 class CompanyService
 
-  constructor: (@companyStore, @inviteService, @accountService) ->
+  constructor: (@companyStore, @inviteService, @accountService, @userService) ->
 
   findAll: (userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
@@ -52,9 +52,8 @@ class CompanyService
         @accountService.update result.account.toObject(), (err) ->
           if err then reject(err) else resolve(result.company)
 
-    .then (company) ->
+    .then (company) =>
       Promise.all _.map company.invitees, (invite) =>
-
         findUser = new Promise (resolve, reject) =>
           @userService.findByEmail invite.email, (err, user) =>
             if err then reject(err) else resolve({
@@ -68,7 +67,7 @@ class CompanyService
             return new Promise (resolve, reject) =>
               userData = {
                 firstName: result.invite.firstName
-                email: invite.result.email
+                email: result.invite.email
               }
               @userService.create userData, (err, user) ->
                 if err then reject(err) else resolve(user)

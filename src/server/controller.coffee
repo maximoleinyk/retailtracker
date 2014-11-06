@@ -71,7 +71,7 @@ class PageController
     currencyController = new CurrencyController(new CurrencyService(new CurrencyStore))
     currencyController.register(@router)
 
-    companyController = new CompanyController(new CompanyService(new CompanyStore, inviteService, accountService))
+    companyController = new CompanyController(new CompanyService(new CompanyStore, inviteService, accountService, userService))
     companyController.register(@router)
 
 module.exports = PageController

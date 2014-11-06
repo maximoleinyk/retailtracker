@@ -25,6 +25,7 @@ define (require) ->
     renderEmployeeList: ->
       @employeeList.show new EmployeeList({
         collection: new Employees(@model.get('employees').concat(@model.get('invitees')), {parse:true})
+        model: @model
       })
 
     renderSelect: ->
