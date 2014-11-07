@@ -9,6 +9,9 @@ module.exports = {
   findByEmail: (email, callback) ->
     linkStore.findByEmail(email, callback)
 
+  removeByEmail: (email, callback) ->
+    linkStore.removeByEmail(email, callback)
+
   removeByKey: (link, callback) ->
     linkStore.removeByKey(link, callback)
 

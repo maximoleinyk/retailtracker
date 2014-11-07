@@ -134,14 +134,18 @@ class AccountService
     return callback({ generic: @i18n.emailRequired }) if not email
 
     findAccount = new Promise (resolve, reject) =>
-      @accountStore.findByLogin email, (err, account) ->
+      handler = (err, account) =>
         return reject(err) if err
         return reject(@i18n.accountDoesNotExist) if not account
-
         resolve(account)
+      @accountStore.findByLogin(email, handler).populate('owner')
 
     findAccount
-    # TODO: remove previously created links
+    .then (account) =>
+      new Promise (resolve, reject) =>
+        @linkService.removeByEmail account.owner.email, (err) =>
+          if err then reject(err) else resolve(account)
+
     .then (account) =>
       new Promise (resolve, reject) =>
         @linkService.create email, (err, link) ->
@@ -166,16 +170,15 @@ class AccountService
     return callback({ generic: @i18n.newPasswordRequired }) if not newPassword
 
     findLink = new Promise (resolve, reject) =>
-      @linkService.findByKey key, (err, link) ->
+      @linkService.findByKey key, (err, link) =>
         return reject(err) if err
         return reject({ generic: @i18n.changePasswordRequestCannotBeFound }) if not link
-
         resolve(link)
 
     findLink
     .then (link) =>
       new Promise (resolve, reject) =>
-        @accountStore.findByLogin link.email, (err, account) ->
+        @accountStore.findByLogin link.email, (err, account) =>
           return reject(err) if err
           return reject({ generic: @i18n.accountCouldNotBeFound }) if not account
           resolve({
