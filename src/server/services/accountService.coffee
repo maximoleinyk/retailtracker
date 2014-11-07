@@ -16,17 +16,8 @@ class AccountService
     findAccount = new Promise (resolve, reject) =>
       @accountStore.findByLogin email, (err, account) =>
         return reject(err) if err
-        if account
-          switch account.status
-            when 'DEPENDANT' then return new Promise (resolve, reject) =>
-              account.status = 'OWN'
-              account.dependsFrom = null
-              @accountStore.update account, (err, account) ->
-                if err then reject(err) else resolve(account)
-            else
-              reject({ generic: @i18n.accountAlreadyExists })
-        else
-          resolve(account)
+        return reject({ generic: @i18n.accountAlreadyExists }) if account and account.status is 'OWN'
+        resolve(account)
 
     findAccount
     .then =>
@@ -54,9 +45,9 @@ class AccountService
     .then (result) ->
       callback(null, result)
 
-    .then(null, callback)
+    .catch(callback)
 
-  approve: (link, password, callback) ->
+  approveRegistration: (link, password, callback) ->
     return callback({ link: @i18n.linkRequired }) if not link
     return callback({ password: @i18n.passwordRequired }) if not password
 
@@ -70,26 +61,49 @@ class AccountService
     findInvite
     .then (invite) =>
       new Promise (resolve, reject) =>
-        accountData = {
-          owner: invite.user._id,
-          login: invite.user.email
-          password: Encryptor.md5(password)
-        }
-        @accountStore.create accountData, (err, account) ->
+        @accountStore.findByLogin invite.user.email, (err, account) =>
           if err then reject(err) else resolve({
             invite: invite
             account: account
           })
 
-    .then (response) =>
+    .then (result) =>
+      account = result.account
+      invite = result.invite
+
+      # change status if account already exists
+      if account and account.status is 'DEPENDANT'
+        return new Promise (resolve, reject) =>
+          account.status = 'OWN'
+          account.dependsFrom = null
+          @accountStore.update account, (err, account) ->
+            if err then reject(err) else resolve({
+              invite: invite
+              account: account
+            })
+        # create new account
+      else
+        return new Promise (resolve, reject) =>
+          accountData = {
+            owner: invite.user._id,
+            login: invite.user.email
+            password: Encryptor.md5(password)
+          }
+          @accountStore.create accountData, (err, account) ->
+            if err then reject(err) else resolve({
+              invite: invite
+              account: account
+            })
+
+    .then (result) =>
       new Promise (resolve, reject) =>
-        @inviteService.remove response.invite, (err) ->
-          if err then reject(err) else resolve(response.account)
+        @inviteService.remove result.invite, (err) ->
+          if err then reject(err) else resolve(result.account)
 
     .then (account) ->
       callback(null, account)
 
-    .then(null, callback)
+    .catch(callback)
 
   changePassword: (email, oldPassword, newPassword, callback) ->
     return callback({ email: @i18n.emailRequired }) if not email
@@ -115,7 +129,7 @@ class AccountService
     .then (account) ->
       callback(null, account)
 
-    .then(null, callback)
+    .catch(callback)
 
   forgotPassword: (email, callback) ->
     return callback({ generic: @i18n.emailRequired }) if not email
@@ -146,7 +160,7 @@ class AccountService
     .then (mail) ->
       callback(null, mail)
 
-    .then(null, callback)
+    .catch(callback)
 
   changeForgottenPassword: (key, newPassword, callback) ->
     return callback({ generic: @i18n.linkRequired }) if not key
@@ -174,20 +188,18 @@ class AccountService
       accountData = response.account.toJSON()
       accountData.password = Encryptor.md5(newPassword)
       new Promise (resolve, reject) =>
-        @accountStore.update accountData, (err, account) ->
-          if err then reject(err) else resolve({
-            link: response.link
-            account: account
-          })
+        @accountStore.update accountData, (err) ->
+          if err then reject(err) else resolve(response.link)
 
-    .then (response) =>
+    .then (link) =>
       new Promise (resolve, reject) =>
-        @linkService.remove response.link, (err) ->
-          if err then reject(err) else resolve(response.account)
+        @linkService.removeByKey link.link, (err, result) ->
+          if err then reject(err) else resolve(result)
 
     .then (result) ->
       callback(null, result)
-    .then(null, callback)
+
+    .catch(callback)
 
   update: (account, callback) ->
     @accountStore.update(account, callback)

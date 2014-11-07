@@ -1,45 +1,53 @@
 _ = require('underscore')
-userService = inject('services/userService')
 
-module.exports =
-{
-  changePassword: (data, callback) ->
-    oldPassword = data.oldPassword
-    password = data.password
-    confirmPassword = data.confirmPassword
+class SettingsService
 
-    errors = {}
-    errors.generic = 'Идентификатор не найден' if not data.id
-    errors.oldPassword = '' if not oldPassword
-    errors.password = '' if not password
-    errors.confirmPassword = '' if not confirmPassword
-    errors.generic = 'Пароли не совпадают' if password and confirmPassword and password isnt confirmPassword
+  constructor: (@userService, @accountService) ->
 
-    return callback(errors) if not _.isEmpty(errors)
+  changePassword: (userId, oldPassword, newPassword, callback) ->
+    return callback({ generic: 'User id should be specified' }) if not userId
+    return callback({ oldPassword: @i18n.oldPasswordRequired }) if not oldPassword
+    return callback({ password: @i18n.newPasswordRequired }) if not newPassword
 
-    userService.findById data.id, (err, user) ->
-      return console.log(err) if err
+    findAccount = new Promise (resolve, reject) =>
+      handler = (err, account) =>
+        return reject(err) if err
+        return reject({ generic: @i18n.accountCouldNotBeFound }) if not account
+        resolve(account)
+      @accountService.findByOwner(userId, handler).populate('user')
 
-      encryptedPass = userService.encryptPassword(oldPassword)
+    findAccount
+    .then (account) =>
+      new Promise (resolve, reject) =>
+        @accountService.changePassword account.owner.email, oldPassword, newPassword, (err, account) ->
+          if err then reject(err) else resolve(account.owner)
 
-      return callback({ generic: 'Такой учетной записи не сущетвует' }) if not user
-      return callback({ oldPassword: 'Текущай пароль не совпадает' }) if encryptedPass isnt user.password
+    .then (user) ->
+      callback(null, user)
 
-      userService.update { password: encryptedPass }, (err) ->
-        return console.log(err) if err
-        callback(null, user)
+    .catch(callback)
 
   changeProfile: (data, callback) ->
-    return callback({ generic: 'Идентификатор не найден' }) if not data.id
-    return callback({ firstName: 'Имя должно быть указано' }) if not data.firstName
+    return callback({ generic: 'User id should be specified' }) if not data.id
+    return callback({ firstName: @i18n.firstNameRequired }) if not data.firstName
 
-    userService.findById data.id, (err, user) ->
-      return console.log(err) if err
-      return callback({ generic: 'Такой учетной записи не сущетвует' }) if not user
+    findUser = new Promise (resolve, reject) =>
+      @userService.findById data.id, (err, user) ->
+        return reject(err) if err
+        return reject({ generic: @i18n.userNotFound }) if not user
+        resolve(user)
 
-      details =
-        firstName: data.firstName
-        lastName: data.lastName
+    findUser (user) =>
+      userData = user.toJSON()
+      userData.firstName = data.firstName
+      userData.lastName = data.lastName
+      new Promise (resolve, reject) =>
+        @userService.update userData, (err, user) ->
+          if err then reject(err) else resolve(user)
 
-      userService.update(details, callback)
-}
+    .then (user) ->
+      callback(null, user)
+
+    .catch(callback)
+
+module.exports = SettingsService

@@ -8,7 +8,7 @@ inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
 UserService = inject('services/userService')
 i18n = inject('i18n')
-settingsService = inject('services/settingsService')
+SettingsService = inject('services/settingsService')
 UomService = inject('services/uomService')
 UomStore = inject('persistence/uomStore')
 CurrencyController = inject('controllers/currency')
@@ -62,7 +62,7 @@ class PageController
     userController = new UserController(userService)
     userController.register(@router)
 
-    settingsController = new SettingsController(settingsService)
+    settingsController = new SettingsController(new SettingsService(userService, accountService))
     settingsController.register(@router)
 
     uomController = new UomController(new UomService(new UomStore))

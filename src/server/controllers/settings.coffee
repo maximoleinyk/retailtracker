@@ -5,15 +5,19 @@ class SettingsController
 
   constructor: (@settingsService) ->
 
+  error: (err, res) ->
+    res.status(HttpStatus.BAD_REQUEST).send({errors: err})
+
   register: (router) ->
     router.post '/settings/change/profile', authFilter, (req, res) =>
-      @settingsService.changeProfile req.body, (err) ->
-        return res.status(HttpStatus.BAD_REQUEST).send({errors: err}) if err
-        res.status(HttpStatus.OK).end()
+      @settingsService.changeProfile req.body, (err) =>
+        if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
     router.post '/settings/change/security', authFilter, (req, res) =>
-      @settingsService.changePassword req.body, (err) ->
-        return res.status(HttpStatus.BAD_REQUEST).send({errors: err}) if err
-        res.status(HttpStatus.OK).end()
+      userId = req.body.id
+      oldPassword = req.body.oldPassword
+      newPassword = req.body.password
+      @settingsService.changePassword userId, oldPassword, newPassword, (err) =>
+        if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
 module.exports = SettingsController

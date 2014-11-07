@@ -31,7 +31,7 @@ class AccountController
     router.post '/account/confirm', (req, res) =>
       link = req.body.link
       password = req.body.password
-      @accountService.approve link, password, (err) =>
+      @accountService.approveRegistration link, password, (err) =>
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
     router.post '/account/register', (req, res) =>
