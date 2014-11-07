@@ -1,8 +1,10 @@
 _ = require('underscore')
+Promise = inject('util/promise')
 
 class SettingsService
 
-  constructor: (@userService, @accountService) ->
+  constructor: (i18n, @userService, @accountService) ->
+    @i18n = i18n.bundle('validation')
 
   changePassword: (userId, oldPassword, newPassword, callback) ->
     return callback({ generic: 'User id should be specified' }) if not userId
@@ -14,7 +16,7 @@ class SettingsService
         return reject(err) if err
         return reject({ generic: @i18n.accountCouldNotBeFound }) if not account
         resolve(account)
-      @accountService.findByOwner(userId, handler).populate('user')
+      @accountService.findByOwner(userId, handler).populate('owner')
 
     findAccount
     .then (account) =>
@@ -32,12 +34,13 @@ class SettingsService
     return callback({ firstName: @i18n.firstNameRequired }) if not data.firstName
 
     findUser = new Promise (resolve, reject) =>
-      @userService.findById data.id, (err, user) ->
+      @userService.findById data.id, (err, user) =>
         return reject(err) if err
         return reject({ generic: @i18n.userNotFound }) if not user
         resolve(user)
 
-    findUser (user) =>
+    findUser
+    .then (user) =>
       userData = user.toJSON()
       userData.firstName = data.firstName
       userData.lastName = data.lastName

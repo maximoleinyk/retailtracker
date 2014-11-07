@@ -62,7 +62,7 @@ class PageController
     userController = new UserController(userService)
     userController.register(@router)
 
-    settingsController = new SettingsController(new SettingsService(userService, accountService))
+    settingsController = new SettingsController(new SettingsService(i18n, userService, accountService))
     settingsController.register(@router)
 
     uomController = new UomController(new UomService(new UomStore))

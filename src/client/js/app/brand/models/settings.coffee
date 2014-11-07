@@ -1,6 +1,12 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  MongoModel = require('app/common/mongoModel')
 
-  Backbone.Model.extend({})
+  class Settings extends MongoModel
+
+    changeProfileSettings: ->
+      @promise('post', '/settings/change/profile', @toJSON())
+
+    changeSecuritySettings: ->
+      @promise('post', '/settings/change/security', @toJSON())

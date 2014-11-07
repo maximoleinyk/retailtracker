@@ -1,42 +1,39 @@
-<div class="page-title">{{i18n.securitySettings}}</div>
-<div class="content">
-    <div class="warning" data-validation="generic" data-hide></div>
-    <form class="form-horizontal" data-submit="save">
-        <fieldset>
-            <legend>{{i18n.password}}</legend>
-            <div class="form-group">
-                <label for="oldPassword" class="col-sm-3 control-label">{{i18n.currentPassword}}</label>
+<div class="alert alert-warning" data-validation="generic" data-hide></div>
+<form class="form-horizontal" data-submit="save">
+    <fieldset>
+        <legend>{{i18n.password}}</legend>
+        <div class="form-group">
+            <label for="oldPassword" class="col-sm-3 control-label">{{i18n.currentPassword}}</label>
 
-                <div class="col-sm-5">
-                    <input type="password" class="form-control" id="oldPassword" name="oldPassword" data-bind
-                           autofocus/>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="oldPassword" name="oldPassword" data-bind
+                       autofocus/>
 
-                    <div class="help-block" data-validation="oldPassword"></div>
-                </div>
+                <div class="help-block" data-validation="oldPassword"></div>
             </div>
-            <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">{{i18n.newPassword}}</label>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-3 control-label">{{i18n.newPassword}}</label>
 
-                <div class="col-sm-5">
-                    <input type="password" class="form-control" id="password" name="password" data-bind>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="password" name="password" data-bind>
 
-                    <div class="help-block" data-validation="password"></div>
-                </div>
+                <div class="help-block" data-validation="password"></div>
             </div>
-            <div class="form-group">
-                <label for="confirmPassword" class="col-sm-3 control-label">{{i18n.confirmPassword}}</label>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword" class="col-sm-3 control-label">{{i18n.confirmPassword}}</label>
 
-                <div class="col-sm-5">
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" data-bind>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" data-bind>
 
-                    <div class="help-block" data-validation="confirmPassword"></div>
-                </div>
+                <div class="help-block" data-validation="confirmPassword"></div>
             </div>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-3">
-                    <button type="submit" class="btn btn-success" data-disable-on-sync>{{i18n.change}}</button>
-                </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-success" data-disable-on-sync>{{i18n.change}}</button>
             </div>
-        </fieldset>
-    </form>
-</div>
+        </div>
+    </fieldset>
+</form>

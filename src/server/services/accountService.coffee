@@ -1,4 +1,4 @@
-Encryptor = inject('util/Encryptor')
+Encryptor = inject('util/encryptor')
 mailer = inject('email/mailer')
 templateCompiler = inject('email/templateCompiler')
 Promise = inject('util/promise')
@@ -109,13 +109,12 @@ class AccountService
     return callback({ email: @i18n.emailRequired }) if not email
     return callback({ oldPassword: @i18n.oldPasswordlRequired }) if not oldPassword
     return callback({ newPassword: @i18n.newPasswordRequired }) if not newPassword
-    return callback({ generic: @i18n.passwordsDoNotMatch}) if oldPassword isnt Encryptor.md5(newPassword)
 
     findAccount = new Promise (resolve, reject) =>
-      @accountStore.findByLogin email, (err, account) ->
+      @accountStore.findByLogin email, (err, account) =>
         return reject(err) if err
         return reject({ generic: @i18n.accountDoesNotExist }) if not account
-
+        return reject({ generic: @i18n.currentPasswordDoesNotMatch }) if account.password isnt Encryptor.md5(oldPassword)
         resolve(account)
 
     findAccount

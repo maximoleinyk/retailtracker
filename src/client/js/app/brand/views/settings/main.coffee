@@ -10,6 +10,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./main')
+    className: 'container'
 
     initialize: (options) ->
       @view = options.view
