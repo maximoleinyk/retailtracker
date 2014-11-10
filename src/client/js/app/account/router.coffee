@@ -13,3 +13,5 @@ define (require) ->
 
       'forgot': 'forgotPassword'
       'forgot/:key': 'changeForgottenPassword'
+
+      'invite/:key': 'confirmCompanyInvite'

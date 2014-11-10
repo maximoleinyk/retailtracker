@@ -1,3 +1,5 @@
+_ = require('underscore')
+
 module.exports = (req) ->
   (collectionName) ->
-    req.session.ns + '.' + collectionName
+    if _.isString(req) then req else req.session.ns + '.' + collectionName

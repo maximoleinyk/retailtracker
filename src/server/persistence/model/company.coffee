@@ -12,6 +12,7 @@ class CompanySchema
         default: ''
       owner:
         type: mongoose.Schema.Types.ObjectId
+        ref: 'User'
         required: true
       currencyCode:
         type: String

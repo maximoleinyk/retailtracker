@@ -28,7 +28,7 @@ class AccountController
       @accountService.changePassword email, oldPassword, newPassword, (err) =>
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
-    router.post '/account/confirm', (req, res) =>
+    router.post '/account/register/confirm', (req, res) =>
       link = req.body.link
       password = req.body.password
       @accountService.approveRegistration link, password, (err) =>
@@ -38,6 +38,17 @@ class AccountController
       email = req.body.email
       firstName = req.body.firstName
       @accountService.register email, firstName, (err) =>
+        if err then @error(err, res) else res.status(HttpStatus.OK).end()
+
+    router.get '/account/invite/:key', (req, res) =>
+      key = req.params.key
+      @accountService.getInvitedCompanyDetails key, (err, company) =>
+        if err then @error(err, res) else res.status(HttpStatus.OK).send(company)
+
+    router.post '/account/invite/confirm', (req, res) =>
+      inviteKey = req.body.key
+      newPassword = req.body.password
+      @accountService.confirmCompanyInvite inviteKey, newPassword, (err) =>
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
 module.exports = AccountController

@@ -6,7 +6,7 @@ define (require) ->
   class Account extends MongoModel
 
     confirm: ->
-      @promise('post', '/account/confirm', @toJSON())
+      @promise('post', '/account/register/confirm', @toJSON())
 
     register: ->
       @promise('post', '/account/register', @toJSON())
@@ -19,3 +19,9 @@ define (require) ->
 
     changeForgottenPassword: ->
       @promise('post', '/account/password/confirm', @toJSON())
+
+    loadInvitedCompanyDetails: ->
+      @promise('get', '/account/invite/' + @get('key'))
+
+    confirmCompanyInvite: ->
+      @promise('post', '/account/invite/confirm', @toJSON())

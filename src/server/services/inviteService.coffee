@@ -51,7 +51,7 @@ module.exports = {
     .then null, (err) ->
       callback({ generic: err })
 
-  createCompanyInvite: (user, company, callback) ->
+  createCompanyInvite: (user, company, namespace, callback) ->
     generateLink = new Promise (resolve, reject) =>
       generatorLinkService.generateLink (err, link) ->
         if err then reject(err) else resolve(link)
@@ -63,6 +63,7 @@ module.exports = {
           user: user
           link: link
           company: company
+          ns: namespace
         }
         inviteStore.create data, (err, invite) ->
           if err then reject(err) else resolve(invite)

@@ -16,7 +16,7 @@ class CompanyService
     .then (account) =>
       Promise.all account.companies.map (meta) =>
         new Promise (resolve, reject) =>
-          @companyStore.findById accountNamespace({ session: { ns: meta.ns }}), meta.company, (err, company) ->
+          @companyStore.findById accountNamespace(meta.ns), meta.company, (err, company) ->
             if err then reject(err) else resolve(company)
 
     .then (companies) =>
@@ -50,15 +50,19 @@ class CompanyService
       })
       new Promise (resolve, reject) =>
         @accountService.update result.account.toObject(), (err) ->
-          if err then reject(err) else resolve(result.company)
+          if err then reject(err) else resolve({
+            company: result.company
+            account: result.account
+          })
 
-    .then (company) =>
-      Promise.all _.map company.invitees, (invite) =>
+    .then (companyAndAccount) =>
+      Promise.all _.map companyAndAccount.company.invitees, (invite) =>
         findUser = new Promise (resolve, reject) =>
           @userService.findByEmail invite.email, (err, user) =>
             if err then reject(err) else resolve({
               invite: invite
               user: user
+              account: result.account
             })
 
         findUser
@@ -70,14 +74,23 @@ class CompanyService
                 email: result.invite.email
               }
               @userService.create userData, (err, user) ->
-                if err then reject(err) else resolve(user)
+                if err then reject(err) else resolve({
+                  account: result.account
+                  user: user
+                })
           else
-            return Promise.empty(result.user)
+            return Promise.empty({
+              account: result.account
+              user: result.user
+            })
 
-        .then (user) =>
+        .then (result) =>
           new Promise (resolve, reject) =>
-            @inviteService.createCompanyInvite user._id, company._id, (err, result) ->
-              if err then reject(err) else resolve(result)
+            userId = result.user._id
+            companyId = companyAndAccount.company._id
+            namespace = result.account._id.toString()
+            @inviteService.createCompanyInvite userId, companyId, namespace, (err) ->
+              if err then reject(err) else resolve(companyAndAccount.company)
 
     .then (company) ->
       callback(null, company)
@@ -86,50 +99,5 @@ class CompanyService
 
   findById: (ns, companyId, callback) ->
     @companyStore.findById(ns, companyId, callback)
-
-  getInvitePromises: (invitees, companyId) ->
-    _.map invitees, (employee) =>
-      new Promise (resolve, reject) =>
-        @inviteService.createCompanyInvite null, companyId, (err, response) =>
-          if err then reject(err) else resolve(response)
-
-  update: (ns, data, callback) ->
-    return callback({ name: i18n.nameRequired }) if not data.name
-    return callback({ currencyCode: i18n.currencyCode }) if not data.currencyCode
-    return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
-
-    loadCompany = new Promise (resolve, reject) =>
-      @companyStore.findById ns, data._id, (err, result) =>
-        if err then reject(err) else resolve(result)
-
-    loadCompany
-    .then (company) =>
-      employeesToRemove = []
-      _.each company.employees, (originEmployee) =>
-        found = _.find data.employees, (latestEmployee) =>
-          originEmployee.email is latestEmployee.email
-        employeesToRemove.push(originEmployee) if not found
-      removeUserAccounts = _.map employeesToRemove, (employeeToRemove) =>
-        new Promise (resolve, reject) =>
-          @userService.suspendUser employeeToRemove._id, (err, result) =>
-            if err then reject(err) else resolve(result)
-      Promise.all(removeUserAccounts)
-
-    .then =>
-      new Promise (resolve, reject) =>
-        @companyStore.update ns, data, (err, result) =>
-          if err then reject(err) else resolve(result)
-
-    .then (company) =>
-      filteredInvitees = []
-      _.each company.invitees, (invitee) ->
-        wasFound = false
-        _.each company.employees, (employee) ->
-          wasFound = true if (employee.email is invitee.email)
-        filteredInvitees.push(invitee) if not wasFound
-      Promise.all @getInvitePromises(filteredInvitees, company._id)
-
-    .then(callback)
-    .catch(callback)
 
 module.exports = CompanyService

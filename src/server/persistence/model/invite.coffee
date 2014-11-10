@@ -11,8 +11,10 @@ Schema = mongoose.Schema
     required: true
   company:
     type: mongoose.Schema.Types.ObjectId
-    ref: 'Company'
     default: null
+  ns:
+    type: String
+    default: ''
 
 Schema.index({ email: 1, link: 1 }, { unique: true })
 
