@@ -26,18 +26,6 @@ define (require) ->
             field: 'email'
             type: 'email'
             placeholder: window.RetailTracker.i18n.emailExampleCom
-          },
-          {
-            field: 'role'
-            type: 'select'
-            data: []
-            formatter: (value) ->
-              value
-            formatResult: (json) ->
-              json?.text
-            onSelection: (object, model) ->
-              model.set('code', object.id)
-            width: 180
           }
         ]
       })

@@ -249,6 +249,8 @@ class AccountService
         @accountStore.update accountData, (err) =>
           if err then reject(err) else resolve(result)
 
+    # TODO: update company to add employee and remove it from invitees
+
     .then (result) =>
       new Promise (resolve, reject) =>
         @inviteService.remove result.invite, (err) ->
