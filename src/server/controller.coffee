@@ -30,9 +30,9 @@ class PageController
 
     userService = new UserService(new UserStore)
 
-    companyService = new CompanyService(new CompanyStore, inviteService, accountService, userService)
+    accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18n)
 
-    accountService = new AccountService(new AccountStore, linkService, inviteService, userService, companyService, i18n)
+    companyService = new CompanyService(new CompanyStore, inviteService, accountService, userService, i18n)
 
     securityService = new SecurityService(@passport, accountService, i18n)
     securityService.applyLocalStrategy()

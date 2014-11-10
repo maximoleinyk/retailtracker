@@ -7,7 +7,7 @@ accountNamespace = inject('util/namespace/account')
 
 class AccountService
 
-  constructor: (@accountStore, @linkService, @inviteService, @userService, @companyService, @i18nService) ->
+  constructor: (@accountStore, @linkService, @inviteService, @userService, @i18nService) ->
     @i18n = i18nService.bundle('validation')
 
   register: (email, firstName, callback) ->
@@ -204,35 +204,13 @@ class AccountService
 
     .catch(callback)
 
-  getInvitedCompanyDetails: (key, callback) ->
-    return callback({ generic: @i18n.inviteNotFound }) if not key
-
-    findInvite = new Promise (resolve, reject) =>
-      @inviteService.findByLink key, (err, invite) ->
-        if err then reject(err) resolve(invite)
-
-    findInvite
-    .then (invite) =>
-      new Promise (resolve, reject) =>
-        handler = (err, company) =>
-          return reject(err) if err
-          return reject({ generic: 'Company does not exist' }) if not company
-          resolve(company)
-
-        @companyService.findById(accountNamespace(invite.ns), invite.company, handler).populate('owner')
-
-    .then (company) ->
-      callback(null, company)
-
-    .catch(callback)
-
   confirmCompanyInvite: (inviteKey, password, callback) ->
     return callback({ key: @i18n.linkRequired }) if not inviteKey
     return callback({ password: @i18n.passwordRequired }) if not password
 
     findInvite = new Promise (resolve, reject) =>
       handler = (err, invite) ->
-        if err then reject(err) resolve(invite)
+        if err then reject(err) else resolve(invite)
       @inviteService.findByLink(inviteKey, handler).populate('user')
 
     findInvite
@@ -253,6 +231,7 @@ class AccountService
             owner: result.invite.user._id,
             login: result.invite.user.email
             password: Encryptor.md5(password)
+            status: 'DEPENDANT'
           }
           @accountStore.create accountData, (err, account) ->
             if err then reject(err) else resolve({
@@ -267,11 +246,13 @@ class AccountService
           ns: result.invite.ns
           company: result.invite.company
         })
-        @accountStore.update accountData, (err, account) =>
-          if err then reject(err) else resolve(account)
+        @accountStore.update accountData, (err) =>
+          if err then reject(err) else resolve(result)
 
-    # TODO: remove invite
-    # TODO: send email about successful confirmation
+    .then (result) =>
+      new Promise (resolve, reject) =>
+        @inviteService.remove result.invite, (err) ->
+          if err then reject(err) else resolve(result.account)
 
     .then (result) ->
       callback(null, result)

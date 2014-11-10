@@ -20,8 +20,5 @@ define (require) ->
     changeForgottenPassword: ->
       @promise('post', '/account/password/confirm', @toJSON())
 
-    loadInvitedCompanyDetails: ->
-      @promise('get', '/account/invite/' + @get('key'))
-
     confirmCompanyInvite: ->
       @promise('post', '/account/invite/confirm', @toJSON())

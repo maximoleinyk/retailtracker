@@ -13,6 +13,12 @@ define (require) ->
       currencyCode: 'UAH'
       currencyRate: 1
 
+    loadInvitedCompanyDetails: ->
+      @promise('get', '/company/invite/' + @get('key'))
+      .then (result) =>
+        @set @parse(result)
+        @commit()
+
     create: ->
       @promise('post', '/company/create', @toJSON())
       .then (result) =>

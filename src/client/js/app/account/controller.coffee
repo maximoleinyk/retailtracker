@@ -8,8 +8,9 @@ define (require) ->
   ForgotPasswordPage = require('cs!./views/forgotPassword/main')
   PasswordChangePage = require('cs!./views/forgotPassword/change')
   Account = require('cs!./models/account')
+  Company = require('cs!app/brand/models/company')
   currentUser = require('util/userInfo')
-  ConfirmCompanyInvitePage = require('cs!./views/')
+  ConfirmCompanyInvitePage = require('cs!./views/companyInvite/main')
 
   Controller.extend
 
@@ -41,13 +42,15 @@ define (require) ->
       })
 
     confirmCompanyInvite: (inviteKey) ->
-      account = new Account({
+      company = new Company({
         key: inviteKey
       })
 
-      account.loadInvitedCompanyDetails()
-      .then (company) =>
+      company.loadInvitedCompanyDetails()
+      .then =>
         @openPage new ConfirmCompanyInvitePage({
           company: company
-          model: account
+          model: new Account({
+            key: inviteKey
+          })
         })

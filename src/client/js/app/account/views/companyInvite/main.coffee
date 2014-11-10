@@ -6,11 +6,11 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./confirm')
+    template: require('hbs!./main')
 
     templateHelpers: ->
       {
-        company: @options.company
+      company: @options.company.toJSON()
       }
 
     confirm: (e) ->

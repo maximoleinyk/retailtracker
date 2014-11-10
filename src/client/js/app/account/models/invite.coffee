@@ -3,4 +3,4 @@ define (require) ->
 
   MongoModel = require('cs!app/common/mongoModel')
 
-  class Invitee extends MongoModel
+  class Invite extends MongoModel

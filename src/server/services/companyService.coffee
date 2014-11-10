@@ -5,7 +5,8 @@ accountNamespace = inject('util/namespace/account')
 
 class CompanyService
 
-  constructor: (@companyStore, @inviteService, @accountService, @userService) ->
+  constructor: (@companyStore, @inviteService, @accountService, @userService, i18n) ->
+    @i18n = i18n.bundle('validation')
 
   findAll: (userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
@@ -21,6 +22,28 @@ class CompanyService
 
     .then (companies) =>
       callback(null, companies)
+
+    .catch(callback)
+
+  getInvitedCompanyDetails: (key, callback) ->
+    return callback({ generic: @i18n.inviteNotFound }) if not key
+
+    findInvite = new Promise (resolve, reject) =>
+      @inviteService.findByLink key, (err, invite) ->
+        if err then reject(err) else resolve(invite)
+
+    findInvite
+    .then (invite) =>
+      new Promise (resolve, reject) =>
+        handler = (err, company) =>
+          return reject(err) if err
+          return reject({ generic: 'Company does not exist' }) if not company
+          resolve(company)
+
+        @findById(accountNamespace(invite.ns), invite.company, handler).populate('owner')
+
+    .then (company) ->
+      callback(null, company)
 
     .catch(callback)
 
@@ -62,7 +85,7 @@ class CompanyService
             if err then reject(err) else resolve({
               invite: invite
               user: user
-              account: result.account
+              account: companyAndAccount.account
             })
 
         findUser

@@ -40,11 +40,6 @@ class AccountController
       @accountService.register email, firstName, (err) =>
         if err then @error(err, res) else res.status(HttpStatus.OK).end()
 
-    router.get '/account/invite/:key', (req, res) =>
-      key = req.params.key
-      @accountService.getInvitedCompanyDetails key, (err, company) =>
-        if err then @error(err, res) else res.status(HttpStatus.OK).send(company)
-
     router.post '/account/invite/confirm', (req, res) =>
       inviteKey = req.body.key
       newPassword = req.body.password

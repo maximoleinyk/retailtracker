@@ -7,7 +7,7 @@ class AccountStore
     user.save(callback)
 
   update: (data, callback) ->
-    Account.update(data, callback)
+    Account.findOneAndUpdate({ _id: data._id }, data, callback)
 
   findByLogin: (email, callback) ->
     Account.findOne({ login: email }, callback)

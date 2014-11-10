@@ -3,4 +3,10 @@ define (require) ->
 
   Marionette = require('marionette')
   Marionette.ItemView.extend
+
     template: require('hbs!./confirmed')
+
+    templateHelpers: ->
+      {
+      company: @options.company
+      }
