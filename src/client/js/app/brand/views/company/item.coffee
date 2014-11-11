@@ -11,7 +11,7 @@ define (require) ->
 
     templateHelpers: ->
       {
-        isEditable: @model.get('owner') is userInfo.id
+        isOwner: @model.get('owner')._id is userInfo.id
       }
 
     openCompany: (e) ->

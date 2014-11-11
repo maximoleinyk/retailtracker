@@ -17,8 +17,9 @@ class CompanyService
     .then (account) =>
       Promise.all account.companies.map (meta) =>
         new Promise (resolve, reject) =>
-          @companyStore.findById accountNamespace(meta.ns), meta.company, (err, company) ->
+          handler = (err, company) ->
             if err then reject(err) else resolve(company)
+          @companyStore.findById(accountNamespace(meta.ns), meta.company, handler).populate('owner')
 
     .then (companies) =>
       callback(null, companies)

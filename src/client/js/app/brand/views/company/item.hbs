@@ -3,7 +3,7 @@
         <span class="fa fa-star-o"></span>
     </a>
     <a href="" data-click="openCompany" class="title" title="{{i18n.goToCompany}}">{{name}}</a>
-    {{#if isEditable}}
+    {{#if isOwner}}
         <a href="/company/{{id}}/edit" class="edit pull-right" title="{{i18n.editCompany}}" data-catch-url>
             <span class="fa fa-pencil"></span>
         </a>
@@ -20,9 +20,9 @@
     <li>
         <span class="color-label">{{i18n.currency}}</span>: <strong>{{currencyCode}}</strong>
     </li>
-    {{#if employees.length}}
+    {{#unless isOwner}}
         <li>
-            <span class="color-label">{{i18n.employeeCount}}</span>: <strong>{{employees.length}}</strong>
+            <span class="color-label">{{i18n.owner}}</span>: <strong>{{owner.firstName}} {{owner.lastName}}</strong>
         </li>
-    {{/if}}
+    {{/unless}}
 </ul>
