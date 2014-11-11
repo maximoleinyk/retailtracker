@@ -21,6 +21,7 @@ AccountController = inject('controllers/account')
 AccountService = inject('services/accountService')
 AccountStore = inject('persistence/accountStore')
 UserStore = inject('persistence/userStore')
+CompanyMediator = inject('services/companyMediator')
 
 class PageController
 
@@ -30,9 +31,13 @@ class PageController
 
     userService = new UserService(new UserStore)
 
-    accountService = new AccountService(new AccountStore, linkService, inviteService, userService, i18n)
+    companyStore = new CompanyStore
 
-    companyService = new CompanyService(new CompanyStore, inviteService, accountService, userService, i18n)
+    companyMediator = new CompanyMediator(companyStore)
+
+    accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n)
+
+    companyService = new CompanyService(companyStore, inviteService, accountService, userService, i18n)
 
     securityService = new SecurityService(@passport, accountService, i18n)
     securityService.applyLocalStrategy()

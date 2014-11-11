@@ -3,9 +3,11 @@
         <span class="fa fa-star-o"></span>
     </a>
     <a href="" data-click="openCompany" class="title" title="{{i18n.goToCompany}}">{{name}}</a>
-    <a href="/company/{{id}}/edit" class="edit pull-right" title="{{i18n.editCompany}}" data-catch-url>
-        <span class="fa fa-pencil"></span>
-    </a>
+    {{#if isEditable}}
+        <a href="/company/{{id}}/edit" class="edit pull-right" title="{{i18n.editCompany}}" data-catch-url>
+            <span class="fa fa-pencil"></span>
+        </a>
+    {{/if}}
 </h4>
 <div class="description">
     {{#if description}}

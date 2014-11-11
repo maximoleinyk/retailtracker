@@ -1,5 +1,5 @@
 linkStore = inject('persistence/linkStore')
-generatorLinkService = inject('util/linkGenerator')
+generateRequestLink = inject('util/linkGenerator')
 
 module.exports = {
 
@@ -16,7 +16,7 @@ module.exports = {
     linkStore.removeByKey(link, callback)
 
   create: (email, callback) ->
-    generatorLinkService.generateLink (err, generatedLink) ->
+    generateRequestLink (err, generatedLink) ->
       return callback(err) if err
       data = {
         email: email,

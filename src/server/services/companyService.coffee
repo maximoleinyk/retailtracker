@@ -121,6 +121,6 @@ class CompanyService
     .catch(callback)
 
   findById: (ns, companyId, callback) ->
-    @companyStore.findById(ns, companyId, callback)
+    @companyStore.findById(ns, companyId, callback).populate('employees')
 
 module.exports = CompanyService

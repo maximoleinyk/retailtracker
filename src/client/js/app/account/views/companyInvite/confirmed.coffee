@@ -8,5 +8,5 @@ define (require) ->
 
     templateHelpers: ->
       {
-      company: @options.company
+      company: @options.company.toJSON()
       }

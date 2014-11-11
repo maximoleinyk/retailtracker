@@ -14,6 +14,9 @@ class CompanyStore
     company = new Company(data)
     company.save(callback)
 
+  update: (ns, data, callback) ->
+    @model.get(ns).findOneAndUpdate({ _id: data._id }, data, callback)
+
   findById: (ns, id, callback) ->
     @model.get(ns).findById(id, callback)
 

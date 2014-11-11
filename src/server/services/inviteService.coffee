@@ -4,7 +4,7 @@ mailer = inject('email/mailer')
 templateCompiler = inject('email/templateCompiler')
 linkService = inject('services/linkService')
 Promise = inject('util/promise')
-generatorLinkService = inject('util/linkGenerator')
+generateRequestLink = inject('util/linkGenerator')
 
 module.exports = {
 
@@ -26,7 +26,7 @@ module.exports = {
     return callback({ generic: 'User object must be provided' }) if not user
 
     generateLink = new Promise (resolve, reject) =>
-      generatorLinkService.generateLink (err, link) ->
+      generateRequestLink (err, link) ->
         if err then reject(err) else resolve(link)
 
     generateLink
@@ -53,7 +53,7 @@ module.exports = {
 
   createCompanyInvite: (user, company, namespace, callback) ->
     generateLink = new Promise (resolve, reject) =>
-      generatorLinkService.generateLink (err, link) ->
+      generateRequestLink (err, link) ->
         if err then reject(err) else resolve(link)
 
     generateLink

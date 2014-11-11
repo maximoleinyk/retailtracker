@@ -7,7 +7,7 @@ accountNamespace = inject('util/namespace/account')
 
 class AccountService
 
-  constructor: (@accountStore, @linkService, @inviteService, @userService, @i18nService) ->
+  constructor: (@companyMediator, @accountStore, @linkService, @inviteService, @userService, @i18nService) ->
     @i18n = i18nService.bundle('validation')
 
   register: (email, firstName, callback) ->
@@ -249,7 +249,10 @@ class AccountService
         @accountStore.update accountData, (err) =>
           if err then reject(err) else resolve(result)
 
-    # TODO: update company to add employee and remove it from invitees
+    .then (result) =>
+      new Promise (resolve, reject) =>
+        @companyMediator.updateEmployees accountNamespace(result.invite.ns), result.invite.company, result.invite.user, (err) =>
+          if err then reject(err) else resolve(result)
 
     .then (result) =>
       new Promise (resolve, reject) =>
