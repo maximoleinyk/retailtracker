@@ -6,7 +6,7 @@ class UserStore
     new User(data).save(callback)
 
   update: (data, callback) ->
-    User.update(data, callback)
+    User.find(data, callback)
 
   findById: (id, callback) ->
     User.findById(id, callback)

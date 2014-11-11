@@ -12,7 +12,8 @@ class UomStore
     Uom.findByIdAndRemove(id, callback)
 
   update: (data, callback) ->
-    Uom.findOneAndUpdate {_id: data.id}, _.omit(data, ['id']), (err, doc) ->
+    delete data._id
+    Uom.update {_id: data.id}, _.omit(data, ['id']), (err, doc) ->
       callback(err, doc?.toObject())
 
   findAll: (callback) ->

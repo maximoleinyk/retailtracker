@@ -1,4 +1,5 @@
 Model = inject('persistence/model/company')
+_ = require('underscore')
 
 class CompanyStore
 
@@ -15,7 +16,7 @@ class CompanyStore
     company.save(callback)
 
   update: (ns, data, callback) ->
-    @model.get(ns).findOneAndUpdate({ _id: data._id }, data, callback)
+    @model.get(ns).update({ _id: data.id }, _.omit(data, ['id']), callback)
 
   findById: (ns, id, callback) ->
     @model.get(ns).findById(id, callback)

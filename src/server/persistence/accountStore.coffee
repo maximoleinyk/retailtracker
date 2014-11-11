@@ -1,4 +1,5 @@
 Account = inject('persistence/model/account')
+_ = require('underscore')
 
 class AccountStore
 
@@ -7,7 +8,7 @@ class AccountStore
     user.save(callback)
 
   update: (data, callback) ->
-    Account.findOneAndUpdate({ _id: data._id }, data, callback)
+    Account.update({ _id: data.id }, _.omit(data, ['id']), callback)
 
   findByLogin: (email, callback) ->
     Account.findOne({ login: email }, callback)
