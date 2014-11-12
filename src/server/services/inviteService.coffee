@@ -11,8 +11,8 @@ module.exports = {
   findByLink: (link, callback) ->
     inviteStore.findByLink(link, callback)
 
-  findByUserAndCompany: (ns, userId, companyId, callback) ->
-    inviteStore.findByUserAndCompany(ns, userId, companyId, callback)
+  findByUserAndCompany: (userId, companyId, callback) ->
+    inviteStore.findByUserAndCompany(userId, companyId, callback)
 
   create: (firstName, email, link, callback) ->
     data = {

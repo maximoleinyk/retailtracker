@@ -8,11 +8,10 @@ module.exports = {
       return callback(err) if err
       Invite.findById(doc._id, callback).populate('user')
 
-  findByUserAndCompany: (ns, userId, companyId, callback) ->
+  findByUserAndCompany: (userId, companyId, callback) ->
     criteria = {
       user: userId
       company: companyId
-      ns: ns
     }
     Invite.findOne(criteria, callback)
 

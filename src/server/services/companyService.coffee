@@ -137,9 +137,8 @@ class CompanyService
 
     findCompany
     .then (company) =>
-      companyObject = company.toObject()
+      originInvitees = company.toObject().invitees
 
-      originInvitees = companyObject.invitees
       newInvitees = _.filter data.invitees, (newInvitee) ->
         found = _.find company.employees, (employee) ->
           employee.email is newInvitee.email
@@ -162,7 +161,7 @@ class CompanyService
         findUser
         .then (user) =>
           new Promise (resolve, reject) =>
-            @inviteService.findByUserAndCompany ns(), user._id, company._id, (err, invite) ->
+            @inviteService.findByUserAndCompany user._id, company._id, (err, invite) ->
               if err then reject(err) else resolve(invite)
 
         .then (invite) =>
@@ -172,10 +171,36 @@ class CompanyService
 
       removeInvites
       .then =>
+        Promise.all _.map newInvitees, (invitee) =>
+          findUser = new Promise (resolve, reject) =>
+            @userService.findByEmail invitee.email, (err, user) =>
+              if err then reject(err) else resolve({
+                invitee: invitee
+                user: user
+              })
 
-        # TODO: save removed invites
-        # TODO: create new invites for users
-        # TODO: save new invites in company
+          findUser
+          .then (result) =>
+            if not result.user
+              return new Promise (resolve, reject) =>
+                userData = {
+                  firstName: result.invitee.firstName
+                  email: result.invitee.email
+                }
+                @userService.create userData, (err, user) ->
+                  if err then reject(err) else resolve(user)
+            else
+              return Promise.empty(result.user)
+
+          .then (user) =>
+            new Promise (resolve, reject) =>
+              @inviteService.createCompanyInvite user._id, company._id, ns(), (err) ->
+                if err then reject(err) else resolve(companyAndAccount.company)
+      .then =>
+        new Promise (resolve, reject) =>
+          company.invitees.splice(0, company.invitees.length).concat(newInvitees)
+          @companyStore.update ns, company.toJSON(), (err) =>
+            if (err) then reject(err) else resolve(company)
 
     .then (company) ->
       callback(null, company)

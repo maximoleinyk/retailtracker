@@ -7,7 +7,7 @@ class CompanyMediator
 
   constructor: (@companyStore) ->
 
-  updateEmployees: (ns, companyId, user, callback) ->
+  confirmInvitee: (ns, companyId, user, callback) ->
     findCompany = new Promise (resolve, reject) =>
       @companyStore.findById ns, companyId, (err, company) =>
         if err then reject(err) else resolve(company)

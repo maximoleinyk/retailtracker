@@ -251,7 +251,7 @@ class AccountService
 
     .then (result) =>
       new Promise (resolve, reject) =>
-        @companyMediator.updateEmployees accountNamespace(result.invite.ns), result.invite.company, result.invite.user, (err) =>
+        @companyMediator.confirmInvitee accountNamespace(result.invite.ns), result.invite.company, result.invite.user, (err) =>
           if err then reject(err) else resolve(result)
 
     .then (result) =>
