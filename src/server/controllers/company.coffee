@@ -20,7 +20,8 @@ class CompanyController
     @router.get '/company/invite/:key', (req, res) =>
       key = req.params.key
       @companyService.getInvitedCompanyDetails key, (err, company) =>
-        if err then @error(err, res) else res.status(HttpStatus.OK).send(company)
+        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
+        res.status(HttpStatus.OK).send(company)
 
     @router.post '/company/create', authFilter, (req, res) =>
       @companyService.create accountNamespace(req), req.body, (err, result) ->

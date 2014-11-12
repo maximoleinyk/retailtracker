@@ -31,7 +31,9 @@ class CompanyService
 
     findInvite = new Promise (resolve, reject) =>
       @inviteService.findByLink key, (err, invite) ->
-        if err then reject(err) else resolve(invite)
+        return reject(err) if err
+        return reject('Invite not found') if not invite
+        resolve(invite)
 
     findInvite
     .then (invite) =>

@@ -210,7 +210,9 @@ class AccountService
 
     findInvite = new Promise (resolve, reject) =>
       handler = (err, invite) ->
-        if err then reject(err) else resolve(invite)
+        return reject(err) if err
+        return reject({ generic: @i18n.inviteNotFound }) if not invite
+        resolve(invite)
       @inviteService.findByLink(inviteKey, handler).populate('user')
 
     findInvite
