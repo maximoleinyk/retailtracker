@@ -73,7 +73,7 @@ class CompanyService
         company: result.company._id
       })
       new Promise (resolve, reject) =>
-        @accountService.update result.account.toObject(), (err) ->
+        @accountService.update result.account.toJSON(), (err) ->
           if err then reject(err) else resolve({
             company: result.company
             account: result.account
@@ -115,6 +115,67 @@ class CompanyService
             namespace = result.account._id.toString()
             @inviteService.createCompanyInvite userId, companyId, namespace, (err) ->
               if err then reject(err) else resolve(companyAndAccount.company)
+
+    .then (company) ->
+      callback(null, company)
+
+    .catch(callback)
+
+  update: (ns, data, callback) ->
+    return callback({ name: i18n.nameRequired }) if not data.name
+    return callback({ currencyCode: i18n.currencyCode }) if not data.currencyCode
+    return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
+    return callback({ owner: i18n.ownerIsRequired }) if not data.owner
+
+    findCompany = new Promise (resolve, reject) =>
+      handler = (err, company) ->
+        return reject(err) if err
+        return reject({ generic: @i18n.companyWasNotFound }) if not company
+        return reject({ generic: @i18n.currencyRateCannotBeChanged }) if company.currencyRate isnt data.currencyRate
+        return reject({ generic: @i18n.currencyCodeCannotBeChanged }) if company.currencyCode isnt data.currencyCode
+      @companyStore.findById(ns, data._id, handler).populate('employees')
+
+    findCompany
+    .then (company) =>
+      companyObject = company.toObject()
+
+      originInvitees = companyObject.invitees
+      newInvitees = _.filter data.invitees, (newInvitee) ->
+        found = _.find company.employees, (employee) ->
+          employee.email is newInvitee.email
+        return false if found
+
+        found = _.find originInvitees, (originInvitee) ->
+          originInvitee.email is newInvitee.email
+        return not found
+
+      inviteesToRemove = _.filter originInvitees, (originInvitee) ->
+        found = _.find newInvitees, (newInvitee) ->
+          originInvitee.email is newInvitee.email
+        return not found
+
+      removeInvites = Promise.all _.map inviteesToRemove, (inviteeToRemove) =>
+        findUser = new Promise (resolve, reject) =>
+          @userService.findByEmail inviteeToRemove.email, (err, user) ->
+            if err then reject(err) else resolve(user)
+
+        findUser
+        .then (user) =>
+          new Promise (resolve, reject) =>
+            @inviteService.findByUserAndCompany ns(), user._id, company._id, (err, invite) ->
+              if err then reject(err) else resolve(invite)
+
+        .then (invite) =>
+          new Promise (resolve, reject) =>
+            @inviteService.remove invite, (err) ->
+              if err then reject(err) else resolve()
+
+      removeInvites
+      .then =>
+
+        # TODO: save removed invites
+        # TODO: create new invites for users
+        # TODO: save new invites in company
 
     .then (company) ->
       callback(null, company)

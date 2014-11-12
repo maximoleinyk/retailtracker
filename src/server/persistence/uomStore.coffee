@@ -5,16 +5,13 @@ class UomStore
 
   create: (data, callback) ->
     uom = new Uom(data)
-    uom.save (err, doc) ->
-      callback(err, doc?.toObject())
+    uom.save(callback)
 
   delete: (id, callback) ->
     Uom.findByIdAndRemove(id, callback)
 
   update: (data, callback) ->
-    delete data._id
-    Uom.update {_id: data.id}, _.omit(data, ['id']), (err, doc) ->
-      callback(err, doc?.toObject())
+    Uom.update({_id: data._id}, _.omit(data, ['_id']), callback)
 
   findAll: (callback) ->
     Uom.find({}, callback)
