@@ -19,7 +19,7 @@ class CompanyService
         new Promise (resolve, reject) =>
           handler = (err, company) ->
             if err then reject(err) else resolve(company)
-          @companyStore.findById(accountNamespace(meta.ns), meta.company, handler).populate('owner')
+          @companyStore.findById(accountNamespace(meta.ns), meta.company, handler).populate('employees owner')
 
     .then (companies) =>
       callback(null, companies)
@@ -56,14 +56,18 @@ class CompanyService
     return callback({ rate: i18n.currencyRateRequired }) if not data.currencyRate
     return callback({ owner: i18n.ownerIsRequired }) if not data.owner
 
-    createCompany = new Promise (resolve, reject) =>
-      @companyStore.create ns, data, (err, result) ->
-        if err then reject(err) else resolve(result)
+    findAccount = new Promise (resolve, reject) =>
+      handler = (err, account) =>
+        if err then reject(err) else resolve(account)
+      @accountService.findByOwner(data.owner, handler).populate('owner')
 
-    createCompany
-    .then (company) =>
+    findAccount
+    .then (account) =>
+      data.invitees = _.filter data.invitees, (invitee) ->
+        invitee isnt account.owner.email
+
       new Promise (resolve, reject) =>
-        @accountService.findByOwner company.owner, (err, account) ->
+        @companyStore.create ns, data, (err, company) ->
           if err then reject(err) else resolve({
             account: account
             company: company
@@ -74,6 +78,7 @@ class CompanyService
         ns: result.account._id.toString()
         company: result.company._id
       })
+      result.account.owner = result.account.owner._id
       new Promise (resolve, reject) =>
         @accountService.update result.account.toJSON(), (err) ->
           if err then reject(err) else resolve({
@@ -130,12 +135,13 @@ class CompanyService
     return callback({ owner: i18n.ownerIsRequired }) if not data.owner
 
     findCompany = new Promise (resolve, reject) =>
-      handler = (err, company) ->
+      handler = (err, company) =>
         return reject(err) if err
         return reject({ generic: @i18n.companyWasNotFound }) if not company
         return reject({ generic: @i18n.currencyRateCannotBeChanged }) if company.currencyRate isnt data.currencyRate
         return reject({ generic: @i18n.currencyCodeCannotBeChanged }) if company.currencyCode isnt data.currencyCode
-      @companyStore.findById(ns, data._id, handler).populate('employees')
+        resolve(company)
+      @companyStore.findById(ns, data.id, handler).populate('employees owner')
 
     findCompany
     .then (company) =>
@@ -146,12 +152,12 @@ class CompanyService
           employee.email is newInvitee.email
         return false if found
 
-        found = _.find originInvitees, (originInvitee) ->
+        found = _.find originInvitees.concat({ email: company.owner.email }), (originInvitee) ->
           originInvitee.email is newInvitee.email
         return not found
 
       inviteesToRemove = _.filter originInvitees, (originInvitee) ->
-        found = _.find newInvitees, (newInvitee) ->
+        found = _.find data.invitees, (newInvitee) ->
           originInvitee.email is newInvitee.email
         return not found
 
@@ -163,8 +169,9 @@ class CompanyService
         findUser
         .then (user) =>
           new Promise (resolve, reject) =>
-            @inviteService.findByUserAndCompany user._id, company._id, (err, invite) ->
+            handler = (err, invite) ->
               if err then reject(err) else resolve(invite)
+            @inviteService.findByUserAndCompany(user._id, company._id, handler).populate('user')
 
         .then (invite) =>
           new Promise (resolve, reject) =>
@@ -197,12 +204,26 @@ class CompanyService
           .then (user) =>
             new Promise (resolve, reject) =>
               @inviteService.createCompanyInvite user._id, company._id, ns(), (err) ->
-                if err then reject(err) else resolve(companyAndAccount.company)
+                if err then reject(err) else resolve()
+
       .then =>
         new Promise (resolve, reject) =>
-          company.invitees.splice(0, company.invitees.length).concat(newInvitees)
-          @companyStore.update ns, company.toJSON(), (err) =>
+          @companyStore.findById ns, data.id, (err) =>
             if (err) then reject(err) else resolve(company)
+
+      .then (latestCompany) =>
+        new Promise (resolve, reject) =>
+          companyData = latestCompany.toJSON()
+          # filter removed invites
+          companyData.invitees = _.filter companyData.invitees, (invitee) ->
+            found = _.find inviteesToRemove, (removeInvitee) ->
+              invitee.email is removeInvitee.email
+            return not found
+          # concatenate new invites
+          companyData.invitees = companyData.invitees.concat(newInvitees)
+          companyData.owner = companyData.owner._id
+          @companyStore.update ns, companyData, (err) =>
+            if (err) then reject(err) else resolve(companyData)
 
     .then (company) ->
       callback(null, company)
