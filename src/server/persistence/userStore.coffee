@@ -1,4 +1,5 @@
 User = inject('persistence/model/user')
+_ = require('underscore')
 
 class UserStore
 
@@ -6,7 +7,7 @@ class UserStore
     new User(data).save(callback)
 
   update: (data, callback) ->
-    User.find(data, callback)
+    User.update({_id: data._id}, _.omit(data, ['_id']), callback)
 
   findById: (id, callback) ->
     User.findById(id, callback)

@@ -46,7 +46,7 @@ class SettingsService
       userData.lastName = data.lastName
       new Promise (resolve, reject) =>
         @userService.update userData, (err, user) ->
-          if err then reject(err) else resolve(user)
+          if err then reject(err) else resolve(userData)
 
     .then (user) ->
       callback(null, user)

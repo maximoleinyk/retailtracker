@@ -17,12 +17,14 @@ class MongoDB
         resave: true
         secret: config.app.sessionSecret,
         cookie:
+          secure: true
           maxAge: config.cookie.maxAge
         store: new MongoStore({
           db: mongoose.connection.db
           cookie:
             maxAge: config.cookie.maxAge
         })
+        rolling: true
       })
 
       console.log('Connected to mongo on host ' + config.db.host + ' and port ' + config.db.port)
