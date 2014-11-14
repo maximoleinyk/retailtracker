@@ -54,5 +54,5 @@ define (require) ->
             key: inviteKey
           })
         })
-      .then null, (err) =>
-        @navigate('login') if err is 'Invite not found'
+      .then null, =>
+        @navigateTo('login')

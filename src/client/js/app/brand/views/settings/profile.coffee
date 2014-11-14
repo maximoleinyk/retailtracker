@@ -14,6 +14,6 @@ define (require) ->
 
       @model.changeProfileSettings()
       .then =>
-        @navigate('')
+        @navigateTo('')
       .then null, (err) =>
         @validation.show(err.errors)

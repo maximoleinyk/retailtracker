@@ -14,14 +14,13 @@ class CompanyMediator
 
     findCompany
     .then (company) =>
-      company.employees.push(user._id)
-      resultInvitees = []
-      company.invitees.forEach (invitee) =>
-        resultInvitees.push(invitee) if invitee.email isnt user.email
-      company.invitees.splice(0, company.invitees.length).concat(resultInvitees)
+      companyData = company.toJSON()
+      companyData.employees.push(user._id)
+      companyData.invitees = _.filter companyData.invitees, (invitee) ->
+        invitee.email isnt user.email
 
       new Promise (resolve, reject) =>
-        @companyStore.update ns, company.toJSON(), (err) =>
+        @companyStore.update ns, companyData, (err) =>
           if err then reject(err) else resolve(company)
 
     .then (company) =>

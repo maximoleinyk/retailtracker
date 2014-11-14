@@ -10,7 +10,7 @@ define (require) ->
     className: 'container'
 
     createCompany: ->
-      @navigate('company/create')
+      @navigateTo('company/create')
 
     onRender: ->
       @renderCompanies()

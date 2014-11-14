@@ -64,8 +64,8 @@ class CompanyService
     findAccount
     .then (account) =>
       data.invitees = _.filter data.invitees, (invitee) ->
-        invitee isnt account.owner.email
-
+        invitee.email isnt account.owner.email
+      data.employees.push(account.owner._id)
       new Promise (resolve, reject) =>
         @companyStore.create ns, data, (err, company) ->
           if err then reject(err) else resolve({
@@ -152,7 +152,7 @@ class CompanyService
           employee.email is newInvitee.email
         return false if found
 
-        found = _.find originInvitees.concat({ email: company.owner.email }), (originInvitee) ->
+        found = _.find originInvitees, (originInvitee) ->
           originInvitee.email is newInvitee.email
         return not found
 

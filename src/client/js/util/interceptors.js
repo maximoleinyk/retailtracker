@@ -136,8 +136,13 @@ define(function (require) {
         this.$el.on('click', '[data-click]', this.handleActions);
     };
 
-    Marionette.View.prototype.navigate = function(route) {
-        this.eventBus.trigger('router:navigate', route, {trigger: true});
+    var navigateTo = function(route, options) {
+        options = options || {trigger: true};
+        this.eventBus.trigger('router:navigate', route, options);
     };
+
+    Backbone.View.prototype.navigateTo = navigateTo;
+    Backbone.Router.prototype.navigateTo = navigateTo;
+    Marionette.Controller.prototype.navigateTo = navigateTo;
 
 });

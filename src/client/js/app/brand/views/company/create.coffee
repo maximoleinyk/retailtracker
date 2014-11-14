@@ -5,7 +5,7 @@ define (require) ->
   EmployeeList = require('cs!./employeeList')
   currencies = require('util/currencies')
   _ = require('underscore')
-  Employees = require('cs!app/company/collections/employees')
+  Collection = require('cs!app/common/mongoCollection')
 
   Layout.extend
 
@@ -24,7 +24,7 @@ define (require) ->
 
     renderEmployeeList: ->
       @employeeList.show new EmployeeList({
-        collection: new Employees()
+        collection: new Collection()
         model: @model
       })
 
@@ -32,7 +32,7 @@ define (require) ->
       @ui.$select.select2()
 
     cancel: ->
-      @navigate('')
+      @navigateTo('')
 
     create: (e) ->
       e.preventDefault()
@@ -40,6 +40,6 @@ define (require) ->
 
       @model.create()
       .then =>
-        @navigate('')
+        @navigateTo('')
       .then null, (err) =>
         @validation.show(err)

@@ -16,7 +16,7 @@ define (require) ->
         @model.unset('oldPassword')
         @model.unset('password')
         @model.unset('confirmPassword')
-        @navigate('')
+        @navigateTo('')
       .then null, (err) =>
         @validation.show(err.errors)
 

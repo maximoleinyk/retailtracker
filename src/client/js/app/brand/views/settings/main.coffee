@@ -38,5 +38,5 @@ define (require) ->
       }))
 
     defaultView: ->
-      @eventBus.trigger('router:navigate', 'settings/profile', {trigger: true})
+      @navigateTo('settings/profile')
 

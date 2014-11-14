@@ -28,10 +28,7 @@ define (require) ->
 
         if (!$el.data('enable-href') and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
           e.preventDefault()
-
-          url = href.replace(new RegExp('^' + Backbone.history.root), '')
-          @eventBus.trigger('router:navigate', url, {trigger: true})
-
+          @navigateTo(href.replace(new RegExp('^' + Backbone.history.root), ''))
           $(document).trigger('click.bs.dropdown');
 
       @listenTo @eventBus, 'sync:start', =>
