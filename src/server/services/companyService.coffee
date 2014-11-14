@@ -145,20 +145,25 @@ class CompanyService
 
     findCompany
     .then (company) =>
-      originInvitees = company.toObject().invitees
+      companyData = company.toObject()
 
       newInvitees = _.filter data.invitees, (newInvitee) ->
         found = _.find company.employees, (employee) ->
           employee.email is newInvitee.email
         return false if found
 
-        found = _.find originInvitees, (originInvitee) ->
+        found = _.find companyData.invitees, (originInvitee) ->
           originInvitee.email is newInvitee.email
         return not found
 
-      inviteesToRemove = _.filter originInvitees, (originInvitee) ->
+      inviteesToRemove = _.filter companyData.invitees, (originInvitee) ->
         found = _.find data.invitees, (newInvitee) ->
           originInvitee.email is newInvitee.email
+        return not found
+
+      employeesToRemove = _.filter companyData.employees, (originEmployee) ->
+        found = _.find data.employees, (latestEmployee) ->
+          originEmployee._id is latestEmployee.id
         return not found
 
       removeInvites = Promise.all _.map inviteesToRemove, (inviteeToRemove) =>
@@ -179,6 +184,22 @@ class CompanyService
               if err then reject(err) else resolve()
 
       removeInvites
+      .then =>
+        Promise.all _.map employeesToRemove, (employeeToRemove) =>
+          findAccount = new Promise (resolve, reject) =>
+            @accountService.findByOwner employeeToRemove._id, (err, account) ->
+              if err then reject(err) else resolve(account)
+
+          findAccount
+          .then (account) =>
+            accountData = account.toJSON()
+            accountData.companies = _.filter accountData.companies, (pair) ->
+              pair.company isnt company._id
+
+            new Promise (resolve, reject) =>
+              @accountService.update accountData, (err, account) ->
+                if err then reject(err) else resolve()
+
       .then =>
         Promise.all _.map newInvitees, (invitee) =>
           findUser = new Promise (resolve, reject) =>
@@ -214,13 +235,17 @@ class CompanyService
       .then (latestCompany) =>
         new Promise (resolve, reject) =>
           companyData = latestCompany.toJSON()
-          # filter removed invites
           companyData.invitees = _.filter companyData.invitees, (invitee) ->
             found = _.find inviteesToRemove, (removeInvitee) ->
               invitee.email is removeInvitee.email
             return not found
-          # concatenate new invites
           companyData.invitees = companyData.invitees.concat(newInvitees)
+
+          companyData.employees = _.filter companyData.employees, (originEmployee) ->
+            found = _.find employeesToRemove, (removeEmployee) ->
+              originEmployee.email is removeEmployee.email
+            return not found
+
           companyData.owner = companyData.owner._id
           @companyStore.update ns, companyData, (err) =>
             if (err) then reject(err) else resolve(companyData)

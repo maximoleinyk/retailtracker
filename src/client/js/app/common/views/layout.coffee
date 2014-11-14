@@ -51,6 +51,7 @@ define (require) ->
 
     openPage: (view) ->
       @container.show(view)
+      Marionette.$(document).scrollTop(0)
 
     redirectToLogin: ->
       sessionStore.add('redirectUrl', Backbone.history.fragment)
