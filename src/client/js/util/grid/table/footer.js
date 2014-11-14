@@ -19,7 +19,7 @@ define(function (require) {
             this.model.clear();
         },
 
-        buildCustomCell: function (type, options) {
+        buildCustomCell: function (type, column, options) {
             var self = this;
 
             if (type === 'edit') {

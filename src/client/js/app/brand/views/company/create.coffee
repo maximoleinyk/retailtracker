@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Layout = require('cs!app/common/layout')
-  EmployeeList = require('cs!./employeeList')
+  InviteeList = require('cs!./inviteeList')
   currencies = require('util/currencies')
   _ = require('underscore')
   Collection = require('cs!app/common/mongoCollection')
@@ -13,17 +13,18 @@ define (require) ->
     className: 'container'
 
     onRender: ->
-      @renderEmployeeList()
+      @renderInviteeList()
       @renderSelect()
 
     templateHelpers: ->
+      isNew: @model.isNew()
       currencyCodes: ->
         _.map currencies, (object) ->
           id: object.iso.code
           text: object.iso.code
 
-    renderEmployeeList: ->
-      @employeeList.show new EmployeeList({
+    renderInviteeList: ->
+      @inviteeList.show new InviteeList({
         collection: new Collection()
         model: @model
       })

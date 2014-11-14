@@ -39,6 +39,9 @@ define(function (require) {
 							self.changeState('edit');
 						}
 					}));
+                case 'custom':
+                    var CustomCell = column.get('cell');
+                    return new CustomCell(_.extend(options, column.get('options')));
 				default:
 					return new ViewCell(options);
 			}

@@ -83,11 +83,11 @@ define(function (require) {
                 case 'email':
                     return new EmailCell(options);
                 default:
-                    return this.buildCustomCell(type, options);
+                    return this.buildCustomCell(type, column, options);
             }
         },
 
-        buildCustomCell: function (type, options) {
+        buildCustomCell: function (type, column, options) {
             var self = this;
 
             if (type === 'autoincrement') {
