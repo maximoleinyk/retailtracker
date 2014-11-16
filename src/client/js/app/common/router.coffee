@@ -45,7 +45,7 @@ define (require) ->
         redirectUrl = sessionStore.get('redirectUrl')
         sessionStore.remove('redirectUrl')
 
-        if _.isNull(redirectUrl) or _.isUndefined(redirectUrl)
+        if redirectUrl
           window.location.replace('/page' + if not redirectUrl then '' else '/' + redirectUrl)
         else
           window.location.replace('/404')

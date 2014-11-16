@@ -32,10 +32,10 @@ class CompanyService
       if not result.company
         return Promise.empty()
       else
-        return Promise.empty(result.ns)
+        return Promise.empty(result)
 
-    .then (namespace) ->
-      callback(null, namespace)
+    .then (result) ->
+      callback(null, result)
 
     .then(null, callback)
 
