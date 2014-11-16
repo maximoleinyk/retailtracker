@@ -11,7 +11,7 @@ define (require) ->
 
     templateHelpers: ->
       {
-        isOwner: @model.get('owner')._id is context.id
+        isOwner: @model.get('owner')._id is context.get('owner')._id
       }
 
     makeDefault: (e) ->
