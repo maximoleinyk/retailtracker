@@ -22,7 +22,8 @@ define (require) ->
       switch @view
         when 'profile' then @profileView()
         when 'security' then @securityView()
-        else @defaultView()
+        else
+          @defaultView()
 
     profileView: ->
       @model.set

@@ -1,7 +1,6 @@
 i18n = inject('i18n').bundle('validation')
 Promise = inject('util/promise')
 _ = require('underscore')
-accountNamespace = inject('util/namespace/account')
 
 class CompanyMediator
 

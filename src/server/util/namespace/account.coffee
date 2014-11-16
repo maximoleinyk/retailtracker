@@ -2,4 +2,7 @@ _ = require('underscore')
 
 module.exports = (req) ->
   (collectionName) ->
-    (if _.isString(req) then req else req.session.ns) + (if collectionName then '.' + collectionName else '')
+    account = if _.isString(req) then req else req.headers.account
+    collection = if collectionName and account then '.' + collectionName else ''
+
+    account + collection

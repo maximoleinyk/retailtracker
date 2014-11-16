@@ -11,8 +11,8 @@ define (require) ->
     template: require('hbs!./navigation')
     tagName: 'header'
 
-    onRender: ->
-      @ui.$firstNameLabel.text(context.get('firstName'))
+    initialize: ->
+      @model = context
 
     logout: ->
       http.del '/security/logout', (err) ->

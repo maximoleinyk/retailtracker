@@ -18,15 +18,14 @@ define (require) ->
     initialize: (path) ->
       http.setHeaders({ company: path.split('/')[1] })
 
-    beforeStart: (userDetails, path) ->
-      context.set(userDetails)
-      companyId = path.split('/')[1]
+    beforeStart: (accountDetails, path) ->
+      context.set(accountDetails)
 
       new Promise (resolve, reject) ->
-        http.get '/company/' + companyId + '/permission/' + userDetails._id, (err, companyNamespace) ->
+        http.get '/company/' + path.split('/')[1] + '/permission/' + accountDetails.owner._id, (err, namespace) ->
           return reject(err) if err
-          return reject('Unknown context') if not companyNamespace
-
-          http.setHeaders({ companyNamespace: companyNamespace })
+          return reject('Unknown context') if not namespace
+          # set the company's original namespace
+          http.setHeaders({ account: namespace })
           resolve()
   })

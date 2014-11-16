@@ -4,6 +4,7 @@ define (require) ->
   Router = require('cs!./router')
   Controller = require('cs!./controller')
   Navigation = require('cs!./views/navigation')
+  http = require('util/http')
   context = require('cs!app/common/context')
 
   ({
@@ -13,6 +14,9 @@ define (require) ->
     bundleName: 'brand'
     className: 'brand'
     root: '/brand/'
-    onComplete: (userInfo) ->
-      context.set(userInfo)
+
+    onComplete: (accountInfo) ->
+      context.set(accountInfo)
+      http.setHeaders({ account: accountInfo._id })
+
   })

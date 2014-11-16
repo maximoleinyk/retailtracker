@@ -11,7 +11,7 @@ define (require) ->
   Controller.extend
 
     home: ->
-      @openPage(new HomePage())
+      @openPage(new HomePage)
 
     uom: ->
       collection = new Uom

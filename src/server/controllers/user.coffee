@@ -12,6 +12,12 @@ class UserController
     @router.get '/user/fetch', authFilter, (req, res) =>
       @userService.findById req.user.owner, (err, user) =>
         return @error(err, res) if err
-        res.status(HttpStatus.OK).send(user)
+
+        account = req.user.toJSON()
+        delete account.password
+        delete account.login
+        account.owner = user.toJSON()
+
+        res.status(HttpStatus.OK).send(account)
 
 module.exports = UserController
