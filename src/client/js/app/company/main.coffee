@@ -20,13 +20,17 @@ define (require) ->
 
     beforeStart: (accountDetails, path) ->
       context.set(accountDetails)
+      companyId = path.split('/')[1]
 
       new Promise (resolve, reject) ->
-        http.get '/company/' + path.split('/')[1] + '/permission/' + accountDetails.owner._id, (err, result) ->
+        http.get '/company/' + companyId + '/permission/' + accountDetails.owner._id, (err, result) ->
           return reject(err) if err
           return reject('Unknown context') if not result
           context.set('company', result.company)
           # set the company's original namespace
-          http.setHeaders({ account: result.ns })
+          http.setHeaders({
+            account: result.ns
+            company: companyId
+          })
           resolve()
   })
