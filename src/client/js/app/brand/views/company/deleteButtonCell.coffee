@@ -2,14 +2,14 @@ define (require) ->
   'use strict'
 
   AbstractCell = require('util/grid/table/cells/abstractCell')
-  UserInfo = require('util/userInfo')
+  context = require('cs!app/common/context')
 
   AbstractCell.extend
 
     template: require('hbs!./deleteButtonCell')
 
     templateHelpers: ->
-      isOwner: @options.model.id is UserInfo.id
+      isOwner: @options.model.id is context.id
 
     removeEmployee: ->
       @options.employees.remove(@options.model)

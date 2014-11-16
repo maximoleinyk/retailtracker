@@ -4,7 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   http = require('util/http')
   console = require('util/console')
-  userInfo = require('util/userInfo')
+  context = require('cs!app/common/context')
 
   Marionette.ItemView.extend
 
@@ -12,7 +12,7 @@ define (require) ->
     tagName: 'header'
 
     onRender: ->
-      @ui.$firstNameLabel.text(userInfo.get('firstName'))
+      @ui.$firstNameLabel.text(context.get('firstName'))
 
     logout: ->
       http.del '/security/logout', (err) ->

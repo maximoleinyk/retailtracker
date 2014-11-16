@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  userInfo = require('util/userInfo')
+  context = require('cs!app/common/context')
 
   Marionette.ItemView.extend
 
@@ -11,12 +11,14 @@ define (require) ->
 
     templateHelpers: ->
       {
-        isOwner: @model.get('owner')._id is userInfo.id
+        isOwner: @model.get('owner')._id is context.id
       }
 
     openCompany: (e) ->
       e.preventDefault()
-      # TODO: implement
+      @model.enter()
+      .then =>
+        window.location.replace('/page/company/' + @model.id)
 
     makeDefault: (e) ->
       e.preventDefault()

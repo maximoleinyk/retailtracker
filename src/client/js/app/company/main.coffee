@@ -4,7 +4,7 @@ define (require) ->
   Router = require('cs!./router')
   Controller = require('cs!./controller')
   Navigation = require('cs!./views/navigation')
-  UserInfo = require('util/userInfo')
+  context = require('cs!app/common/context')
 
   ({
     Router: Router
@@ -14,5 +14,5 @@ define (require) ->
     className: 'company'
     root: '/company/'
     onUserLoaded: (userInfo) ->
-      UserInfo.set(userInfo)
+      context.set(userInfo)
   })

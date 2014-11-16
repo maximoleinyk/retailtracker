@@ -3,7 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/layout')
   Settings = require('cs!app/brand/models/settings')
-  UserInfo = require('util/userInfo')
+  context = require('cs!app/common/context')
   ProfileView = require('cs!./profile')
   SecurityView = require('cs!./security')
 
@@ -15,7 +15,7 @@ define (require) ->
     initialize: (options) ->
       @view = options.view
       @model = new Settings({
-        id: UserInfo.get('_id')
+        id: context.get('_id')
       })
 
     onRender: ->
@@ -26,8 +26,8 @@ define (require) ->
 
     profileView: ->
       @model.set
-        firstName: UserInfo.get('firstName')
-        lastName: UserInfo.get('lastName')
+        firstName: context.get('firstName')
+        lastName: context.get('lastName')
       @content.show(new ProfileView({
         model: @model
       }))

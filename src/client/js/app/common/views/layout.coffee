@@ -4,6 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   Layout = require('cs!app/common/layout')
   sessionStore = require('util/sessionStore')
+  Backbone = require('backbone')
 
   Layout.extend
 
@@ -15,29 +16,20 @@ define (require) ->
       'http:401': 'redirectToLogin'
       'open:page': 'openPage'
 
-    initialize: (options) ->
-      @options = options
+    initialize: ->
+      this.$el.addClass(@options.className) if @options.className
 
-      this.$el.addClass(options.className) if options.className
+      Marionette.$(document).delegate('a[href^="/"]', 'click', _.bind(@navigateByLink, @))
 
-      syncCount = 0
+    navigateByLink: (e) ->
+      $el = $(e.currentTarget)
+      href = $el.attr('href')
+      enableHref = $el.data('enable-href')
 
-      Marionette.$(document).delegate 'a[href^="/"]', 'click', (e) =>
-        $el = $(e.currentTarget)
-        href = $el.attr('href')
-
-        if (!$el.data('enable-href') and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
-          e.preventDefault()
-          @navigateTo(href.replace(new RegExp('^' + Backbone.history.root), ''))
-          $(document).trigger('click.bs.dropdown');
-
-      @listenTo @eventBus, 'sync:start', =>
-        syncCount += 1
-        Marionette.$('[data-disable-on-sync]').attr('disabled', true)
-
-      @listenTo @eventBus, 'sync:stop', =>
-        syncCount -= 1
-        Marionette.$('[data-disable-on-sync]').removeAttr('disabled') if not syncCount
+      if (!enableHref and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
+        e.preventDefault()
+        @navigateTo(href.replace(new RegExp('^' + Backbone.history.root), ''))
+        $(document).trigger('click.bs.dropdown')
 
     onRender: ->
       @displayNavigation()

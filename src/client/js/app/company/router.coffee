@@ -6,6 +6,6 @@ define (require) ->
   Router.extend
 
     appRoutes:
-      '': 'home'
-      uom: 'uom'
-      currency: 'currency'
+      ':id': 'home'
+      ':id/uom': 'uom'
+      ':id/currency': 'currency'

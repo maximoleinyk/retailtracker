@@ -17,7 +17,6 @@ class MongoDB
         resave: true
         secret: config.app.sessionSecret,
         cookie:
-          secure: true
           maxAge: config.cookie.maxAge
         store: new MongoStore({
           db: mongoose.connection.db

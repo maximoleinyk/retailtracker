@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  UserInfo = require('util/userInfo')
+  context = require('cs!app/common/context')
 
   Marionette.ItemView.extend
 
@@ -15,7 +15,7 @@ define (require) ->
 
       @model.changeProfileSettings()
       .then =>
-        UserInfo.set({
+        context.set({
           firstName: @model.get('firstName')
           lastName: @model.get('lastName')
         })

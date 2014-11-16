@@ -163,7 +163,7 @@ class CompanyService
 
       employeesToRemove = _.filter companyData.employees, (originEmployee) ->
         found = _.find data.employees, (latestEmployee) ->
-          originEmployee._id is latestEmployee.id
+          originEmployee._id.toString() is latestEmployee.id
         return not found
 
       removeInvites = Promise.all _.map inviteesToRemove, (inviteeToRemove) =>
@@ -194,7 +194,7 @@ class CompanyService
           .then (account) =>
             accountData = account.toJSON()
             accountData.companies = _.filter accountData.companies, (pair) ->
-              pair.company isnt company._id
+              pair.company.toString() isnt company._id.toString()
 
             new Promise (resolve, reject) =>
               @accountService.update accountData, (err, account) ->

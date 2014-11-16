@@ -2,16 +2,19 @@ define (require) ->
   'use strict'
 
   MongoModel = require('cs!app/common/mongoModel')
-  CurrentUser = require('util/userInfo')
+  context = require('cs!app/common/context')
 
   class Company extends MongoModel
 
     defaults: ->
-      owner: CurrentUser.id
+      owner: context.id
       employees: []
       invitees: []
       currencyCode: 'UAH'
       currencyRate: 1
+
+    enter: ->
+      @promise('post', '/company/enter/' + @id)
 
     loadInvitedCompanyDetails: ->
       @promise('get', '/company/invite/' + @get('key'))

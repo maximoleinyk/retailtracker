@@ -55,9 +55,6 @@ define(function (require) {
                 504: function () {
                     eventBus.trigger('http:504');
                 }
-            },
-            complete: function() {
-                eventBus.trigger('sync:stop');
             }
         }, options);
 
@@ -74,15 +71,12 @@ define(function (require) {
             return request('GET', url, callback, options);
         },
         put: function (url, data, callback, options) {
-            eventBus.trigger('sync:start');
             return request('PUT', url, data, callback, options);
         },
         post: function (url, data, callback, options) {
-            eventBus.trigger('sync:start');
             return request('POST', url, data, callback, options);
         },
         del: function (url, data, callback, options) {
-            eventBus.trigger('sync:start');
             return request('DELETE', url, data, callback, options);
         }
     };
