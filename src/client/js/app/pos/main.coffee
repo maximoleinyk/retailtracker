@@ -11,6 +11,6 @@ define (require) ->
     bundleName: 'pos'
     className: 'point-of-sale'
     root: '/pos/'
-    onUserLoaded: (userInfo) ->
+    onComplete: (userInfo) ->
       context.set(userInfo)
   })

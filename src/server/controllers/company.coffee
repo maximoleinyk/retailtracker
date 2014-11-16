@@ -7,10 +7,13 @@ class CompanyController
   constructor: (@companyService) ->
 
   register: (router) ->
-    router.post '/company/enter/:id', authFilter, (req, res) =>
-      req.session.currentCompany = req.params.id
-      res.status(204).end()
-    
+    router.get '/company/:companyId/permission/:userId', (req, res) =>
+      userId = req.params.userId
+      companyId = req.params.companyId
+      @companyService.checkPermission companyId, userId, (err, result) ->
+        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
+        res.status(HttpStatus.OK).send(result)
+
     router.get '/company/all', authFilter, (req, res) =>
       @companyService.findAll req.user.owner, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err

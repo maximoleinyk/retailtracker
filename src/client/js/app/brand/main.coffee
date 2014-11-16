@@ -13,6 +13,6 @@ define (require) ->
     bundleName: 'brand'
     className: 'brand'
     root: '/brand/'
-    onUserLoaded: (userInfo) ->
+    onComplete: (userInfo) ->
       context.set(userInfo)
   })

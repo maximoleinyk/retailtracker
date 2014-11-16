@@ -26,9 +26,8 @@ define(function (require) {
                 try {
                     response = JSON.parse(xhr.responseText);
                 } catch (e) {
+                    response = xhr.responseText
                 }
-                response = !response ? xhr.statusText : response;
-
                 callback(response);
             },
             statusCode: {
@@ -41,9 +40,10 @@ define(function (require) {
                     }
                     eventBus.trigger('http:400', response);
                 },
-                401: function () {
+                401: function (xhr, status, text) {
                     eventBus.trigger('http:401', {
-                        returnFragment: Backbone.history.fragment
+                        fragment: Backbone.history.fragment,
+                        errorMessage: text
                     });
                 },
                 404: function () {
@@ -67,6 +67,16 @@ define(function (require) {
     };
 
     return {
+        setHeaders: function (object) {
+            object = object || {};
+            Backbone.$.ajaxSetup({
+                beforeSend: function (xhr) {
+                    _.each(object, function (value, key) {
+                        xhr.setRequestHeader(key, value);
+                    });
+                }
+            });
+        },
         get: function (url, callback, options) {
             return request('GET', url, callback, options);
         },

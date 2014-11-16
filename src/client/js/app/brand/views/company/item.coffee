@@ -14,12 +14,6 @@ define (require) ->
         isOwner: @model.get('owner')._id is context.id
       }
 
-    openCompany: (e) ->
-      e.preventDefault()
-      @model.enter()
-      .then =>
-        window.location.replace('/page/company/' + @model.id)
-
     makeDefault: (e) ->
       e.preventDefault()
       # TODO: implement

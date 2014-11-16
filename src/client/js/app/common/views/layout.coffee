@@ -45,6 +45,11 @@ define (require) ->
       @container.show(view)
       Marionette.$(document).scrollTop(0)
 
-    redirectToLogin: ->
-      sessionStore.add('redirectUrl', Backbone.history.fragment)
-      window.location.replace('/page/account/login')
+    redirectToLogin: (options) ->
+      sessionStore.add('redirectUrl', options.fragment)
+
+      switch (options.errorMessage)
+        when 'Unauthorized' then window.location.replace('/page/account/login')
+        when 'Unauthorized company' then @navigateTo('brand')
+        else
+          window.location.replace('/404')

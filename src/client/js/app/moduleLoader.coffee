@@ -39,22 +39,18 @@ define (require) ->
             firstModule = 'app/' + @mappings[route] + '/main'
 
       require ['cs!' + firstModule], (module) =>
-        startApp = (authenticated) =>
-          if authenticated
-            if url.indexOf('account') is 0
-              sessionStore.remove('redirectUrl')
-              return window.location.replace(@root + defaultModuleName)
-          else
-            if url.indexOf('account') isnt 0
-              sessionStore.add('redirectUrl', url)
-              return window.location.replace(@root + 'account/login')
-            else
-              sessionStore.add('redirectUrl', 'brand')
+        if not _.isFunction(module.beforeStart)
+          module.beforeStart = (result) ->
+            new Promise (resolve) ->
+              resolve(result)
 
+        startApp = (authenticated) =>
           start(_.extend(module, {
             root: (@root + module.root).replace('//', '/')
             isAuthenticated: authenticated
           }));
+
+        module.initialize(@getPath()) if _.isFunction(module.initialize)
 
         i18n = new Promise (resolve, reject) ->
           http.get '/i18n/messages/' + module.bundleName, (err, response) ->
@@ -66,11 +62,27 @@ define (require) ->
           new Promise (resolve, reject) ->
             http.get '/user/fetch', (err, result) ->
               if err then reject(err) else resolve(result)
-        .then (result) ->
-          module.onUserLoaded(result) if module.onUserLoaded
-          startApp(true)
-        .then null, (err) ->
-          if err is 'Unauthorized'
-            startApp(false)
+
+        .then (userDetails) =>
+          if url.indexOf('account/login') is 0
+            sessionStore.remove('redirectUrl')
+            window.location.replace(@root + defaultModuleName)
           else
-            # handle properly this case
+            return module.beforeStart(userDetails, @getPath())
+
+        .then (result) =>
+          module.onComplete(result) if _.isFunction(module.onComplete)
+          startApp(true)
+
+        .then null, (error) =>
+          if error is 'Unauthorized'
+            if url.indexOf('account/login') isnt 0
+              sessionStore.add('redirectUrl', url)
+              return window.location.replace(@root + 'account/login')
+            else
+              sessionStore.add('redirectUrl', 'brand')
+              startApp(false)
+          else if error is 'Unknown context'
+            window.location.replace(@root + 'brand')
+          else
+            # handle real error

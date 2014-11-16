@@ -8,6 +8,37 @@ class CompanyService
   constructor: (@companyStore, @inviteService, @accountService, @userService, i18n) ->
     @i18n = i18n.bundle('validation')
 
+  checkPermission: (companyId, userId, callback) ->
+    findAccount = new Promise (resolve, reject) =>
+      @accountService.findByOwner userId, (err, account) ->
+        if err then reject(err) else resolve(account)
+
+    findAccount
+    .then (account) =>
+      foundCompany = _.find account.toJSON().companies, (pair) =>
+        pair.company.toString() is companyId
+
+      if not foundCompany
+        return Promise.empty({})
+      else
+        new Promise (resolve, reject) =>
+          @companyStore.findById accountNamespace(foundCompany.ns), companyId, (err, company) ->
+            if err then reject(err) else resolve({
+              ns: foundCompany.ns
+              company: company
+            })
+
+    .then (result) =>
+      if not result.company
+        return Promise.empty()
+      else
+        return Promise.empty(result.ns)
+
+    .then (namespace) ->
+      callback(null, namespace)
+
+    .then(null, callback)
+
   findAll: (userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
       @accountService.findByOwner userId, (err, account) ->
