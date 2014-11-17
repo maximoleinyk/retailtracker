@@ -278,6 +278,9 @@ class CompanyService
             return not found
 
           companyData.owner = companyData.owner._id
+          companyData.name = data.name
+          companyData.description = data.description
+
           @companyStore.update ns, companyData, (err) =>
             if (err) then reject(err) else resolve(companyData)
 

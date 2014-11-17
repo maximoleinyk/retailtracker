@@ -22,14 +22,6 @@ define (require) ->
 
       Router::constructor.call(@, arguments)
 
-    getFragment: ->
-      fragment = Router::getFragment.apply(@, arguments)
-
-      if fragment.indexOf('/') > -1
-        return fragment.replace(fragment.substring(0, fragment.indexOf('/')), '')
-      else
-        return ''
-
     execute: (callback, args) ->
       callback.apply(@, [].slice.call(args, 1)) if callback
 
