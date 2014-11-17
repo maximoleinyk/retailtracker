@@ -2,6 +2,9 @@ i18n = inject('i18n').bundle('validation')
 Promise = inject('util/promise')
 _ = require('underscore')
 accountNamespace = inject('util/namespace/account')
+mailer = inject('email/mailer')
+emailTemplates = inject('email/templates/mapper')
+templateCompiler = inject('email/templateCompiler')
 
 class CompanyService
 
@@ -151,8 +154,17 @@ class CompanyService
             userId = result.user._id
             companyId = companyAndAccount.company._id
             namespace = result.account._id.toString()
-            @inviteService.createCompanyInvite userId, companyId, namespace, (err) ->
-              if err then reject(err) else resolve(companyAndAccount.company)
+            @inviteService.createCompanyInvite userId, companyId, namespace, (err, invite) ->
+              if err then reject(err) else resolve({
+                invite: invite,
+                company: companyAndAccount.company
+              })
+
+        .then (result) =>
+          new Promise (resolve, reject) =>
+            mail = emailTemplates(mailer, templateCompiler)
+            mail.companyInvite result.invite, (err) ->
+              if err then reject(err) else resolve(result.company)
 
     .then (company) ->
       callback(null, company)
@@ -255,8 +267,14 @@ class CompanyService
 
           .then (user) =>
             new Promise (resolve, reject) =>
-              @inviteService.createCompanyInvite user._id, company._id, ns(), (err) ->
-                if err then reject(err) else resolve()
+              @inviteService.createCompanyInvite user._id, company._id, ns(), (err, invite) ->
+                if err then reject(err) else resolve(invite)
+
+          .then (invite) =>
+            new Promise (resolve, reject) =>
+              mail = emailTemplates(mailer, templateCompiler)
+              mail.companyInvite invite, (err, result) ->
+                if err then reject(err) else resolve(result)
 
       .then =>
         new Promise (resolve, reject) =>

@@ -1,8 +1,8 @@
 Encryptor = inject('util/encryptor')
 mailer = inject('email/mailer')
+emailTemplates = inject('email/templates/mapper')
 templateCompiler = inject('email/templateCompiler')
 Promise = inject('util/promise')
-emailTemplates = inject('email/templates/mapper')
 accountNamespace = inject('util/namespace/account')
 
 class AccountService
@@ -41,6 +41,12 @@ class AccountService
     .then (user) =>
       new Promise (resolve, reject) =>
         @inviteService.createAccountInvite user, (err, result) ->
+          if err then reject(err) else resolve(result)
+
+    .then (invite) =>
+      mail = emailTemplates(mailer, templateCompiler)
+      new Promise (resolve, reject) =>
+        mail.registrationInvite invite, (err, result) ->
           if err then reject(err) else resolve(result)
 
     .then (result) ->
@@ -99,6 +105,12 @@ class AccountService
     .then (result) =>
       new Promise (resolve, reject) =>
         @inviteService.remove result.invite, (err) ->
+          if err then reject(err) else resolve(result)
+
+    .then (result) ->
+      new Promise (resolve, reject) =>
+        mail = emailTemplates(mailer, templateCompiler)
+        mail.successfulRegistration result.invite, (err, result) ->
           if err then reject(err) else resolve(result.account)
 
     .then (account) ->

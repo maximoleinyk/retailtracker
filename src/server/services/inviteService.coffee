@@ -1,7 +1,4 @@
 inviteStore = inject('persistence/inviteStore')
-emailTemplates = inject('email/templates/mapper')
-mailer = inject('email/mailer')
-templateCompiler = inject('email/templateCompiler')
 linkService = inject('services/linkService')
 Promise = inject('util/promise')
 generateRequestLink = inject('util/linkGenerator')
@@ -13,17 +10,6 @@ module.exports = {
 
   findByUserAndCompany: (userId, companyId, callback) ->
     inviteStore.findByUserAndCompany(userId, companyId, callback)
-
-  create: (firstName, email, link, callback) ->
-    data = {
-      firstName: firstName
-      email: email
-      link: link
-    }
-    inviteStore.create data, (err, invite) ->
-      return callback(err) if err
-      mail = emailTemplates(mailer, templateCompiler)
-      mail.registrationInvite(invite, callback)
 
   createAccountInvite: (user, callback) ->
     return callback({ generic: 'User object must be provided' }) if not user
@@ -41,12 +27,6 @@ module.exports = {
         }
         inviteStore.create data, (err, invite) ->
           if err then reject(err) else resolve(invite)
-
-    .then (invite) =>
-      mail = emailTemplates(mailer, templateCompiler)
-      new Promise (resolve, reject) =>
-        mail.registrationInvite invite, (err, result) ->
-          if err then reject(err) else resolve(result)
 
     .then (result) ->
       callback(null, result)
@@ -71,12 +51,6 @@ module.exports = {
         inviteStore.create data, (err, invite) ->
           if err then reject(err) else resolve(invite)
 
-    .then (invite) =>
-      new Promise (resolve, reject) =>
-        mail = emailTemplates(mailer, templateCompiler)
-        mail.companyInvite invite, (err, result) ->
-          if err then reject(err) else resolve(result)
-
     .then (result) ->
       callback(null, result)
 
@@ -89,12 +63,6 @@ module.exports = {
         if err then reject(err) else resolve(result)
 
     remove
-    .then (result) ->
-      new Promise (resolve, reject) =>
-        mail = emailTemplates(mailer, templateCompiler)
-        mail.successfulRegistration invite, (err, result) ->
-          if err then reject(err) else resolve(result)
-
     .then (result) ->
       callback(null, result)
 
