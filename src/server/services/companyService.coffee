@@ -1,7 +1,7 @@
 i18n = inject('i18n').bundle('validation')
 Promise = inject('util/promise')
 _ = require('underscore')
-accountNamespace = inject('util/namespace/account')
+namespace = inject('util/namespace')
 mailer = inject('email/mailer')
 emailTemplates = inject('email/templates/mapper')
 templateCompiler = inject('email/templateCompiler')
@@ -25,7 +25,7 @@ class CompanyService
         return Promise.empty({})
       else
         new Promise (resolve, reject) =>
-          @companyStore.findById accountNamespace(foundCompany.ns), companyId, (err, company) ->
+          @companyStore.findById namespace.accountWrapper(foundCompany.ns), companyId, (err, company) ->
             if err then reject(err) else resolve({
               ns: foundCompany.ns
               company: company

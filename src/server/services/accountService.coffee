@@ -3,7 +3,7 @@ mailer = inject('email/mailer')
 emailTemplates = inject('email/templates/mapper')
 templateCompiler = inject('email/templateCompiler')
 Promise = inject('util/promise')
-accountNamespace = inject('util/namespace/account')
+namespace = inject('util/namespace')
 
 class AccountService
 
@@ -265,7 +265,7 @@ class AccountService
 
     .then (result) =>
       new Promise (resolve, reject) =>
-        @companyMediator.confirmInvitee accountNamespace(result.invite.ns), result.invite.company, result.invite.user, (err) =>
+        @companyMediator.confirmInvitee namespace.accountWrapper(result.invite.ns), result.invite.company, result.invite.user, (err) =>
           if err then reject(err) else resolve(result)
 
     .then (result) =>

@@ -1,6 +1,6 @@
 HttpStatus = require('http-status-codes')
 authFilter = inject('util/authFilter')
-accountNamespace = inject('util/namespace/account')
+namespace = inject('util/namespace')
 
 class CompanyController
 
@@ -20,7 +20,7 @@ class CompanyController
         res.status(HttpStatus.OK).send(result)
 
     router.get '/company/:id', authFilter, (req, res) =>
-      @companyService.findById accountNamespace(req), req.params.id, (err, result) ->
+      @companyService.findById namespace.account(req), req.params.id, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
@@ -31,12 +31,12 @@ class CompanyController
         res.status(HttpStatus.OK).send(company)
 
     router.post '/company/create', authFilter, (req, res) =>
-      @companyService.create accountNamespace(req), req.body, (err, result) ->
+      @companyService.create namespace.account(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
     router.put '/company/update', authFilter, (req, res) =>
-      @companyService.update accountNamespace(req), req.body, (err, result) ->
+      @companyService.update namespace.account(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
