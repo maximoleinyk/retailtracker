@@ -4,14 +4,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
-        <fieldset>
-            <legend>Компании</legend>
-            <a href="/company/create" data-url-catch>
-                <span class="fa fa-plus"></span> {{i18n.newCompany}}
-            </a>
-
-            <div data-region="companies"></div>
-        </fieldset>
-    </div>
+    <fieldset class="col-md-6">
+        <legend>{{i18n.companies}}</legend>
+        <div data-region="companies"></div>
+    </fieldset>
+    <fieldset class="col-md-6">
+        <legend>{{i18n.activity}}</legend>
+        <div data-region="activity"></div>
+    </fieldset>
 </div>

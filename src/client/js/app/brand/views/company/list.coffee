@@ -8,4 +8,5 @@ define (require) ->
 
     template: require('hbs!./list')
     itemView: ItemView
+    itemViewContainer: '[data-id="container"]'
     className: 'company-list'
