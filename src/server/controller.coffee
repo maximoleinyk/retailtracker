@@ -22,6 +22,9 @@ AccountService = inject('services/accountService')
 AccountStore = inject('persistence/accountStore')
 UserStore = inject('persistence/userStore')
 CompanyMediator = inject('services/companyMediator')
+ActivityController = inject('controllers/activity')
+ActivityService = inject('services/activityService')
+ActivityStore = inject('persistence/activityStore')
 
 class PageController
 
@@ -63,6 +66,9 @@ class PageController
     @router.get '/i18n/messages/:batch', (req, res) =>
       res.send(i18n.bundle(req.params.batch))
 
+    activityController = new ActivityController(new ActivityService(new ActivityStore))
+    activityController.register(@router)
+    
     accountController = new AccountController(accountService)
     accountController.register(@router)
 

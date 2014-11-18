@@ -1,0 +1,10 @@
+{{#each groups}}
+    <div class="group-title">{{@key}}</div>
+    <ul>
+        {{#each this}}
+            <li>
+                <strong>{{user.firstName}} {{user.lastName}}</strong> {{action}}
+            </li>
+        {{/each}}
+    </ul>
+{{/each}}

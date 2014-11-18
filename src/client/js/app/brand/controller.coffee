@@ -8,15 +8,19 @@ define (require) ->
   EditCompanyPage = require('cs!./views/company/edit')
   Company = require('cs!./models/company')
   Companies = require('cs!./collections/companies')
+  Activities = require('cs!./collections/activities')
   Promise = require('rsvp').Promise
 
   Controller.extend
 
     dashboard: ->
       companies = new Companies
-      Promise.all([companies.fetch()]).then =>
+      activities = new Activities
+
+      Promise.all([activities.fetch(), companies.fetch()]).then =>
         @openPage new DashboardPage({
           companies: companies
+          activities: activities
         })
 
     createCompany: ->

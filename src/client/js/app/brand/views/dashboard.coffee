@@ -3,6 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/layout')
   CompanyList = require('cs!app/brand/views/company/list')
+  ActivityList = require('cs!app/brand/views/activity/list')
 
   Layout.extend
 
@@ -22,4 +23,6 @@ define (require) ->
       })
 
     renderActivities: ->
-      # TODO:implement
+      @activities.show new ActivityList({
+        collection: @options.activities
+      })
