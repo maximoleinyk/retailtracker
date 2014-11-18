@@ -17,11 +17,25 @@ define(function (require) {
                 el.addClass('hidden').removeAttr('data-hide');
             }
         },
+        eventBus = require('util/eventBus'),
         viewConstructor = Marionette.View.prototype.constructor;
 
     Marionette.View.prototype.constructor = function () {
         var self = this,
-            routeToLink = {};
+            routeToLink = {},
+            requestCount = 0;
+
+        this.listenTo(this.eventBus, 'http:request:start', function() {
+            requestCount++;
+            self.$el.find('[data-auto-disable]').attr('disabled', true);
+        });
+
+        this.listenTo(this.eventBus, 'http:request:stop', function() {
+            requestCount--;
+            if (!requestCount) {
+                self.$el.find('[data-auto-disable]').removeAttr('disabled')
+            }
+        });
 
         this.handleActions = _.bind(function (e) {
             e.preventDefault();

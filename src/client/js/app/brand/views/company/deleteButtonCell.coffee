@@ -9,7 +9,7 @@ define (require) ->
     template: require('hbs!./deleteButtonCell')
 
     templateHelpers: ->
-      isOwner: @options.model.id is context.id
+      isOwner: @options.model.id is context.get('owner')._id
 
     removeEmployee: ->
       @options.employees.remove(@options.model)

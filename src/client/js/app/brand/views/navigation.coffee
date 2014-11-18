@@ -3,7 +3,6 @@ define (require) ->
 
   Marionette = require('marionette')
   http = require('util/http')
-  console = require('util/console')
   context = require('cs!app/common/context')
 
   Marionette.ItemView.extend
@@ -15,6 +14,5 @@ define (require) ->
       @model = context
 
     logout: ->
-      http.del '/security/logout', (err) ->
-        return console.log(err) if err
+      http.del '/security/logout', ->
         window.location.reload()

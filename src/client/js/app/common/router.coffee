@@ -4,7 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   Backbone = require('backbone')
   http = require('util/http')
-  sessionStore = require('util/sessionStore')
+  context = require('cs!app/common/context')
 
   Marionette.AppRouter.extend
 
@@ -42,8 +42,8 @@ define (require) ->
       'redirect': -> # do nothing
 
       '*404': ->
-        redirectUrl = sessionStore.get('redirectUrl')
-        sessionStore.remove('redirectUrl')
+        redirectUrl = context.get('redirectUrl')
+        context.unset('redirectUrl')
 
         if redirectUrl
           window.location.replace('/page' + if not redirectUrl then '' else '/' + redirectUrl)

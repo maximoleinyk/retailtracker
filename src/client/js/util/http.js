@@ -63,7 +63,11 @@ define(function (require) {
             params.contentType = 'application/json';
         }
 
-        return Backbone.$.ajax(params);
+        eventBus.trigger('http:request:start');
+
+        return Backbone.$.ajax(params).always(function() {
+            eventBus.trigger('http:request:stop');
+        });
     };
 
     return {

@@ -3,7 +3,7 @@ define (require) ->
 
   Marionette = require('marionette')
   Layout = require('cs!app/common/layout')
-  sessionStore = require('util/sessionStore')
+  context = require('cs!app/common/context')
   Backbone = require('backbone')
 
   Layout.extend
@@ -46,7 +46,7 @@ define (require) ->
       Marionette.$(document).scrollTop(0)
 
     redirectToLogin: (options) ->
-      sessionStore.add('redirectUrl', options.fragment)
+      context.set('redirectUrl', options.fragment)
 
       switch (options.errorMessage)
         when 'Unauthorized' then window.location.replace('/page/account/login')

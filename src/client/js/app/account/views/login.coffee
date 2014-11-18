@@ -3,7 +3,7 @@ define (require) ->
 
   Security = require('cs!app/account/models/security')
   Marionette = require('marionette')
-  sessionStore = require('util/sessionStore')
+  context = require('cs!app/common/context')
 
   Marionette.ItemView.extend
 
@@ -18,8 +18,7 @@ define (require) ->
 
       this.model.login()
       .then =>
-        url = sessionStore.get('redirectUrl')
-        window.location.replace('/page/' + url)
+        window.location.replace('/page/' + context.get('redirectUrl'))
       .then null, (err) =>
           @validation.show(err.errors)
 

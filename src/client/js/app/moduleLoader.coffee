@@ -3,7 +3,7 @@ define (require) ->
 
   http = require('util/http')
   _ = require('underscore')
-  sessionStore = require('util/sessionStore')
+  context = require('cs!app/common/context')
   Promise = require('rsvp').Promise
 
   class ModuleLoader
@@ -65,7 +65,7 @@ define (require) ->
 
         .then (userDetails) =>
           if url.indexOf('account/login') is 0
-            sessionStore.remove('redirectUrl')
+            context.unset('redirectUrl')
             window.location.replace(@root + defaultModuleName)
           else
             return module.beforeStart(userDetails, @getPath())
@@ -77,10 +77,10 @@ define (require) ->
         .then null, (error) =>
           if error is 'Unauthorized'
             if url.indexOf('account/login') isnt 0
-              sessionStore.add('redirectUrl', url)
+              context.set('redirectUrl', url)
               return window.location.replace(@root + 'account/login')
             else
-              sessionStore.add('redirectUrl', 'brand')
+              context.set('redirectUrl', 'brand')
               startApp(false)
           else if error is 'Unknown context'
             window.location.replace(@root + 'brand')
