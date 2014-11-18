@@ -8,7 +8,7 @@ define (require) ->
   Router.extend
 
     appRoutes:
-      '': 'home'
+      '': 'dashboard'
       'uom': 'uom'
       'currency': 'currency'
 

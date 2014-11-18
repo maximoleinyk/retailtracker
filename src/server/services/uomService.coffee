@@ -5,24 +5,24 @@ class UomService
   constructor: (@uomStore) ->
     @i18n = i18n.bundle('validation')
 
-  findAll: (callback) ->
-    @uomStore.findAll(callback)
+  findAll: (ns, callback) ->
+    @uomStore.findAll(ns, callback)
 
-  delete: (id, callback) ->
+  delete: (ns, id, callback) ->
     return callback({ generic: @i18n.idRequired }) if not id
-    @uomStore.delete id, (err) ->
+    @uomStore.delete ns, id, (err) ->
       return callback({ generic: err }) if err
       callback(null)
 
-  update: (data, callback) ->
+  update: (ns, data, callback) ->
     return callback({ shortName: @i18n.shortNameRequired }) if not data.shortName
-    @uomStore.update data, (err, result) ->
+    @uomStore.update ns, data, (err) ->
       return callback({ generic: err }) if err
-      callback(null, result)
+      callback(null, data)
 
-  create: (data, callback) ->
+  create: (ns, data, callback) ->
     return callback({ shortName: @i18n.shortNameRequired }) if not data.shortName
-    @uomStore.create data, (err, result) ->
+    @uomStore.create ns, data, (err, result) ->
       return callback({ generic: err }) if err
       callback(null, result)
 

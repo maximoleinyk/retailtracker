@@ -37,6 +37,8 @@ define(function (require) {
 		},
 
 		applyItemAction: function (e) {
+            e.preventDefault();
+
 			var methodName = Marionette.$(e.currentTarget).attr('data-action-id'),
 				method = this.options[methodName];
 

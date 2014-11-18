@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Controller = require('cs!app/common/controller');
-  HomePage = require('cs!./views/home')
+  DashboardPage = require('cs!./views/dashboard')
   Uom = require('cs!./collections/uoms')
   UomPage = require('cs!./views/uom')
   Currencies = require('cs!./collections/currencies')
@@ -10,8 +10,8 @@ define (require) ->
 
   Controller.extend
 
-    home: ->
-      @openPage(new HomePage)
+    dashboard: ->
+      @openPage(new DashboardPage)
 
     uom: ->
       collection = new Uom
