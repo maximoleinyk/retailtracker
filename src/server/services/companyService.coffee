@@ -53,7 +53,7 @@ class CompanyService
         new Promise (resolve, reject) =>
           handler = (err, company) ->
             if err then reject(err) else resolve(company)
-          @companyStore.findById(accountNamespace(meta.ns), meta.company, handler).populate('employees owner')
+          @companyStore.findById(namespace.accountWrapper(meta.ns), meta.company, handler).populate('employees owner')
 
     .then (companies) =>
       callback(null, companies)
@@ -77,7 +77,7 @@ class CompanyService
           return reject({ generic: 'Company does not exist' }) if not company
           resolve(company)
 
-        @findById(accountNamespace(invite.ns), invite.company, handler).populate('owner')
+        @findById(namespace.accountWrapper(invite.ns), invite.company, handler).populate('owner')
 
     .then (company) ->
       callback(null, company)

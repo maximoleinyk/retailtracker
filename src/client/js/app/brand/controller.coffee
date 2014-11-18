@@ -8,6 +8,7 @@ define (require) ->
   EditCompanyPage = require('cs!./views/company/edit')
   Company = require('cs!./models/company')
   Companies = require('cs!./collections/companies')
+  Promise = require('rsvp').Promise
 
   Controller.extend
 
