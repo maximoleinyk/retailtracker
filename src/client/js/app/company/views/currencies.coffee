@@ -9,17 +9,20 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./currencies')
+    className: 'container'
 
     initialize: (options) ->
       @collection = options.collection
 
     onCreate: (model, callback) ->
+      model.set('rate', +model.get('rate')) if not _.isNaN(+model.get('rate'))
       model.create (err, model) =>
         return callback(err) if err
         @collection.add(model)
         callback(null)
 
     onSave: (model, callback) ->
+      model.set('rate', +model.get('rate')) if not _.isNaN(+model.get('rate'))
       model.update (err) ->
         if err then callback(err) else callback(null)
 
@@ -59,7 +62,7 @@ define (require) ->
             formatter: (value) ->
               value
             formatResult: (json) ->
-              json?.text
+              if json.text then json.text else json.code
             onSelection: (object, model) ->
               model.set('code', object.id)
             width: 200

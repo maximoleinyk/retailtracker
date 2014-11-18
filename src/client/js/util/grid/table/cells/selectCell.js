@@ -76,7 +76,10 @@ define(function (require) {
         },
 
         initSelection: function ($el, callback) {
-            callback(this.model.toJSON());
+            callback({
+                id: this.model.get(this.options.column.get('field')),
+                text: this.formatResult(this.model.toJSON())
+            });
         },
 
         formatResult: function (object) {

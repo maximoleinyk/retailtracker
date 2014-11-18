@@ -1,9 +1,14 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  MongoModel = require('cs!app/common/mongoModel')
 
-  Backbone.Model.extend
+  class Currency extends MongoModel
+
+    defaults: {
+      rate: 1
+      code: 'USD'
+    },
 
     create: (callback) ->
       @promise('post', '/currency/create', @toJSON())
