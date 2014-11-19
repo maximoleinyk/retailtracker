@@ -32,13 +32,15 @@ class PageController
 
   register: ->
 
+    activityService = new ActivityService(new ActivityStore)
+
     userService = new UserService(new UserStore)
 
     companyStore = new CompanyStore
 
     companyMediator = new CompanyMediator(companyStore)
 
-    accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n)
+    accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n, activityService)
 
     companyService = new CompanyService(companyStore, inviteService, accountService, userService, i18n)
 
@@ -66,7 +68,7 @@ class PageController
     @router.get '/i18n/messages/:batch', (req, res) =>
       res.send(i18n.bundle(req.params.batch))
 
-    activityController = new ActivityController(new ActivityService(new ActivityStore))
+    activityController = new ActivityController(activityService)
     activityController.register(@router)
     
     accountController = new AccountController(accountService)

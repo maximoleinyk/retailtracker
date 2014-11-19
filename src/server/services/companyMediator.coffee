@@ -1,14 +1,15 @@
 i18n = inject('i18n').bundle('validation')
 Promise = inject('util/promise')
 _ = require('underscore')
+namespace = inject('util/namespace')
 
 class CompanyMediator
 
-  constructor: (@companyStore) ->
+  constructor: (@companyStore, @activityService) ->
 
-  confirmInvitee: (ns, companyId, user, callback) ->
+  confirmInvitee: (namespaceFromInvite, companyId, user, callback) ->
     findCompany = new Promise (resolve, reject) =>
-      @companyStore.findById ns, companyId, (err, company) =>
+      @companyStore.findById namespace.accountWrapper(namespaceFromInvite), companyId, (err, company) =>
         if err then reject(err) else resolve(company)
 
     findCompany
@@ -19,7 +20,13 @@ class CompanyMediator
         invitee.email isnt user.email
 
       new Promise (resolve, reject) =>
-        @companyStore.update ns, companyData, (err) =>
+        @companyStore.update namespace.accountWrapper(namespaceFromInvite), companyData, (err) =>
+          if err then reject(err) else resolve(company)
+
+    .then (company) =>
+      new Promise (resolve, reject) =>
+        namespace = namespace.accountWrapper(namespaceFromInvite)
+        @activityService.userConfirmedInvitation namespace, user._id, company._id, namespaceFromInvite, (err) ->
           if err then reject(err) else resolve(company)
 
     .then (company) =>

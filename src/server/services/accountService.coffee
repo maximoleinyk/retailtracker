@@ -7,7 +7,7 @@ namespace = inject('util/namespace')
 
 class AccountService
 
-  constructor: (@companyMediator, @accountStore, @linkService, @inviteService, @userService, @i18nService) ->
+  constructor: (@companyMediator, @accountStore, @linkService, @inviteService, @userService, @i18nService, @activityService) ->
     @i18n = i18nService.bundle('validation')
 
   register: (email, firstName, callback) ->
@@ -108,10 +108,15 @@ class AccountService
           if err then reject(err) else resolve(result)
 
     .then (result) ->
-      new Promise (resolve, reject) =>
+      new Promise (resolve, reject) ->
         mail = emailTemplates(mailer, templateCompiler)
         mail.successfulRegistration result.invite, (err, result) ->
           if err then reject(err) else resolve(result.account)
+
+    .then (account) =>
+      new Promise (resolve, reject) =>
+        @activityService.accountRegistrationConfirmed namespace.accountWrapper(account._id), account.owner, (err) ->
+          if err then reject(err) else resolve(account)
 
     .then (account) ->
       callback(null, account)
@@ -257,7 +262,7 @@ class AccountService
       new Promise (resolve, reject) =>
         accountData = result.account.toJSON()
         accountData.companies.push({
-          ns: result.invite.ns
+          ns: result.invite.ns # someones' account
           company: result.invite.company
         })
         @accountStore.update accountData, (err) =>
@@ -265,7 +270,17 @@ class AccountService
 
     .then (result) =>
       new Promise (resolve, reject) =>
-        @companyMediator.confirmInvitee namespace.accountWrapper(result.invite.ns), result.invite.company, result.invite.user, (err) =>
+        accountNamespace = namespace.accountWrapper(result.account._id)
+        userId = result.account.owner._id
+        companyId = result.invite.company
+        @activityService.userConfirmedInvitation accountNamespace, userId, companyId, result.invite.ns, (err) ->
+          if err then reject(err) else resolve(result)
+
+    .then (result) =>
+      new Promise (resolve, reject) =>
+        companyId = result.invite.company
+        userId = result.invite.user
+        @companyMediator.confirmInvitee result.invite.ns, companyId, userId, (err) =>
           if err then reject(err) else resolve(result)
 
     .then (result) =>

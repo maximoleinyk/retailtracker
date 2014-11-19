@@ -15,6 +15,11 @@ class ActivitySchema
       action:
         type: String
         required: true
+      company:
+        type: mongoose.Schema.Types.ObjectId
+        ref: 'Company'
+      ns: String
+
     return @
 
   get: (namespace) ->
