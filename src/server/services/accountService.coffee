@@ -81,12 +81,13 @@ class AccountService
       # change status if account already exists
       if account and account.status is 'DEPENDANT'
         return new Promise (resolve, reject) =>
-          account.status = 'OWN'
-          account.dependsFrom = null
-          @accountStore.update account, (err, account) ->
+          accountData = account.toJSON()
+          accountData.status = 'OWN'
+          accountData.dependsFrom = null
+          @accountStore.update accountData, (err) ->
             if err then reject(err) else resolve({
               invite: invite
-              account: account
+              account: accountData
             })
         # create new account
       else
