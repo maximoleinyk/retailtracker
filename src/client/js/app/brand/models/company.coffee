@@ -7,7 +7,7 @@ define (require) ->
   class Company extends MongoModel
 
     defaults: ->
-      owner: context.get('owner')._id
+      owner: context.get('owner')?._id
       employees: []
       invitees: []
       currencyCode: 'UAH'

@@ -153,8 +153,8 @@ class CompanyService
           new Promise (resolve, reject) =>
             userId = result.user._id
             companyId = companyAndAccount.company._id
-            namespace = result.account._id.toString()
-            @inviteService.createCompanyInvite userId, companyId, namespace, (err, invite) ->
+            accountNamespace = result.account._id.toString()
+            @inviteService.createCompanyInvite userId, companyId, accountNamespace, (err, invite) ->
               if err then reject(err) else resolve({
                 invite: invite,
                 company: companyAndAccount.company

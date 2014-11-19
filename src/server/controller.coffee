@@ -38,7 +38,7 @@ class PageController
 
     companyStore = new CompanyStore
 
-    companyMediator = new CompanyMediator(companyStore)
+    companyMediator = new CompanyMediator(companyStore, activityService)
 
     accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n, activityService)
 

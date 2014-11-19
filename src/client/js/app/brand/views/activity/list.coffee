@@ -1,10 +1,10 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
+  Marionette = require('marionette')
   moment = require('moment')
 
-  Layout.extend
+  Marionette.ItemView.extend
 
     template: require('hbs!./list')
     className: 'activity-list'

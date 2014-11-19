@@ -272,7 +272,7 @@ class AccountService
     .then (result) =>
       new Promise (resolve, reject) =>
         accountNamespace = namespace.accountWrapper(result.account._id)
-        userId = result.account.owner._id
+        userId = result.account.owner
         companyId = result.invite.company
         @activityService.userConfirmedInvitation accountNamespace, userId, companyId, result.invite.ns, (err) ->
           if err then reject(err) else resolve(result)
