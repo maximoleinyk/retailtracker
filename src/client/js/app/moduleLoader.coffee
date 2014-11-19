@@ -76,7 +76,8 @@ define (require) ->
 
         .then null, (error) =>
           if error is 'Unauthorized'
-            if url.indexOf('account/login') isnt 0
+            # comparing exactly with account
+            if url.indexOf('account') isnt 0
               context.set('redirectUrl', url)
               return window.location.replace(@root + 'account/login')
             else

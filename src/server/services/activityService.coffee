@@ -1,6 +1,7 @@
 Promise = inject('util/promise')
 _ = require('underscore')
 namespace = inject('util/namespace')
+moment = require('moment')
 
 class ActivityService
 

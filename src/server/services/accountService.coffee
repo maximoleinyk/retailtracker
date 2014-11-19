@@ -111,7 +111,7 @@ class AccountService
     .then (result) ->
       new Promise (resolve, reject) ->
         mail = emailTemplates(mailer, templateCompiler)
-        mail.successfulRegistration result.invite, (err, result) ->
+        mail.successfulRegistration result.invite, (err) ->
           if err then reject(err) else resolve(result.account)
 
     .then (account) =>
