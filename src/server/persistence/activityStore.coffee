@@ -13,7 +13,7 @@ class ActivityStore
         user:
           firstName: 'Василий'
           lastName: 'Зайцев'
-        action: 'подтвердил приглашение в компанию "Ромашка"'
+        action: 'подтвердил приглашение в компанию "ЭкоБэнд"'
         dateTime: moment().toDate()
       },
       {
@@ -21,14 +21,21 @@ class ActivityStore
           firstName: 'Кирилл'
           lastName: 'Рабинович'
         action: 'подтвердил приглашение в компанию "ООО энергосталь"'
-        dateTime: moment().add(2, 'hours').toDate()
+        dateTime: moment().subtract(2, 'hours').toDate()
       },
       {
         user:
           firstName: 'Роман'
           lastName: 'Шарапов'
-        action: 'начал смену в магазине "Дом электроники"'
-        dateTime: moment().add(1, 'days').toDate()
+        action: 'был удален из списка сотрудников компании "Дом электроники"'
+        dateTime: moment().subtract(4, 'days').toDate()
+      },
+      {
+        user:
+          firstName: 'Сергей'
+          lastName: 'Нишанов'
+        action: 'подтвердил приглашение в компанию "ЭкоБэнд"'
+        dateTime: moment().subtract(11, 'days').toDate()
       }
     ])
 

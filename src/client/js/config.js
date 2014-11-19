@@ -19,6 +19,7 @@ require.config({
         respond: 'libs/respond/dest/respond.src',
         select2: 'libs/select2/select2',
         moment: 'libs/moment/moment',
+        momentLocales: 'libs/moment/locale',
         numeral: 'libs/numeral/numeral',
         hbs: 'util/plugins/hbs'
     },
@@ -63,6 +64,7 @@ require.config({
     deps: [
         'respond',
         'bootstrap',
+        'util/templateHelpers',
 		'util/eventBus',
 		'util/interceptors',
 		'util/http',

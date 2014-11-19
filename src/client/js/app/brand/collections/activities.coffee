@@ -14,4 +14,4 @@ define (require) ->
 
     fetch: ->
       @promise('get', '/activity/fetch').then (result) =>
-        @reset @parse(result)
+        @reset(result, {parse: true})

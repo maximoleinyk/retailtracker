@@ -7,6 +7,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./list')
+    className: 'activity-list'
 
     templateHelpers: ->
       {

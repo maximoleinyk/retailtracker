@@ -10,4 +10,4 @@ define (require) ->
 
     fetch: ->
       @promise('get', '/company/all').then (result) =>
-        @reset @parse(result)
+        @reset(result, {parse: true})

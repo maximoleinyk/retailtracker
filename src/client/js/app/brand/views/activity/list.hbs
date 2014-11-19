@@ -1,9 +1,11 @@
 {{#each groups}}
-    <div class="group-title">{{@key}}</div>
-    <ul>
+    <div class="activity-group">
+        <span class="date-icon fa fa-dot-circle-o"></span> <span class="activity-group-title">{{date @key}}</span>
+    </div>
+    <ul class="activity-items">
         {{#each this}}
             <li>
-                <strong>{{user.firstName}} {{user.lastName}}</strong> {{action}}
+                <span class="activity-item-time">{{time dateTime}}</span> <strong class="activity-item-actor">{{user.firstName}} {{user.lastName}}</strong> {{action}}
             </li>
         {{/each}}
     </ul>

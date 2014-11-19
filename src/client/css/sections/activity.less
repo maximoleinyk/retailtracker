@@ -1,0 +1,60 @@
+.activity-list {
+  position: relative;
+  padding: 0 22px;
+
+  &:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    z-index: -1;
+    display: block;
+    width: 3px;
+    content: "";
+    background-color: #f3f3f3;
+  }
+
+  .activity-group {
+    margin: 25px 0 10px -22px;
+
+    &:first-child {
+      margin-top: 0 !important;
+    }
+
+    .activity-group-title {
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .date-icon {
+      margin: 0 5px;
+      background-color: #fff;
+      color: #ccc;
+      padding: 2px 0;
+    }
+  }
+
+  .activity-items {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      padding-left: 45px;
+      margin-bottom: 5px;
+
+      .activity-item-time {
+        display: inline-block;
+        font-size: 11px;
+        color: #888;
+        margin-left: -40px;
+        margin-right: 10px;
+      }
+
+      .activity-item-actor {
+        color: #888
+      }
+    }
+  }
+
+}
