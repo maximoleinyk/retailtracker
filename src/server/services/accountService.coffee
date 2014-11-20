@@ -115,14 +115,17 @@ class AccountService
           if err then reject(err) else resolve(result.account)
 
     .then (account) =>
-      new Promise (resolve, reject) =>
-        @activityService.accountRegistrationConfirmed namespace.accountWrapper(account._id), account.owner, (err) ->
-          if err then reject(err) else resolve(account)
+      @createAccountRegisteredActivityItem(account)
 
     .then (account) ->
       callback(null, account)
 
     .catch(callback)
+
+  createAccountRegisteredActivityItem: (account) ->
+    new Promise (resolve, reject) =>
+      @activityService.accountRegistered namespace.accountWrapper(account._id), account.owner, (err) ->
+        if err then reject(err) else resolve(account)
 
   changePassword: (email, oldPassword, newPassword, callback) ->
     return callback({ email: @i18n.emailRequired }) if not email
@@ -270,12 +273,7 @@ class AccountService
           if err then reject(err) else resolve(result)
 
     .then (result) =>
-      new Promise (resolve, reject) =>
-        accountNamespace = namespace.accountWrapper(result.account._id)
-        userId = result.account.owner
-        companyId = result.invite.company
-        @activityService.userConfirmedInvitation accountNamespace, userId, companyId, result.invite.ns, (err) ->
-          if err then reject(err) else resolve(result)
+      @employeeConfirmedInviteToCompany(result)
 
     .then (result) =>
       new Promise (resolve, reject) =>
@@ -293,6 +291,14 @@ class AccountService
       callback(null, result)
 
     .catch(callback)
+
+  employeeConfirmedInviteToCompany: (result) ->
+    accountNamespace = namespace.accountWrapper(result.account._id)
+    userId = result.account.owner
+    companyId = result.invite.company
+    new Promise (resolve, reject) =>
+      @activityService.employeeConfirmedInvitation accountNamespace, userId, companyId, result.invite.ns, (err) ->
+        if err then reject(err) else resolve(result)
 
   update: (account, callback) ->
     @accountStore.update(account, callback)

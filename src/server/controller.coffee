@@ -32,17 +32,17 @@ class PageController
 
   register: ->
 
-    activityService = new ActivityService(new ActivityStore)
+    companyStore = new CompanyStore
+
+    activityService = new ActivityService(new ActivityStore, companyStore)
 
     userService = new UserService(new UserStore)
-
-    companyStore = new CompanyStore
 
     companyMediator = new CompanyMediator(companyStore, activityService)
 
     accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n, activityService)
 
-    companyService = new CompanyService(companyStore, inviteService, accountService, userService, i18n)
+    companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService, i18n)
 
     securityService = new SecurityService(@passport, accountService, i18n)
     securityService.applyLocalStrategy()

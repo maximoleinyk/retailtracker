@@ -24,14 +24,17 @@ class CompanyMediator
           if err then reject(err) else resolve(company)
 
     .then (company) =>
-      new Promise (resolve, reject) =>
-        namespace = namespace.accountWrapper(namespaceFromInvite)
-        @activityService.userConfirmedInvitation namespace, user._id, company._id, namespaceFromInvite, (err) ->
-          if err then reject(err) else resolve(company)
+      @employeeConfirmedInviteToCompany(namespaceFromInvite, user, company)
 
     .then (company) =>
       callback(null, company)
 
     .catch(callback)
+
+  employeeConfirmedInviteToCompany: (namespaceFromInvite, user, company) ->
+    namespace = namespace.accountWrapper(namespaceFromInvite)
+    new Promise (resolve, reject) =>
+      @activityService.employeeConfirmedInvitation namespace, user._id, company._id, namespaceFromInvite, (err) ->
+        if err then reject(err) else resolve(company)
 
 module.exports = CompanyMediator

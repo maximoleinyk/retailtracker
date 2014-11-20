@@ -8,7 +8,7 @@ templateCompiler = inject('email/templateCompiler')
 
 class CompanyService
 
-  constructor: (@companyStore, @inviteService, @accountService, @userService, i18n) ->
+  constructor: (@companyStore, @inviteService, @accountService, @userService, @activityService, i18n) ->
     @i18n = i18n.bundle('validation')
 
   checkPermission: (companyId, userId, callback) ->
@@ -157,8 +157,12 @@ class CompanyService
             @inviteService.createCompanyInvite userId, companyId, accountNamespace, (err, invite) ->
               if err then reject(err) else resolve({
                 invite: invite,
-                company: companyAndAccount.company
+                company: companyId
+                userId: userId
               })
+
+        .then (result) =>
+          @createUserInvitedToCompanyActivityItem(result)
 
         .then (result) =>
           new Promise (resolve, reject) =>
@@ -170,6 +174,22 @@ class CompanyService
       callback(null, company)
 
     .catch(callback)
+
+  createUserInvitedToCompanyActivityItem: (result) ->
+    accountNamespace = namespace.accountWrapper(result.invite.ns)
+    userId = result.userId
+    companyId = result.invite.company
+    new Promise (resolve, reject) =>
+      @activityService.userInvitedIntoCompany accountNamespace, userId, companyId, result.invite.ns, (err) ->
+        if err then reject(err) else resolve(result)
+
+  createEmployeeWasRemovedFromCompanyActivityItem: (result) ->
+    accountNamespace = namespace.accountWrapper(result.companyOwnerNamespace)
+    userId = result.userId
+    companyId = result.company
+    new Promise (resolve, reject) =>
+      @activityService.employeeWasRemovedFromCompany accountNamespace, userId, companyId, result.ns, (err) ->
+        if err then reject(err) else resolve(result)
 
   update: (ns, data, callback) ->
     return callback({ name: i18n.nameRequired }) if not data.name
@@ -224,7 +244,15 @@ class CompanyService
         .then (invite) =>
           new Promise (resolve, reject) =>
             @inviteService.remove invite, (err) ->
-              if err then reject(err) else resolve()
+              if err then reject(err) else resolve({
+                companyOwnerNamespace: invite.ns
+                userId: invite.user._id
+                company: invite.company
+                ns: invite.ns
+              })
+
+        .then (result) =>
+          @createEmployeeWasRemovedFromCompanyActivityItem(result)
 
       removeInvites
       .then =>
@@ -240,8 +268,18 @@ class CompanyService
               pair.company.toString() isnt company._id.toString()
 
             new Promise (resolve, reject) =>
-              @accountService.update accountData, (err, account) ->
-                if err then reject(err) else resolve()
+              @accountService.update accountData, (err) ->
+                # this is the only way to get owner's company namespace
+                ownerCompanyNamespace = ns().split('.')[0]
+                if err then reject(err) else resolve({
+                  companyOwnerNamespace: ownerCompanyNamespace
+                  userId: company.owner._id
+                  company: company._id
+                  ns: ownerCompanyNamespace
+                })
+
+          .then (result) =>
+            @createEmployeeWasRemovedFromCompanyActivityItem(result)
 
       .then =>
         Promise.all _.map newInvitees, (invitee) =>
@@ -267,14 +305,20 @@ class CompanyService
 
           .then (user) =>
             new Promise (resolve, reject) =>
-              @inviteService.createCompanyInvite user._id, company._id, ns(), (err, invite) ->
-                if err then reject(err) else resolve(invite)
+              @inviteService.createCompanyInvite user._id, company._id, ns('').split('.')[0], (err, invite) ->
+                if err then reject(err) else resolve({
+                  invite: invite
+                  userId: user._id
+                })
 
-          .then (invite) =>
+          .then (result) =>
             new Promise (resolve, reject) =>
               mail = emailTemplates(mailer, templateCompiler)
-              mail.companyInvite invite, (err, result) ->
+              mail.companyInvite result.invite, (err) ->
                 if err then reject(err) else resolve(result)
+
+          .then (result) =>
+            @createUserInvitedToCompanyActivityItem(result)
 
       .then =>
         new Promise (resolve, reject) =>

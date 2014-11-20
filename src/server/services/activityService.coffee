@@ -5,7 +5,18 @@ moment = require('moment')
 
 class ActivityService
 
-  constructor: (@activityStore) ->
+  constructor: (@activityStore, @companyStore) ->
+
+  findCompany: (activityItem) ->
+    findCompany = new Promise (resolve, reject) =>
+      @companyStore.findById namespace.accountWrapper(activityItem.ns), activityItem.company, (err, company) ->
+        if err then reject(err) else resolve(company)
+
+    findCompany
+    .then (company) ->
+      activityData = activityItem.toJSON()
+      activityData.company = company.toJSON()
+      Promise.empty(activityData)
 
   fetch: (ns, callback) ->
     fetchActivities = new Promise (resolve, reject) =>
@@ -15,16 +26,11 @@ class ActivityService
     fetchActivities
     .then (docs) =>
       companyPromises = []
-      _.each docs, (doc) =>
-        if doc.company
-          companyPromises.push new Promise (resolve, reject) =>
-            @companyService.findById namespace.accountWrapper(doc.ns), doc.company, (err, company) ->
-              return reject(err) if err
-              activityData = doc.toJSON()
-              activityData.company = company.toJSON()
-              resolve(company)
+      _.each docs, (activityItem) =>
+        if activityItem.company
+          companyPromises.push @findCompany(activityItem)
         else
-          companyPromises.push Promise.empty(doc.toJSON())
+          companyPromises.push Promise.empty(activityItem.toJSON())
       Promise.all(companyPromises)
 
     .then (result) ->
@@ -35,29 +41,39 @@ class ActivityService
   createActivityItem: (ns, data, callback) ->
     @activityStore.create(ns, data, callback)
 
-  accountRegistrationConfirmed: (ns, userId, callback) ->
+  accountRegistered: (ns, userId, callback) ->
     data = {
       dateTime: moment().toDate()
       user: userId
-      action: 'ACCOUNT_REGISTRATION_CONFIRMED'
+      action: 'ACCOUNT_REGISTERED'
     }
     @createActivityItem(ns, data, callback)
 
-  userConfirmedInvitation: (ns, userId, companyId, companyNamespace, callback) ->
+  userInvitedIntoCompany: (ns, userId, companyId, companyNamespace, callback) ->
     data = {
       dateTime: moment().toDate()
       user: userId
-      action: 'COMPANY_INVITE_CONFIRMED'
+      action: 'EMPLOYEE_INVITED_INTO_COMPANY'
       company: companyId,
       ns: companyNamespace
     }
     @createActivityItem(ns, data, callback)
 
-  userInvitedToCompany: (ns, userId, companyId, companyNamespace, callback) ->
+  employeeConfirmedInvitation: (ns, userId, companyId, companyNamespace, callback) ->
     data = {
       dateTime: moment().toDate()
       user: userId
-      action: 'USER_INVITED_TO_COMPANY'
+      action: 'EMPLOYEE_CONFIRMED_COMPANY_INVITE'
+      company: companyId,
+      ns: companyNamespace
+    }
+    @createActivityItem(ns, data, callback)
+
+  employeeWasRemovedFromCompany: (ns, userId, companyId, companyNamespace, callback) ->
+    data = {
+      dateTime: moment().toDate()
+      user: userId
+      action: 'EMPLOYEE_WAS_REMOVED_FROM_COMPANY'
       company: companyId,
       ns: companyNamespace
     }
