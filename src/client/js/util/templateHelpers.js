@@ -4,7 +4,8 @@ define(function(require) {
     var _ = require('underscore'),
         moment = require('moment'),
         momentLocale = require('momentLocales/ru'),
-        Handlebars = require('handlebars');
+        Handlebars = require('handlebars'),
+        context = require('cs!app/common/context');
 
     moment.locale('ru', momentLocale);
 
@@ -20,6 +21,14 @@ define(function(require) {
         },
         time: function(value) {
             return moment(value).format(momentLocale.longDateFormat('LT'));
+        },
+
+        formatUser: function(user) {
+            if (context.get('owner').id === user.id) {
+                return window.RetailTracker.i18n.you;
+            } else {
+                return user.firstName + ' ' + user.lastName;
+            }
         }
     };
 

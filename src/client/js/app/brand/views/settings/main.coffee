@@ -15,7 +15,7 @@ define (require) ->
     initialize: (options) ->
       @view = options.view
       @model = new Settings({
-        id: context.get('owner')._id
+        id: context.get('owner').id
       })
 
     onRender: ->

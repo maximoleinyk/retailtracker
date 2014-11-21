@@ -23,7 +23,7 @@ define (require) ->
       companyId = path.split('/')[1]
 
       new Promise (resolve, reject) ->
-        http.get '/company/' + companyId + '/permission/' + accountDetails.owner._id, (err, result) ->
+        http.get '/company/' + companyId + '/permission/' + accountDetails.owner.id, (err, result) ->
           return reject(err) if err
           return reject('Unknown context') if not result
           context.set('company', result.company)

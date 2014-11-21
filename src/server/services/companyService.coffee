@@ -157,7 +157,7 @@ class CompanyService
             @inviteService.createCompanyInvite userId, companyId, accountNamespace, (err, invite) ->
               if err then reject(err) else resolve({
                 invite: invite,
-                company: companyId
+                company: companyAndAccount.company
                 userId: userId
               })
 
@@ -273,7 +273,7 @@ class CompanyService
                 ownerCompanyNamespace = ns().split('.')[0]
                 if err then reject(err) else resolve({
                   companyOwnerNamespace: ownerCompanyNamespace
-                  userId: company.owner._id
+                  userId: account.owner
                   company: company._id
                   ns: ownerCompanyNamespace
                 })

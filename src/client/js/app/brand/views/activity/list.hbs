@@ -5,7 +5,7 @@
     <ul class="activity-items">
         {{#each this}}
             <li>
-                <span class="activity-item-time">{{time dateTime}}</span> <strong class="activity-item-actor">{{user.firstName}} {{user.lastName}}</strong> {{action}}
+                <span class="activity-item-time">{{time dateTime}}</span> <strong class="nowrap">{{ formatUser user }}</strong> {{{action}}}
             </li>
         {{/each}}
     </ul>
