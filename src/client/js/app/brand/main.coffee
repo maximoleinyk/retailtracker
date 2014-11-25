@@ -16,8 +16,8 @@ define (require) ->
     root: '/brand/'
     contextUrl: '/context/load/brand'
 
-    onComplete: (accountInfo) ->
-      context.set(accountInfo)
-      http.setHeaders({ account: accountInfo._id })
+    onComplete: (contextData) ->
+      context.set(context.parse(contextData))
+      http.setHeaders({ account: context.id })
 
   })

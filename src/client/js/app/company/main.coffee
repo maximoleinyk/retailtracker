@@ -19,12 +19,12 @@ define (require) ->
     initialize: (url) ->
       http.setHeaders({ company: url.split('/')[1] })
 
-    beforeStart: (accountDetails, url) ->
-      context.set(context.parse(accountDetails))
+    beforeStart: (contextData, url) ->
+      context.set(context.parse(contextData))
       companyId = url.split('/')[1]
 
       new Promise (resolve, reject) ->
-        http.get '/company/' + companyId + '/permission/' + accountDetails.owner.id, (err, result) ->
+        http.get '/company/' + companyId + '/permission/' + contextData.owner.id, (err, result) ->
           return reject(err) if err
           return reject('Unknown context') if not result
           context.set('company', result.company)

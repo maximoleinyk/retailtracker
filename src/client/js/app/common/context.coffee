@@ -3,7 +3,9 @@ define (require) ->
 
   Backbone = require('backbone')
 
-  Model = Backbone.NestedModel.extend
+  require('backbone-nested')
+
+  class Model extends Backbone.NestedModel
     
     parse: (json) ->
       json.id = json._id
@@ -18,6 +20,6 @@ define (require) ->
       json
 
     isYou: (user) ->
-      @get('owner').id is user.id
+      @get('owner.id') is user.id
 
   new Model

@@ -68,7 +68,6 @@ require.config({
     deps: [
         'respond',
         'bootstrap',
-        'backbone-nested',
         'util/templateHelpers',
 		'util/eventBus',
 		'util/interceptors',

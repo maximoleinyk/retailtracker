@@ -5,6 +5,8 @@ define (require) ->
   Promise = require('rsvp').Promise
   http = require('util/http')
 
+  require('backbone-nested')
+
   class MongoModel extends Backbone.NestedModel
 
     initialize: ->
