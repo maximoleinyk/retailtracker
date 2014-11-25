@@ -3,7 +3,7 @@ define (require) ->
 
   Backbone = require('backbone')
 
-  class Model extends Backbone.NestedModel
+  Model = Backbone.NestedModel.extend
     
     parse: (json) ->
       json.id = json._id
