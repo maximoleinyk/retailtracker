@@ -60,7 +60,7 @@ define (require) ->
         .then (messages) ->
           window.RetailTracker.i18n = messages
           new Promise (resolve, reject) ->
-            http.get '/user/fetch', (err, result) ->
+            http.get module.contextUrl, (err, result) ->
               if err then reject(err) else resolve(result)
 
         .then (userDetails) =>

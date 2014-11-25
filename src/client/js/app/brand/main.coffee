@@ -14,6 +14,7 @@ define (require) ->
     bundleName: 'brand'
     className: 'brand'
     root: '/brand/'
+    contextUrl: '/context/load/brand'
 
     onComplete: (accountInfo) ->
       context.set(accountInfo)

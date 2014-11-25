@@ -14,13 +14,14 @@ define (require) ->
     bundleName: 'company'
     className: 'company'
     root: '/company/'
+    contextUrl: '/context/load/company'
 
-    initialize: (path) ->
-      http.setHeaders({ company: path.split('/')[1] })
+    initialize: (url) ->
+      http.setHeaders({ company: url.split('/')[1] })
 
-    beforeStart: (accountDetails, path) ->
+    beforeStart: (accountDetails, url) ->
       context.set(accountDetails)
-      companyId = path.split('/')[1]
+      companyId = url.split('/')[1]
 
       new Promise (resolve, reject) ->
         http.get '/company/' + companyId + '/permission/' + accountDetails.owner.id, (err, result) ->

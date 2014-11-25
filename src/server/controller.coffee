@@ -25,12 +25,18 @@ CompanyMediator = inject('services/companyMediator')
 ActivityController = inject('controllers/activity')
 ActivityService = inject('services/activityService')
 ActivityStore = inject('persistence/activityStore')
+ContextController = inject('controllers/context')
+ContextService = inject('services/contextService')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+
+    currencyService = new CurrencyService(new CurrencyStore)
+
+    contextService = new ContextService(currencyService)
 
     companyStore = new CompanyStore
 
@@ -42,7 +48,7 @@ class PageController
 
     accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n, activityService)
 
-    companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService, i18n)
+    companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService, contextService, i18n)
 
     securityService = new SecurityService(@passport, accountService, i18n)
     securityService.applyLocalStrategy()
@@ -68,6 +74,9 @@ class PageController
     @router.get '/i18n/messages/:batch', (req, res) =>
       res.send(i18n.bundle(req.params.batch))
 
+    contextController = new ContextController(accountService)
+    contextController.register(@router)
+
     activityController = new ActivityController(activityService)
     activityController.register(@router)
     
@@ -83,7 +92,7 @@ class PageController
     uomController = new UomController(new UomService(new UomStore))
     uomController.register(@router)
 
-    currencyController = new CurrencyController(new CurrencyService(new CurrencyStore))
+    currencyController = new CurrencyController(currencyService)
     currencyController.register(@router)
 
     companyController = new CompanyController(companyService)

@@ -8,7 +8,7 @@ templateCompiler = inject('email/templateCompiler')
 
 class CompanyService
 
-  constructor: (@companyStore, @inviteService, @accountService, @userService, @activityService, i18n) ->
+  constructor: (@companyStore, @inviteService, @accountService, @userService, @activityService, @contextService, i18n) ->
     @i18n = i18n.bundle('validation')
 
   checkPermission: (companyId, userId, callback) ->
@@ -100,12 +100,16 @@ class CompanyService
       data.invitees = _.filter data.invitees, (invitee) ->
         invitee.email isnt account.owner.email
       data.employees.push(account.owner._id)
-      new Promise (resolve, reject) =>
+      createCompany = new Promise (resolve, reject) =>
         @companyStore.create ns, data, (err, company) ->
           if err then reject(err) else resolve({
             account: account
             company: company
           })
+      createCompany.then (result) =>
+        new Promise (resolve, reject) =>
+          @contextService.afterCompanyCreation result.account, result.company, (err) =>
+            if err then reject(err) else resolve(result)
 
     .then (result) =>
       result.account.companies.push({

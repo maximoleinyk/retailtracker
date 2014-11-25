@@ -5,7 +5,7 @@ define (require) ->
   Promise = require('rsvp').Promise
   http = require('util/http')
 
-  class MongoModel extends Backbone.Model
+  class MongoModel extends Backbone.NestedModel
 
     initialize: ->
       @commit()

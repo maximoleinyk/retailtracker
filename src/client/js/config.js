@@ -6,6 +6,7 @@ require.config({
         jquery: 'libs/jquery/dist/jquery',
         underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
+        'backbone-nested': 'libs/backbone-nested-model/backbone-nested',
         'backbone.wreqr': 'libs/backbone.wreqr/lib/amd/backbone.wreqr',
         'backbone.babysitter': 'libs/backbone.babysitter/lib/backbone.babysitter',
         marionette: 'libs/marionette/lib/core/amd/backbone.marionette',
@@ -34,6 +35,9 @@ require.config({
         backbone: {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
+        },
+        'backbone-nested': {
+            deps: ['backbone']
         },
         'backbone.wreqr': {
             deps: ['backbone']
@@ -64,6 +68,7 @@ require.config({
     deps: [
         'respond',
         'bootstrap',
+        'backbone-nested',
         'util/templateHelpers',
 		'util/eventBus',
 		'util/interceptors',

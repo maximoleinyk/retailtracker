@@ -9,5 +9,16 @@ module.exports =
       req.headers.account + '.' + req.headers.company + '.' + collection
 
   accountWrapper: (account) ->
-    (collection) ->
-      account + '.' + collection
+    @account({
+      headers: {
+        account: account
+      }
+    })
+
+  companyWrapper: (account, company) ->
+    @company({
+      headers: {
+        account: account
+        company: company
+      }
+    })

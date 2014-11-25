@@ -38,7 +38,7 @@ define(function (require) {
     function listenToInput(view) {
         view.$el.on('input change', '[data-bind]', function (e) {
             var $el = $(e.target),
-                model = view[$el.data().bind || 'model'];
+                model = view[$el.data().bind];
 
             setModelValue(model, $el);
         });
@@ -125,10 +125,42 @@ define(function (require) {
     }
 
     function setInitialValues(view) {
-        var attrs = view.model.attributes,
+        var flattenAttributes = {},
             $bindings = view.$('[data-bind]');
 
-        _.each(attrs, function (value, key) {
+        // TODO Should be able to replace this method shortly, now that we have NestedModel
+        var obtainAttributes = function (set, depth) {
+            depth = depth || '';
+
+            // set param has a simple type i.e. set = array[0] = 'sample'
+            // so flattenAttributes['array[0]'] = 'sample'
+            if (!_.isObject(set) && !_.isArray(set)) {
+                flattenAttributes[depth] = set;
+                return;
+            }
+
+            _.each(set, function (value, key) {
+                if (_.isArray(value)) {
+                    _.each(value, function (v, i) {
+                        obtainAttributes(v, depth ? depth + '.' + key + '[' + i + ']' : key + '[' + i + ']');
+                    });
+                } else if (_.isObject(value)) {
+                    // TODO Necessary PT-X hack: Account for an attribute being a Model
+                    // (This is only required until PT-X fully drops BackboneRelational)
+                    if (value && typeof value.toJSON === 'function') {
+                        value = value.toJSON();
+                    }
+                    obtainAttributes(value, depth ? depth + '.' + key : key);
+                } else {
+                    flattenAttributes[depth ? depth + '.' + key : key] = value;
+                }
+            });
+        };
+
+        // recursion is always bad this could be changed in future for iterative implementation
+        obtainAttributes(view.model.attributes);
+
+        _.each(flattenAttributes, function (value, key) {
             var $inputs = $bindings.filter('[name="' + key + '"]');
             $inputs.each(function () {
                 var $el = $(this);

@@ -21,7 +21,8 @@
         "rsvp": "~3.0.12",
         "socket.io-client": "https://github.com/LearnBoost/socket.io-client.git",
         "bootstrap": "~3.1.1",
-        "select2": "~3.5.1"
+        "select2": "~3.5.1",
+        "backbone-nested-model": "~2.0.1"
     },
     "description": "This is the skeleton app that utilize mainstream technologies.",
     "main": "./js/config.js",
