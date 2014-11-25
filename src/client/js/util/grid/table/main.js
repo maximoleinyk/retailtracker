@@ -70,7 +70,8 @@ define(function (require) {
                 columns: this.options.columns,
                 collection: this.options.collection,
                 numerable: this.options.numerable,
-                editable: this.options.editable
+                editable: this.options.editable,
+                isActionCellVisible: this.options.isActionCellVisible
             });
             this.contentView.render();
             this.wasEmpty = false;

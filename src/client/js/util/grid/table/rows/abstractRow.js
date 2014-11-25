@@ -108,7 +108,8 @@ define(function (require) {
                     model: this.model,
                     collection: this.options.items,
                     column: column,
-                    cellManager: this
+                    cellManager: this,
+                    isActionCellVisible: this.options.isActionCellVisible
                 });
 
             return this.buildCellView(type, column, options);

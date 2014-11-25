@@ -38,7 +38,7 @@ define(function (require) {
     function listenToInput(view) {
         view.$el.on('input change', '[data-bind]', function (e) {
             var $el = $(e.target),
-                model = view[$el.data().bind];
+                model = view[$el.data().bind || 'model'];
 
             setModelValue(model, $el);
         });

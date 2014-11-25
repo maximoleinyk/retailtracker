@@ -139,6 +139,7 @@ define(function (require) {
                 items: this.options.collection,
                 editable: this.options.editable,
                 numerable: this.options.numerable,
+                isActionCellVisible: this.options.isActionCellVisible,
                 state: state
             });
 

@@ -93,32 +93,36 @@ define(function (require) {
             if (type === 'autoincrement') {
                 return new AutoincrementCell(options);
             } else if (type === 'edit') {
-                return new DropdownButtonCell(_.extend(options, {
-                    buttonClassName: 'btn-default',
-                    buttonIcon: 'fa-save',
-                    actions: [
-                        {
-                            label: 'Отменить',
-                            methodName: 'onCancel'
+                if (options.isActionCellVisible && options.isActionCellVisible(options.model)) {
+                    return new DropdownButtonCell(_.extend(options, {
+                        buttonClassName: 'btn-default',
+                        buttonIcon: 'fa-save',
+                        actions: [
+                            {
+                                label: 'Отменить',
+                                methodName: 'onCancel'
+                            }
+                        ],
+                        onCancel: function () {
+                            self.discardChanges();
+                        },
+                        onAction: function () {
+                            var next = function (err) {
+                                self.enableInputs();
+                                self.validate(err, function () {
+                                    self.changeState('view');
+                                });
+                            };
+                            self.disableInputs();
+                            if (self.options.editable.onSave) {
+                                return self.options.editable.onSave(self.model, next);
+                            }
+                            next();
                         }
-                    ],
-                    onCancel: function () {
-                        self.discardChanges();
-                    },
-                    onAction: function () {
-                        var next = function (err) {
-                            self.enableInputs();
-                            self.validate(err, function () {
-                                self.changeState('view');
-                            });
-                        };
-                        self.disableInputs();
-                        if (self.options.editable.onSave) {
-                            return self.options.editable.onSave(self.model, next);
-                        }
-                        next();
-                    }
-                }));
+                    }));
+                } else {
+                    return new ViewCell(options);
+                }
             } else {
                 return new ViewCell(options);
             }

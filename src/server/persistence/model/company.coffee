@@ -20,6 +20,7 @@ class CompanySchema
       currencyRate:
         type: Number
         required: true
+      defaultCurrency: mongoose.Schema.Types.ObjectId
       employees: [
         {
           type: mongoose.Schema.Types.ObjectId

@@ -36,9 +36,9 @@ class PageController
 
     currencyService = new CurrencyService(new CurrencyStore)
 
-    contextService = new ContextService(currencyService)
-
     companyStore = new CompanyStore
+
+    contextService = new ContextService(currencyService, companyStore)
 
     activityService = new ActivityService(new ActivityStore, companyStore)
 

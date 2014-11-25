@@ -21,6 +21,9 @@ define(function (require) {
             this.editable = options.editable || void(0);
             this.numerable = options.numerable || false;
             this.withoutHeader = options.withoutHeader || false;
+            this.isActionCellVisible = options.isActionCellVisible || function () {
+                return true;
+            };
         },
 
         onRender: function () {
@@ -59,7 +62,8 @@ define(function (require) {
                 editable: this.editable,
                 withoutHeader: this.withoutHeader,
                 defaultEmptyText: this.options.defaultEmptyText,
-                initialAutoFocus: this.options.initialAutoFocus
+                initialAutoFocus: this.options.initialAutoFocus,
+                isActionCellVisible: this.isActionCellVisible
             }));
         },
 

@@ -20,7 +20,7 @@ define (require) ->
       http.setHeaders({ company: url.split('/')[1] })
 
     beforeStart: (accountDetails, url) ->
-      context.set(accountDetails)
+      context.set(context.parse(accountDetails))
       companyId = url.split('/')[1]
 
       new Promise (resolve, reject) ->

@@ -5,6 +5,7 @@ define (require) ->
   Grid = require('util/grid/main')
   currencies = require('util/currencies')
   _ = require('underscore')
+  context = require('cs!app/common/context')
 
   Layout.extend
 
@@ -73,5 +74,7 @@ define (require) ->
             type: 'number'
             width: 150
           }
-        ]
+        ],
+        isActionCellVisible: (model) ->
+          model.id isnt context.get('company.defaultCurrency')
       })
