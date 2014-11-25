@@ -15,9 +15,10 @@ define (require) ->
 
       @model.changeProfileSettings()
       .then =>
-        owner = context.get('owner')
-        owner.firstName = @model.get('firstName')
-        owner.lastName = @model.get('lastName')
+        context.set({
+          'owner.firstName': @model.get('firstName'),
+          'owner.lastName': @model.get('lastName')
+        })
         @navigateTo('')
       .then null, (err) =>
         @validation.show(err.errors)

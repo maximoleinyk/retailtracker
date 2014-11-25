@@ -12,6 +12,14 @@ define (require) ->
 
     initialize: ->
       @model = context
+      @listenTo(context, 'change:owner.firstName', @updateNameLabel, @)
+      @listenTo(context, 'change:owner.lastName', @updateNameLabel, @)
+
+    onRender: ->
+      @updateNameLabel()
+
+    updateNameLabel: ->
+      @ui.$userName.text(@model.get('owner.firstName') + ' ' + @model.get('owner.lastName'))
 
     logout: ->
       http.del '/security/logout', ->

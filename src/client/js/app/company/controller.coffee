@@ -7,6 +7,7 @@ define (require) ->
   UomPage = require('cs!./views/uom')
   Currencies = require('cs!./collections/currencies')
   CurrenciesPage = require('cs!./views/currencies')
+  SettingsPage = require('cs!app/brand/views/settings/main')
 
   Controller.extend
 
@@ -28,3 +29,8 @@ define (require) ->
         @openPage new CurrenciesPage({
           collection: collection
         })
+
+    settings: (view) ->
+      @openPage new SettingsPage({
+        view: view
+      })

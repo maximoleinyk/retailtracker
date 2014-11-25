@@ -16,7 +16,7 @@ class UomStore
     @model.get(ns).findByIdAndRemove(id, callback)
 
   update: (ns, data, callback) ->
-    @model.get(ns).update({_id: data._id}, _.omit(data, ['_id']), callback)
+    @model.get(ns).update({_id: data._id or data.id}, _.omit(data, ['_id']), callback)
 
   findAll: (ns, callback) ->
     @model.get(ns).find({}, callback)

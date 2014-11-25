@@ -11,6 +11,7 @@ define (require) ->
       '': 'dashboard'
       'uom': 'uom'
       'currency': 'currency'
+      'settings/:view': 'settings'
 
     constructor: (options) ->
       appRoutes = {}

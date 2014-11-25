@@ -7,7 +7,7 @@ class UserStore
     new User(data).save(callback)
 
   update: (data, callback) ->
-    User.update({_id: data._id}, _.omit(data, ['_id']), callback)
+    User.update({_id: data._id or data.id}, _.omit(data, ['_id']), callback)
 
   findById: (id, callback) ->
     User.findById(id, callback)
