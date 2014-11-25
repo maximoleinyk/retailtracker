@@ -9,9 +9,16 @@ define (require) ->
 
     appRoutes:
       '': 'dashboard'
+
       'uom': 'uom'
       'currency': 'currency'
+
       'settings/:view': 'settings'
+
+      'nomenclature': 'nomenclatureList'
+      'nomenclature/create': 'createNomenclature'
+      'nomenclature/:id': 'viewNomenclature'
+      'nomenclature/:id/edit': 'editNomenclature'
 
     constructor: (options) ->
       appRoutes = {}
