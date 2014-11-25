@@ -5,6 +5,12 @@ define (require) ->
 
   class Nomenclature extends MongoModel
 
+    fetch: ->
+      @promise('get', '/nomenclature/' + @id)
+      .then (result) =>
+        @set @parse(result)
+        @commit()
+
     create: (callback) ->
       @promise('post', '/nomenclature/create', @toJSON())
       .then (result) =>

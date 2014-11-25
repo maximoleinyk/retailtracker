@@ -1,0 +1,15 @@
+<form autocomplete="off" class="form-horizontal" data-submit="create">
+    <div class="row">
+        <div class="col-md-12 page-title">
+            <h3>{{i18n.newNomenclature}}</h3>
+            <a href="/" class="link-back" data-url-catch>{{i18n.dashboard}}</a>
+        </div>
+    </div>
+    {{> app/company/views/nomenclature/form }}
+    <div class="row">
+        <div class="col-md-12 form-control-static">
+            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
+            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+        </div>
+    </div>
+</form>
