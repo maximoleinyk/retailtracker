@@ -1,28 +1,14 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
-  Grid = require('util/grid/main')
-  _ = require('underscore')
-  context = require('cs!app/common/context')
+  Marionette = require('marionette')
 
-  Layout.extend
+  Marionette.ItemView.extend
 
     template: require('hbs!./list')
     className: 'container'
 
-    onRender: ->
-      @renderGrid()
-
-    renderGrid: ->
-      @grid.show new Grid({
-        collection: @options.collection
-        defaultEmptyText: window.RetailTracker.i18n.nomenclatureEmptyGridText
-        columns: [
-          {
-            field: 'name'
-            title: window.RetailTracker.i18n.name
-            type: 'string'
-          }
-        ]
-      })
+    templateHelpers: ->
+      {
+        items: @options.collection.toJSON()
+      }
