@@ -15,10 +15,14 @@ class NomenclatureSchema
         key: String
         value: String
       }]
+      barcodes: [{
+        type: String
+        value: String
+      }]
 
     return @
 
   get: (namespace) ->
-    mongoose.model('Nomenclature', @schema, namespace('nomenclature'))
+    mongoose.model('Nomenclature', @schema, namespace('nomenclatures'))
 
 module.exports = NomenclatureSchema

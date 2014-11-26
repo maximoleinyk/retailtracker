@@ -27,6 +27,9 @@ ActivityService = inject('services/activityService')
 ActivityStore = inject('persistence/activityStore')
 ContextController = inject('controllers/context')
 ContextService = inject('services/contextService')
+NomenclatureStore = inject('persistence/nomenclatureStore')
+NomenclatureService = inject('services/nomenclatureService')
+NomenclatureController = inject('controllers/nomenclature')
 
 class PageController
 
@@ -97,5 +100,8 @@ class PageController
 
     companyController = new CompanyController(companyService)
     companyController.register(@router)
+
+    nomenclatureController = new NomenclatureController(new NomenclatureService(new NomenclatureStore))
+    nomenclatureController.register(@router)
 
 module.exports = PageController

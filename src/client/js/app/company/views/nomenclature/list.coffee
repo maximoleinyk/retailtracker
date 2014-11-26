@@ -17,7 +17,7 @@ define (require) ->
     renderGrid: ->
       @grid.show new Grid({
         collection: @options.collection
-        defaultEmptyText: 'Вы еще не создали ни одной номенклатуры'
+        defaultEmptyText: window.RetailTracker.i18n.nomenclatureEmptyGridText
         columns: [
           {
             field: 'name'
