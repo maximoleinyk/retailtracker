@@ -30,6 +30,9 @@ ContextService = inject('services/contextService')
 NomenclatureStore = inject('persistence/nomenclatureStore')
 NomenclatureService = inject('services/nomenclatureService')
 NomenclatureController = inject('controllers/nomenclature')
+ProductGroupController = inject('controllers/productGroup')
+ProductGroupService = inject('services/productGroupService')
+ProductGroupStore = inject('persistence/productGroupStore')
 
 class PageController
 
@@ -103,5 +106,8 @@ class PageController
 
     nomenclatureController = new NomenclatureController(new NomenclatureService(new NomenclatureStore))
     nomenclatureController.register(@router)
+
+    productGroupController = new ProductGroupController(new ProductGroupService(new ProductGroupStore))
+    productGroupController.register(@router)
 
 module.exports = PageController

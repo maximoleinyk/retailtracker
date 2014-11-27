@@ -12,6 +12,7 @@ define (require) ->
 
       'uom': 'uom'
       'currency': 'currency'
+      'groups': 'productGroups'
 
       'settings/:view': 'settings'
 

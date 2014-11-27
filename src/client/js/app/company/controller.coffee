@@ -14,6 +14,8 @@ define (require) ->
   Nomenclature = require('cs!./models/nomenclature')
   ViewNomenclaturePage = require('cs!./views/nomenclature/view')
   EditNomenclaturePage = require('cs!./views/nomenclature/edit')
+  ProductGroups = require('cs!./collections/productGroups')
+  ProductGroupsPage = require('cs!./views/productGroups')
 
   Controller.extend
 
@@ -48,6 +50,14 @@ define (require) ->
 
     dashboard: ->
       @openPage(new DashboardPage)
+
+    productGroups: ->
+      collection = new ProductGroups
+      collection.fetch()
+      .then =>
+        @openPage new ProductGroupsPage({
+          collection: collection
+        })
 
     uom: ->
       collection = new Uom
