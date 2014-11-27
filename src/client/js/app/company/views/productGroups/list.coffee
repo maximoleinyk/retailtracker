@@ -73,7 +73,7 @@ define (require) ->
           {
             field: 'parentGroup'
             title: window.RetailTracker.i18n.parentGroup
-            placeholder: window.RetailTracker.i18n.selectParent
+            placeholder: window.RetailTracker.i18n.selectGroup
             type: 'select'
             data: (model) =>
               if (model.isNew())
@@ -81,7 +81,7 @@ define (require) ->
               else
                 return @getData(@getAvailableGroups(model))
             formatter: (id) =>
-              if id then @collection.get(id).get('name') else ''
+              if id then @collection.get(id)?.get('name') else ''
             formatResult: (modelJSON) ->
               if modelJSON.text then modelJSON.text else modelJSON.name
             onSelection: (object, model) ->

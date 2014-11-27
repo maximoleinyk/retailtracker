@@ -77,10 +77,13 @@ define(function (require) {
         },
 
         initSelection: function ($el, callback) {
-            callback({
-                id: this.model.get(this.options.column.get('field')),
-                text: this.formatResult(this.model.toJSON())
-            });
+            var id = this.model.get(this.options.column.get('field')),
+                value = id ? {
+                    id: id,
+                    text: this.formatResult(this.model.toJSON())
+                } : null;
+
+            callback(value);
         },
 
         formatResult: function (object) {
