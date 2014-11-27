@@ -3,7 +3,6 @@ define (require) ->
 
   Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
-  DeleteButtonCell = require('cs!./deleteButtonCell')
 
   Layout.extend
 
@@ -23,14 +22,8 @@ define (require) ->
           {
             field: 'email'
             type: 'email'
-          },
-          {
-            cell: DeleteButtonCell
-            type: 'custom'
-            width: 60
-            options:
-              employees: @collection
-              company: @model
           }
-        ]
+        ],
+        isActionCellVisible: (model) ->
+          model.id isnt context.get('owner.id')
       })

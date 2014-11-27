@@ -15,7 +15,7 @@ define (require) ->
   ViewNomenclaturePage = require('cs!./views/nomenclature/view')
   EditNomenclaturePage = require('cs!./views/nomenclature/edit')
   ProductGroups = require('cs!./collections/productGroups')
-  ProductGroupsPage = require('cs!./views/productGroups')
+  ProductGroupsPage = require('cs!./views/productGroups/list')
 
   Controller.extend
 

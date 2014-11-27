@@ -8,11 +8,12 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./currencies')
+    template: require('hbs!./list')
     className: 'container'
 
     initialize: (options) ->
       @collection = options.collection
+      @data = []
 
     onCreate: (model, callback) ->
       model.create (err, model) =>
@@ -74,11 +75,15 @@ define (require) ->
             title: window.RetailTracker.i18n.parentGroup
             placeholder: window.RetailTracker.i18n.selectParent
             type: 'select'
-            data: @data
-            formatter: (value) ->
-              value
-            formatResult: (json) ->
-              if json.text then json.text else json.name
+            data: (model) =>
+              if (model.isNew())
+                return @getData(@options.collection)
+              else
+                return @getData(@getAvailableGroups(model))
+            formatter: (id) =>
+              if id then @collection.get(id).get('name') else ''
+            formatResult: (modelJSON) ->
+              if modelJSON.text then modelJSON.text else modelJSON.name
             onSelection: (object, model) ->
               model.set('parentGroup', object.id)
             width: 300

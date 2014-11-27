@@ -10,7 +10,8 @@ define(function (require) {
         onRender: function () {
             InputCell.prototype.onRender.apply(this, arguments);
 
-            var config = {};
+            var config = {},
+                data = this.options.column.get('data');
 
             if (this.options.column.get('url')) {
                 config = _.extend(config, {
@@ -30,9 +31,9 @@ define(function (require) {
                         }
                     }
                 });
-            } else if (this.options.column.get('data')) {
+            } else if (data) {
                 config = _.extend(config, {
-                    data: this.options.column.get('data')
+                    data: _.isFunction(data) ? data(this.options.model) : data
                 });
             } else {
                 throw 'Select cell should have at least \'url\' or \'data\' attributes.';
