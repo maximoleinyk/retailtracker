@@ -1,5 +1,5 @@
 mongoose = require('mongoose')
-tree = require('mongoose-tree')
+tree = require('mongoose-path-tree')
 
 class ProductGroupSchema
 

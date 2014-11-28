@@ -24,7 +24,7 @@ define (require) ->
       origin = super
 
       version = origin.__v
-      id = origin._id
+      id = origin._id or origin.id
 
       this.version = version
 

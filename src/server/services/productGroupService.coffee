@@ -12,7 +12,7 @@ class ProductGroupService
       callback(null, result)
 
   update: (ns, data, callback) ->
-    return callback({ generic: @i18n.idRequired }) if not id
+    return callback({ generic: @i18n.idRequired }) if not data.id
     return callback({ name: @i18n.nameIsRequired }) if not data.name
 
     @productGroupStore.update ns, data, (err) ->

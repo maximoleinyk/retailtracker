@@ -4,6 +4,7 @@ define (require) ->
   Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
   ProductGroups = require('cs!app/company/collections/productGroups')
+  Promise = require('rsvp').Promise
   _ = require('underscore')
 
   Layout.extend
@@ -25,11 +26,15 @@ define (require) ->
       model.update (err) ->
         if err then callback(err) else callback(null)
 
-    onDelete: (model, callback) ->
-      model.delete (err) =>
-        return callback(err) if err
-        @collection.remove(model)
-        callback(err)
+    onDelete: (id, callback) ->
+      availableGroups = @getAvailableGroups(id)
+      idsToRemove = _.difference(@collection.pluck('id'), availableGroups.pluck('id'))
+      promises = _.map idsToRemove, (id) =>
+        modelToRemove = @collection.get(id)
+        modelToRemove.delete (err) =>
+          if err then err else @collection.remove(modelToRemove)
+
+      Promise.all(promises).then(callback).then(null, callback)
 
     onCancel: (model, callback) ->
       model.reset()
@@ -82,8 +87,8 @@ define (require) ->
                 return @getData(@getAvailableGroups(model))
             formatter: (id) =>
               if id then @collection.get(id)?.get('name') else ''
-            formatResult: (modelJSON) ->
-              if modelJSON.text then modelJSON.text else modelJSON.name
+            formatResult: (modelJSON) =>
+              if modelJSON.text then modelJSON.text else @collection.get(modelJSON.parentGroup)?.get('name')
             onSelection: (object, model) ->
               model.set('parentGroup', object.id)
             width: 300
