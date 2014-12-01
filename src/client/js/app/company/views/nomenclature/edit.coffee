@@ -18,6 +18,6 @@ define (require) ->
 
       @model.update()
       .then =>
-        @navigateTo('')
+        @navigateTo('/nomenclature')
       .then null, (err) =>
         @validation.show(err)

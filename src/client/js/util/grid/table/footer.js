@@ -27,7 +27,7 @@ define(function (require) {
                     template: require('hbs!./cells/buttons/createButton'),
                     action: function () {
                         var next = function (err) {
-                            self.options.initialAutoFocus = false;
+                            self.options.skipInitialAutoFocus = false;
                             self.enableInputs();
                             self.validate(err, function () {
                                 self.model = new self.options.items.model({});
@@ -50,7 +50,7 @@ define(function (require) {
         },
 
         onRender: function () {
-            if (this.options.initialAutoFocus) {
+            if (this.options.skipInitialAutoFocus) {
                 return;
             }
 

@@ -7,6 +7,11 @@ class UomController
   constructor: (@uomService) ->
 
   register: (@router) ->
+    @router.get '/uom/select/fetch', authFilter, (req, res) =>
+      @uomService.search namespace.company(req), req.query.q, (err, results) ->
+        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
+        res.jsonp(results)
+
     @router.get '/uom/all', authFilter, (req, res) =>
       @uomService.findAll namespace.company(req), (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err

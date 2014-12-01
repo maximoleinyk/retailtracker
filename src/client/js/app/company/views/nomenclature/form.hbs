@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-md-9">
+        <div class="form-group">
+            <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
+
+            <div class="col-md-8">
+                <input type="text" id="name" name="name" class="form-control" data-bind autofocus/>
+
+                <div class="help-block" data-validation="name"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="article" class="col-md-4 control-label">{{i18n.article}}</label>
+
+            <div class="col-md-3">
+                <input type="text" id="article" name="article" class="form-control" data-bind/>
+
+                <div class="help-block" data-validation="article"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="productGroup" class="col-md-4 control-label">{{i18n.productGroup}}</label>
+
+            <div class="col-md-4">
+                <input type="hidden" id="productGroup" name="productGroup" class="form-control" data-id="productGroupSelect" data-bind/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="uom" class="col-md-4 control-label">{{i18n.unitOfMeasurement}}</label>
+
+            <div class="col-md-4">
+                <input type="hidden" id="uom" name="uom" class="form-control" data-id="uomSelect" data-bind/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">{{i18n.attributes}}</label>
+
+            <div class="col-md-8" data-region="attributes"></div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">{{i18n.barcodes}}</label>
+
+            <div class="col-md-8" data-region="barcodes"></div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
+
+            <div class="col-md-8">
+                <textarea id="description" name="description" rows="5" class="form-control" data-bind></textarea>
+            </div>
+        </div>
+    </div>
+</div>

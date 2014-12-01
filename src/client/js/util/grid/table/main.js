@@ -19,7 +19,7 @@ define(function (require) {
 
         initialize: function () {
             this.wasEmpty = true;
-            this.initialAutoFocus = this.options.initialAutoFocus || false;
+            this.skipInitialAutoFocus = this.options.skipInitialAutoFocus || false;
         },
 
         onRender: function () {
@@ -42,6 +42,9 @@ define(function (require) {
         },
 
         buildEmptyView: function () {
+            if (_.isUndefined(this.options.defaultEmptyText)) {
+                return;
+            }
             this.$el.find('thead').after(Marionette.$('<tbody/>'));
             this.contentView = new EmptyView({
                 el: this.$el.find('tbody'),
@@ -87,7 +90,7 @@ define(function (require) {
                 items: this.options.collection,
                 numerable: this.options.numerable,
                 editable: this.options.editable,
-                initialAutoFocus: this.initialAutoFocus
+                skipInitialAutoFocus: this.skipInitialAutoFocus
             }));
         },
 

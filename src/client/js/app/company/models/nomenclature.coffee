@@ -5,30 +5,27 @@ define (require) ->
 
   class Nomenclature extends MongoModel
 
+    defaults: ->
+      attributes: []
+      barcodes: []
+
     fetch: ->
       @promise('get', '/nomenclature/' + @id)
       .then (result) =>
         @set @parse(result)
         @commit()
 
-    create: (callback) ->
+    create: ->
       @promise('post', '/nomenclature/create', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .then(null, callback)
 
-    update: (callback) ->
+    update: ->
       @promise('put', '/nomenclature/update', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .then(null, callback)
 
-    delete: (callback) ->
+    delete: ->
       @promise('del', '/nomenclature/delete', @toJSON())
-      .then ->
-        callback(null)
-      .then(null, callback)

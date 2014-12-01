@@ -1,9 +1,18 @@
 i18n = inject('i18n')
+_ = require('underscore')
 
 class UomService
 
   constructor: (@uomStore) ->
     @i18n = i18n.bundle('validation')
+
+  search: (ns, query, callback) ->
+    query = query or ''
+    @findAll ns, (err, all) ->
+      results = _.filter all, (item) ->
+        item.shortName.toLowerCase().indexOf(query.toLowerCase()) > -1
+      results = results.splice(0, 5)
+      callback(err, results)
 
   findAll: (ns, callback) ->
     @uomStore.findAll(ns, callback)

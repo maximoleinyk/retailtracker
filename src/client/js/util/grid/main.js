@@ -62,7 +62,7 @@ define(function (require) {
                 editable: this.editable,
                 withoutHeader: this.withoutHeader,
                 defaultEmptyText: this.options.defaultEmptyText,
-                initialAutoFocus: this.options.initialAutoFocus,
+                skipInitialAutoFocus: this.options.skipInitialAutoFocus,
                 isActionCellVisible: this.isActionCellVisible
             }));
         },

@@ -7,6 +7,11 @@ class ProductGroup
   constructor: (@productGroupService) ->
 
   register: (@router) ->
+    @router.get '/productgroup/select/fetch', authFilter, (req, res) =>
+      @productGroupService.search namespace.company(req), req.query.q, (err, results) ->
+        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
+        res.jsonp(results)
+
     @router.get '/productgroup/all', authFilter, (req, res) =>
       @productGroupService.findAll namespace.company(req), (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
