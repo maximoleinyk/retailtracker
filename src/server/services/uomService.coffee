@@ -14,6 +14,9 @@ class UomService
       results = results.splice(0, 5)
       callback(err, results)
 
+  findById: (ns, id, callback) ->
+    @uomService.findById(ns, id, callback)
+
   findAll: (ns, callback) ->
     @uomStore.findAll(ns, callback)
 

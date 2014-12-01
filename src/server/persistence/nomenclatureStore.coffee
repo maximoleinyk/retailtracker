@@ -21,4 +21,7 @@ class NomenclatureStore
   findAll: (ns, callback) ->
     @model.get(ns).find({}, callback)
 
+  findById: (ns, id, callback) ->
+    @model.get(ns).findById(id, callback)
+
 module.exports = NomenclatureStore

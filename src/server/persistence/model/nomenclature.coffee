@@ -7,7 +7,6 @@ class NomenclatureSchema
       name:
         type: String
         required: true
-      description: String
       article: String
       productGroup:
         type: mongoose.Schema.Types.ObjectId
@@ -23,11 +22,12 @@ class NomenclatureSchema
       ]
       barcodes: [
         {
-          type: String
+          type:
+            type: String
           value: String
         }
       ]
-
+      description: String
     return @
 
   get: (namespace) ->
