@@ -1,13 +1,10 @@
-<li>
-    <div class="item">
-        <h5 class="title">
-            <a href="/nomenclature/{{id}}/edit" style="color:#4183c4">{{name}}</a>
-        </h5>
-        <ul>
-            {{#each attributes}}
-                <li>{{key}}: <strong>{{value}}</strong></li>
-            {{/each}}
-        </ul>
-        <button class="btn btn-link" data-click="delete">{{i18n.delete}}</button>
-    </div>
-</li>
+<div class="item">
+    <h5 class="title">
+        <a href="/nomenclature/{{id}}/edit" style="color:#4183c4">{{name}}</a>
+    </h5>
+    <ul class="sub-items">
+        {{#each attributes}}
+            <li>{{key}}: <strong>{{value}}</strong></li>
+        {{/each}}
+    </ul>
+</div>

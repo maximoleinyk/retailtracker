@@ -8,4 +8,43 @@
       }
     }
   }
+
+  ul, ol {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .list {
+    padding: 20px 0;
+
+    > li {
+      background-color: #f9f9f9;
+      padding: 10px;
+
+      &:nth-child(odd) {
+        background-color: #fff !important;
+      }
+    }
+
+    .item {
+      .title {
+        display: block;
+        margin: 0 0 5px 0;
+      }
+
+      .sub-items {
+        color: #888;
+
+        li {
+          display: inline-block;
+
+          strong {
+            color: #555;
+          }
+        }
+      }
+    }
+  }
+
 }

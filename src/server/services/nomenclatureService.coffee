@@ -36,7 +36,7 @@ class NomenclatureService
 
       populate
       .then (results) ->
-        callback(null, results[0])
+        callback(null, results)
       .then(null, callback)
 
   findById: (ns, id, callback) ->
