@@ -48,7 +48,12 @@ define (require) ->
             results: data
         formatSelection: @uomFormatter
         formatResult: @uomFormatter
+        initSelection: (element, callback) =>
+          obj = @model.get('uom')
+          callback(obj)
+          @model.set('uom', obj._id)
       })
+      @ui.$uomSelect.select2('val', @model.get('uom')) if @model.get('uom')
 
     renderProductGroupSelect: ->
       @ui.$productGroupSelect.select2({
@@ -65,7 +70,12 @@ define (require) ->
             results: data
         formatSelection: @productGroupFormatter
         formatResult: @productGroupFormatter
+        initSelection: (element, callback) =>
+          obj = @model.get('productGroup')
+          callback(obj)
+          @model.set('productGroup', obj._id)
       })
+      @ui.$productGroupSelect.select2('val', @model.get('productGroup')) if @model.get('productGroup')
 
     cancel: ->
       @navigateTo('')

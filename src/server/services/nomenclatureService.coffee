@@ -1,5 +1,6 @@
 i18n = inject('i18n')
 _ = require('underscore')
+Promise = inject('util/promise')
 
 class NomenclatureService
 
@@ -8,34 +9,67 @@ class NomenclatureService
 
   findAll: (ns, callback) ->
     @nomenclatureStore.findAll ns, (err, results) =>
-      insertUoms = Promise.all _.map results, (doc) =>
-        if doc.uom
-          return new Promise (resolve, reject) =>
-            @uomService.findById ns, doc.uom, (err, uom) ->
+      return callback(err) if err
+      populate = Promise.all _.map results, (doc) =>
+        document = doc.toJSON()
+        pairs = []
+        if document.uom
+          pairs.push new Promise (resolve, reject) =>
+            @uomService.findById ns, document.uom, (err, uom) ->
               return reject(err) if err
-              doc.uom = uom
-              resolve(doc)
+              document.uom = uom
+              resolve()
+
+        if document.productGroup
+          pairs.push new Promise (resolve, reject) =>
+            @productGroupService.findById ns, document.productGroup, (err, productGroup) ->
+              return reject(err) if err
+              document.productGroup = productGroup
+              resolve()
+
+        if pairs.length
+          Promise.all(pairs)
+          .then ->
+            Promise.empty(document)
         else
-          return Promise.empty(doc)
+          Promise.empty(document)
 
-      insertUoms
-      .then (results) =>
-        Promise.all _.map results, (doc) =>
-          if doc.productGroup
-            return new Promise (resolve, reject) =>
-              @productGroupService.findById ns, doc.productGroup, (err, productGroup) ->
-                return reject(err) if err
-                doc.productGroup = productGroup
-                resolve(doc)
-          else
-            return Promise.empty(doc)
-
+      populate
       .then (results) ->
-        callback(null, results)
+        callback(null, results[0])
       .then(null, callback)
 
   findById: (ns, id, callback) ->
-    @nomenclatureStore.findById(ns, id, callback)
+    @nomenclatureStore.findById ns, id, (err, doc) =>
+      return callback(err) if err
+      return callback('Not found') if not doc
+
+      document = doc.toJSON()
+      pairs = []
+
+      if document.uom
+        pairs.push new Promise (resolve, reject) =>
+          @uomService.findById ns, document.uom, (err, uom) ->
+            return reject(err) if err
+            document.uom = uom
+            resolve()
+
+      if document.productGroup
+        pairs.push new Promise (resolve, reject) =>
+          @productGroupService.findById ns, document.productGroup, (err, productGroup) ->
+            return reject(err) if err
+            document.productGroup = productGroup
+            resolve()
+
+      if pairs.length
+        promise = Promise.all(pairs)
+      else
+        promise = Promise.empty()
+
+      promise
+      .then ->
+        callback(null, document)
+      .catch(callback)
 
   create: (ns, data, callback) ->
     return callback({ name: @i18n.nameIsRequired }) if not data.name

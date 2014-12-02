@@ -95,7 +95,8 @@ class PageController
     settingsController = new SettingsController(new SettingsService(i18n, userService, accountService))
     settingsController.register(@router)
 
-    uomController = new UomController(new UomService(new UomStore))
+    uomService = new UomService(new UomStore)
+    uomController = new UomController(uomService)
     uomController.register(@router)
 
     currencyController = new CurrencyController(currencyService)
@@ -104,10 +105,11 @@ class PageController
     companyController = new CompanyController(companyService)
     companyController.register(@router)
 
-    nomenclatureController = new NomenclatureController(new NomenclatureService(new NomenclatureStore))
-    nomenclatureController.register(@router)
-
-    productGroupController = new ProductGroupController(new ProductGroupService(new ProductGroupStore))
+    productGroupService = new ProductGroupService(new ProductGroupStore)
+    productGroupController = new ProductGroupController(productGroupService)
     productGroupController.register(@router)
+
+    nomenclatureController = new NomenclatureController(new NomenclatureService(uomService, productGroupService, new NomenclatureStore))
+    nomenclatureController.register(@router)
 
 module.exports = PageController

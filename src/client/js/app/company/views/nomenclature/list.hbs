@@ -11,24 +11,8 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        {{#if items.length}}
-            <ul>
-                {{#each items}}
-                    <li>
-                        <div class="item">
-                            <h5 class="title">
-                                <a href="/nomenclature/{{id}}/edit" style="color:#4183c4">{{name}}</a>
-                            </h5>
-                            <ul>
-                                {{#each attributes}}
-                                    <li>{{key}}: <strong>{{value}}</strong></li>
-                                {{/each}}
-                            </ul>
-                        </div>
-                    </li>
-                {{/each}}
-            </ul>
-        {{else}}
+        <ul data-id="listContainer"></ul>
+        {{#if isEmptyCollection}}
             <p class="text-center">{{i18n.nomenclatureEmptyListText}}</p>
         {{/if}}
     </div>

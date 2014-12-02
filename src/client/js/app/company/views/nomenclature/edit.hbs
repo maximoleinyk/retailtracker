@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-md-12 page-title">
             <h3>{{i18n.editNomenclature}}</h3>
-            <a href="/" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
+            <a href="/nomenclature" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
         </div>
     </div>
     {{> app/company/views/nomenclature/form }}
     <div class="row">
         <div class="col-md-12 form-control-static">
             <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
-            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+            <a href="/nomenclature" class="btn btn-link">{{i18n.cancel}}</a>
         </div>
     </div>
 </form>

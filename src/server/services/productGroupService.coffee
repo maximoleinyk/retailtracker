@@ -28,6 +28,9 @@ class ProductGroupService
       return callback({ generic: err }) if err
       callback(null, data)
 
+  findById: (ns, id, callback) ->
+    @productGroupStore.findById(ns, id, callback)
+
   findAll: (ns, callback) ->
     @productGroupStore.findAll(ns, callback)
 

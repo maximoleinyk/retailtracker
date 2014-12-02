@@ -15,7 +15,7 @@ class UomService
       callback(err, results)
 
   findById: (ns, id, callback) ->
-    @uomService.findById(ns, id, callback)
+    @uomStore.findById(ns, id, callback)
 
   findAll: (ns, callback) ->
     @uomStore.findAll(ns, callback)
