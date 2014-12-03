@@ -1,13 +1,21 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 page-title">
-            <h3>{{name}}</h3>
-            <a href="/" class="link-back" data-url-catch>{{i18n.dashboard}}</a>
-        </div>
+<div class="row page-title">
+    <div class="col-md-12">
+        <h4><span class="small">{{i18n.nomenclature}}:</span> {{name}}</h4>
+        <a href="/nomenclature" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
     </div>
-    <div class="row">
-        <div class="col-md-12 form-control-static">
-            <a href="/nomenclature/{{id}}/edit" class="btn btn-primary" data-auto-disable>{{i18n.edit}}</a>
-        </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <a href="/nomenclature/{{id}}/edit" class="btn btn-default" data-id="editButton" data-toggle="tooltip"
+           title="{{i18n.edit}}">{{i18n.edit}}</a>
+        <button type="button" class="btn btn-danger" data-id="removeButton" data-toggle="tooltip"
+                title="{{i18n.delete}}">
+            <span class="fa fa-trash"></span>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{! TODO: Complete view screen }}
     </div>
 </div>
