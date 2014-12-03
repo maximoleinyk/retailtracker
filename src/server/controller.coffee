@@ -33,13 +33,15 @@ NomenclatureController = inject('controllers/nomenclature')
 ProductGroupController = inject('controllers/productGroup')
 ProductGroupService = inject('services/productGroupService')
 ProductGroupStore = inject('persistence/productGroupStore')
+WarehouseController = inject('controllers/warehouse')
+WarehouseService = inject('services/warehouseService')
+WarehouseStore = inject('persistence/warehouseStore')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
-
     currencyService = new CurrencyService(new CurrencyStore)
 
     companyStore = new CompanyStore
@@ -52,9 +54,11 @@ class PageController
 
     companyMediator = new CompanyMediator(companyStore, activityService)
 
-    accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService, i18n, activityService)
+    accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService,
+      i18n, activityService)
 
-    companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService, contextService, i18n)
+    companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService,
+      contextService, i18n)
 
     securityService = new SecurityService(@passport, accountService, i18n)
     securityService.applyLocalStrategy()
@@ -83,9 +87,12 @@ class PageController
     contextController = new ContextController(accountService)
     contextController.register(@router)
 
+    warehouseController = new WarehouseController(new WarehouseService(new WarehouseStore))
+    warehouseController.register(@router)
+
     activityController = new ActivityController(activityService)
     activityController.register(@router)
-    
+
     accountController = new AccountController(accountService)
     accountController.register(@router)
 
@@ -109,7 +116,8 @@ class PageController
     productGroupController = new ProductGroupController(productGroupService)
     productGroupController.register(@router)
 
-    nomenclatureController = new NomenclatureController(new NomenclatureService(uomService, productGroupService, new NomenclatureStore))
+    nomenclatureController = new NomenclatureController(new NomenclatureService(uomService, productGroupService,
+      new NomenclatureStore))
     nomenclatureController.register(@router)
 
 module.exports = PageController

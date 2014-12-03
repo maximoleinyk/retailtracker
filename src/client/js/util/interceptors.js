@@ -33,7 +33,7 @@ define(function (require) {
         this.listenTo(this.eventBus, 'http:request:stop', function() {
             requestCount--;
             if (!requestCount) {
-                self.$el.find('[data-auto-disable]').removeAttr('disabled')
+                self.$el.find('[data-auto-disable]').removeAttr('disabled');
             }
         });
 

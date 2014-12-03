@@ -21,6 +21,8 @@ define (require) ->
       'nomenclature/:id': 'viewNomenclature'
       'nomenclature/:id/edit': 'editNomenclature'
 
+      'warehouses': 'warehouses'
+
     constructor: (options) ->
       appRoutes = {}
       _.each @appRoutes, (value, key) ->

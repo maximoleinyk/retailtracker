@@ -26,7 +26,7 @@ define(function (require) {
                 try {
                     response = JSON.parse(xhr.responseText);
                 } catch (e) {
-                    response = xhr.responseText
+                    response = xhr.responseText;
                 }
                 callback(response);
             },

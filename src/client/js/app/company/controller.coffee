@@ -16,8 +16,18 @@ define (require) ->
   EditNomenclaturePage = require('cs!./views/nomenclature/edit')
   ProductGroups = require('cs!./collections/productGroups')
   ProductGroupsPage = require('cs!./views/productGroups/list')
+  Warehouses = require('cs!./collections/warehouses')
+  WarehousesPage = require('cs!./views/warehouse/list')
 
   Controller.extend
+
+    warehouses: ->
+      collection = new Warehouses
+      collection.fetch()
+      .then =>
+        @openPage new WarehousesPage({
+          collection: collection
+        })
 
     editNomenclature: (id) ->
       model = new Nomenclature({ id: id })

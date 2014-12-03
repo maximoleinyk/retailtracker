@@ -14,6 +14,7 @@ define(function (require) {
             switch (type) {
                 case 'autoincrement':
                     return new AutoincrementCell(options);
+                    break;
                 case 'edit':
                     if (options.isActionCellVisible && options.isActionCellVisible(options.model)) {
                         return new DropdownButtonCell(_.extend(options, {
@@ -43,8 +44,10 @@ define(function (require) {
                     } else {
                         return new ViewCell(options);
                     }
+                    break;
                 default:
                     return new ViewCell(options);
+                    break;
             }
 
         }
