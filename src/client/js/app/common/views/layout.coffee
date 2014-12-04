@@ -35,11 +35,11 @@ define (require) ->
       @displayNavigation()
 
     hideNavigation: (route) ->
-      @navigation.close() if route is '404'
+      @header.close() if route is '404'
 
     displayNavigation: ->
       return if not @options.isAuthenticated or Backbone.history.fragment is '404'
-      @navigation.show(new @options.Navigation(@options)) if @options.Navigation
+      @header.show(new @options.Navigation(@options)) if @options.Navigation
 
     openPage: (view) ->
       @container.show(view)
