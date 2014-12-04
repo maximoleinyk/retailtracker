@@ -5,6 +5,7 @@ define (require) ->
   _ = require('underscore')
   context = require('cs!app/common/context')
   Promise = require('rsvp').Promise
+  l10n = require('cs!app/common/l10n')
 
   class ModuleLoader
 
@@ -58,7 +59,7 @@ define (require) ->
 
         i18n
         .then (messages) ->
-          window.RetailTracker.i18n = messages
+          l10n.init(messages)
           new Promise (resolve, reject) ->
             http.get module.contextUrl, (err, result) ->
               if err then reject(err) else resolve(result)

@@ -5,11 +5,16 @@ define (require) ->
   Marionette = require('marionette')
   Layout = require('cs!app/common/views/layout')
   Backbone = require('backbone')
+  l10n = require('cs!app/common/l10n')
+  Handlebars = require('handlebars')
+  _ = require('underscore')
 
   App = new Marionette.Application
   Marionette.Renderer.render = (compile, data) ->
+    window.RetailTracker.i18n = l10n.getMessages()
     compile(_.extend(data, {
-      i18n: window.RetailTracker.i18n
+      i18n: l10n.getMessages()
+      helpers: _.extend({}, Handlebars.helpers, l10n.getFunctions())
     }))
 
   App.addInitializer (options) ->

@@ -9,8 +9,8 @@ define(function (require) {
     _.each(http, function (func, method) {
         response[method] = function (url, data) {
             return new Promise(function (resolve, reject) {
-                return func.call(window, url, data, function (err, result) {
-                    err ? reject(err) : resolve(result);
+                func.call(window, url, data, function (err, result) {
+                    return err ? reject(err) : resolve(result);
                 });
             });
         };
