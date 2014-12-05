@@ -9,7 +9,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./currencies')
+    template: require('hbs!./currencies.hbs')
     className: 'container'
 
     initialize: (options) ->

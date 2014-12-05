@@ -6,7 +6,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./list')
+    template: require('hbs!./list.hbs')
     className: 'activity-list'
 
     templateHelpers: ->

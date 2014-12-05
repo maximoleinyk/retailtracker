@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
 	var Backbone = require('backbone'),
 		ViewRow = require('./rows/viewRow'),
@@ -7,7 +8,7 @@ define(function (require) {
 
 	return ViewRow.extend({
 
-		template: require('hbs!./header'),
+		template: require('hbs!./header.hbs'),
 
 		initialize: function (options) {
 			var attributes = {};

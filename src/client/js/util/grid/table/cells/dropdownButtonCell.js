@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
 	var ButtonCell = require('./buttonCell'),
 		_ = require('underscore'),
@@ -6,7 +7,7 @@ define(function (require) {
 
 	return ButtonCell.extend({
 
-		template: require('hbs!../cells/buttons/dropdownButton'),
+		template: require('hbs!../cells/buttons/dropdownButton.hbs'),
 
 		ui: {
 			$button: '[data-id="button"]',

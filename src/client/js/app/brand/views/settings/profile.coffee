@@ -6,7 +6,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./profile')
+    template: require('hbs!./profile.hbs')
     binding: true
 
     save: (e) ->

@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
     var $ = require('jquery'),
         Marionette = require('marionette'),
@@ -8,7 +9,7 @@ define(function (require) {
 
     return Marionette.CollectionView.extend({
 
-        template: require('hbs!./content'),
+        template: require('hbs!./content.hbs'),
         itemView: true,
 
         initialize: function () {
@@ -106,6 +107,7 @@ define(function (require) {
 
             if (collectionView.isBuffering) {
                 collectionView.elBuffer.appendChild(itemView.el);
+                /* eslint no-underscore-dangle: 0  */
                 collectionView._bufferedChildren.push(itemView);
             } else {
                 if (index > 0) {

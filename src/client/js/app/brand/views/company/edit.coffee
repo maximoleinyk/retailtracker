@@ -10,7 +10,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./edit')
+    template: require('hbs!./edit.hbs')
     className: 'container'
 
     onRender: ->

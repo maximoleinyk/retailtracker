@@ -9,7 +9,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./list')
+    template: require('hbs!./list.hbs')
     className: 'container'
 
     initialize: (options) ->

@@ -10,7 +10,7 @@ var path = require('path'),
         resourcesDir: path.resolve(__dirname + '/resources'),
 		app: {
 			port: 3000,
-			indexHtml: path.resolve(__dirname + (isProduction ? '/build/server/index.html' : '/src/client/index.html')),
+			indexHtml: path.resolve(__dirname + (isProduction ? '/build/' : '/src/') + 'client/index.html'),
 			staticDir: path.resolve(__dirname + (isProduction ? '/build/client' : '/src/client')),
 			cookieSecret: 'secret_cookie_word',
 			sessionSecret: 'session_secret_word'

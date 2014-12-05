@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
     var Marionette = require('marionette'),
         Header = require('./header'),
@@ -9,7 +10,7 @@ define(function (require) {
 
     return Marionette.Layout.extend({
 
-        template: require('hbs!./main'),
+        template: require('hbs!./main.hbs'),
         tagName: 'table',
 
         regions: {

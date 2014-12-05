@@ -5,7 +5,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./item')
+    template: require('hbs!./item.hbs')
     tagName: 'li'
 
     delete: ->

@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
     var Backbone = require('backbone'),
         Marionette = require('marionette'),
@@ -7,7 +8,7 @@ define(function (require) {
 
     return Marionette.CollectionView.extend({
 
-        template: require('hbs!./abstractRow'),
+        template: require('hbs!./abstractRow.hbs'),
         itemView: true,
         tagName: 'tr',
 

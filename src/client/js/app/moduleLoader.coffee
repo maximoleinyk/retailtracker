@@ -6,6 +6,30 @@ define (require) ->
   context = require('cs!app/common/context')
   Promise = require('rsvp').Promise
   l10n = require('cs!app/common/l10n')
+  Marionette = require('marionette')
+  Layout = require('cs!app/common/views/layout')
+  Backbone = require('backbone')
+  Handlebars = require('handlebars')
+
+  App = new Marionette.Application
+  Marionette.Renderer.render = (compile, data) ->
+    window.RetailTracker.i18n = l10n.getMessages()
+    compile(_.extend(data, {
+      i18n: l10n.getMessages()
+      helpers: _.extend({}, Handlebars.helpers, l10n.getFunctions())
+    }))
+
+  App.addInitializer (options) ->
+    new Layout(options).render()
+
+    new options.Router({
+      controller: new options.Controller(options)
+    })
+
+    Backbone.history.start({
+      pushState: true
+      root: options.root
+    })
 
   class ModuleLoader
 
@@ -27,7 +51,7 @@ define (require) ->
         'test') > -1))
       document.documentElement.className += if cookieEnabled then ' cookies' else ' no-cookies'
 
-    loadModule: (defaultModuleName, start) ->
+    loadModule: (defaultModuleName) ->
       @isBrowserSupported()
       @isCookies()
 
@@ -46,7 +70,7 @@ define (require) ->
               resolve(result)
 
         startApp = (authenticated) =>
-          start(_.extend(module, {
+          App.start(_.extend(module, {
             root: (@root + module.root).replace('//', '/')
             isAuthenticated: authenticated
           }));

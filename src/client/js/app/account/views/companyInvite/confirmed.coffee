@@ -4,7 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   Marionette.ItemView.extend
 
-    template: require('hbs!./confirmed')
+    template: require('hbs!./confirmed.hbs')
 
     templateHelpers: ->
       {

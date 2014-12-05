@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
     var EditRow = require('./rows/editRow'),
         ButtonCell = require('./cells/buttonCell'),
@@ -24,7 +25,7 @@ define(function (require) {
 
             if (type === 'edit') {
                 return new ButtonCell(_.extend(options, {
-                    template: require('hbs!./cells/buttons/createButton'),
+                    template: require('hbs!./cells/buttons/createButton.hbs'),
                     action: function () {
                         var next = function (err) {
                             self.options.skipInitialAutoFocus = false;

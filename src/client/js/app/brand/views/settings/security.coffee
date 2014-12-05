@@ -5,7 +5,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./security')
+    template: require('hbs!./security.hbs')
 
     save: (e) ->
       e.preventDefault()

@@ -1,18 +1,20 @@
 /*global ActiveXObject*/
-/*global process*/
-define(['handlebars'], function (Handlebars) {
+/*eslint no-undef: 0 */
+define(['handlebars'], function(Handlebars) {
     'use strict';
 
     var buildMap = [];
 
     var fs, getXhr,
         progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
-        fetchText = function () {
+        fetchText = function() {
             throw new Error('Environment unsupported.');
         };
 
     if (typeof window !== 'undefined' && window.navigator && window.document) {
-        getXhr = function () {
+        // Browser action
+        getXhr = function() {
+            //Would love to dump the ActiveX crap in here. Need IE 6 to die first.
             var xhr, i, progId;
             if (typeof XMLHttpRequest !== 'undefined') {
                 return new XMLHttpRequest();
@@ -21,8 +23,7 @@ define(['handlebars'], function (Handlebars) {
                     progId = progIds[i];
                     try {
                         xhr = new ActiveXObject(progId);
-                    } catch (e) {
-                    }
+                    } catch (e) {}
 
                     if (xhr) {
                         progIds = [progId]; // so faster next time
@@ -38,10 +39,10 @@ define(['handlebars'], function (Handlebars) {
             return xhr;
         };
 
-        fetchText = function (url, callback) {
+        fetchText = function(url, callback) {
             var xhr = getXhr();
             xhr.open('GET', url, true);
-            xhr.onreadystatechange = function (evt) {
+            xhr.onreadystatechange = function(evt) {
                 //Do not explicitly handle errors, those should be
                 //visible via console output in the browser.
                 if (xhr.readyState === 4) {
@@ -54,29 +55,35 @@ define(['handlebars'], function (Handlebars) {
     } else if (typeof process !== 'undefined' && process.versions && !!process.versions.node) {
         //Using special require.nodeRequire, something added by r.js.
         fs = require.nodeRequire('fs');
-        fetchText = function (path, callback) {
+        fetchText = function(path, callback) {
             callback(fs.readFileSync(path, 'utf8'));
         };
     }
 
     return {
+        write: function(pluginName, name, write) {
+            if (name in buildMap) {
+                var text = buildMap[name];
+                write(text);
+            }
+        },
 
-        load: function (name, parentRequire, load, config) {
-            var ext = '.hbs';
+        load: function(name, parentRequire, load, config) {
+            var ext = config.hbs ? config.hbs.templateExtension : '';
 
             function findPartialDeps(text) {
-                var matches = text.match(/{{>\s*([^\s]+?)\s*}}/ig),
-                    res = [];
+                var matches = text.match(/{{>\s*([^\s]+?)\s*}}/ig);
+                var res = [];
                 for (var i in matches) {
                     if (matches.hasOwnProperty(i)) {
-                        res.push(matches[i].split(' ')[1]);
+                        res.push(matches[i].split(' ')[1] + ext);
                     }
                 }
                 return res;
             }
 
             var path = parentRequire.toUrl(name + ext);
-            fetchText(path, function (text) {
+            fetchText(path, function(text) {
                 var deps = findPartialDeps(text),
                     depStr = deps.join('\', \'hbs!').replace(/_/g, '/');
 
@@ -85,7 +92,7 @@ define(['handlebars'], function (Handlebars) {
                 }
 
                 var prec = Handlebars.precompile(text);
-                text = 'define(\'hbs!' + name + '\',[\'handlebars\'' + depStr + '], function(Handlebars){' +
+                text = 'define(\'hbs!' + name + '\',[\'hbs\',\'handlebars\'' + depStr + '], function(hbs, Handlebars){' +
                     'var t = Handlebars.template(' + prec + ');' +
                     'Handlebars.registerPartial(\'' + name + '\', t);' +
                     'return t;});';
@@ -110,13 +117,13 @@ define(['handlebars'], function (Handlebars) {
                 }
 
                 if (!config.isBuild) {
-                    require(deps, function () {
+                    require(deps, function() {
                         load.fromText(name, text);
 
                         //Give result to load. Need to wait until the module
                         //is fully parse, which will happen after this
                         //execution.
-                        parentRequire([name], function (value) {
+                        parentRequire([name], function(value) {
                             load(value);
                         });
                     });
@@ -126,7 +133,7 @@ define(['handlebars'], function (Handlebars) {
                     //Give result to load. Need to wait until the module
                     //is fully parse, which will happen after this
                     //execution.
-                    parentRequire([name], function (value) {
+                    parentRequire([name], function(value) {
                         load(value);
                     });
                 }

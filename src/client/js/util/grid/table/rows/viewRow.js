@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
     var AbstractRow = require('./abstractRow'),
         ViewCell = require('../cells/viewCell'),
@@ -14,7 +15,6 @@ define(function (require) {
             switch (type) {
                 case 'autoincrement':
                     return new AutoincrementCell(options);
-                    break;
                 case 'edit':
                     if (options.isActionCellVisible && options.isActionCellVisible(options.model)) {
                         return new DropdownButtonCell(_.extend(options, {
@@ -41,13 +41,10 @@ define(function (require) {
                                 self.changeState('edit');
                             }
                         }));
-                    } else {
-                        return new ViewCell(options);
                     }
-                    break;
+                    return new ViewCell(options);
                 default:
                     return new ViewCell(options);
-                    break;
             }
 
         }

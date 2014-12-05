@@ -8,7 +8,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./create')
+    template: require('hbs!./create.hbs')
     className: 'container'
 
     onRender: ->

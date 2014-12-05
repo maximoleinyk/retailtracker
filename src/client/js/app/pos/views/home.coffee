@@ -7,7 +7,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./home')
+    template: require('hbs!./home.hbs')
 
     onCreate: (model, callback) ->
       return callback(model.validationError) if not model.isValid()

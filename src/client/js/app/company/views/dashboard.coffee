@@ -5,5 +5,5 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./dashboard')
+    template: require('hbs!./dashboard.hbs')
     className: 'page page-menu'

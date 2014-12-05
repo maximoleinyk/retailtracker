@@ -7,7 +7,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./attributes')
+    template: require('hbs!./attributes.hbs')
 
     initialize: ->
       @collection = new Collection(@model.get('attributes'), {parse: true})

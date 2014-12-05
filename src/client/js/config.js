@@ -11,7 +11,6 @@ require.config({
         'backbone.babysitter': 'libs/backbone.babysitter/lib/backbone.babysitter',
         marionette: 'libs/marionette/lib/core/amd/backbone.marionette',
         handlebars: 'libs/handlebars/handlebars',
-        rivets: 'libs/rivets/dist/rivets',
         cs: 'libs/require-cs/cs',
         'coffee-script': 'libs/coffee-script/extras/coffee-script',
         bootstrap: 'libs/bootstrap/dist/js/bootstrap',
@@ -20,7 +19,7 @@ require.config({
         respond: 'libs/respond/dest/respond.src',
         select2: 'libs/select2/select2',
         moment: 'libs/moment/moment',
-        momentLocales: 'libs/moment/locale',
+        momentRussianLocale: 'libs/moment/locale/ru',
         numeral: 'libs/numeral/numeral',
         hbs: 'util/plugins/hbs'
     },

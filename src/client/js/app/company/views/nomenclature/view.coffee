@@ -5,7 +5,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./view')
+    template: require('hbs!./view.hbs')
     className: 'container nomenclature'
 
     onRender: ->

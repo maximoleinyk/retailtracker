@@ -8,7 +8,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./barcodes')
+    template: require('hbs!./barcodes.hbs')
 
     initialize: ->
       @collection = new Collection(@model.get('barcodes'), {parse: true})

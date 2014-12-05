@@ -3,7 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
         moment = require('moment'),
-        momentLocale = require('momentLocales/ru'),
+        momentLocale = require('momentRussianLocale'),
         Handlebars = require('handlebars'),
         context = require('cs!app/common/context');
 

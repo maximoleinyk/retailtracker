@@ -1,11 +1,12 @@
 define(function (require) {
+    'use strict';
 
 	var AbstractCell = require('./abstractCell'),
         _ = require('underscore');
 
 	return AbstractCell.extend({
 
-		template: require('hbs!./buttons/defaultButton'),
+		template: require('hbs!./buttons/defaultButton.hbs'),
 
 		ui: {
 			$button: '[data-id="button"]'

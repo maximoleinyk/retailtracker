@@ -9,7 +9,10 @@ module.exports = (grunt) ->
 
     eslint:
       target:
-        src: ['src/client/js/app/**/*.js', 'src/client/js/util/**/*.js']
+        src: [
+          'src/client/js/app',
+          'src/client/js/util'
+        ]
       options:
         config: 'eslint.json'
 
@@ -18,7 +21,7 @@ module.exports = (grunt) ->
         options:
           sourceMap: true
           sourceMapFilename: "src/client/css/main.css.map"
-          sourceMapBasepath: "src/client/css/"
+          sourceMapBasepath: "src/client/css"
           cleancss: true
           modifyVars:
             'img-path': '"../img"'
@@ -46,9 +49,6 @@ module.exports = (grunt) ->
         tasks: ['less']
         options:
           livereload: true
-      validate:
-        files: ['src/client/js/**/*.js']
-        tasks: ['validate']
 
     copy:
       index:
@@ -57,7 +57,7 @@ module.exports = (grunt) ->
             expand: true
             src: 'index.html'
             cwd: 'temp'
-            dest: 'build/server'
+            dest: 'build/client'
           }
         ]
       temp:
@@ -97,7 +97,7 @@ module.exports = (grunt) ->
             src: ['**/require.js']
             cwd: 'temp/built/js/libs/requirejs'
             dest: 'build/client/js'
-          }
+          },
           {
             expand: true
             src: ['**/config.js']
@@ -107,7 +107,7 @@ module.exports = (grunt) ->
           {
             expand: true
             src: [
-              '**/admin/main.js'
+              '**/account/main.js'
             ]
             cwd: 'temp/built/js/app'
             dest: 'build/client/js/app'
@@ -115,7 +115,15 @@ module.exports = (grunt) ->
           {
             expand: true
             src: [
-              '**/account/main.js'
+              '**/brand/main.js'
+            ]
+            cwd: 'temp/built/js/app'
+            dest: 'build/client/js/app'
+          },
+          {
+            expand: true
+            src: [
+              '**/company/main.js'
             ]
             cwd: 'temp/built/js/app'
             dest: 'build/client/js/app'
@@ -124,7 +132,7 @@ module.exports = (grunt) ->
 
     replace:
       cs:
-        src: 'temp/js/app/**/*.js'
+        src: ['temp/js/app/**/*.js', 'temp/js/util/**/*.js']
         overwrite: true
         replacements: [
           {
@@ -168,24 +176,35 @@ module.exports = (grunt) ->
                 'backbone'
                 'backbone.wreqr'
                 'backbone.babysitter'
+                'backbone-nested'
+                'bootstrap'
                 'marionette'
                 'handlebars'
                 'hbs'
                 'rsvp'
+                'select2'
                 'socket.io'
-                'rivets'
-                'text'
-                'app/loader'
+                'respond'
+                'momentRussianLocale'
+                'moment'
+                'numeral'
+                'app/moduleLoader'
               ]
             },
             {
-              name: 'app/admin/main'
+              name: 'app/account/main'
               exclude: [
                 'config'
               ]
             },
             {
-              name: 'app/account/main'
+              name: 'app/brand/main'
+              exclude: [
+                'config'
+              ]
+            },
+            {
+              name: 'app/company/main'
               exclude: [
                 'config'
               ]
@@ -197,8 +216,9 @@ module.exports = (grunt) ->
         files:
           'build/client/js/require.js': 'build/client/js/require.js'
           'build/client/js/app/config.js': 'build/client/js/app/config.js'
-          'build/client/js/app/admin/main.js': 'build/client/js/app/admin/main.js'
           'build/client/js/app/account/main.js': 'build/client/js/app/account/main.js'
+          'build/client/js/app/brand/main.js': 'build/client/js/app/brand/main.js'
+          'build/client/js/app/company/main.js': 'build/client/js/app/company/main.js'
 
     mochaTest:
       test:
@@ -220,7 +240,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'validate', ['eslint']
   grunt.registerTask 'build', ['copy:temp', 'coffee', 'less', 'replace', 'requirejs']
   grunt.registerTask 'dist', ['copy:index', 'copy:css', 'copy:js']
-  grunt.registerTask 'optimize', ['uglify', 'clean:temp']
+  grunt.registerTask 'optimize', ['clean:temp']
 
   grunt.registerTask 'test', ['mochaTest']
   grunt.registerTask 'default', ['clean', 'validate', 'build', 'dist', 'optimize']

@@ -1,4 +1,6 @@
 define(function () {
+    'use strict';
+
     return {
         'AED': {
             'name': 'Emirati Dirham',

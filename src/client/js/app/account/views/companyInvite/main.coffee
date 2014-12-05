@@ -6,7 +6,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./main')
+    template: require('hbs!./main.hbs')
 
     templateHelpers: ->
       {

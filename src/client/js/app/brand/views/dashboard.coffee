@@ -7,7 +7,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./dashboard')
+    template: require('hbs!./dashboard.hbs')
     className: 'container'
 
     createCompany: ->

@@ -1,4 +1,5 @@
 define(function (require) {
+    'use strict';
 
     var Marionette = require('marionette'),
         Table = require('./table/main'),
@@ -6,7 +7,7 @@ define(function (require) {
 
     return Marionette.Layout.extend({
 
-        template: require('hbs!./main'),
+        template: require('hbs!./main.hbs'),
         className: 'grid',
 
         regions: {

@@ -9,7 +9,7 @@ define (require) ->
   Layout.extend
 
     el: '#app'
-    template: require('hbs!./layout')
+    template: require('hbs!./layout.hbs')
 
     appEvents:
       'router:navigate': 'hideNavigation'

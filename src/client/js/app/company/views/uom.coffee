@@ -6,7 +6,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./uom')
+    template: require('hbs!./uom.hbs')
     className: 'container'
 
     initialize: (options) ->

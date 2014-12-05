@@ -6,7 +6,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./inviteeList')
+    template: require('hbs!./inviteeList.hbs')
 
     onRender: ->
       @invitees.show new Grid({

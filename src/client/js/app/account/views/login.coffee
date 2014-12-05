@@ -7,7 +7,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./login')
+    template: require('hbs!./login.hbs')
 
     initialize: ->
       @model = new Security()

@@ -6,7 +6,7 @@ define (require) ->
 
   Marionette.CompositeView.extend
 
-    template: require('hbs!./list')
+    template: require('hbs!./list.hbs')
     itemView: ItemView
     itemViewContainer: '[data-id="container"]'
     className: 'company-list'
