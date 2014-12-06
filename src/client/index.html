@@ -1,33 +1,29 @@
 <!DOCTYPE>
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-<!--[if (lt IE 9)]><!--> <html lang="en" class="no-support no-js"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+<!--[if (lt IE 9)]><!-->
+<html lang="en" class="no-support no-js"> <!--<![endif]-->
 <head>
-	<title></title>
-	<script type="text/javascript">
-		(function(r) {r.className = r.className.replace(/no-js/gi, 'js');}(document.documentElement));
-	</script>
-	<link rel="stylesheet" href="/static/css/main.css">
+    <title></title>
+    <script type="text/javascript">
+        (function (r) {
+            r.className = r.className.replace(/no-js/gi, 'js');
+        }(document.documentElement));
+    </script>
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-	<div id="app" class="app"></div>
-	<noscript>
-		For full functionality of this site it is necessary to enable JavaScript.
- 		Here are the <a href="http://www.enable-javascript.com/" target="_blank">
- 		instructions how to enable JavaScript in your web browser</a>.
-	</noscript>
-	<script src="/static/js/libs/requirejs/require.js"></script>
-	<script>
-		require(['/static/js/config.js'], function() {
-			require(['cs!app/moduleLoader'], function(ModuleLoader) {
-                var loader = new ModuleLoader('/page/', {
-                    'account': 'account',
-                    'brand': 'brand',
-                    'company': 'company',
-                    'pos': 'pos'
-                });
-                loader.loadModule('account')
-            });
-		});
-	</script>
+<div id="app" class="app"></div>
+<noscript>
+    For full functionality of this site it is necessary to enable JavaScript.
+    Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+    instructions how to enable JavaScript in your web browser</a>.
+</noscript>
+<script src="/static/js/libs/requirejs/require.js"></script>
+<script>
+    require(['/static/js/config.js'], function () {
+        require(['cs!app/start']);
+    });
+</script>
 </body>
 </html>

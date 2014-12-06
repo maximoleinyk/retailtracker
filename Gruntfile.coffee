@@ -100,6 +100,12 @@ module.exports = (grunt) ->
           },
           {
             expand: true
+            src: ['**/start.js']
+            cwd: 'temp/built/js/app'
+            dest: 'build/client/js/app'
+          },
+          {
+            expand: true
             src: ['**/config.js']
             cwd: 'temp/built/js'
             dest: 'build/client/js/app'
@@ -215,6 +221,7 @@ module.exports = (grunt) ->
       compile:
         files:
           'build/client/js/require.js': 'build/client/js/require.js'
+          'build/client/js/app/start.js': 'build/client/js/app/start.js'
           'build/client/js/app/config.js': 'build/client/js/app/config.js'
           'build/client/js/app/account/main.js': 'build/client/js/app/account/main.js'
           'build/client/js/app/brand/main.js': 'build/client/js/app/brand/main.js'
