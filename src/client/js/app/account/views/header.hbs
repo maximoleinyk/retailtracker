@@ -1,0 +1,6 @@
+<h3 class="pull-left">{{i18n.retailTracker}}</h3>
+{{# if isNotSignUp }}
+    <a href="/page/account/register" class="btn btn-link">{{i18n.signUp}}</a>
+{{else}}
+    <a href="/page/account/login" class="btn btn-link">{{i18n.signIn}}</a>
+{{/if}}

@@ -4,6 +4,7 @@ define (require) ->
   Router = require('cs!./router')
   Controller = require('cs!./controller')
   Navigation = require('cs!./views/navigation')
+  Header = require('cs!./views/header')
   http = require('util/http')
   context = require('cs!app/common/context')
 
@@ -11,6 +12,7 @@ define (require) ->
     Router: Router
     Controller: Controller
     Navigation: Navigation
+    Header: Header
     bundleName: 'company'
     className: 'company'
     root: '/company/'

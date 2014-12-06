@@ -3,7 +3,7 @@ define (require) ->
 
   Marionette = require('marionette')
   RegistrationSuccessPage = require('cs!./sent')
-  Account = require('app/account/models/account')
+  Account = require('cs!app/account/models/account')
 
   Marionette.ItemView.extend
 

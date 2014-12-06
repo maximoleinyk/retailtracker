@@ -7,7 +7,7 @@ define (require) ->
 
   Marionette.ItemView.extend
 
-    template: require('hbs!./navigation.hbs')
+    template: require('hbs!./header.hbs')
     tagName: 'header'
 
     initialize: ->
