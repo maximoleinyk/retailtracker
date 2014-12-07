@@ -10,6 +10,7 @@ define (require) ->
   request = require('util/request')
   http = require('util/http')
   cookies = require('cookies')
+  NotFoundPage = require('cs!app/common/views/notFound')
 
   Layout.extend
 
@@ -18,8 +19,9 @@ define (require) ->
 
     appEvents:
       'http:403': 'handleForbidden'
-      'http:401': 'redirectToLogin'
-      'open:page': 'openPage'
+      'http:401': 'handleUnauthorized'
+      '404': 'pageNotFound'
+      'open:page': 'displayContent'
       'popup:show': 'showPopupBox'
 
     initialize: ->
@@ -41,7 +43,7 @@ define (require) ->
                 .then ->
                   http.setHeaders({
                     'X-Csrf-Token': cookies.get('X-Csrf-Token')
-                  })
+                  }, )
                   view.close()
             }
           ]
@@ -71,18 +73,23 @@ define (require) ->
       return if not @options.Navigation
       @navigation.show(new @options.Navigation(@options))
 
-    showPopupBox: (box) ->
-      @popup.show(box)
-
-    openPage: (view) ->
+    displayContent: (view) ->
       @container.show(view)
       Marionette.$(document).scrollTop(0)
 
-    redirectToLogin: (options) ->
+    showPopupBox: (box) ->
+      @popup.show(box)
+
+    pageNotFound: ->
+      @popup.close()
+      @navigation.close()
+      @container.show(new NotFoundPage)
+
+    handleUnauthorized: (options) ->
       context.set('redirectUrl', options.fragment)
 
       switch (options.errorMessage)
         when 'Unauthorized' then window.location.replace('/page/account/login')
         when 'Unauthorized company' then @navigateTo('brand')
         else
-          window.location.replace('/404')
+          @eventBus.trigger('404')

@@ -49,15 +49,6 @@ define(function (require) {
                     },
                     403: function (xhr) {
                         eventBus.trigger('http:403', { error: xhr.responseText });
-                    },
-                    404: function () {
-                        eventBus.trigger('http:404');
-                    },
-                    500: function () {
-                        eventBus.trigger('http:500');
-                    },
-                    504: function () {
-                        eventBus.trigger('http:504');
                     }
                 }
             }, options);

@@ -48,4 +48,4 @@ define (require) ->
         if redirectUrl
           window.location.replace('/page' + if not redirectUrl then '' else '/' + redirectUrl)
         else
-          window.location.replace('/404')
+          @eventBus.trigger('404')
