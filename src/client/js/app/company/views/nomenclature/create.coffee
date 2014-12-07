@@ -5,6 +5,7 @@ define (require) ->
   BarcodesGrid = require('cs!./barcodes')
   AttributesGrid = require('cs!./attributes')
   _ = require('underscore')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -35,7 +36,7 @@ define (require) ->
 
     renderUomSelect: ->
       @ui.$uomSelect.select2({
-        placeholder: window.RetailTracker.i18n.selectUom
+        placeholder: i18n.get('selectUom')
         id: (uomObject) ->
           return uomObject._id
         ajax:
@@ -52,7 +53,7 @@ define (require) ->
 
     renderProductGroupSelect: ->
       @ui.$productGroupSelect.select2({
-        placeholder: window.RetailTracker.i18n.selectGroup
+        placeholder: i18n.get('selectGroup')
         id: (groupObject) ->
           return groupObject._id
         ajax:

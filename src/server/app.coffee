@@ -5,6 +5,7 @@ passport = require('passport')
 PageController = inject('controller')
 MongoDB = inject('database')
 socket = inject('socket')
+csrf = require('csurf')
 
 class App
 
@@ -16,9 +17,13 @@ class App
   start: ->
     @store.connect @app, =>
       @app.use '/static', express.static @config.app.staticDir
+      @app.use cookieParser(config.cookie.secret)
       @app.use bodyParser.json()
       @app.use passport.initialize()
       @app.use passport.session()
+      @app.use csrf()
+      @app.use (err, req, res, next) ->
+        if err.code is 'EBADCSRFTOKEN' then res.status(403).send('CSRF has expired') else next(err)
       @app.use(@router)
 
       controller = new PageController(@router, passport)

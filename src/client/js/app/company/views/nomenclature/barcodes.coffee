@@ -5,6 +5,7 @@ define (require) ->
   Grid = require('util/grid/main')
   Collection = require('cs!app/common/mongoCollection')
   barcodeTypes = require('util/barcodeTypes')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -20,7 +21,7 @@ define (require) ->
         columns: [
           {
             field: 'value'
-            placeholder: window.RetailTracker.i18n.selectBarcode
+            placeholder: i18n.get('selectBarcode')
             type: 'select'
             data: barcodeTypes
             formatter: (value) =>
@@ -42,14 +43,14 @@ define (require) ->
       @model.set('barcodes', @collection.toJSON())
 
     onCreate: (barcode, callback) ->
-      return callback({ value: window.RetailTracker.i18n.enterValue }) if not barcode.get('value')
+      return callback({ value: i18n.get('enterValue') }) if not barcode.get('value')
       barcode.commit()
       @collection.add(barcode)
       @update()
       callback()
 
     onSave: (barcode, callback) ->
-      return callback({ value: window.RetailTracker.i18n.enterValue }) if not barcode.get('value')
+      return callback({ value: i18n.get('enterValue') }) if not barcode.get('value')
       barcode.commit()
       @update()
       callback()

@@ -1,5 +1,9 @@
-define ['cs!./moduleLoader'], (ModuleLoader) ->
+define ['cs!./moduleLoader', 'util/http', 'cookies'], (ModuleLoader, http, cookies) ->
   'use strict'
+
+  http.setHeaders({
+    'X-Csrf-Token': cookies.get('X-Csrf-Token')
+  })
 
   loader = new ModuleLoader('/page/', {
     'account': 'account'

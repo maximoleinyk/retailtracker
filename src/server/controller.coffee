@@ -72,7 +72,8 @@ class PageController
 
     # always return single HTML page on leading /page* part
     @router.get "/page*", (req, res) ->
-      res.sendFile global.config.app.indexHtml
+      res.cookie('X-Csrf-Token', req.csrfToken())
+      res.sendFile(global.config.app.indexHtml)
 
     # redirect from root directory to UI
     @router.get '/', (req, res) ->

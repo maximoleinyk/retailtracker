@@ -21,6 +21,7 @@ require.config({
         moment: 'libs/moment/moment',
         momentRussianLocale: 'libs/moment/locale/ru',
         numeral: 'libs/numeral/numeral',
+        cookies: 'libs/cookies-js/src/cookies',
         hbs: 'util/plugins/hbs'
     },
 

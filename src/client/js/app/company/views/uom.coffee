@@ -3,6 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -40,13 +41,13 @@ define (require) ->
         columns: [
           {
             field: 'shortName'
-            title: window.RetailTracker.i18n.shortName
+            title: i18n.get('shortName')
             type: 'string'
             width: 250
           }
           {
             field: 'fullName'
-            title: window.RetailTracker.i18n.fullName
+            title: i18n.get('fullName')
             type: 'string'
           }
         ]

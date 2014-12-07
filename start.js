@@ -12,7 +12,6 @@ var path = require('path'),
 			port: 3000,
 			indexHtml: path.resolve(__dirname + (isProduction ? '/build/' : '/src/') + 'client/index.html'),
 			staticDir: path.resolve(__dirname + (isProduction ? '/build/client' : '/src/client')),
-			cookieSecret: 'secret_cookie_word',
 			sessionSecret: 'session_secret_word'
 		},
 		socket: {
@@ -31,7 +30,8 @@ var path = require('path'),
 			pass: 'P@sSw0Rd'
 		},
 		cookie: {
-			maxAge: 1000 * 60 * 60 * 2
+			maxAge: 1000 * 60 * 60,
+            secret: 'secret_cookie_word'
 		}
 	};
 

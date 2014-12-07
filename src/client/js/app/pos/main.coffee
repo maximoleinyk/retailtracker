@@ -11,6 +11,5 @@ define (require) ->
     bundleName: 'pos'
     className: 'point-of-sale'
     root: '/pos/'
-    onComplete: (userInfo) ->
-      context.set(userInfo)
+    authUrl: '/context/handshake'
   })

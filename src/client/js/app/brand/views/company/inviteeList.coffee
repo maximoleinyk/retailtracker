@@ -3,6 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -11,7 +12,7 @@ define (require) ->
     onRender: ->
       @invitees.show new Grid({
         collection: @options.collection
-        defaultEmptyText: window.RetailTracker.i18n.emptyInvitesGrid
+        defaultEmptyText: i18n.get('emptyInvitesGrid')
         withoutHeader: true
         editable: @
         skipInitialAutoFocus: true,
@@ -19,13 +20,13 @@ define (require) ->
           {
             field: 'firstName'
             type: 'string'
-            placeholder: window.RetailTracker.i18n.firstName
+            placeholder: i18n.get('firstName')
             width: 180
           },
           {
             field: 'email'
             type: 'email'
-            placeholder: window.RetailTracker.i18n.emailExampleCom
+            placeholder: i18n.get('emailExampleCom')
           }
         ]
       })
@@ -34,14 +35,14 @@ define (require) ->
       @model.set('invitees', @options.collection.toJSON())
 
     onCreate: (invitee, callback) ->
-      return callback({ email: window.RetailTracker.i18n.invalidEmail }) if not invitee.get('email')
+      return callback({ email: i18n.get('invalidEmail') }) if not invitee.get('email')
       invitee.commit()
       @options.collection.add(invitee)
       @updateList()
       callback()
 
     onSave: (invitee, callback) ->
-      return callback({ email: window.RetailTracker.i18n.invalidEmail }) if not invitee.get('email')
+      return callback({ email: i18n.get('invalidEmail') }) if not invitee.get('email')
       invitee.commit()
       @updateList()
       callback()

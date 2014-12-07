@@ -1,0 +1,54 @@
+@import "./bootstrap/mixins";
+@import "./variables";
+
+.popup-box {
+
+  .box {
+    .border-bottom-radius(2px);
+    .border-top-radius(2px);
+    .box-shadow(@boxShadow);
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    margin-left: -250px;
+    width: 500px;
+    background-color: #fff;
+    z-index: 99999;
+    border: 1px solid @borderColor;
+
+    .header {
+      background-color: #f5f5f5;
+      color: #888;
+      font-weight: 500;
+      font-size: 18px;
+      border-bottom: 1px solid @borderColor;
+      padding: 15px 20px;
+    }
+
+    .content {
+      min-height: 200px;
+    }
+
+    .footer {
+      .clearfix;
+      border-top: 1px solid @borderColor;
+      padding: 15px 20px;
+
+      > * {
+        float: right;
+      }
+    }
+  }
+
+  .box-shadow {
+    .opacity(0.9);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99998;
+    background-color: #fff;
+  }
+
+}

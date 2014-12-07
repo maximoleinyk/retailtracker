@@ -187,6 +187,7 @@ module.exports = (grunt) ->
                 'marionette'
                 'handlebars'
                 'hbs'
+                'cookies'
                 'rsvp'
                 'select2'
                 'socket.io'

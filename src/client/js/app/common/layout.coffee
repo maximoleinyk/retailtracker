@@ -6,7 +6,6 @@ define (require) ->
   class Layout extends Marionette.Layout
 
     constructor: ->
-
       addRegion = (index, el) =>
         $el = Marionette.$(el)
         dataRegion = $el.attr('data-region')

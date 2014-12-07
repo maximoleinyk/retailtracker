@@ -1,0 +1,4 @@
+{{#each buttons}}
+    <button type="button" class="btn btn-{{#isPrimary this}}primary{{else}}default{{/isPrimary}}"
+            data-click="onCLick">{{label}}</button>
+{{/each}}

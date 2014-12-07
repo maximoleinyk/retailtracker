@@ -6,6 +6,7 @@ define (require) ->
   Header = require('cs!./views/header')
   http = require('util/http')
   context = require('cs!app/common/context')
+  request = require('util/request')
 
   ({
     Router: Router
@@ -14,10 +15,12 @@ define (require) ->
     bundleName: 'brand'
     className: 'brand'
     root: '/brand/'
-    contextUrl: '/context/load/brand'
+    authUrl: '/context/handshake'
 
-    onComplete: (contextData) ->
-      context.set(context.parse(contextData))
-      http.setHeaders({ account: context.id })
+    beforeStart: (contextData) ->
+      request.get('/context/load/brand')
+      .then (contextData) ->
+        context.set(context.parse(contextData))
+        http.setHeaders({ account: context.id })
 
   })

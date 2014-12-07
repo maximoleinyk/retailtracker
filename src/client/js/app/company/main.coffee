@@ -7,6 +7,7 @@ define (require) ->
   Header = require('cs!./views/header')
   http = require('util/http')
   context = require('cs!app/common/context')
+  request = require('util/request')
 
   ({
     Router: Router
@@ -16,24 +17,26 @@ define (require) ->
     bundleName: 'company'
     className: 'company'
     root: '/company/'
-    contextUrl: '/context/load/company'
+    authUrl: '/context/handshake'
 
     initialize: (url) ->
       http.setHeaders({ company: url.split('/')[1] })
 
-    beforeStart: (contextData, url) ->
-      context.set(context.parse(contextData))
+    beforeStart: (url) ->
       companyId = url.split('/')[1]
+      request.get('/context/load/company')
 
-      new Promise (resolve, reject) ->
-        http.get '/company/' + companyId + '/permission/' + contextData.owner.id, (err, result) ->
-          return reject(err) if err
-          return reject('Unknown context') if not result
-          context.set('company', result.company)
-          # set the company's original namespace
-          http.setHeaders({
-            account: result.ns
-            company: companyId
-          })
-          resolve()
+      # load context info
+      .then (contextData) ->
+        context.set(context.parse(contextData))
+        request.get('/company/' + companyId + '/permission/' + contextData.owner.id)
+
+      # check permissions
+      .then (result) ->
+        return throw 'Unknown context' if not result
+        context.set('company', result.company)
+        http.setHeaders({
+          account: result.ns
+          company: companyId
+        })
   })

@@ -3,6 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -36,18 +37,18 @@ define (require) ->
       @grid.show(new Grid({
         collection: @collection
         editable: @
-        defaultEmptyText: window.RetailTracker.i18n.warehouseEmptyList
+        defaultEmptyText: i18n.get('warehouseEmptyList')
         withoutHeader: true
         columns: [
           {
             field: 'name'
-            placeholder: window.RetailTracker.i18n.name
+            placeholder: i18n.get('name')
             type: 'string'
             width: 250
           }
           {
             field: 'address'
-            placeholder: window.RetailTracker.i18n.address
+            placeholder: i18n.get('address')
             type: 'string'
           }
         ]

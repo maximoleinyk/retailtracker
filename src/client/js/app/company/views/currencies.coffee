@@ -6,6 +6,7 @@ define (require) ->
   currencies = require('util/currencies')
   _ = require('underscore')
   context = require('cs!app/common/context')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -51,13 +52,13 @@ define (require) ->
         columns: [
           {
             field: 'name'
-            title: window.RetailTracker.i18n.name
+            title: i18n.get('name')
             type: 'string'
           }
           {
             field: 'code'
-            title: window.RetailTracker.i18n.code
-            placeholder: window.RetailTracker.i18n.currencyType
+            title: i18n.get('code')
+            placeholder: i18n.get('currencyType')
             type: 'select'
             data: data
             formatter: (value) ->
@@ -70,7 +71,7 @@ define (require) ->
           }
           {
             field: 'rate'
-            title: window.RetailTracker.i18n.rate
+            title: i18n.get('rate')
             type: 'number'
             width: 150
           }

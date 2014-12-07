@@ -5,18 +5,19 @@ define (require) ->
   _ = require('underscore')
   context = require('cs!app/common/context')
   Promise = require('rsvp').Promise
-  l10n = require('cs!app/common/l10n')
+  i18n = require('cs!app/common/i18n')
   Marionette = require('marionette')
   Layout = require('cs!app/common/views/layout')
   Backbone = require('backbone')
   Handlebars = require('handlebars')
+  cookies = require('cookies')
+  request = require('util/request')
 
   App = new Marionette.Application
   Marionette.Renderer.render = (compile, data) ->
-    window.RetailTracker.i18n = l10n.getMessages()
     compile(_.extend(data, {
-      i18n: l10n.getMessages()
-      helpers: _.extend({}, Handlebars.helpers, l10n.getFunctions())
+      i18n: i18n.getMessages()
+      helpers: _.extend({}, Handlebars.helpers, i18n.getFunctions())
     }))
 
   App.addInitializer (options) ->
@@ -77,23 +78,17 @@ define (require) ->
 
         module.initialize(@getPath()) if _.isFunction(module.initialize)
 
-        i18n = new Promise (resolve, reject) ->
-          http.get '/i18n/messages/' + module.bundleName, (err, response) ->
-            if err then reject(err) else resolve(response)
-
-        i18n
+        request.get('/i18n/messages/' + module.bundleName)
         .then (messages) ->
-          l10n.init(messages)
-          new Promise (resolve, reject) ->
-            http.get module.contextUrl, (err, result) ->
-              if err then reject(err) else resolve(result)
+          i18n.init(messages)
+          request.get(module.authUrl)
 
-        .then (userDetails) =>
+        .then =>
           if url.indexOf('account/login') is 0
             context.unset('redirectUrl')
             window.location.replace(@root + defaultModuleName)
           else
-            return module.beforeStart(userDetails, @getPath())
+            return module.beforeStart(@getPath())
 
         .then (result) =>
           module.onComplete(result) if _.isFunction(module.onComplete)

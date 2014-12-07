@@ -5,6 +5,11 @@ define (require) ->
   Layout = require('cs!app/common/layout')
   context = require('cs!app/common/context')
   Backbone = require('backbone')
+  PopupBox = require('cs!app/common/views/popupBox/main')
+  i18n = require('cs!app/common/i18n')
+  request = require('util/request')
+  http = require('util/http')
+  cookies = require('cookies')
 
   Layout.extend
 
@@ -12,13 +17,37 @@ define (require) ->
     template: require('hbs!./layout.hbs')
 
     appEvents:
+      'http:403': 'handleForbidden'
       'http:401': 'redirectToLogin'
       'open:page': 'openPage'
+      'popup:show': 'showPopupBox'
 
     initialize: ->
       this.$el.addClass(@options.className) if @options.className
 
       Marionette.$(document).delegate('a[href^="/"]', 'click', _.bind(@navigateByLink, @))
+
+    handleForbidden: (obj) ->
+      if obj.error is 'CSRF has expired'
+        PopupBox.context({
+          title: i18n.get('sessionExpired')
+          message: i18n.get('sessionExpiredMessage')
+          buttons: [
+            {
+              label: i18n.get('resumeSession')
+              primary: true
+              action: (view) ->
+                request.get('/context/handshake')
+                .then ->
+                  http.setHeaders({
+                    'X-Csrf-Token': cookies.get('X-Csrf-Token')
+                  })
+                  view.close()
+            }
+          ]
+        })
+      else
+        window.location.reload()
 
     navigateByLink: (e) ->
       $el = $(e.currentTarget)
@@ -41,6 +70,9 @@ define (require) ->
     displayNavigation: ->
       return if not @options.Navigation
       @navigation.show(new @options.Navigation(@options))
+
+    showPopupBox: (box) ->
+      @popup.show(box)
 
     openPage: (view) ->
       @container.show(view)

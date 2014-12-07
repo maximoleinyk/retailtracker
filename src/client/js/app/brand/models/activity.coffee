@@ -3,30 +3,31 @@ define (require) ->
 
   MongoModel = require('cs!app/common/mongoModel')
   context = require('cs!app/common/context')
+  i18n = require('cs!app/common/i18n')
 
   class Activity extends MongoModel
 
     actions:
       'ACCOUNT_REGISTERED': (json) ->
         if context.isYou(json.user)
-          json.action = window.RetailTracker.i18n.youHaveRegisteredAccount
+          json.action = i18n.get('youHaveRegisteredAccount')
         else
-          json.action = window.RetailTracker.i18n.userHasRegisteredAccount
+          json.action = i18n.get('userHasRegisteredAccount')
         return json
 
       'EMPLOYEE_INVITED_INTO_COMPANY': (json) ->
-        json.action = window.RetailTracker.i18n.userInvitedIntoCompany + ' "<strong>' + json.company.name + '</strong>"'
+        json.action = i18n.get('userInvitedIntoCompany') + ' "<strong>' + json.company.name + '</strong>"'
         return json
 
       'EMPLOYEE_CONFIRMED_COMPANY_INVITE': (json) ->
         if context.isYou(json.user)
-          json.action = window.RetailTracker.i18n.youConfirmedInviteToCompany + ' "<strong>' + json.company.name + '</strong>"'
+          json.action = i18n.get('youConfirmedInviteToCompany') + ' "<strong>' + json.company.name + '</strong>"'
         else
-          json.action = window.RetailTracker.i18n.userConfirmedInviteToCompany + ' "<strong>' + json.company.name + '</strong>"'
+          json.action = i18n.get('userConfirmedInviteToCompany') + ' "<strong>' + json.company.name + '</strong>"'
         return json
 
       'EMPLOYEE_WAS_REMOVED_FROM_COMPANY': (json) ->
-        json.action = window.RetailTracker.i18n.userWasRemovedFromCompany + ' "<strong>' + json.company.name + '</strong>"'
+        json.action = i18n.get('userWasRemovedFromCompany') + ' "<strong>' + json.company.name + '</strong>"'
         return json
 
     parse: (json) ->

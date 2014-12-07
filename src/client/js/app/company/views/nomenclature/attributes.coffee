@@ -4,6 +4,7 @@ define (require) ->
   Layout = require('cs!app/common/layout')
   Grid = require('util/grid/main')
   Collection = require('cs!app/common/mongoCollection')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -35,16 +36,16 @@ define (require) ->
       @model.set('attributes', @collection.toJSON())
 
     onCreate: (attribute, callback) ->
-      return callback({ key: window.RetailTracker.i18n.enterKey }) if not attribute.get('key')
-      return callback({ value: window.RetailTracker.i18n.enterValue }) if not attribute.get('value')
+      return callback({ key: i18n.get('enterKey') }) if not attribute.get('key')
+      return callback({ value: i18n.get('enterValue') }) if not attribute.get('value')
       attribute.commit()
       @collection.add(attribute)
       @update()
       callback()
 
     onSave: (attribute, callback) ->
-      return callback({ key: window.RetailTracker.i18n.enterKey }) if not attribute.get('key')
-      return callback({ value: window.RetailTracker.i18n.enterValue }) if not attribute.get('value')
+      return callback({ key: i18n.get('enterKey') }) if not attribute.get('key')
+      return callback({ value: i18n.get('enterValue') }) if not attribute.get('value')
       attribute.commit()
       @update()
       callback()

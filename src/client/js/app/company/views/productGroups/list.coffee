@@ -6,6 +6,7 @@ define (require) ->
   ProductGroups = require('cs!app/company/collections/productGroups')
   Promise = require('rsvp').Promise
   _ = require('underscore')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -67,18 +68,18 @@ define (require) ->
       @grid.show new Grid({
         collection: @collection
         editable: @
-        defaultEmptyText: window.RetailTracker.i18n.defaultProductGroupGridText
+        defaultEmptyText: i18n.get('defaultProductGroupGridText')
         columns: [
           {
             field: 'name'
-            title: window.RetailTracker.i18n.name
+            title: i18n.get('name')
             type: 'string'
             width: 200
           }
           {
             field: 'parentGroup'
-            title: window.RetailTracker.i18n.parentGroup
-            placeholder: window.RetailTracker.i18n.selectGroup
+            title: i18n.get('parentGroup')
+            placeholder: i18n.get('selectGroup')
             type: 'select'
             data: (model) =>
               if (model.isNew())
@@ -95,7 +96,7 @@ define (require) ->
           }
           {
             field: 'description'
-            title: window.RetailTracker.i18n.description
+            title: i18n.get('description')
             type: 'string'
           }
         ]
