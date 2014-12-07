@@ -15,7 +15,7 @@ define (require) ->
     Navigation: Navigation
     Header: Header
     bundleName: 'company'
-    className: 'company'
+    classSelector: 'app-company'
     root: '/company/'
     authUrl: '/context/handshake'
 

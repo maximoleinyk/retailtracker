@@ -25,7 +25,7 @@ define (require) ->
       'popup:show': 'showPopupBox'
 
     initialize: ->
-      this.$el.addClass(@options.className) if @options.className
+      this.$el.addClass(@options.classSelector) if @options.classSelector
 
       Marionette.$(document).delegate('a[href^="/"]', 'click', _.bind(@navigateByLink, @))
 
@@ -43,7 +43,7 @@ define (require) ->
                 .then ->
                   http.setHeaders({
                     'X-Csrf-Token': cookies.get('X-Csrf-Token')
-                  }, )
+                  },)
                   view.close()
             }
           ]
@@ -66,12 +66,10 @@ define (require) ->
       @displayNavigation()
 
     displayHeader: ->
-      return if not @options.Header
-      @header.show(new @options.Header(@options))
+      @header.show(new @options.Header(@options)) if @options.Header
 
     displayNavigation: ->
-      return if not @options.Navigation
-      @navigation.show(new @options.Navigation(@options))
+      @navigation.show(new @options.Navigation(@options)) if @options.Navigation
 
     displayContent: (view) ->
       @container.show(view)

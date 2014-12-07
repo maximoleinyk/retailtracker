@@ -13,7 +13,7 @@ define (require) ->
     Controller: Controller
     Header: Header
     bundleName: 'brand'
-    className: 'brand'
+    classSelector: 'app-brand'
     root: '/brand/'
     authUrl: '/context/handshake'
 

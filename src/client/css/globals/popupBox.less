@@ -1,6 +1,8 @@
 @import "./bootstrap/mixins";
 @import "./variables";
 
+@width: 500px;
+
 .popup-box {
 
   .box {
@@ -10,28 +12,28 @@
     position: absolute;
     top: 10%;
     left: 50%;
-    margin-left: -250px;
-    width: 500px;
+    margin-left: @width / 2;
+    width: @width;
     background-color: #fff;
     z-index: 99999;
-    border: 1px solid @borderColor;
+    border: @border;
 
     .header {
       background-color: #f5f5f5;
       color: #888;
       font-weight: 500;
       font-size: 18px;
-      border-bottom: 1px solid @borderColor;
+      border-bottom: @border;
       padding: 15px 20px;
     }
 
     .content {
-      min-height: 200px;
+      padding-bottom: 100px;
     }
 
     .footer {
       .clearfix;
-      border-top: 1px solid @borderColor;
+      border-top: @border;
       padding: 15px 20px;
 
       > * {
@@ -40,7 +42,7 @@
     }
   }
 
-  .box-shadow {
+  .box-bg {
     .opacity(0.9);
     position: absolute;
     left: 0;

@@ -2,14 +2,13 @@
 @import "./bootstrap/mixins";
 
 .app {
-  .page-title {
-    margin-bottom: 20px;
-    .link-back {
-      &:before {
-        content: '\2190\0020';
-      }
-      color: #4183c4;
+
+  &.app-account {
+
+    .container {
+
     }
+
   }
 
   &.company,
@@ -49,6 +48,16 @@
 }
 
 .page {
+
+  .page-title {
+    margin-bottom: 20px;
+    .link-back {
+      &:before {
+        content: '\2190\0020';
+      }
+      color: #4183c4;
+    }
+  }
 
   &.page-block {
     .box-shadow(0 0 5px rgba(0, 0, 0, 0.3));

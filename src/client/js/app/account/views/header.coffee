@@ -7,6 +7,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./header.hbs')
+    className: 'container'
 
     appEvents:
       'router:navigate': 'updateView'

@@ -10,7 +10,7 @@ define (require) ->
     Controller: Controller
     Header: Header
     bundleName: 'account'
-    className: 'account'
+    classSelector: 'app-account'
     root: '/account/'
     authUrl: '/context/handshake'
   })
