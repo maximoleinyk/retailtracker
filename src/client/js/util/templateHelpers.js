@@ -11,10 +11,10 @@ define(function (require) {
     moment.locale('ru', momentLocale);
 
     var helpers = {
-        date: function (value) {
+        date: function (value, long) {
             var date = moment(value);
 
-            if (date.year() === moment().year()) {
+            if (date.year() === moment().year() && !long) {
                 return date.format('D MMMM');
             } else {
                 return date.format(momentLocale.longDateFormat('LL'));
@@ -23,7 +23,6 @@ define(function (require) {
         time: function (value) {
             return moment(value).format(momentLocale.longDateFormat('LT'));
         },
-
         formatUser: function (user) {
             if (context.get('owner').id === user.id) {
                 return i18n.get('you');

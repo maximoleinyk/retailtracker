@@ -1,10 +1,10 @@
-<div class="pull-left">
+<div class="logo">
     <h4>{{i18n.retailTracker}}</h4>
 </div>
-<div class="pull-right">
+<div class="menu">
     {{# if isNotSignUp }}
-        <a href="/page/account/register" class="btn btn-success">{{i18n.signUp}}</a>
+        <a href="/page/account/register" class="btn btn-link btn-sm">{{i18n.signUp}}</a>
     {{else}}
-        <a href="/page/account/login" class="btn btn-success">{{i18n.signIn}}</a>
+        <a href="/page/account/login" class="btn btn-link btn-sm">{{i18n.signIn}}</a>
     {{/if}}
 </div>

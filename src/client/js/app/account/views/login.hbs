@@ -1,28 +1,39 @@
-<div class="page page-block">
-    <header>{{i18n.entrance}}</header>
-    <section>
-        <div class="warning" data-validation="generic" data-hide></div>
-        <form data-submit="login">
-            <div class="form-group">
-                <label for="email">{{i18n.login}}</label>
-                <input type="email" id="login" name="login" class="form-control" placeholder="{{i18n.enterYourEmail}}"
-                       title="{{i18n.emailAddress}}" data-bind autofocus/>
+<form data-submit="login" class="box">
+    <div class="box-title">{{i18n.welcome}}!</div>
+    <div class="warning" data-validation="generic" data-hide></div>
 
-                <div class="help-block" data-validation="login"></div>
-            </div>
-            <div class="form-group">
-                <label for="email">{{i18n.password}}</label>
-                <input type="password" id="password" name="password" class="form-control"
-                       placeholder="{{i18n.password}}" title="{{i18n.password}}" data-bind/>
+    {{! Login }}
+    <div class="form-group">
+        <div class="input-group-lg">
+            <label for="email">{{i18n.login}}</label>
+            <input type="email" id="login" name="login" class="form-control" placeholder="{{i18n.enterYourEmail}}"
+                   title="{{i18n.emailAddress}}" data-bind autofocus/>
+        </div>
+        <div class="help-block" data-validation="login"></div>
+    </div>
 
-                <div class="help-block" data-validation="password"></div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-success center-block" data-auto-disable>{{i18n.enter}}</button>
-            </div>
-        </form>
-    </section>
-    <footer class="text-center">
-        <a href="/forgot">{{i18n.forgotPassword}}?</a>
-    </footer>
+    {{! Password }}
+    <div class="form-group">
+        <div class="input-group-lg">
+            <label for="email">{{i18n.password}}</label>
+            <input type="password" id="password" name="password" class="form-control"
+                   placeholder="{{i18n.password}}" title="{{i18n.password}}" data-bind/>
+        </div>
+        <div class="help-block" data-validation="password"></div>
+    </div>
+
+    {{! Submit }}
+    <div class="form-group">
+        <button type="submit" class="btn btn-success btn-lg" data-auto-disable>{{i18n.enter}}</button>
+    </div>
+</form>
+<div class="sub-footer">
+    Если вы забыли пароль перейдите по <a href="/forgot"><strong>этой ссылке</strong></a>
+</div>
+<div class="footer container">
+    <p class="text-center">{{i18n.cookiesCompliance}}</p>
+
+    <div class="text-center">
+        <span class="fa fa-copyright"></span> {{year}} RetailTracker
+    </div>
 </div>

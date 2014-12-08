@@ -1,0 +1,41 @@
+@import "../globals/bootstrap/mixins";
+
+@boxWidth: 450px;
+
+.login {
+
+  .box {
+    .border-bottom-radius(2px);
+    .border-top-radius(2px);
+    padding: 20px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    margin: 50px auto 0;
+    width: @boxWidth;
+
+    .box-title {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  .sub-footer {
+    margin: 10px auto;
+    width: @boxWidth;
+    text-align: center;
+    font-size: 11px;
+    color: #777;
+  }
+
+  .footer {
+    margin-top: 100px;
+    border-top: 1px solid #eee;
+    padding: 20px 0;
+    color: #777;
+    font-size: 12px;
+  }
+
+}

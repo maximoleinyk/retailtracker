@@ -4,13 +4,18 @@ define (require) ->
   Security = require('cs!app/account/models/security')
   Marionette = require('marionette')
   context = require('cs!app/common/context')
+  moment = require('moment')
 
   Marionette.ItemView.extend
 
     template: require('hbs!./login.hbs')
+    className: 'login'
 
     initialize: ->
       @model = new Security()
+
+    templateHelpers: ->
+      year: moment().format('YYYY')
 
     login: (e) ->
       e.preventDefault();
