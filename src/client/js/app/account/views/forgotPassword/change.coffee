@@ -7,6 +7,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./change.hbs')
+    className: 'page page-box'
 
     change: (e) ->
       e.preventDefault()

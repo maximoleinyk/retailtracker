@@ -7,11 +7,10 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./main.hbs')
+    className: 'page page-box'
 
     templateHelpers: ->
-      {
       company: @options.company.toJSON()
-      }
 
     confirm: (e) ->
       e.preventDefault()

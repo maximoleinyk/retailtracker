@@ -5,8 +5,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./confirmed.hbs')
+    className: 'page page-box'
 
     templateHelpers: ->
-      {
       company: @options.company.toJSON()
-      }

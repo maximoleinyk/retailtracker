@@ -49,93 +49,105 @@
 }
 
 .page {
+  padding: 50px 0;
 
-  .page-title {
-    margin-bottom: 20px;
-    .link-back {
-      &:before {
-        content: '\2190\0020';
-      }
-      color: #4183c4;
-    }
-  }
+  &.page-box {
 
-  &.page-block {
-    .box-shadow(0 0 5px rgba(0, 0, 0, 0.3));
-    .border-top-radius(2px);
-    .border-bottom-radius(2px);
-    margin: 25px auto;
-    background-color: #fff;
-    width: 350px;
-    padding-bottom: 20px;
-
-    > header {
-      padding: 10px 15px;
-      color: #fff;
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-      background-color: #829aa8;
-      border: 1px solid #768995;
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    > section {
-      padding: 20px 20px 5px 20px;
-
-      > .warning {
-        .alert;
-        .alert-warning;
-        text-align: center;
-        color: #a94442;
-        padding-bottom: 15px;
-      }
-    }
-
-    > footer {
-      padding: 0 20px;
-      font-size: 13px;
-      color: #888;
-    }
-  }
-
-  &.page-blank {
-    .clearfix;
-    padding: 15px;
-    width: 100%;
-
-    .menu {
-      float: left;
-      width: 200px
-    }
-
-    .blank {
-      .box-shadow(0 0 3px rgba(0, 0, 0, 0.3));
-      .border-bottom-radius(4px);
-      .border-top-radius(4px);
+    .box {
+      .border-bottom-radius(2px);
+      .border-top-radius(2px);
+      border: 1px solid #eee;
       background-color: #fff;
-      margin-left: 200px;
-      min-height: 400px;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 20px;
+      width: @boxWidth;
 
-      > *:first-child {
-        .border-top-radius(4px);
-      }
-
-      > *:last-child {
-        .border-bottom-radius(4px);
-      }
-
-      .page-title {
-        margin: 0 -20px;
-        padding: 10px 30px;
-        background-color: #f1f6f9;
-        font-size: 19px;
+      .box-title {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
         border-bottom: 1px solid #eee;
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+
+    .footer {
+      .footer-box {
+        margin: 10px auto;
+        width: @boxWidth;
+        text-align: center;
+        font-size: 11px;
+        color: #777;
+      }
+      .footer-page {
+        margin-top: 100px;
+        border-top: 1px solid #eee;
+        padding: 20px 0;
+        color: #777;
+        font-size: 12px;
+      }
+    }
+
+    .submit-group {
+      padding-top: 20px;
+      margin-top: 23px;
+      border-top: 1px solid #eee;
+      margin-bottom: 0;
+    }
+  }
+
+}
+
+.app > .popup {
+
+  .popup-box {
+
+    .box {
+      .border-bottom-radius(2px);
+      .border-top-radius(2px);
+      .box-shadow(@boxShadow);
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      margin-left: -(@popupBoxWidth / 2);
+      width: @popupBoxWidth;
+      background-color: #fff;
+      z-index: 99999;
+      border: @border;
+
+      .header {
+        background-color: #f5f5f5;
+        color: #888;
+        font-weight: 500;
+        font-size: 18px;
+        border-bottom: @border;
+        padding: 15px 20px;
       }
 
       .content {
-        padding: 30px 10px;
+        padding-bottom: 100px;
       }
+
+      .footer {
+        .clearfix;
+        border-top: @border;
+        padding: 15px 20px;
+
+        > * {
+          float: right;
+        }
+      }
+    }
+
+    .box-bg {
+      .opacity(0.9);
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99998;
+      background-color: #fff;
     }
 
   }

@@ -8,6 +8,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./main.hbs')
+    className: 'page page-box'
 
     initialize: ->
       @model = new Account()

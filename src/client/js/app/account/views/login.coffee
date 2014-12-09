@@ -9,7 +9,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./login.hbs')
-    className: 'login'
+    className: 'page page-box'
 
     initialize: ->
       @model = new Security()
@@ -25,6 +25,6 @@ define (require) ->
       .then =>
         window.location.replace('/page/' + context.get('redirectUrl'))
       .then null, (err) =>
-          @validation.show(err.errors)
+        @validation.show(err.errors)
 
       @model.unset('password')

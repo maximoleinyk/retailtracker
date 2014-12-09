@@ -48,7 +48,7 @@ define (require) ->
             }
           ]
         })
-      else
+      else if @options.isAuthenticated
         window.location.reload()
 
     navigateByLink: (e) ->

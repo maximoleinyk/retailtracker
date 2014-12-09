@@ -1,19 +1,17 @@
-<div class="page page-block">
-    <header>{{i18n.forgotPassword}}</header>
-    <section>
-        <div class="warning" data-validation="generic" data-hide></div>
-        <form data-submit="sendEmail">
-            <div class="form-group">
-                <label for="email">{{i18n.email}}</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="{{i18n.emailAddress}}"
-                       title="{{i18n.emailAddress}}" autofocus data-bind/>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-success center-block" data-auto-disable>{{i18n.send}}</button>
-            </div>
-        </form>
-    </section>
-    <footer class="text-center">
-        <a href="/login">{{i18n.iRememberedPassword}}!</a>
-    </footer>
+<div class="box">
+    <div class="box-title">{{i18n.forgotPassword}}</div>
+    <div class="warning" data-validation="generic" data-hide></div>
+    <form data-submit="sendEmail">
+        <div class="form-group input-group-lg">
+            <label for="email">{{i18n.email}}</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="{{i18n.emailAddress}}"
+                   title="{{i18n.emailAddress}}" autofocus data-bind/>
+        </div>
+        <div class="form-group submit-group">
+            <button type="submit" class="btn btn-primary btn-lg" data-auto-disable>{{i18n.send}}</button>
+        </div>
+    </form>
+</div>
+<div class="footer">
+    <div class="footer-box"><a href="/login">{{i18n.iRememberedPassword}}!</a></div>
 </div>

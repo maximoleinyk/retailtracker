@@ -7,6 +7,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./confirm.hbs')
+    className: 'page page-box'
 
     confirm: (e) ->
       e.preventDefault()
