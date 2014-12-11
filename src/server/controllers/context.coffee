@@ -9,11 +9,8 @@ class ContextController
     res.status(HttpStatus.BAD_REQUEST).send({errors: err})
 
   register: (router) ->
-    router.get '/context/generate/csrf', authFilter, (req, res) =>
-      res.cookie('x-csrf-token', req.csrfToken())
-      res.status(HttpStatus.NO_CONTENT).end()
-
     router.get '/context/handshake', authFilter, (req, res) =>
+      res.cookie('X-Csrf-Token', req.csrfToken())
       res.status(HttpStatus.NO_CONTENT).end()
 
     router.get '/context/load/brand', authFilter, (req, res) =>

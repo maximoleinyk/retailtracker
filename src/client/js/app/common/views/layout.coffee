@@ -26,7 +26,6 @@ define (require) ->
 
     initialize: ->
       this.$el.addClass(@options.classSelector) if @options.classSelector
-
       Marionette.$(document).delegate('a[href^="/"]', 'click', _.bind(@navigateByLink, @))
 
     handleForbidden: (obj) ->
