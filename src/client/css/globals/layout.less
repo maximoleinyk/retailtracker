@@ -5,7 +5,6 @@
 .app {
   height: 100%;
   min-height: 100%;
-  background-color: #fafafa;
 
   > .header {
     background-color: #444;
@@ -14,22 +13,35 @@
 
     .logo {
       float: left;
-      font-size: 18px;
-      color: #fafafa;
-
       * {
+        color: #eee;
         padding: 0;
         margin: 0;
       }
     }
     .dropdown {
       float: right;
+      .dropdown-toggle {
+        color: #eee;
+      }
+      .profile-image {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        margin: -7px 7px;
+        background-color: #eee;
+        border-radius: 2px;
+      }
     }
   }
 
-  > .content-wrapper > .main-width {
-    margin: 0 auto;
-    width: 960px;
+  > .content-wrapper {
+    background-color: #fafafa;
+
+    > .main-width {
+      margin: 0 auto;
+      width: 960px;
+    }
   }
 
   > .popup {
