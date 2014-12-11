@@ -11,7 +11,11 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./edit.hbs')
-    className: 'container'
+    className: 'page page-2thirds'
+    tagName: 'form'
+    attributes: {
+      'data-submit': 'update'
+    }
 
     onRender: ->
       @renderEmployeeList()

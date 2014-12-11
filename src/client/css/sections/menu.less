@@ -1,0 +1,43 @@
+@import "../globals/bootstrap/mixins";
+
+.menu {
+  #gradient > .horizontal(#f6f6f6, #fff, 0%, 8px);
+  .box-shadow(inset 1px 0 0 #eee);
+  position: relative;
+  padding: 20px 0;
+
+  ul {
+    list-style-type: none;
+  }
+
+  li {
+    position: relative;
+
+    > a {
+      display: block;
+      padding: 10px 20px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      outline: 0;
+
+      &.selected {
+        .border-right-radius(2px);
+        .box-shadow(1px 1px 3px rgba(0, 0, 0, 0.05));
+        border: 1px solid #eee;
+        border-left-color: #fff;
+        background-color: #fff;
+
+        &:after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 3px;
+          content: "";
+          background-color: #ccc;
+          border-radius: 0 3px 3px 0;
+        }
+      }
+    }
+  }
+}

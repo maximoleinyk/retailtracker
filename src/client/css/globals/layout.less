@@ -1,58 +1,174 @@
 @import "./variables";
 @import "./bootstrap/mixins";
+@import "./bootstrap/utilities";
 
 .app {
   height: 100%;
   min-height: 100%;
+  background-color: #fafafa;
 
-  &.app-account {
-    background-color: #fafafa;
+  > .header {
+    background-color: #444;
+    border-bottom: 1px solid #fff;
+    padding: 15px 0;
 
-    .header {
-      background-color: #2b333b;
-      border-bottom: 1px solid #fff;
+    .logo {
+      float: left;
+      font-size: 18px;
+      color: #fafafa;
 
-      .logo {
-        .pull-left;
-        font-size: 18px;
-        padding: 5px 0;
-        color: #fafafa;
-      }
-
-      .menu {
-        .pull-right;
-        padding: 9px 0;
+      * {
+        padding: 0;
+        margin: 0;
       }
     }
-
-  }
-
-  &.brand {
-    .clearfix;
-
-    .content > * {
-      padding-bottom: 150px;
-    }
-    .navigation {
-      display: none;
+    .dropdown {
+      float: right;
     }
   }
 
-  &.company {
-    .content > * {
-      padding-bottom: 150px;
+  > .content-wrapper > .main-width {
+    margin: 0 auto;
+    width: 960px;
+  }
+
+  > .popup {
+    .popup-box {
+
+      .box {
+        .border-bottom-radius(2px);
+        .border-top-radius(2px);
+        .box-shadow(@boxShadow);
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        margin-left: -(@popupBoxWidth / 2);
+        width: @popupBoxWidth;
+        background-color: #fff;
+        z-index: 99999;
+        border: @border;
+
+        .header {
+          background-color: #f5f5f5;
+          color: #888;
+          font-weight: 500;
+          font-size: 18px;
+          border-bottom: @border;
+          padding: 15px 20px;
+        }
+
+        .content {
+          padding-bottom: 100px;
+        }
+
+        .footer {
+          .clearfix;
+          border-top: @border;
+          padding: 15px 20px;
+
+          > * {
+            float: right;
+          }
+        }
+      }
+
+      .box-bg {
+        .opacity(0.9);
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99998;
+        background-color: #fff;
+      }
+
     }
-    .navigation {
-      width: 200px;
+  }
+
+  &.app-brand {
+    > .header {
+      border-bottom: none;
+      .logo,
+      .dropdown {
+        color: #fff !important;
+        .dropdown-menu * {
+          color: #333;
+        }
+      }
+    }
+    > .content-wrapper {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 150px;
+      background-color: #fff;
+    }
+  }
+
+  &.app-company {
+    > .content-wrapper {
+      > .main-width {
+        .clearfix;
+        > * {
+          float: left;
+          padding: 0 20px;
+        }
+        > .content {
+          width: 75%;
+        }
+        > .navigation {
+          width: 25%;
+        }
+      }
     }
   }
 }
 
 .page {
-  padding: 50px 0;
+  padding: 30px 15px;
+
+  > .page-title {
+    margin-bottom: 30px;
+    .title {
+      font-size: 18px;
+      font-weight: 300;
+    }
+    .link-back {
+      font-size: 12px;
+      color: #006666;
+    }
+  }
+
+  > .content-block {
+    .clearfix;
+    margin: 0 -20px 50px;
+
+    .col {
+      float: left;
+      padding: 0 20px;
+    }
+  }
+
+  &.page-halves {
+    .content-block {
+      .col-half {
+        width: 50%;
+      }
+    }
+  }
+
+  &.page-2thirds {
+    .content-block {
+      .col-third {
+        width: 25%;
+      }
+      .col-2thirds {
+        width: 75%;
+      }
+    }
+  }
 
   &.page-box {
-
     .box {
       .border-bottom-radius(2px);
       .border-top-radius(2px);
@@ -70,7 +186,6 @@
         font-weight: 500;
       }
     }
-
     .footer {
       .footer-box {
         margin: 10px auto;
@@ -87,68 +202,11 @@
         font-size: 12px;
       }
     }
-
     .submit-group {
       padding-top: 20px;
       margin-top: 23px;
       border-top: 1px solid #eee;
       margin-bottom: 0;
     }
-  }
-
-}
-
-.app > .popup {
-
-  .popup-box {
-
-    .box {
-      .border-bottom-radius(2px);
-      .border-top-radius(2px);
-      .box-shadow(@boxShadow);
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      margin-left: -(@popupBoxWidth / 2);
-      width: @popupBoxWidth;
-      background-color: #fff;
-      z-index: 99999;
-      border: @border;
-
-      .header {
-        background-color: #f5f5f5;
-        color: #888;
-        font-weight: 500;
-        font-size: 18px;
-        border-bottom: @border;
-        padding: 15px 20px;
-      }
-
-      .content {
-        padding-bottom: 100px;
-      }
-
-      .footer {
-        .clearfix;
-        border-top: @border;
-        padding: 15px 20px;
-
-        > * {
-          float: right;
-        }
-      }
-    }
-
-    .box-bg {
-      .opacity(0.9);
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 99998;
-      background-color: #fff;
-    }
-
   }
 }

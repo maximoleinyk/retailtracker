@@ -1,15 +1,11 @@
-<form autocomplete="off" class="form-horizontal" data-submit="update">
-    <div class="row">
-        <div class="col-md-12 page-title">
-            <h3>{{i18n.editCompany}}</h3>
-            <a href="/" class="link-back" data-url-catch>{{i18n.dashboard}}</a>
-        </div>
+<div class="page-title">
+    <div class="title">{{i18n.editCompany}}</div>
+    <a href="/" class="link-back" data-url-catch>{{i18n.dashboard}}</a>
+</div>
+{{> app/brand/views/company/form.hbs }}
+<div class="content-block">
+    <div class="col col-2thirds">
+        <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
+        <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
     </div>
-    {{> app/brand/views/company/form.hbs }}
-    <div class="row">
-        <div class="col-md-12 form-control-static">
-            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
-            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
-        </div>
-    </div>
-</form>
+</div>
