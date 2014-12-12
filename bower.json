@@ -24,7 +24,8 @@
     "select2": "~3.5.1",
     "backbone-nested-model": "~2.0.1",
     "jsbarcode": "*",
-    "cookies-js": "~1.1.0"
+    "cookies-js": "~1.1.0",
+    "jshashes": "~1.0.5"
   },
   "description": "This is the skeleton app that utilize mainstream technologies.",
   "main": "./js/config.js",

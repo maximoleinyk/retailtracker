@@ -22,7 +22,8 @@ require.config({
         momentRussianLocale: 'libs/moment/locale/ru',
         numeral: 'libs/numeral/numeral',
         cookies: 'libs/cookies-js/src/cookies',
-        hbs: 'util/plugins/hbs'
+        hbs: 'util/plugins/hbs',
+        crypto: 'libs/jshashes/hashes'
     },
 
     shim: {
