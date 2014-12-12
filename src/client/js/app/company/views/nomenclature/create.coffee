@@ -10,7 +10,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./create.hbs')
-    className: 'container'
+    className: 'page'
 
     onRender: ->
       @renderProductGroupSelect()

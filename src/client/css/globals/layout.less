@@ -5,6 +5,7 @@
 .app {
   height: 100%;
   min-height: 100%;
+  background-color: #fafafa;
 
   > .header {
     background-color: #444;
@@ -28,7 +29,7 @@
         display: inline-block;
         width: 36px;
         height: 36px;
-        margin: -7px 7px;
+        margin: -7px 7px -14px 0;
         background-color: #eee;
         border-radius: 2px;
       }
@@ -36,8 +37,6 @@
   }
 
   > .content-wrapper {
-    background-color: #fafafa;
-
     > .main-width {
       margin: 0 auto;
       width: 960px;
@@ -151,18 +150,22 @@
     }
   }
 
-  > .content-block {
+  > .page-section {
     .clearfix;
     margin: 0 -20px 50px;
 
     .col {
       float: left;
       padding: 0 20px;
+
+      &.col-stretch {
+        width: 100%;
+      }
     }
   }
 
   &.page-halves {
-    .content-block {
+    .page-section {
       .col-half {
         width: 50%;
       }
@@ -170,7 +173,7 @@
   }
 
   &.page-2thirds {
-    .content-block {
+    .page-section {
       .col-third {
         width: 25%;
       }

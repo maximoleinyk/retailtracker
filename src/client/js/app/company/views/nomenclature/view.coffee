@@ -6,7 +6,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./view.hbs')
-    className: 'container nomenclature'
+    className: 'page page-2thirds nomenclature'
 
     onRender: ->
       @ui.$removeButton.tooltip()

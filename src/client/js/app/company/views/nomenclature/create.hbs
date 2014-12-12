@@ -1,13 +1,11 @@
-<form autocomplete="off" class="form-horizontal nomenclature" data-submit="create">
-    <div class="row">
-        <div class="col-md-12 page-title">
-            <h3>{{i18n.newNomenclature}}</h3>
-            <a href="/nomenclature" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
-        </div>
-    </div>
+<div class="page-title">
+    <div class="title">{{i18n.newNomenclature}}</div>
+    <a href="/nomenclature" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
+</div>
+<form data-submit="create">
     {{> app/company/views/nomenclature/form.hbs }}
-    <div class="row">
-        <div class="col-md-12 form-control-static">
+    <div class="page-section">
+        <div class="col col-stretch form-control-static">
             <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
             <a href="/nomenclature" class="btn btn-link" data-catch-url>{{i18n.cancel}}</a>
         </div>

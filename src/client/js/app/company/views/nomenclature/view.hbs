@@ -1,21 +1,18 @@
-<div class="row page-title">
-    <div class="col-md-12">
-        <h4><span class="small">{{i18n.nomenclature}}:</span> {{name}}</h4>
-        <a href="/nomenclature" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
-    </div>
+<div class="page-title">
+    <div class="title"><span class="small">{{i18n.nomenclature}}:</span> {{name}}</div>
+    <a href="/nomenclature" class="link-back" data-url-catch>{{i18n.nomenclature}}</a>
 </div>
-<div class="row">
-    <div class="col-md-12">
+<div class="page-section">
+    <div class="col col-stretch">
         <a href="/nomenclature/{{id}}/edit" class="btn btn-default" data-id="editButton" data-toggle="tooltip"
            title="{{i18n.edit}}">{{i18n.edit}}</a>
-        <button type="button" class="btn btn-danger" data-id="removeButton" data-toggle="tooltip"
-                title="{{i18n.delete}}">
+        <button type="button" class="btn btn-danger" data-id="removeButton" data-toggle="tooltip" title="{{i18n.delete}}">
             <span class="fa fa-trash"></span>
         </button>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
+<div class="page-section">
+    <div class="col col-stretch">
         {{! TODO: Complete view screen }}
     </div>
 </div>

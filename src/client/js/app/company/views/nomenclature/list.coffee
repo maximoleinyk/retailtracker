@@ -7,11 +7,9 @@ define (require) ->
   Marionette.CompositeView.extend
 
     template: require('hbs!./list.hbs')
-    className: 'container nomenclature'
+    className: 'page nomenclature'
     itemViewContainer: '[data-id="listContainer"]'
     itemView: ItemView
 
     templateHelpers: ->
-      {
       isEmptyCollection: @collection.length is 0
-      }

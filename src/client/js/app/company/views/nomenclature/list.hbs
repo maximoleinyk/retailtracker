@@ -1,19 +1,18 @@
-<div class="row page-title">
-    <div class="col-md-12">
-        <h4>{{i18n.nomenclatureList}}</h4>
-        <a href="/page/company/" class="link-back" data-url-catch>{{i18n.main}}</a>
-    </div>
+<div class="page-title">
+    <div class="title">{{i18n.nomenclatureList}}</div>
+    <a href="/page/company/" class="link-back" data-url-catch>{{i18n.main}}</a>
 </div>
-<div class="row">
-    <div class="col-md-12">
+<div class="page-section">
+    <div class="col col-stretch">
         <a href="/nomenclature/create" class="btn btn-default">{{i18n.createNomenclature}}</a>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <ul data-id="listContainer" class="list"></ul>
-        {{#if isEmptyCollection}}
-            <p class="text-center">{{i18n.nomenclatureEmptyListText}}</p>
-        {{/if}}
+<div class="page-section">
+    <div class="col col-stretch">
+        <ul data-id="listContainer" class="list">
+            {{#if isEmptyCollection}}
+                <li class="text-center">{{i18n.nomenclatureEmptyListText}}</li>
+            {{/if}}
+        </ul>
     </div>
 </div>

@@ -11,7 +11,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./currencies.hbs')
-    className: 'container'
+    className: 'page'
 
     initialize: (options) ->
       @collection = options.collection

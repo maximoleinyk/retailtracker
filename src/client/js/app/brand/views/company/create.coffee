@@ -11,10 +11,6 @@ define (require) ->
 
     template: require('hbs!./create.hbs')
     className: 'page page-2thirds'
-    tagName: 'form'
-    attributes: {
-      'data-submit': 'create'
-    }
 
     onRender: ->
       @renderInviteeList()

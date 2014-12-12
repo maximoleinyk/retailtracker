@@ -12,10 +12,6 @@ define (require) ->
 
     template: require('hbs!./edit.hbs')
     className: 'page page-2thirds'
-    tagName: 'form'
-    attributes: {
-      'data-submit': 'update'
-    }
 
     onRender: ->
       @renderEmployeeList()

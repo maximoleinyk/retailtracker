@@ -8,7 +8,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./list.hbs')
-    className: 'container'
+    className: 'page'
 
     initialize: (options) ->
       @collection = options.collection

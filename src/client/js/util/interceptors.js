@@ -18,11 +18,11 @@ define(function (require) {
             }
         },
         eventBus = require('util/eventBus'),
-        viewConstructor = Marionette.View.prototype.constructor;
+        viewConstructor = Marionette.View.prototype.constructor,
+        routeToLink = {};
 
     Marionette.View.prototype.constructor = function () {
         var self = this,
-            routeToLink = {},
             requestCount = 0;
 
         this.listenTo(this.eventBus, 'http:request:start', function() {
@@ -100,7 +100,7 @@ define(function (require) {
                 } else if (route === '/') {
                     route = 'root';
                 }
-                route = route.replace(new RegExp('^' + Backbone.history.root), '');
+                route = route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '');
                 routeToLink[route] = $el;
             });
             this.$el.find('[data-id]').each(function () {
@@ -135,11 +135,12 @@ define(function (require) {
         }, this);
 
         this.listenTo(this.eventBus, 'open:page', function () {
+            var fragment = Backbone.history.fragment;
             _.each(routeToLink, function (link) {
                 Backbone.$(link).removeClass('selected');
             });
             _.each(routeToLink, function (a, regexp) {
-                if (new RegExp(regexp).test('/' + Backbone.history.fragment)) {
+                if (new RegExp(regexp).test('/' + fragment.replace(0, fragment.indexOf('/'), ''))) {
                     a.addClass('selected');
                 }
             });

@@ -2,15 +2,16 @@
     <div class="row">
         <nav class="col-md-12 clearfix">
             <div class="logo">
-                <a href="/page/brand" data-enable-href="true">RetailTracker</a> / <strong><a href="/page/company/">{{company.name}}</a></strong>
+                <h4><a href="/page/company/">{{company.name}}</a></h4>
             </div>
             <ul class="dropdown">
                 <li class="dropdown navbar-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span data-id="userName"></span> <span class="caret"></span>
+                        <span class="profile-image"></span><span data-id="userName"></span> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/settings/profile">{{i18n.settings}}</a></li>
+                        <li><a href="/page/brand" data-enable-href="true">{{i18n.companyManagement}}</a></li>
                         <li><a href="#" data-click="logout">{{i18n.exit}}</a></li>
                     </ul>
                 </li>

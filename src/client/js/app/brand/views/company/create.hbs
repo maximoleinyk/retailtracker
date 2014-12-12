@@ -2,10 +2,12 @@
     <div class="title">{{i18n.newCompany}}</div>
     <a href="/" class="link-back" data-url-catch>{{i18n.dashboard}}</a>
 </div>
-{{> app/brand/views/company/form.hbs }}
-<div class="content-block">
-    <div class="col col-2thirds">
-        <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
-        <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+<form data-submit="create">
+    {{> app/brand/views/company/form.hbs }}
+    <div class="page-section">
+        <div class="col col-2thirds">
+            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
+            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+        </div>
     </div>
-</div>
+</form>
