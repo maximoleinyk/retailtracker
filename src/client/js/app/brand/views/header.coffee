@@ -21,7 +21,9 @@ define (require) ->
 
     templateHelpers: ->
       email = context.get('login').trim().toLowerCase()
-      avatarSrc: 'http://www.gravatar.com/avatar/' + new Crypto.MD5().hex(email);
+      {
+      avatarSrc: 'http://www.gravatar.com/avatar/' + new Crypto.MD5().hex(email)
+      }
 
     updateNameLabel: ->
       @ui.$userName.text(@model.get('owner.firstName') + ' ' + @model.get('owner.lastName'))

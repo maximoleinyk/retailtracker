@@ -4,6 +4,7 @@ define (require) ->
   Marionette = require('marionette')
   http = require('util/http')
   context = require('cs!app/common/context')
+  Crypto = require('crypto')
 
   Marionette.ItemView.extend
 
@@ -17,6 +18,12 @@ define (require) ->
 
     onRender: ->
       @updateNameLabel()
+
+    templateHelpers: ->
+      email = context.get('login').trim().toLowerCase()
+      {
+      avatarSrc: 'http://www.gravatar.com/avatar/' + new Crypto.MD5().hex(email)
+      }
 
     updateNameLabel: ->
       @ui.$userName.text(@model.get('owner.firstName') + ' ' + @model.get('owner.lastName'))
