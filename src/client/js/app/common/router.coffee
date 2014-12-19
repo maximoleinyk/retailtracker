@@ -13,9 +13,6 @@ define (require) ->
 
       silentRoutes = Marionette.getOption(this, "silentRoutes");
 
-      @listenTo Backbone.history, 'route', ->
-        context.set('lastAuthUrl', Backbone.history.fragment)
-
       @listenTo @eventBus, 'router:navigate:silent', (methodName) =>
         controller = Marionette.getOption(this, "controller")
         controller.silent or= {}

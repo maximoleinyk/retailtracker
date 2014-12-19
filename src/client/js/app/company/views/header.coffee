@@ -9,7 +9,6 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./header.hbs')
-    tagName: 'header'
 
     initialize: ->
       @model = context

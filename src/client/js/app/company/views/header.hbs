@@ -1,22 +1,19 @@
-<div class="container">
-    <div class="row">
-        <nav class="col-md-12 clearfix">
-            <div class="logo">
-                <h4><a href="/page/company/">{{company.name}}</a></h4>
-            </div>
-            <ul class="dropdown">
-                <li class="dropdown navbar-right">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span data-id="userName"></span> <img src="{{avatarSrc}}" class="profile-image"/>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/page/brand" data-enable-href="true">{{i18n.companies}}</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/settings/profile">{{i18n.settings}}</a></li>
-                        <li><a href="#" data-click="logout">{{i18n.exit}}</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
+<div class="logo">
+    <a href="/page/company/"><h4>RetailTracker</h4></a>
 </div>
+<nav class="dropdown">
+    <ul>
+        <li class="dropdown navbar-right">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span data-id="userName"></span> <img src="{{avatarSrc}}" class="profile-image"/>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/page/brand" data-enable-href="true">{{i18n.companies}}</a></li>
+                <li class="divider"></li>
+                <li><a href="/settings/profile">{{i18n.settings}}</a></li>
+                <li><a href="#" data-click="logout">{{i18n.exit}}</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+

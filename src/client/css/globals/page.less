@@ -1,0 +1,90 @@
+.page {
+  padding: 30px 0;
+
+  > .page-title {
+    margin-bottom: 30px;
+    .title {
+      font-size: 18px;
+      font-weight: 300;
+    }
+    .link-back {
+      font-size: 12px;
+      color: #006666;
+    }
+  }
+
+  > .page-section {
+    .clearfix;
+    margin: 0 -20px 50px;
+
+    .col {
+      float: left;
+      padding: 0 20px;
+
+      &.col-stretch {
+        width: 100%;
+      }
+    }
+  }
+
+  &.page-halves {
+    .page-section {
+      .col-half {
+        width: 50%;
+      }
+    }
+  }
+
+  &.page-2thirds {
+    .page-section {
+      .col-quarter {
+        width: 25%;
+      }
+      .col-3quarters {
+        width: 75%;
+      }
+    }
+  }
+
+  &.page-box {
+    .box {
+      .border-bottom-radius(2px);
+      .border-top-radius(2px);
+      border: 1px solid #eee;
+      background-color: #fff;
+      margin: 0 auto;
+      padding: 20px;
+      width: @boxWidth;
+
+      .box-title {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+    .footer {
+      .footer-box {
+        margin: 10px auto;
+        width: @boxWidth;
+        text-align: center;
+        font-size: 11px;
+        color: #777;
+      }
+      .footer-page {
+        margin-top: 100px;
+        border-top: 1px solid #eee;
+        padding: 20px 0;
+        color: #777;
+        font-size: 12px;
+      }
+    }
+    .submit-group {
+      padding-top: 20px;
+      margin-top: 23px;
+      border-top: 1px solid #eee;
+      margin-bottom: 0;
+    }
+  }
+}
