@@ -83,7 +83,7 @@ define (require) ->
       @container.show(new NotFoundPage)
 
     handleUnauthorized: (options) ->
-      context.set('redirectUrl', options.fragment)
+      context.set('lastAuthUrl', options.fragment)
 
       switch (options.errorMessage)
         when 'Unauthorized' then window.location.replace('/page/account/login')

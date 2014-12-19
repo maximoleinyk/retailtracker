@@ -85,7 +85,7 @@ define (require) ->
 
         .then =>
           if url.indexOf('account/login') is 0
-            context.unset('redirectUrl')
+            context.unset('lastAuthUrl')
             window.location.replace(@root + defaultModuleName)
           else
             return module.beforeStart(@getPath())
@@ -96,12 +96,11 @@ define (require) ->
 
         .then null, (error) =>
           if error is 'Unauthorized'
-            # comparing exactly with account
             if url.indexOf('account') isnt 0
-              context.set('redirectUrl', url)
+              context.set('lastAuthUrl', url)
               return window.location.replace(@root + 'account/login')
             else
-              context.set('redirectUrl', 'brand')
+              context.set('lastAuthUrl', 'brand')
               startApp(false)
           else if error is 'Unknown context'
             window.location.replace(@root + 'brand')

@@ -36,6 +36,8 @@ ProductGroupStore = inject('persistence/productGroupStore')
 WarehouseController = inject('controllers/warehouse')
 WarehouseService = inject('services/warehouseService')
 WarehouseStore = inject('persistence/warehouseStore')
+moment = require('moment')
+_ = require('underscore')
 
 class PageController
 
@@ -68,7 +70,7 @@ class PageController
 
     # redirect from login page if user is authenticated
     @router.get '/page/account/login', (req, res, next) ->
-      if req.isAuthenticated() then res.redirect('/page') else next()
+      if req.isAuthenticated() then res.redirect('/page/brand') else next()
 
     # always return single HTML page on leading /page* part
     @router.get "/page*", (req, res) ->
@@ -120,5 +122,20 @@ class PageController
     nomenclatureController = new NomenclatureController(new NomenclatureService(uomService, productGroupService,
       new NomenclatureStore))
     nomenclatureController.register(@router)
+
+    data = []
+    daySince = 30
+
+    while (daySince)
+      do ->
+        date = moment().subtract(daySince, 'months')
+        for sale in _.range(Math.floor(Math.random() * (20 - 1) + 1))
+          do ->
+            amount = Math.floor(Math.random() * (1000 - 55.5) + 55.5)
+            data.push({ date: date, amount: amount })
+        daySince--
+
+    @router.get '/generate/data', (req, res) ->
+      res.status(HttpStatus.OK).send(data)
 
 module.exports = PageController

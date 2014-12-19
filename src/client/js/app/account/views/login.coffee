@@ -23,7 +23,7 @@ define (require) ->
 
       this.model.login()
       .then =>
-        window.location.replace('/page/' + context.get('redirectUrl'))
+        window.location.replace('/page/' + (context.get('lastAuthUrl') or 'brand'))
       .then null, (err) =>
         @validation.show(err.errors)
 

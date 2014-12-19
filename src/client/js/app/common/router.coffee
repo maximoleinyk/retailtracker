@@ -13,6 +13,9 @@ define (require) ->
 
       silentRoutes = Marionette.getOption(this, "silentRoutes");
 
+      @listenTo Backbone.history, 'route', ->
+        context.set('lastAuthUrl', Backbone.history.fragment)
+
       @listenTo @eventBus, 'router:navigate:silent', (methodName) =>
         controller = Marionette.getOption(this, "controller")
         controller.silent or= {}
@@ -42,10 +45,10 @@ define (require) ->
       'redirect': -> # do nothing
 
       '*404': ->
-        redirectUrl = context.get('redirectUrl')
-        context.unset('redirectUrl')
+        lastAuthUrl = context.get('lastAuthUrl')
+        context.unset('lastAuthUrl')
 
-        if redirectUrl
-          window.location.replace('/page' + if not redirectUrl then '' else '/' + redirectUrl)
+        if lastAuthUrl
+          window.RetailTracker.loader.loadModule(lastAuthUrl.split('/')[0])
         else
           @eventBus.trigger('404')

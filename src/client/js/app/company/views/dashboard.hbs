@@ -4,6 +4,19 @@
 <div class="page-section">
     <fieldset class="col col-half">
         <legend>{{i18n.salesForToday}}</legend>
+        <style>
+            .bar rect {
+                fill: steelblue;
+                shape-rendering: crispEdges;
+            }
+
+            .axis path, .axis line {
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
+        </style>
+
     </fieldset>
     <fieldset class="col col-half">
         <legend>{{i18n.keyIndicators}}</legend>
@@ -12,5 +25,6 @@
 <div class="page-section">
     <fieldset class="col col-stretch">
         <legend>{{i18n.salesForMonth}}</legend>
+        <div data-id="chart" class="bar"></div>
     </fieldset>
 </div>

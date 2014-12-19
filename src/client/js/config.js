@@ -23,7 +23,8 @@ require.config({
         numeral: 'libs/numeral/numeral',
         cookies: 'libs/cookies-js/src/cookies',
         hbs: 'util/plugins/hbs',
-        crypto: 'libs/jshashes/hashes'
+        md5: 'libs/md5/js/md5',
+        d3: 'libs/d3/d3'
     },
 
     shim: {

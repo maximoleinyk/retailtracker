@@ -10,10 +10,4 @@ define (require) ->
     className: 'company-item'
 
     templateHelpers: ->
-      {
         isOwner: @model.get('owner')._id is context.get('owner').id
-      }
-
-    makeDefault: (e) ->
-      e.preventDefault()
-      # TODO: implement
