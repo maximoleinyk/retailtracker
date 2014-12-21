@@ -37,5 +37,11 @@ define (require) ->
       callback.apply(@, [].slice.call(args, 1)) if callback
 
     navigate: (fragment, options) ->
-      fragment = context.get('company')._id + fragment
+      companyId = context.get('company')._id
+
+      if fragment is 'redirect'
+        fragment = companyId + '/' + fragment
+      else if fragment isnt 'redirect' and not (fragment.indexOf(companyId) is 0)
+        fragment = companyId + fragment
+
       Router::navigate(fragment, options)

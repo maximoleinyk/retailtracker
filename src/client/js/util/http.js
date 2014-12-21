@@ -42,10 +42,7 @@ define(function (require) {
                         eventBus.trigger('http:400', response);
                     },
                     401: function (xhr, status, text) {
-                        eventBus.trigger('http:401', {
-                            fragment: Backbone.history.fragment,
-                            errorMessage: text
-                        });
+                        eventBus.trigger('http:401', text);
                     },
                     403: function (xhr) {
                         eventBus.trigger('http:403', { error: xhr.responseText });

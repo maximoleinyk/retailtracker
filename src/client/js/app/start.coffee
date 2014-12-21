@@ -1,5 +1,13 @@
-define ['cs!./moduleLoader', 'util/http', 'cookies'], (ModuleLoader, http, cookies) ->
+define ['cs!./moduleLoader', 'util/http', 'cookies', 'util/eventBus'], (ModuleLoader, http, cookies, eventBus) ->
   'use strict'
+
+  if document.documentElement.className.indexOf('no-support') > -1
+    throw new Error('This application cannot be started in this browser.')
+
+  cookie = document.cookie
+  cookieEnabled = navigator.cookieEnabled or ('cookie' in document and (cookie.length > 0 or (cookie = 'test').indexOf.call(cookie,
+    'test') > -1))
+  document.documentElement.className += if cookieEnabled then ' cookies' else ' no-cookies'
 
   http.setHeaders({
     'X-Csrf-Token': cookies.get('X-Csrf-Token')
@@ -11,4 +19,7 @@ define ['cs!./moduleLoader', 'util/http', 'cookies'], (ModuleLoader, http, cooki
     'company': 'company'
     'pos': 'pos'
   })
-  loader.loadModule('account')
+  loader.start('account')
+
+  eventBus.on 'module:load', (moduleName, path) ->
+    loader.loadModule(moduleName, path)

@@ -25,12 +25,12 @@ define(function (require) {
         var self = this,
             requestCount = 0;
 
-        this.listenTo(this.eventBus, 'http:request:start', function() {
+        this.listenTo(this.eventBus, 'http:request:start', function () {
             requestCount++;
             self.$el.find('[data-auto-disable]').attr('disabled', true);
         });
 
-        this.listenTo(this.eventBus, 'http:request:stop', function() {
+        this.listenTo(this.eventBus, 'http:request:stop', function () {
             requestCount--;
             if (!requestCount) {
                 self.$el.find('[data-auto-disable]').removeAttr('disabled');
@@ -114,7 +114,7 @@ define(function (require) {
 
                 self.ui['$' + name] = $el;
             });
-            this.$el.find('form').on('submit', function(e) {
+            this.$el.find('form').on('submit', function (e) {
                 var $el = Marionette.$(this),
                     methodName = $el.attr('data-submit');
 
@@ -151,7 +151,7 @@ define(function (require) {
         this.$el.on('click', '[data-click]', this.handleActions);
     };
 
-    var navigateTo = function(route, options) {
+    var navigateTo = function (route, options) {
         options = options || {trigger: true};
         this.eventBus.trigger('router:navigate', route, options);
     };

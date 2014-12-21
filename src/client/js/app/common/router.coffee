@@ -11,8 +11,6 @@ define (require) ->
     constructor: ->
       Marionette.AppRouter::constructor.apply @, arguments
 
-      silentRoutes = Marionette.getOption(this, "silentRoutes");
-
       @listenTo @eventBus, 'router:navigate:silent', (methodName) =>
         controller = Marionette.getOption(this, "controller")
         controller.silent or= {}
@@ -36,16 +34,14 @@ define (require) ->
 
     initialize: (options) ->
       @options = options
-      @appRoutes['logout'] = 'logout'
 
     routes:
       'redirect': -> # do nothing
 
       '*404': ->
-        lastAuthUrl = context.get('lastAuthUrl')
-        context.unset('lastAuthUrl')
+        @eventBus.trigger('module:load')
 
-        if lastAuthUrl
-          window.RetailTracker.loader.loadModule(lastAuthUrl.split('/')[0])
-        else
-          @eventBus.trigger('404')
+    destroy: ->
+      @stopListening(@eventBus, 'router:reload')
+      @stopListening(@eventBus, 'router:navigate')
+      @stopListening(@eventBus, 'router:navigate:silent')

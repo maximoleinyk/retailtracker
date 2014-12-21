@@ -22,8 +22,10 @@ define (require) ->
       avatarSrc: 'http://www.gravatar.com/avatar/' + md5(context.get('login').trim().toLowerCase())
 
     updateNameLabel: ->
-      @ui.$userName.text(@model.get('owner.firstName') + ' ' + @model.get('owner.lastName'))
+      firstName = @model.get('owner.firstName')
+      lastName = @model.get('owner.lastName')
+      @ui.$userName.text("#{firstName} #{lastName}")
 
     logout: ->
-      http.del '/security/logout', ->
-        window.location.reload()
+      http.del '/security/logout', =>
+        @eventBus.trigger('router:reload')

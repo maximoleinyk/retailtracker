@@ -10,4 +10,8 @@ define (require) ->
     className: 'company-item'
 
     templateHelpers: ->
-        isOwner: @model.get('owner')._id is context.get('owner').id
+      isOwner: @model.get('owner')._id is context.get('owner').id
+
+    openCompany: (e) ->
+      e.preventDefault()
+      @eventBus.trigger('module:load', 'company', @model.id)

@@ -1,5 +1,5 @@
 <h4>
-    <a href="company/{{id}}" class="title" title="{{i18n.goToCompany}}">{{name}}</a>
+    <a href="/company/{{id}}" class="title" title="{{i18n.goToCompany}}" data-click="openCompany">{{name}}</a>
     {{#if isOwner}}
         <a href="/company/{{id}}/edit" class="edit pull-right" title="{{i18n.editCompany}}" data-catch-url>
             <span class="fa fa-pencil"></span>

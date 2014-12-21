@@ -26,7 +26,6 @@ define (require) ->
 
     initialize: ->
       this.$el.addClass(@options.classSelector) if @options.classSelector
-      Marionette.$(document).delegate('a[href^="/"]', 'click', _.bind(@navigateByLink, @))
 
     handleForbidden: (obj) ->
       if obj.error is 'CSRF has expired'
@@ -50,16 +49,6 @@ define (require) ->
       else if @options.isAuthenticated
         window.location.reload()
 
-    navigateByLink: (e) ->
-      $el = $(e.currentTarget)
-      href = $el.attr('href')
-      enableHref = $el.data('enable-href')
-
-      if (!enableHref and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
-        e.preventDefault()
-        @navigateTo(href.replace(new RegExp('^' + Backbone.history.root), ''))
-        $(document).trigger('click.bs.dropdown')
-
     onRender: ->
       @displayHeader()
       @displayNavigation()
@@ -82,11 +71,14 @@ define (require) ->
       @navigation.close()
       @container.show(new NotFoundPage)
 
-    handleUnauthorized: (options) ->
-      context.set('lastAuthUrl', options.fragment)
-
-      switch (options.errorMessage)
-        when 'Unauthorized' then window.location.replace('/page/account/login')
-        when 'Unauthorized company' then @navigateTo('brand')
-        else
-          @eventBus.trigger('404')
+    handleUnauthorized: (error) ->
+      if error is 'Unauthorized'
+        location = window.location
+        origin = location.origin or location.protocol + '//' + location.host
+        origin = location.href.replace(origin, '').replace('#', '/').replace(/\/\//g, '/').replace(/^\/page\/?/, '')
+        context.set('lastAuthUrl', origin)
+        @eventBus.trigger('module:load', 'account', 'login')
+      else if error is 'Unauthorized company'
+        @navigateTo('brand')
+      else
+        @eventBus.trigger('404')

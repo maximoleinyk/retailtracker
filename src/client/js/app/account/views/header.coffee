@@ -16,6 +16,4 @@ define (require) ->
         @render()
 
     templateHelpers: ->
-      {
       isNotSignUp: window.location.href.indexOf('register') is -1
-      }

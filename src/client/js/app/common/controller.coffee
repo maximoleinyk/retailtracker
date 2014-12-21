@@ -28,12 +28,11 @@ define (require) ->
       @eventBus.trigger('open:page', new Loading())
       @pendingPage = view
 
-      @listenTo @, 'listener:' + @pendingPage.cid, =>
+      @listenTo @, 'page listener:' + @pendingPage.cid, =>
         @eventBus.trigger('open:page', @pendingPage)
 
       _.bind =>
         @trigger('listener:' + @pendingPage.cid)
 
-    logout: ->
-      http.del '/security/logout', =>
-        @eventBus.trigger('router:reload')
+    destroy: ->
+      @stopListening(@, 'page')
