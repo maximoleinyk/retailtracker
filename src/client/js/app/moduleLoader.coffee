@@ -124,7 +124,7 @@ define (require) ->
             # redirect user if it is authenticated and opened login page
             lastPath = context.get('lastAuthUrl')
             context.unset('lastAuthUrl')
-            @loadModule(lastPath.split('/')[0])
+            @loadModule(if lastPath then lastPath.split('/')[0] else 'brand')
           else
             # otherwise start module loading
             return module.beforeStart(path)
