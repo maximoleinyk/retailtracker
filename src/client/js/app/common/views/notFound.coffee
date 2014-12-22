@@ -3,6 +3,5 @@ define (require) ->
 
   Marionette = require('marionette')
 
-  Marionette.ItemView.extend({
+  Marionette.ItemView.extend
     template: require('hbs!./notFound.hbs')
-  })

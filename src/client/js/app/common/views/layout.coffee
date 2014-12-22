@@ -4,13 +4,13 @@ define (require) ->
   Marionette = require('marionette')
   Layout = require('cs!app/common/layout')
   context = require('cs!app/common/context')
-  Backbone = require('backbone')
   PopupBox = require('cs!app/common/views/popupBox/main')
   i18n = require('cs!app/common/i18n')
   request = require('util/request')
   http = require('util/http')
   cookies = require('cookies')
   NotFoundPage = require('cs!app/common/views/notFound')
+  Footer = require('cs!app/common/views/footer')
 
   Layout.extend
 
@@ -52,6 +52,10 @@ define (require) ->
     onRender: ->
       @displayHeader()
       @displayNavigation()
+      @displayFooter()
+
+    displayFooter: ->
+      @footer.show(new Footer(@options))
 
     displayHeader: ->
       @header.show(new @options.Header(@options)) if @options.Header
