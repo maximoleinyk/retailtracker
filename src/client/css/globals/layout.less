@@ -115,17 +115,25 @@
     }
   }
 
-  &.app-company {
-    > .content-wrapper {
-      > .main-width {
-        > * {
-          float: left;
-        }
-        > .content {
-          width: 75%;
-        }
-        > .navigation {
-          width: 25%;
+  &.app-company > .content-wrapper > .main-width {
+    > * {
+      float: left;
+    }
+    > .content {
+      width: 75%;
+    }
+    > .navigation {
+      width: 25%;
+      margin-top: 30px;
+      padding-left: 20px;
+      > * {
+        padding-left: 20px;
+        border-left: 1px solid #eee;
+        ul {
+          list-style-type: none;
+          li {
+            padding: 3px;
+          }
         }
       }
     }
