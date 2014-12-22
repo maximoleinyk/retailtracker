@@ -7,6 +7,7 @@ define (require) ->
   Marionette.ItemView.extend
 
     template: require('hbs!./footer.hbs')
+    className: 'footer'
 
     templateHelpers: ->
       year: moment().format('YYYY')
