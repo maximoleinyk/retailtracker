@@ -24,7 +24,7 @@ module.exports = (grunt) ->
           sourceMapBasepath: "src/client/css"
           cleancss: true
           modifyVars:
-            'img-path': '"../img"'
+            'img-path': '"/img"'
             'icon-font-path': '"../fonts/"'
             'fa-font-path': '"../fonts/"'
         files:

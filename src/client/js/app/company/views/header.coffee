@@ -20,6 +20,7 @@ define (require) ->
 
     templateHelpers: ->
       avatarSrc: 'http://www.gravatar.com/avatar/' + md5(context.get('login').trim().toLowerCase())
+      companyName: context.get('company.name')
 
     updateNameLabel: ->
       firstName = @model.get('owner.firstName')
