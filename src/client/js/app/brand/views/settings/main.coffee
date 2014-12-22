@@ -33,6 +33,10 @@ define (require) ->
         model: @model
       }))
 
+    navigateToDashboard: (e) ->
+      e.preventDefault();
+      @navigateTo('')
+
     securityView: ->
       @content.show(new SecurityView({
         model: @model
