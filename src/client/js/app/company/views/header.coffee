@@ -29,7 +29,7 @@ define (require) ->
 
     logout: ->
       http.del '/security/logout', =>
-        @eventBus.trigger('router:reload')
+        @eventBus.trigger('module:load', 'account', 'login')
 
     openBrand: ->
       @eventBus.trigger('module:load', 'brand')

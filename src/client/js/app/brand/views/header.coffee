@@ -28,4 +28,4 @@ define (require) ->
 
     logout: ->
       http.del '/security/logout', =>
-        @eventBus.trigger('router:reload')
+        @eventBus.trigger('module:load', 'account', 'login')
