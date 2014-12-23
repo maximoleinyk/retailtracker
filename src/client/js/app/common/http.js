@@ -2,7 +2,7 @@ define(function (require) {
     'use strict';
 
     var Backbone = require('backbone'),
-        eventBus = require('app/common/eventBus'),
+        eventBus = require('cs!app/common/eventBus'),
         _ = require('underscore');
 
     var headers = {},

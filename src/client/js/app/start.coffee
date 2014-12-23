@@ -2,7 +2,7 @@ define [
   'cs!app/common/moduleLoader',
   'app/common/http',
   'cookies',
-  'app/common/eventBus'
+  'cs!app/common/eventBus'
 ], (ModuleLoader, http, cookies, eventBus) ->
   'use strict'
 

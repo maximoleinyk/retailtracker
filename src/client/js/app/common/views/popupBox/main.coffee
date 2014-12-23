@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Layout = require('cs!app/common/marionette/layout')
-  eventBus = require('app/common/eventBus')
+  eventBus = require('cs!app/common/eventBus')
   Marionette = require('marionette')
 
   MessageView = Marionette.ItemView.extend({

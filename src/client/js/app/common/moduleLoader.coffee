@@ -1,7 +1,6 @@
 define (require) ->
   'use strict'
 
-  http = require('app/common/http')
   _ = require('underscore')
   context = require('cs!app/common/context')
   Promise = require('rsvp').Promise
@@ -10,9 +9,8 @@ define (require) ->
   Layout = require('cs!app/common/views/layout')
   Backbone = require('backbone')
   Handlebars = require('handlebars')
-  cookies = require('cookies')
   request = require('app/common/request')
-  eventBus = require('app/common/eventBus')
+  eventBus = require('cs!app/common/eventBus')
 
   App = new Marionette.Application
 

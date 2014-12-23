@@ -5,38 +5,59 @@ define(function (require) {
         Backbone = require('backbone'),
         _ = require('underscore'),
         dataBinding = require('app/common/dataBinding'),
-        eventBus = require('app/common/eventBus');
-
-    var routeToLink = {},
-        listeners = {
-            autofocus: function (el) {
-                if (el.data('select2')) {
-                    return el.data('select2').select2('focus');
-                } else {
-                    el.focus();
-                }
-            },
-            'data-hide': function (el) {
-                el.addClass('hidden').removeAttr('data-hide');
-            }
-        };
+        eventBus = require('cs!app/common/eventBus'),
+        routeToLink = {},
+        requestCount = 0;
 
     return function (object) {
         var proto = object.prototype;
 
         return {
+
             eventBus: eventBus,
 
             constructor: function () {
-                var self = this,
-                    requestCount = 0;
+                this.listenTo(this, 'before:render', this.bindData, this);
+                this.listenTo(this, 'render', this.addEvents, this);
+                this.listenTo(this, 'show', this.handleDataAttributes, this);
+                this.listenTo(this, 'close', this.removeEvents, this);
 
-                this.handleActions = _.bind(function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                this.listenTo(this.eventBus, 'http:request:start', this.handleStartRequest, this);
+                this.listenTo(this.eventBus, 'http:request:stop', this.handleStopRequest, this);
+                this.listenTo(this.eventBus, 'open:page', this.openPage, this);
 
-                    this[Backbone.$(e.currentTarget).attr('data-click')](e);
-                }, this);
+                this.addValidationModule();
+
+                proto.constructor.apply(this, arguments);
+            },
+
+            handleStartRequest: function () {
+                requestCount++;
+                this.$el.find('[data-auto-disable]').attr('disabled', true);
+            },
+
+            handleStopRequest: function () {
+                requestCount--;
+                if (!requestCount) {
+                    this.$el.find('[data-auto-disable]').removeAttr('disabled');
+                }
+            },
+
+            openPage: function () {
+                _.each(routeToLink, function (a, regexp) {
+                    var regExp = new RegExp(regexp),
+                        fragment = '/' + Backbone.history.fragment.replace(0, Backbone.history.fragment.indexOf('/'), '');
+
+                    Backbone.$(a).removeClass('selected');
+
+                    if (regExp.test(fragment)) {
+                        a.addClass('selected');
+                    }
+                });
+            },
+
+            addValidationModule: function () {
+                var self = this;
 
                 this.validation = {
                     reset: function () {
@@ -82,85 +103,75 @@ define(function (require) {
                         }
                         firstErrorGroup.find('input, select, textarea').focus();
                     }
-                };
+                }
+            },
 
-                this.listenTo(this, 'before:render', this.bindData, this);
+            addEvents: function () {
+                var self = this;
 
-                this.listenTo(this.eventBus, 'http:request:start', function () {
-                    requestCount++;
-                    self.$el.find('[data-auto-disable]').attr('disabled', true);
-                });
+                this.$el.find('form').on('submit', function (e) {
+                    var $el = Marionette.$(this),
+                        methodName = $el.attr('data-submit');
 
-                this.listenTo(this.eventBus, 'http:request:stop', function () {
-                    requestCount--;
-                    if (!requestCount) {
-                        self.$el.find('[data-auto-disable]').removeAttr('disabled');
+                    if (typeof self[methodName] === 'function') {
+                        self[methodName](e);
                     }
                 });
 
-                this.listenTo(this, 'render', function () {
-                    dataBinding.bind(this);
-                    this.$el.find('[data-catch-url]').each(function () {
-                        var $el = Backbone.$(this),
-                            route = $el.data('catch-url');
-                        if (!route) {
-                            route = $el.attr('href');
-                        } else if (route === '/') {
-                            route = 'root';
-                        }
-                        route = route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '');
-                        routeToLink[route] = $el;
-                    });
-                    this.$el.find('[data-id]').each(function () {
-                        var $el = Marionette.$(this),
-                            name = $el.attr('data-id'),
-                            ui = Marionette.getOption(self, 'ui');
+                this.$el.on('click', '[data-click]', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                        if (!_.isObject(ui)) {
-                            self.ui = {};
-                        }
-
-                        self.ui['$' + name] = $el;
-                    });
-                    this.$el.find('form').on('submit', function (e) {
-                        var $el = Marionette.$(this),
-                            methodName = $el.attr('data-submit');
-
-                        if (typeof self[methodName] === 'function') {
-                            self[methodName](e);
-                        }
-                    });
-                }, this);
-
-                this.listenTo(this, 'show', function () {
-                    _.each(listeners, function (callback, attribute) {
-                        callback(this.$el.find('[' + attribute + ']'), this);
-                    }, this);
-                }, this);
-
-                this.listenTo(this, 'close', function () {
-                    this.$el.off('click', '[data-click]', this.handleActions);
-                }, this);
-
-                this.listenTo(this.eventBus, 'open:page', function () {
-                    var fragment = Backbone.history.fragment;
-                    _.each(routeToLink, function (link) {
-                        Backbone.$(link).removeClass('selected');
-                    });
-                    _.each(routeToLink, function (a, regexp) {
-                        if (new RegExp(regexp).test('/' + fragment.replace(0, fragment.indexOf('/'), ''))) {
-                            a.addClass('selected');
-                        }
-                    });
+                    self[Backbone.$(e.currentTarget).data('click')](e);
                 });
+            },
 
-                this.$el.on('click', '[data-click]', this.handleActions);
-
-                proto.constructor.apply(this, arguments);
+            removeEvents: function () {
+                this.$el.off('click', '[data-click]');
             },
 
             bindData: function () {
                 dataBinding.bind(this);
+            },
+
+            handleDataAttributes: function () {
+                var self = this,
+                    attributesMap = {
+                        autofocus: function ($el) {
+                            if ($el.data('select2')) {
+                                return $el.data('select2').select2('focus');
+                            } else {
+                                $el.focus();
+                            }
+                        },
+                        'data-hide': function ($el) {
+                            $el.addClass('hidden').removeAttr('data-hide');
+                        },
+                        'data-catch-url': function ($el) {
+                            var route = $el.data('catch-url');
+                            if (!route) {
+                                route = $el.attr('href');
+                            } else if (route === '/') {
+                                route = 'root';
+                            }
+                            route = route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '');
+                            routeToLink[route] = $el;
+                        },
+                        'data-id': function ($el) {
+                            var name = $el.attr('data-id'),
+                                ui = Marionette.getOption(self, 'ui');
+
+                            if (!_.isObject(ui)) {
+                                self.ui = {};
+                            }
+
+                            self.ui['$' + name] = $el;
+                        }
+                    };
+
+                _.each(attributesMap, function (callback, attribute) {
+                    callback(this.$el.find('[' + attribute + ']'), this);
+                }, this);
             }
         }
     };

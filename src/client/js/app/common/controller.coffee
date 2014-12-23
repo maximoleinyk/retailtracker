@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Backbone = require('backbone')
-  eventBus = require('app/common/eventBus')
+  eventBus = require('cs!app/common/eventBus')
 
   Backbone.Marionette.Controller.extend
 
