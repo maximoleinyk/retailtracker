@@ -2,9 +2,11 @@ define (require) ->
   'use strict'
 
   Backbone = require('backbone')
-  http = require('util/http')
+  eventBus = require('app/common/eventBus')
 
   Backbone.Marionette.Controller.extend
+
+    eventBus: eventBus
 
     getLoadingView: ->
       return @loadingView if @loadingView
@@ -22,17 +24,20 @@ define (require) ->
         @pendingPage = null
 
       if (typeof options.immediate is 'undefined' or options.immediate)
-        return @eventBus.trigger('open:page', view, options)
+        return eventBus.trigger('open:page', view, options)
 
       Loading = @getLoadingView()
-      @eventBus.trigger('open:page', new Loading())
+      eventBus.trigger('open:page', new Loading())
       @pendingPage = view
 
       @listenTo @, 'page listener:' + @pendingPage.cid, =>
-        @eventBus.trigger('open:page', @pendingPage)
+        eventBus.trigger('open:page', @pendingPage)
 
       _.bind =>
         @trigger('listener:' + @pendingPage.cid)
 
     destroy: ->
       @stopListening(@, 'page')
+
+    navigateTo: (route, options = {trigger: true}) ->
+      eventBus.trigger('router:navigate', route, options)

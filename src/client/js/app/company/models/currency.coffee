@@ -1,14 +1,16 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/mongoModel')
+  MongoModel = require('cs!app/common/model')
 
   class Currency extends MongoModel
 
-    defaults: {
+    defaults:
       rate: 1
       code: 'USD'
-    },
+
+    getTemplates: ->
+      @promise('get', '/currency/templates')
 
     create: (callback) ->
       @promise('post', '/currency/create', @toJSON())

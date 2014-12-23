@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  MongoCollection = require('cs!app/common/mongoCollection')
+  MongoCollection = require('cs!app/common/collection')
   Company = require('cs!app/brand/models/company')
 
   class Companies extends MongoCollection

@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  MongoCollection = require('cs!app/common/mongoCollection')
+  MongoCollection = require('cs!app/common/collection')
   Activity = require('cs!app/brand/models/activity')
   moment = require('moment')
 

@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
-  Grid = require('util/grid/main')
-  Collection = require('cs!app/common/mongoCollection')
+  Layout = require('cs!app/common/marionette/layout')
+  Grid = require('app/common/grid/main')
+  Collection = require('cs!app/common/collection')
   i18n = require('cs!app/common/i18n')
 
   Layout.extend

@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  MongoCollection = require('cs!app/common/mongoCollection')
+  MongoCollection = require('cs!app/common/collection')
   Model = require('cs!app/company/models/warehouse')
-  request = require('util/request')
+  request = require('app/common/request')
 
   class Warehouse extends MongoCollection
 

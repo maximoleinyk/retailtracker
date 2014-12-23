@@ -1,11 +1,10 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
+  Layout = require('cs!app/common/marionette/layout')
   InviteeList = require('cs!./inviteeList')
-  currencies = require('util/currencies')
   _ = require('underscore')
-  Collection = require('cs!app/common/mongoCollection')
+  Collection = require('cs!app/common/collection')
 
   Layout.extend
 
@@ -18,8 +17,8 @@ define (require) ->
 
     templateHelpers: ->
       isNew: @model.isNew()
-      currencyCodes: ->
-        _.map currencies, (object) ->
+      currencyCodes: =>
+        _.map @options.currencies, (object) ->
           id: object.iso.code
           text: object.iso.code
 

@@ -1,10 +1,9 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
-  Grid = require('util/grid/main')
-  Collection = require('cs!app/common/mongoCollection')
-  barcodeTypes = require('util/barcodeTypes')
+  Layout = require('cs!app/common/marionette/layout')
+  Grid = require('app/common/grid/main')
+  Collection = require('cs!app/common/collection')
   i18n = require('cs!app/common/i18n')
 
   Layout.extend
@@ -23,7 +22,16 @@ define (require) ->
             field: 'value'
             placeholder: i18n.get('selectBarcode')
             type: 'select'
-            data: barcodeTypes
+            data: [
+              {
+                id: 'EAN8'
+                text: 'EAN8'
+              },
+              {
+                id: 'EAN13'
+                text: 'EAN13'
+              }
+            ]
             formatter: (value) =>
               value
             formatResult: (modelJSON) =>

@@ -18,6 +18,8 @@ define (require) ->
   ProductGroupsPage = require('cs!./views/productGroups/list')
   Warehouses = require('cs!./collections/warehouses')
   WarehousesPage = require('cs!./views/warehouse/list')
+  Promise = require('rsvp').Promise
+  Currency = require('cs!./models/currency')
 
   Controller.extend
 
@@ -78,11 +80,13 @@ define (require) ->
         })
 
     currency: ->
+      currency = new Currency
       collection = new Currencies
-      collection.fetch()
-      .then =>
+      Promise.all([collection.fetch(), currency.getTemplates()])
+      .then (response) =>
         @openPage new CurrenciesPage({
           collection: collection
+          currencies: response[1]
         })
 
     settings: (view) ->

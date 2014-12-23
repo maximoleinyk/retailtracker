@@ -2,12 +2,12 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  Layout = require('cs!app/common/layout')
+  Layout = require('cs!app/common/marionette/layout')
   context = require('cs!app/common/context')
   PopupBox = require('cs!app/common/views/popupBox/main')
   i18n = require('cs!app/common/i18n')
-  request = require('util/request')
-  http = require('util/http')
+  request = require('app/common/request')
+  http = require('app/common/http')
   cookies = require('cookies')
   NotFoundPage = require('cs!app/common/views/notFound')
   Footer = require('cs!app/common/views/footer')

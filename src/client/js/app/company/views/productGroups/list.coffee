@@ -1,8 +1,8 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
-  Grid = require('util/grid/main')
+  Layout = require('cs!app/common/marionette/layout')
+  Grid = require('app/common/grid/main')
   ProductGroups = require('cs!app/company/collections/productGroups')
   Promise = require('rsvp').Promise
   _ = require('underscore')

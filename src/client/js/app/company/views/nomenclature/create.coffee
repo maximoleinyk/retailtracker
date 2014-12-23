@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
+  Layout = require('cs!app/common/marionette/layout')
   BarcodesGrid = require('cs!./barcodes')
   AttributesGrid = require('cs!./attributes')
   _ = require('underscore')

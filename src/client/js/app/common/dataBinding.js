@@ -3,10 +3,23 @@ define(function (require) {
 
     var $ = require('jquery'),
         _ = require('underscore'),
-        Model = require('cs!../app/common/mongoModel');
+        Model = require('cs!app/common/model');
 
     function canBeChecked(el) {
         return el.tagName === 'INPUT' && (el.type === 'checkbox' || el.type === 'radio');
+    }
+
+    function hasTextSelection(el) {
+        // use try catch in order to see if feature is supported, suggested by stackoverflow:
+        // http://stackoverflow.com/a/23704449
+        try {
+            return el.selectionEnd;
+        } catch (e) {
+
+            // Attempting to access element.selectionEnd will throw a DOMException if
+            // not supported
+            return false;
+        }
     }
 
     function getDomValue($el) {
@@ -21,11 +34,25 @@ define(function (require) {
     }
 
     function setDomValue($el, value) {
-        if (canBeChecked($el.get(0))) {
+        var el = $el.get(0),
+            selectionStart,
+            selectionEnd;
+
+        if (canBeChecked(el)) {
             return $el.prop('checked', !!value);
         }
 
+        if (hasTextSelection(el)) {
+            selectionStart = el.selectionStart;
+            selectionEnd = el.selectionEnd;
+        }
+
         $el.val(value);
+
+        // Nicely place the cursor where it was before and avoid nasty jump
+        if (selectionStart) {
+            el.setSelectionRange(selectionStart, selectionEnd);
+        }
     }
 
     function setModelValue(model, $el) {
@@ -36,7 +63,16 @@ define(function (require) {
     }
 
     function listenToInput(view) {
+        if (view.viewBindingEnabled) {
+            return;
+        }
+
+        view.viewBindingEnabled = true;
+
         view.$el.on('input change', '[data-bind]', function (e) {
+            // Prevent parent view for from responding to the child view event
+            e.stopPropagation();
+
             var $el = $(e.target),
                 model = view[$el.data().bind || 'model'];
 
@@ -125,42 +161,49 @@ define(function (require) {
     }
 
     function setInitialValues(view) {
-        var flattenAttributes = {},
+        var attributes = view.model.attributes,
             $bindings = view.$('[data-bind]');
 
-        // TODO Should be able to replace this method shortly, now that we have NestedModel
-        var obtainAttributes = function (set, depth) {
+        function getNestedAttributes(set, depth) {
             depth = depth || '';
 
             // set param has a simple type i.e. set = array[0] = 'sample'
-            // so flattenAttributes['array[0]'] = 'sample'
+            // so attributes['array[0]'] = 'sample'
             if (!_.isObject(set) && !_.isArray(set)) {
-                flattenAttributes[depth] = set;
+                attributes[depth] = set;
                 return;
             }
 
             _.each(set, function (value, key) {
                 if (_.isArray(value)) {
-                    _.each(value, function (v, i) {
-                        obtainAttributes(v, depth ? depth + '.' + key + '[' + i + ']' : key + '[' + i + ']');
+                    _.each(value, function (itemValue, i) {
+                        getNestedAttributes(itemValue, depth ? depth + '.' + key + '[' + i + ']' : key + '[' + i + ']');
                     });
-                } else if (_.isObject(value)) {
+
+                    return;
+                }
+
+                if (_.isObject(value)) {
                     // TODO Necessary PT-X hack: Account for an attribute being a Model
                     // (This is only required until PT-X fully drops BackboneRelational)
                     if (value && typeof value.toJSON === 'function') {
                         value = value.toJSON();
                     }
-                    obtainAttributes(value, depth ? depth + '.' + key : key);
-                } else {
-                    flattenAttributes[depth ? depth + '.' + key : key] = value;
+
+                    return getNestedAttributes(value, depth ? depth + '.' + key : key);
                 }
+
+                attributes[depth ? depth + '.' + key : key] = value;
             });
-        };
+        }
 
-        // recursion is always bad this could be changed in future for iterative implementation
-        obtainAttributes(view.model.attributes);
+        if (view.model instanceof Model) {
+            attributes = {};
+            getNestedAttributes(view.model.attributes);
+        }
 
-        _.each(flattenAttributes, function (value, key) {
+        // Render current attributes
+        _.each(attributes, function (value, key) {
             var $inputs = $bindings.filter('[name="' + key + '"]');
             $inputs.each(function () {
                 var $el = $(this);
@@ -183,7 +226,7 @@ define(function (require) {
         });
     }
 
-    return  {
+    return {
         bind: function (view) {
             if (!view.model) {
                 view.model = new Model();

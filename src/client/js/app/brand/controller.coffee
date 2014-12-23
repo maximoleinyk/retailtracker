@@ -10,6 +10,7 @@ define (require) ->
   Companies = require('cs!./collections/companies')
   Activities = require('cs!./collections/activities')
   Promise = require('rsvp').Promise
+  Currency = require('cs!app/company/models/currency')
 
   Controller.extend
 
@@ -24,15 +25,23 @@ define (require) ->
         })
 
     createCompany: ->
-      @openPage new CreateCompanyPage({
-        model: new Company
-      })
+      currency = new Currency()
+      currency.getTemplates()
+      .then (currencies) =>
+        @openPage new CreateCompanyPage({
+          model: new Company
+          currencies: currencies
+        })
 
     editCompany: (id) ->
+      currency = new Currency
       model = new Company({ _id: id }, { parse: true })
-      model.fetch().then =>
+
+      Promise.all([model.fetch(), currency.getTemplates()])
+      .then (response) =>
         @openPage new EditCompanyPage({
           model: model
+          currencies: response[1]
         })
 
     settings: (view) ->

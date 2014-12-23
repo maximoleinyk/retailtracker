@@ -1,10 +1,9 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
-  Grid = require('util/grid/main')
-  currencies = require('util/currencies')
   _ = require('underscore')
+  Layout = require('cs!app/common/marionette/layout')
+  Grid = require('app/common/grid/main')
   context = require('cs!app/common/context')
   i18n = require('cs!app/common/i18n')
 
@@ -39,8 +38,8 @@ define (require) ->
       callback()
 
     onRender: ->
-      data = _.map _.keys(currencies), (code) ->
-        currency = currencies[code]
+      data = _.map _.keys(@options.currencies), (code) =>
+        currency = @options.currencies[code]
         return {
         id: currency.iso.code
         text: '(' + currency.iso.code + ') ' + currency.units.major.symbol + ' ' + currency.units.major.name

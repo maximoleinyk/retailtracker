@@ -3,7 +3,7 @@ define (require) ->
 
   Backbone = require('backbone')
   Promise = require('rsvp').Promise
-  http = require('util/http')
+  http = require('app/common/http')
 
   require('backbone-nested')
 

@@ -2,8 +2,8 @@ define (require) ->
   'use strict'
 
   Backbone = require('backbone')
-  Model = require('cs!./mongoModel')
-  http = require('util/http')
+  Model = require('cs!./model')
+  http = require('app/common/http')
 
   class MongoCollection extends Backbone.Collection
 

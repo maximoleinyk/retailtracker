@@ -5,9 +5,9 @@ define (require) ->
   Controller = require('cs!./controller')
   Navigation = require('cs!./views/navigation')
   Header = require('cs!./views/header')
-  http = require('util/http')
+  http = require('app/common/http')
   context = require('cs!app/common/context')
-  request = require('util/request')
+  request = require('app/common/request')
 
   ({
     Router: Router

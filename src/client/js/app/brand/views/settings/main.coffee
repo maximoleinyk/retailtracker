@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
+  Layout = require('cs!app/common/marionette/layout')
   Settings = require('cs!app/brand/models/settings')
   context = require('cs!app/common/context')
   ProfileView = require('cs!./profile')

@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  MongoCollection = require('cs!app/common/mongoCollection')
+  MongoCollection = require('cs!app/common/collection')
   Currency = require('cs!app/company/models/currency')
-  request = require('util/request')
+  request = require('app/common/request')
 
   class Currencies extends MongoCollection
 

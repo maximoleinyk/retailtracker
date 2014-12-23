@@ -1,8 +1,8 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
-  Grid = require('util/grid/main')
+  Layout = require('cs!app/common/marionette/layout')
+  Grid = require('app/common/grid/main')
   i18n = require('cs!app/common/i18n')
 
   Layout.extend

@@ -4,7 +4,7 @@ define (require) ->
   Backbone = require('backbone')
   ProductItem = require('cs!app/company/models/productItem')
   Promise = require('rsvp').Promise
-  http = require('util/http')
+  http = require('app/common/http')
 
   Backbone.Collection.extend
 

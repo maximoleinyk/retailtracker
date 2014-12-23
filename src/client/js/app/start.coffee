@@ -1,4 +1,9 @@
-define ['cs!./moduleLoader', 'util/http', 'cookies', 'util/eventBus'], (ModuleLoader, http, cookies, eventBus) ->
+define [
+  'cs!app/common/moduleLoader',
+  'app/common/http',
+  'cookies',
+  'app/common/eventBus'
+], (ModuleLoader, http, cookies, eventBus) ->
   'use strict'
 
   if document.documentElement.className.indexOf('no-support') > -1

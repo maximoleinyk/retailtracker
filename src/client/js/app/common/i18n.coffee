@@ -10,26 +10,28 @@ define (require) ->
         value = value.replace(match[0], varargs[+match[1]])
     return value
 
-  {
+  i18n = {
 
-  init: (messages) ->
-    @functions = {}
-    @messages = {}
+    init: (messages) ->
+      @functions = {}
+      @messages = {}
 
-    _.each messages, (value, key) =>
-      if (regexp.test(value))
-        @functions[key] = (varargs...) =>
-          replace.apply(window, [key, value].concat(varargs))
-      else
-        @messages[key] = value
+      _.each messages, (value, key) =>
+        if (regexp.test(value))
+          @functions[key] = (varargs...) =>
+            replace.apply(window, [key, value].concat(varargs))
+        else
+          @messages[key] = value
 
-  getFunctions: ->
-    @functions
+    getFunctions: ->
+      @functions
 
-  getMessages: ->
-    @messages
+    getMessages: ->
+      @messages
 
-  get: (key, varargs...) ->
-    if @messages[key] then @messages[key] else @functions[key]?(varargs)
+    get: (key, varargs...) ->
+      if @messages[key] then @messages[key] else @functions[key]?(varargs)
 
   }
+
+  return i18n

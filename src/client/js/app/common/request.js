@@ -1,7 +1,7 @@
 define(function (require) {
     'use strict';
 
-    var http = require('./http'),
+    var http = require('app/common/http'),
         Promise = require('rsvp').Promise,
         _ = require('underscore'),
         response = {};

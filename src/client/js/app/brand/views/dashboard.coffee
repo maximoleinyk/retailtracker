@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  Layout = require('cs!app/common/layout')
+  Layout = require('cs!app/common/marionette/layout')
   CompanyList = require('cs!app/brand/views/company/list')
   ActivityList = require('cs!app/brand/views/activity/list')
 

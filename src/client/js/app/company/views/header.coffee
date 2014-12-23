@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  http = require('util/http')
+  http = require('app/common/http')
   context = require('cs!app/common/context')
   md5 = require('md5')
 

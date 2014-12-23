@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('app/common/mongoModel')
+  MongoModel = require('app/common/model')
 
   class Settings extends MongoModel
 

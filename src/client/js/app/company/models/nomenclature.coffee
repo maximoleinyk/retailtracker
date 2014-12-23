@@ -1,7 +1,7 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/mongoModel')
+  MongoModel = require('cs!app/common/model')
 
   class Nomenclature extends MongoModel
 

@@ -13,16 +13,15 @@ require.config({
         handlebars: 'libs/handlebars/handlebars',
         cs: 'libs/require-cs/cs',
         'coffee-script': 'libs/coffee-script/extras/coffee-script',
-        bootstrap: 'libs/bootstrap/dist/js/bootstrap',
+        bootstrap: 'libs/bootstrap/dist/js/',
         'socket.io': 'libs/socket.io-client/socket.io',
         rsvp: 'libs/rsvp/rsvp.amd',
-        respond: 'libs/respond/dest/respond.src',
         select2: 'libs/select2/select2',
         moment: 'libs/moment/moment',
         momentRussianLocale: 'libs/moment/locale/ru',
         numeral: 'libs/numeral/numeral',
         cookies: 'libs/cookies-js/src/cookies',
-        hbs: 'util/plugins/hbs',
+        hbs: 'app/common/plugins/hbs',
         md5: 'libs/md5/js/md5',
         d3: 'libs/d3/d3'
     },
@@ -59,22 +58,13 @@ require.config({
         hbs: {
             deps: ['handlebars']
         },
-        bootstrap: {
-            deps: ['jquery']
-        },
-		grid: {
-			deps: ['marionette']
-		}
+        grid: {
+            deps: ['marionette']
+        }
     },
 
     deps: [
-        'respond',
-        'bootstrap',
-        'util/templateHelpers',
-		'util/eventBus',
-		'util/interceptors',
-		'util/http',
-		'util/io'
+        'app/common/helpers'
     ]
 
 });

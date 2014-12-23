@@ -7,6 +7,12 @@ class CurrencyController
   constructor: (@currencyService) ->
 
   register: (@router) ->
+
+    @router.get '/currency/templates', authFilter, (req, res) =>
+      @currencyService.getCurrencyTemplates (err, result) ->
+        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
+        res.status(HttpStatus.OK).send(result)
+
     @router.get '/currency/all', authFilter, (req, res) =>
       @currencyService.findAll namespace.company(req), (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err

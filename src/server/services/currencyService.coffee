@@ -1,4 +1,5 @@
 i18n = inject('i18n')
+templates = inject('../../resources/currencies')
 
 class CurrencyService
 
@@ -37,5 +38,8 @@ class CurrencyService
     @currencyStore.update ns, data, (err) ->
       return callback({ generic: err }) if err
       callback(null, data)
+
+  getCurrencyTemplates: (callback) ->
+    callback(null, templates)
 
 module.exports = CurrencyService
