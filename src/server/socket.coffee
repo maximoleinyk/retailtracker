@@ -1,4 +1,4 @@
-eventBus = inject('cs!app/common/eventBus')
+eventBus = inject('util/eventBus')
 
 module.exports = (app) ->
   server = require('http').Server(app)
