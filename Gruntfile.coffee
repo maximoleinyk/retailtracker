@@ -247,7 +247,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'validate', ['eslint']
   grunt.registerTask 'build', ['copy:temp', 'coffee', 'less', 'replace', 'requirejs']
   grunt.registerTask 'dist', ['copy:index', 'copy:css', 'copy:js']
-  grunt.registerTask 'optimize', ['clean:temp']
+  grunt.registerTask 'optimize', ['clean:temp', 'uglify']
 
   grunt.registerTask 'test', ['mochaTest']
   grunt.registerTask 'default', ['clean', 'validate', 'build', 'dist', 'optimize']
