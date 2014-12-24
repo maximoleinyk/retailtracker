@@ -25,7 +25,7 @@ define (require) ->
     updateNameLabel: ->
       firstName = @model.get('owner.firstName')
       lastName = @model.get('owner.lastName')
-      @ui.$userName.text("#{firstName} #{lastName}")
+      @ui.$userName.text("#{firstName} #{lastName}".trim())
 
     logout: ->
       http.del '/security/logout', =>
