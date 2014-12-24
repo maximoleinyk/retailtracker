@@ -1,6 +1,6 @@
 define (require) ->
   'use strict'
 
-  Backbone = require('backbone')
+  Wreqr = require('backbone.wreqr')
 
-  new Backbone.Wreqr.EventAggregator()
+  new Wreqr.EventAggregator()

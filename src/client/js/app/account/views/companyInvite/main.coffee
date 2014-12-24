@@ -1,10 +1,10 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  ItemView = require('cs!app/common/marionette/itemView')
   CompanyInviteConfirmed = require('cs!./confirmed')
 
-  Marionette.ItemView.extend
+  ItemView.extend
 
     template: require('hbs!./main.hbs')
     className: 'page page-box'

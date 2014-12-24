@@ -2,16 +2,18 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  mixin = require('cs!./mixin')
+  mixin = require('./mixin')
 
   Marionette.Layout.extend(mixin(Marionette.Layout)).extend
 
     constructor: ->
       @listenTo(this, 'render', this.initRegions, this)
-      super
+      Marionette.Layout::constructor.apply(this, arguments)
 
     initRegions: ->
-      @$el.find('[data-region]').each (index, el) ->
+      @$el.find('[data-region]').each (index, el) =>
         dataRegion = Marionette.$(el).attr('data-region')
         regionName = '[data-region="' + dataRegion + '"]'
-        @addRegion(dataRegion, regionName) if not Marionette.getOption(@, 'regions')[dataRegion]
+        regions = Marionette.getOption(@, 'regions')
+        @regions = regions = {} if not regions
+        @addRegion(dataRegion, regionName)if not regions[dataRegion]

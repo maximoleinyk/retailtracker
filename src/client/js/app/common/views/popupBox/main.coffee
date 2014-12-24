@@ -4,15 +4,16 @@ define (require) ->
   Layout = require('cs!app/common/marionette/layout')
   eventBus = require('cs!app/common/eventBus')
   Marionette = require('marionette')
+  ItemView = require('cs!app/common/marionette/itemView')
 
-  MessageView = Marionette.ItemView.extend({
+  MessageView = ItemView.extend({
     template: require('hbs!./messageView.hbs')
 
     templateHelpers: ->
       message: @options.message
   })
 
-  ButtonSet = Marionette.ItemView.extend({
+  ButtonSet = ItemView.extend({
 
     template: require('hbs!./buttonSet.hbs')
 

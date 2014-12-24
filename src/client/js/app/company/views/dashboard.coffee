@@ -2,10 +2,11 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
+  ItemView = require('cs!app/common/marionette/itemView')
   d3 = require('d3')
   _ = require('underscore')
 
-  Marionette.ItemView.extend
+  ItemView.extend
 
     template: require('hbs!./dashboard.hbs')
     className: 'page page-halves'

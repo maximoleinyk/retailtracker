@@ -1,10 +1,10 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  ItemView = require('cs!app/common/marionette/itemView')
   context = require('cs!app/common/context')
 
-  Marionette.ItemView.extend
+  ItemView.extend
 
     template: require('hbs!./profile.hbs')
     binding: true

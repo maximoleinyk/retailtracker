@@ -1,11 +1,10 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  CompositeView = require('cs!app/common/marionette/compositeView')
   ItemView = require('cs!./item')
 
-  Marionette.CompositeView.extend
-
+  CompositeView.extend
     template: require('hbs!./list.hbs')
     itemView: ItemView
     itemViewContainer: '[data-id="container"]'

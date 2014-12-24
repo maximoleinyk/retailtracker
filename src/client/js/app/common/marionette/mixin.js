@@ -7,7 +7,9 @@ define(function (require) {
         dataBinding = require('app/common/dataBinding'),
         eventBus = require('cs!app/common/eventBus'),
         routeToLink = {},
-        requestCount = 0;
+        requestCount = 0,
+        delegateEvents = Marionette.View.prototype.delegateEvents,
+        undelegateEvents = Marionette.View.prototype.undelegateEvents;
 
     return function (object) {
         var proto = object.prototype;
@@ -29,6 +31,16 @@ define(function (require) {
                 this.addValidationModule();
 
                 proto.constructor.apply(this, arguments);
+            },
+
+            delegateEvents: function() {
+                delegateEvents.apply(this, arguments);
+                Marionette.bindEntityEvents(this, this.eventBus, Marionette.getOption(this, 'appEvents'));
+            },
+
+            undelegateEvents: function() {
+                undelegateEvents.apply(this, arguments);
+                Marionette.unbindEntityEvents(this, this.eventBus, Marionette.getOption(this, 'appEvents'));
             },
 
             handleStartRequest: function () {
@@ -103,13 +115,13 @@ define(function (require) {
                         }
                         firstErrorGroup.find('input, select, textarea').focus();
                     }
-                }
+                };
             },
 
             addEvents: function () {
                 var self = this;
 
-                this.$el.find('form').on('submit', function (e) {
+                this.$el.on('submit', 'form', function (e) {
                     var $el = Marionette.$(this),
                         methodName = $el.attr('data-submit');
 
@@ -122,7 +134,21 @@ define(function (require) {
                     e.preventDefault();
                     e.stopPropagation();
 
-                    self[Backbone.$(e.currentTarget).data('click')](e);
+                    self[Marionette.$(this).data('click')](e);
+                });
+
+                this.$el.delegate('click', '[data-catch-url]', function(e) {
+                    var $el = Marionette.$(this),
+                        route = $el.data('catch-url');
+
+                    if (!route) {
+                        route = $el.attr('href');
+                    } else if (route === '/') {
+                        route = 'root';
+                    }
+
+                    route = route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '');
+                    routeToLink[route] = $el;
                 });
             },
 
@@ -147,16 +173,6 @@ define(function (require) {
                         'data-hide': function ($el) {
                             $el.addClass('hidden').removeAttr('data-hide');
                         },
-                        'data-catch-url': function ($el) {
-                            var route = $el.data('catch-url');
-                            if (!route) {
-                                route = $el.attr('href');
-                            } else if (route === '/') {
-                                route = 'root';
-                            }
-                            route = route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '');
-                            routeToLink[route] = $el;
-                        },
                         'data-id': function ($el) {
                             var name = $el.attr('data-id'),
                                 ui = Marionette.getOption(self, 'ui');
@@ -173,7 +189,7 @@ define(function (require) {
                     callback(this.$el.find('[' + attribute + ']'), this);
                 }, this);
             }
-        }
+        };
     };
 
 });

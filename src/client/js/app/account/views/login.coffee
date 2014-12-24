@@ -2,10 +2,10 @@ define (require) ->
   'use strict'
 
   Security = require('cs!app/account/models/security')
-  Marionette = require('marionette')
+  ItemView = require('cs!app/common/marionette/itemView')
   context = require('cs!app/common/context')
 
-  Marionette.ItemView.extend
+  ItemView.extend
 
     template: require('hbs!./login.hbs')
     className: 'page page-box'

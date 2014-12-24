@@ -191,7 +191,6 @@ module.exports = (grunt) ->
                 'rsvp'
                 'select2'
                 'socket.io'
-                'respond'
                 'momentRussianLocale'
                 'moment'
                 'numeral'

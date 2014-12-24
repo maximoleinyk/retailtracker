@@ -3,6 +3,7 @@ define (require) ->
 
   Backbone = require('backbone')
   eventBus = require('cs!app/common/eventBus')
+  ItemView = require('cs!app/common/marionette/itemView')
 
   Backbone.Marionette.Controller.extend
 
@@ -11,7 +12,7 @@ define (require) ->
     getLoadingView: ->
       return @loadingView if @loadingView
 
-      @loadingView = Backbone.Marionette.ItemView.extend ->
+      @loadingView = ItemView.extend ->
         template: '<div></div>'
 
       @loadingView

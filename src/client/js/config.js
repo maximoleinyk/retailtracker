@@ -13,7 +13,7 @@ require.config({
         handlebars: 'libs/handlebars/handlebars',
         cs: 'libs/require-cs/cs',
         'coffee-script': 'libs/coffee-script/extras/coffee-script',
-        bootstrap: 'libs/bootstrap/dist/js/',
+        bootstrap: 'libs/bootstrap/dist/js/bootstrap',
         'socket.io': 'libs/socket.io-client/socket.io',
         rsvp: 'libs/rsvp/rsvp.amd',
         select2: 'libs/select2/select2',

@@ -1,6 +1,7 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
-  Marionette.ItemView.extend
+  ItemView = require('cs!app/common/marionette/itemView')
+
+  ItemView.extend
     template: require('hbs!./navigation.hbs')

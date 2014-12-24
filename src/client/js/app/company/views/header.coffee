@@ -1,12 +1,12 @@
 define (require) ->
   'use strict'
 
-  Marionette = require('marionette')
+  ItemView = require('cs!app/common/marionette/itemView')
   http = require('app/common/http')
   context = require('cs!app/common/context')
   md5 = require('md5')
 
-  Marionette.ItemView.extend
+  ItemView.extend
 
     template: require('hbs!./header.hbs')
 
