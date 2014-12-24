@@ -21,6 +21,7 @@ define (require) ->
       request.get('/context/load/brand')
       .then (contextData) ->
         context.set(context.parse(contextData))
+        http.unsetHeader('company')
         http.setHeaders({ account: context.id })
 
   })

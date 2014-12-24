@@ -74,6 +74,9 @@ define(function (require) {
                 }
             });
         },
+		unsetHeader: function(name) {
+			delete headers[name];
+		},
         get: function (url, callback, options) {
             return request('GET', url, callback, options);
         },
