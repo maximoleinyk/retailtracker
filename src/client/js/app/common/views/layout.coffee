@@ -23,9 +23,12 @@ define (require) ->
       '404': 'pageNotFound'
       'open:page': 'displayContent'
       'popup:show': 'showPopupBox'
+      'http:request:start': 'handleStartRequest'
+      'http:request:stop': 'handleStopRequest'
 
     initialize: ->
       this.$el.addClass(@options.classSelector) if @options.classSelector
+      this.requestCount = 0
 
     handleForbidden: (obj) ->
       if obj.error is 'CSRF has expired'
@@ -48,6 +51,14 @@ define (require) ->
         })
       else if @options.isAuthenticated
         window.location.reload()
+
+    handleStartRequest: ->
+      this.requestCount++
+      this.$el.find('[data-auto-disable]').attr('disabled', true)
+
+    handleStopRequest: ->
+      this.requestCount--
+      this.$el.find('[data-auto-disable]').removeAttr('disabled') if not this.requestCount
 
     onRender: ->
       @displayHeader()

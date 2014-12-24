@@ -5,11 +5,7 @@ define(function (require) {
         Backbone = require('backbone'),
         _ = require('underscore'),
         dataBinding = require('app/common/dataBinding'),
-        eventBus = require('cs!app/common/eventBus'),
-        routeToLink = {},
-        requestCount = 0,
-        delegateEvents = Marionette.View.prototype.delegateEvents,
-        undelegateEvents = Marionette.View.prototype.undelegateEvents;
+        eventBus = require('cs!app/common/eventBus');
 
     return function (object) {
         var proto = object.prototype;
@@ -19,51 +15,39 @@ define(function (require) {
             eventBus: eventBus,
 
             constructor: function () {
-                this.listenTo(this, 'before:render', this.bindData, this);
-                this.listenTo(this, 'render', this.addEvents, this);
-                this.listenTo(this, 'show', this.handleDataAttributes, this);
-                this.listenTo(this, 'close', this.removeEvents, this);
-
-                this.listenTo(this.eventBus, 'http:request:start', this.handleStartRequest, this);
-                this.listenTo(this.eventBus, 'http:request:stop', this.handleStopRequest, this);
-                this.listenTo(this.eventBus, 'open:page', this.openPage, this);
-
+                this.addEvents();
                 this.addValidationModule();
-
                 proto.constructor.apply(this, arguments);
             },
 
-            delegateEvents: function() {
-                delegateEvents.apply(this, arguments);
+            delegateEvents: function () {
+                Marionette.View.prototype.delegateEvents.apply(this, arguments);
                 Marionette.bindEntityEvents(this, this.eventBus, Marionette.getOption(this, 'appEvents'));
             },
 
-            undelegateEvents: function() {
-                undelegateEvents.apply(this, arguments);
+            undelegateEvents: function () {
+                Marionette.View.prototype.undelegateEvents.apply(this, arguments);
                 Marionette.unbindEntityEvents(this, this.eventBus, Marionette.getOption(this, 'appEvents'));
             },
 
-            handleStartRequest: function () {
-                requestCount++;
-                this.$el.find('[data-auto-disable]').attr('disabled', true);
-            },
+            highlightSelectedLinks: function () {
+                this.$el.find('[data-catch-url]').each(function () {
+                    var $el = Marionette.$(this),
+                        route = $el.data('catch-url');
 
-            handleStopRequest: function () {
-                requestCount--;
-                if (!requestCount) {
-                    this.$el.find('[data-auto-disable]').removeAttr('disabled');
-                }
-            },
+                    if (!route) {
+                        route = $el.attr('href');
+                    } else if (route === '/') {
+                        route = 'root';
+                    }
 
-            openPage: function () {
-                _.each(routeToLink, function (a, regexp) {
-                    var regExp = new RegExp(regexp),
+                    var regExp = new RegExp(route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '')),
                         fragment = '/' + Backbone.history.fragment.replace(0, Backbone.history.fragment.indexOf('/'), '');
 
-                    Backbone.$(a).removeClass('selected');
+                    $el.removeClass('selected');
 
                     if (regExp.test(fragment)) {
-                        a.addClass('selected');
+                        $el.addClass('selected');
                     }
                 });
             },
@@ -111,7 +95,7 @@ define(function (require) {
 
                         var firstErrorGroup = self.$el.find('.has-error').first();
                         if (!firstErrorGroup.length) {
-                            firstErrorGroup = self.$el.find('[autofocus]').closest('.form-group, .validation-group');
+                            firstErrorGroup = self.$el.find('[data-focus]').closest('.form-group, .validation-group');
                         }
                         firstErrorGroup.find('input, select, textarea').focus();
                     }
@@ -119,57 +103,27 @@ define(function (require) {
             },
 
             addEvents: function () {
-                var self = this;
+                this.listenTo(this, 'before:render', this.addDataBinding, this);
+                this.listenTo(this, 'close', this.removeEvents, this);
+                this.listenTo(this, 'render', this.addBehaviours, this);
+                this.listenTo(this, 'show', this.addAutofocusBehaviour, this);
+                this.listenTo(this.eventBus, 'open:page', this.highlightSelectedLinks, this);
+            },
 
-                this.$el.on('submit', 'form', function (e) {
-                    var $el = Marionette.$(this),
-                        methodName = $el.attr('data-submit');
-
-                    if (typeof self[methodName] === 'function') {
-                        self[methodName](e);
+            addAutofocusBehaviour: function () {
+                this.$el.find('[data-focus]').each(function () {
+                    var $el = Marionette.$(this);
+                    if ($el.data('select2')) {
+                        return $el.data('select2').select2('focus');
+                    } else {
+                        $el.focus();
                     }
                 });
-
-                this.$el.on('click', '[data-click]', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    self[Marionette.$(this).data('click')](e);
-                });
-
-                this.$el.delegate('click', '[data-catch-url]', function(e) {
-                    var $el = Marionette.$(this),
-                        route = $el.data('catch-url');
-
-                    if (!route) {
-                        route = $el.attr('href');
-                    } else if (route === '/') {
-                        route = 'root';
-                    }
-
-                    route = route.replace(new RegExp('^' + Backbone.history.root ? Backbone.history.root : ''), '');
-                    routeToLink[route] = $el;
-                });
             },
 
-            removeEvents: function () {
-                this.$el.off('click', '[data-click]');
-            },
-
-            bindData: function () {
-                dataBinding.bind(this);
-            },
-
-            handleDataAttributes: function () {
+            addBehaviours: function () {
                 var self = this,
                     attributesMap = {
-                        autofocus: function ($el) {
-                            if ($el.data('select2')) {
-                                return $el.data('select2').select2('focus');
-                            } else {
-                                $el.focus();
-                            }
-                        },
                         'data-hide': function ($el) {
                             $el.addClass('hidden').removeAttr('data-hide');
                         },
@@ -185,9 +139,41 @@ define(function (require) {
                         }
                     };
 
+                self.$el.on('submit', 'form', function (e) {
+                    var $el = Marionette.$(this),
+                        methodName = $el.attr('data-submit');
+
+                    if (typeof self[methodName] === 'function') {
+                        self[methodName](e);
+                    }
+                });
+
+                self.$el.on('click', '[data-click]', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    self[Marionette.$(this).data('click')](e);
+                });
+
                 _.each(attributesMap, function (callback, attribute) {
-                    callback(this.$el.find('[' + attribute + ']'), this);
-                }, this);
+                    self.$el.find('[' + attribute + ']').each(function () {
+                        callback(Marionette.$(this), self);
+                    });
+                }, self);
+            },
+
+            removeEvents: function () {
+                this.$el.off('click', '[data-click]');
+                this.$el.off('submit', 'form');
+            },
+
+            addDataBinding: function () {
+                dataBinding.bind(this);
+            },
+
+            navigateTo: function (route, options) {
+                options = options || {trigger: true};
+                eventBus.trigger('router:navigate', route, options);
             }
         };
     };

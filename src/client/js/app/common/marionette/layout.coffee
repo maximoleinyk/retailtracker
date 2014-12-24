@@ -3,12 +3,13 @@ define (require) ->
 
   Marionette = require('marionette')
   mixin = require('./mixin')
+  mixinView = mixin(Marionette.Layout)
 
-  Marionette.Layout.extend(mixin(Marionette.Layout)).extend
+  Marionette.Layout.extend(mixinView).extend
 
-    constructor: ->
+    addEvents: ->
       @listenTo(this, 'render', this.initRegions, this)
-      Marionette.Layout::constructor.apply(this, arguments)
+      mixinView.addEvents.apply(this, arguments)
 
     initRegions: ->
       @$el.find('[data-region]').each (index, el) =>

@@ -60,11 +60,15 @@ require.config({
         },
         grid: {
             deps: ['marionette']
+        },
+        bootstrap: {
+            deps: ['jquery']
         }
     },
 
     deps: [
-        'app/common/helpers'
+        'app/common/helpers',
+        'bootstrap'
     ]
 
 });
