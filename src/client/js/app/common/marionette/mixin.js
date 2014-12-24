@@ -103,8 +103,8 @@ define(function (require) {
             },
 
             addEvents: function () {
-                this.listenTo(this, 'before:render', this.addDataBinding, this);
                 this.listenTo(this, 'close', this.removeEvents, this);
+				this.listenTo(this, 'render', this.addDataBinding, this);
                 this.listenTo(this, 'render', this.addBehaviours, this);
                 this.listenTo(this, 'show', this.addAutofocusBehaviour, this);
                 this.listenTo(this.eventBus, 'open:page', this.highlightSelectedLinks, this);
