@@ -79,7 +79,7 @@ class PageController
 
     # redirect from root directory to UI
     @router.get '/', (req, res) ->
-      res.redirect '/page'
+      res.redirect '/page/account/login'
 
     @router.get '/404', (req, res) ->
       res.status(HttpStatus.NOT_FOUND).end()
