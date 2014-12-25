@@ -59,7 +59,7 @@ class AccountService
     return callback({ password: @i18n.passwordRequired }) if not password
 
     findInvite = new Promise (resolve, reject) =>
-      @inviteService.findByLink link, (err, invite) ->
+      @inviteService.findByLink link, (err, invite) =>
         return reject(err) if err
         return reject({ generic: @i18n.inviteCannotBeFound }) if not invite
 
@@ -230,7 +230,7 @@ class AccountService
     return callback({ password: @i18n.passwordRequired }) if not password
 
     findInvite = new Promise (resolve, reject) =>
-      handler = (err, invite) ->
+      handler = (err, invite) =>
         return reject(err) if err
         return reject({ generic: @i18n.inviteNotFound }) if not invite
         resolve(invite)
