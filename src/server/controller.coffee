@@ -14,6 +14,9 @@ UomStore = inject('persistence/uomStore')
 CurrencyController = inject('controllers/currency')
 CurrencyService = inject('services/currencyService')
 CurrencyStore = inject('persistence/currencyStore')
+CounterpartyController = inject('controllers/counterparty')
+CounterpartyService = inject('services/counterpartyService')
+CounterpartyStore = inject('persistence/counterpartyStore')
 CompanyController = inject('controllers/company')
 CompanyService = inject('services/companyService')
 CompanyStore = inject('persistence/companyStore')
@@ -45,6 +48,8 @@ class PageController
 
   register: ->
     currencyService = new CurrencyService(new CurrencyStore)
+
+    counterpartyService = new CounterpartyService(new CounterpartyStore)
 
     companyStore = new CompanyStore
 
@@ -111,6 +116,9 @@ class PageController
 
     currencyController = new CurrencyController(currencyService)
     currencyController.register(@router)
+
+    counterpartyController = new CounterpartyController(counterpartyService)
+    counterpartyController.register(@router)
 
     companyController = new CompanyController(companyService)
     companyController.register(@router)
