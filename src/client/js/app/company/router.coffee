@@ -12,6 +12,9 @@ define (require) ->
 
       'uom': 'uom'
       'currency': 'currency'
+      'counterparty': 'listCounterparties'
+      'counterparty/create': 'createCounterparty'
+      'counterparty/:id/edit': 'editCounterparty'
       'groups': 'productGroups'
 
       'settings/:view': 'settings'

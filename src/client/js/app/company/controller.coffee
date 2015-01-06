@@ -8,6 +8,10 @@ define (require) ->
   UomPage = require('cs!./views/uom')
   Currencies = require('cs!./collections/currencies')
   CurrenciesPage = require('cs!./views/currencies')
+  Counterparties = require('cs!./collections/counterparties')
+  CounterpartiesPage = require('cs!./views/counterparty/list')
+  CreateCounterpartyPage = require('cs!./views/counterparty/create')
+  EditCounterpartyPage = require('cs!./views/counterparty/edit')
   NomenclatureListPage = require('cs!./views/nomenclature/list')
   NomenclatureCollection = require('cs!./collections/nomenclature')
   CreateNomenclaturePage = require('cs!./views/nomenclature/create')
@@ -20,6 +24,7 @@ define (require) ->
   WarehousesPage = require('cs!./views/warehouse/list')
   Promise = require('rsvp').Promise
   Currency = require('cs!./models/currency')
+  Counterparty = require('cs!./models/counterparty')
 
   Controller.extend
 
@@ -87,6 +92,25 @@ define (require) ->
         @openPage new CurrenciesPage({
           collection: collection
           currencies: response[1]
+        })
+
+    listCounterparties: ->
+      collection = new Counterparties
+      collection.fetch()
+      .then =>
+        @openPage new CounterpartiesPage({
+          collection: collection
+        })
+
+    createCounterparty: ->
+      @openPage new CreateCounterpartyPage
+
+    editCounterparty: (id) ->
+      counterparty = new Counterparty({ _id: id }, { parse: true })
+      counterparty.fetch()
+      .then =>
+        @openPage new EditCounterpartyPage({
+          counterparty: counterparty
         })
 
     settings: (view) ->

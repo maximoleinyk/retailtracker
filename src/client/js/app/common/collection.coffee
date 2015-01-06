@@ -3,13 +3,11 @@ define (require) ->
 
   Backbone = require('backbone')
   Model = require('cs!./model')
-  http = require('app/common/http')
+  request = require('app/common/request')
 
   class MongoCollection extends Backbone.Collection
 
     model: Model
 
     promise: (method, url, data) ->
-      new Promise (resolve, reject) ->
-        http[method] url, data, (err, result) ->
-          if err then reject(err) else resolve(result)
+      request[method](url, data)
