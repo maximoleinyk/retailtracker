@@ -3,7 +3,7 @@ mongoose = require('mongoose')
 class NomenclatureSchema
 
   constructor: ->
-    @schema = mongoose.Schema
+    schema = mongoose.Schema
       name:
         type: String
         required: true
@@ -11,9 +11,11 @@ class NomenclatureSchema
       productGroup:
         type: mongoose.Schema.Types.ObjectId
         ref: 'ProductGroup'
+        $tenant: true
       uom:
         type: mongoose.Schema.Types.ObjectId
         ref: 'Uom'
+        $tenant: true
       attributes: [
         {
           key: String
@@ -28,9 +30,10 @@ class NomenclatureSchema
         }
       ]
       description: String
-    return @
+    mongoose.mtModel('Nomenclature', schema)
+    @
 
   get: (namespace) ->
-    mongoose.model('Nomenclature', @schema, namespace('nomenclatures'))
+    mongoose.mtModel(namespace('Nomenclature'))
 
 module.exports = NomenclatureSchema

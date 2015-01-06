@@ -8,36 +8,7 @@ class NomenclatureService
     @i18n = i18n.bundle('validation')
 
   findAll: (ns, callback) ->
-    @nomenclatureStore.findAll ns, (err, results) =>
-      return callback(err) if err
-      populate = Promise.all _.map results, (doc) =>
-        document = doc.toJSON()
-        pairs = []
-        if document.uom
-          pairs.push new Promise (resolve, reject) =>
-            @uomService.findById ns, document.uom, (err, uom) ->
-              return reject(err) if err
-              document.uom = uom
-              resolve()
-
-        if document.productGroup
-          pairs.push new Promise (resolve, reject) =>
-            @productGroupService.findById ns, document.productGroup, (err, productGroup) ->
-              return reject(err) if err
-              document.productGroup = productGroup
-              resolve()
-
-        if pairs.length
-          Promise.all(pairs)
-          .then ->
-            Promise.empty(document)
-        else
-          Promise.empty(document)
-
-      populate
-      .then (results) ->
-        callback(null, results)
-      .then(null, callback)
+    @nomenclatureStore.findAll(ns, callback).populate('uom productGroup')
 
   findById: (ns, id, callback) ->
     @nomenclatureStore.findById ns, id, (err, doc) =>

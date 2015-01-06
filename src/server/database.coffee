@@ -1,6 +1,7 @@
 mongoose = require('mongoose')
 session = require('express-session')
 MongoStore = require('connect-mongo')(session)
+require('mongoose-multitenant')('.');
 
 class MongoDB
 

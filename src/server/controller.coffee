@@ -86,9 +86,6 @@ class PageController
     @router.get '/', (req, res) ->
       res.redirect '/page/account/login'
 
-    @router.get '/404', (req, res) ->
-      res.status(HttpStatus.NOT_FOUND).end()
-
     @router.get '/i18n/messages/:batch', (req, res) =>
       res.send(i18n.bundle(req.params.batch))
 

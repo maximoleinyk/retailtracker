@@ -15,9 +15,11 @@ class ProductGroupSchema
       pathSeparator: '.'
     })
 
+    mongoose.mtModel('ProductGroup', @schema)
+
     return @
 
   get: (namespace) ->
-    mongoose.model('ProductGroup', @schema, namespace('productgroups'))
+    mongoose.mtModel(namespace('ProductGroup'))
 
 module.exports = ProductGroupSchema

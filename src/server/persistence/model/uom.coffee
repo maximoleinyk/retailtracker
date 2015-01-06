@@ -8,9 +8,12 @@ class UomSchema
         type: String
         required: true
       fullName: String
+
+    mongoose.mtModel('Uom', @schema)
+
     return @
 
   get: (namespace) ->
-    mongoose.model('Uom', @schema, namespace('uoms'))
+    mongoose.mtModel(namespace('Uom'))
 
 module.exports = UomSchema
