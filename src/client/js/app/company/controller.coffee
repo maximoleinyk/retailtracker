@@ -103,14 +103,16 @@ define (require) ->
         })
 
     createCounterparty: ->
-      @openPage new CreateCounterpartyPage
+      @openPage new CreateCounterpartyPage({
+        model: new Counterparty
+      })
 
     editCounterparty: (id) ->
       counterparty = new Counterparty({ _id: id }, { parse: true })
       counterparty.fetch()
       .then =>
         @openPage new EditCounterpartyPage({
-          counterparty: counterparty
+          model: counterparty
         })
 
     settings: (view) ->

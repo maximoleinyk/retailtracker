@@ -87,7 +87,8 @@ define(function (require) {
         },
 
         renderValue: function () {
-            var value = this.model.get(this.options.column.get('field')),
+			var field = this.options.column.get('field'),
+				value = field != void 0 ? this.model.get(field) : field,
                 formatter = this.options.column.get('formatter');
 
             if (this.canBeFormatted && _.isFunction(formatter)) {

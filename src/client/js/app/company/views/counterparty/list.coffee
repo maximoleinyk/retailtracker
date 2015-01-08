@@ -16,37 +16,33 @@ define (require) ->
       @collection = options.collection
 
     onRender: ->
-      # TODO: use grid only for view and separate page for edit
       @grid.show new Grid({
         collection: @collection
-        defaultEmptyText: 'Вы еще не создали ни одного контрагента' # TODO: i18n
+        defaultEmptyText: i18n.get('counterpartyEmptyList')
         columns: [
           {
             field: 'name'
             title: i18n.get('name')
             type: 'string'
-            url: (model) =>
+            url: (model) ->
               '/counterparty/' + model.id + '/edit'
           }
           {
-            field: 'address'
-            title: 'Address' # TODO: i18n
-            type: 'string'
-          }
-          {
             field: 'phone'
-            title: 'Phone' # TODO: i18n
+            title: i18n.get('phone')
             type: 'string'
           }
           {
-            field: 'bankIdentifier'
-            title: 'Bank Identifier' # TODO: i18n
-            type: 'number'
+            field: 'email'
+            title: i18n.get('email')
+            type: 'string'
           }
           {
-            field: 'bankAccountIdentifier'
-            title: 'Bank Account Identifier' # TODO: i18n
-            type: 'number'
+            type: 'button'
+            buttonIcon: 'fa-remove'
+            action: (e, model) =>
+              model.delete()
+              .then @collection.fetch()
           }
         ]
       })
