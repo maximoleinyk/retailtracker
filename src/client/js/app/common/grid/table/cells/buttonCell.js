@@ -1,8 +1,8 @@
 define(function (require) {
-    'use strict';
+	'use strict';
 
 	var AbstractCell = require('./abstractCell'),
-        _ = require('underscore');
+		_ = require('underscore');
 
 	return AbstractCell.extend({
 
@@ -12,9 +12,9 @@ define(function (require) {
 			$button: '[data-id="button"]'
 		},
 
-        events: {
-            'click @ui.$button': 'action'
-        },
+		events: {
+			'click @ui.$button': 'action'
+		},
 
 		templateHelpers: function () {
 			return {
