@@ -1,4 +1,5 @@
 i18n = inject('i18n')
+_ = require('underscore')
 
 class CounterpartyService
 
@@ -11,32 +12,25 @@ class CounterpartyService
   findById: (ns, id, callback) ->
     @counterpartyStore.findById(ns, id, callback)
 
-  create: (ns, data, callback) ->
-    # TODO: why validation is here despite Model fields having 'required' attribute and type?
-    #return callback({ name: @i18n.nameIsRequired }) if not data.name
-    #return callback({ code: @i18n.codeIsRequired }) if not data.code
-    #return callback({ rate: @i18n.rateIsRequired }) if not data.rate
-    #return callback({ rate: @i18n.rateShouldBeNumeric }) if typeof data.rate isnt 'number'
-
-    @counterpartyStore.create ns, data, (err, result) ->
-      return callback({ generic: err }) if err
+  wrapCallback: (callback) ->
+    (err, result) =>
+      if (err)
+        if (err.name == 'ValidationError')
+          callback(_.object(_.map(err.errors, (error, name) =>
+            [name, @i18n['validation.' + error.type]]
+          )))
+        else
+          callback({ generic: err })
       callback(null, result)
+
+  create: (ns, data, callback) ->
+    @counterpartyStore.create ns, data, @wrapCallback(callback)
 
   delete: (ns, id, callback) ->
     return callback({ generic: @i18n.idRequired }) if not id
-    @counterpartyStore.delete ns, id, (err) ->
-      return callback({ generic: err }) if err
-      callback(null)
+    @counterpartyStore.delete ns, id, @wrapCallback(callback)
 
   update: (ns, data, callback) ->
-    # TODO: validation is duplicated, move to a separate method (if needed)
-    # return callback({ name: @i18n.nameIsRequired }) if not data.name
-    # return callback({ code: @i18n.codeIsRequired }) if not data.code
-    # return callback({ rate: @i18n.rateIsRequired }) if not data.rate
-    # return callback({ rate: @i18n.rateShouldBeNumeric }) if typeof data.rate isnt 'number'
-
-    @counterpartyStore.update ns, data, (err) ->
-      return callback({ generic: err }) if err
-      callback(null, data)
+    @counterpartyStore.update ns, data, @wrapCallback(callback)
 
 module.exports = CounterpartyService

@@ -1,1 +1,6 @@
-<button type="button" class="btn btn-default" data-id="button">{{label}}</button>
+<button type="button" class="btn btn-default" data-id="button">
+	{{#if buttonIcon}}
+        <span class="fa {{buttonIcon}}"></span>
+	{{/if}}
+	{{label}}
+</button>

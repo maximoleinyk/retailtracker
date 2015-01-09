@@ -3,25 +3,20 @@ mongoose = require('mongoose')
 class CounterpartySchema
 
   constructor: ->
-    @schema = mongoose.Schema # TODO: copy schema from moysklad
+    schema = mongoose.Schema # TODO: copy schema from moysklad
       name:
         type: String
         required: true
-      address:
-        type: String
-        required: false
       phone:
         type: String
         required: false
-      bankIdentifier:
-        type: Number
+      email:
+        type: String
         required: false
-      bankAccountIdentifier:
-        type: Number
-        required: false
-    return @
+    mongoose.mtModel('Counterparty', schema)
+    @
 
   get: (namespace) ->
-    mongoose.model('Counterparty', @schema, namespace('counterparties'))
+    mongoose.mtModel(namespace('Counterparty'))
 
 module.exports = CounterpartySchema

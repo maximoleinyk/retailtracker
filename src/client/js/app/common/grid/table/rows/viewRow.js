@@ -4,6 +4,7 @@ define(function (require) {
     var AbstractRow = require('./abstractRow'),
         ViewCell = require('../cells/viewCell'),
         AutoincrementCell = require('../cells/autoincrementCell'),
+		ButtonCell = require('../cells/buttonCell'),
         DropdownButtonCell = require('../cells/dropdownButtonCell'),
         _ = require('underscore');
 
@@ -15,6 +16,8 @@ define(function (require) {
             switch (type) {
                 case 'autoincrement':
                     return new AutoincrementCell(options);
+				case 'button':
+					return new ButtonCell(options);
                 case 'edit':
                     if (options.isActionCellVisible && options.isActionCellVisible(options.model)) {
                         return new DropdownButtonCell(_.extend(options, {

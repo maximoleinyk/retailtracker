@@ -18,16 +18,18 @@ define(function (require) {
 
 		templateHelpers: function () {
 			return {
-				label: _.bind(this.getLabel, this)
+				label: _.bind(this.getLabel, this),
+				buttonIcon: this.options.column.get('buttonIcon')
 			};
 		},
 
 		getLabel: function () {
-			return this.options.label;
+			return this.options.label || this.options.column.get('label') || '';
 		},
 
 		action: function (e) {
-			this.options.action(e);
+			var action = this.options.action || this.options.column.get('action');
+			action(e, this.options.model);
 		},
 
 		activate: function () {

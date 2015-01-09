@@ -5,29 +5,21 @@ define (require) ->
 
   class Counterparty extends MongoModel
 
-    fetch: (callback) ->
+    fetch: () ->
       @promise('get', '/counterparty/' + @id).then (result) =>
-        @reset(result, {parse: true})
-      .then(null, callback)
+        @set @parse(result)
 
-    create: (callback) ->
+    create: () ->
       @promise('post', '/counterparty/create', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .then(null, callback)
 
-    update: (callback) ->
+    update: () ->
       @promise('put', '/counterparty/update', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .then(null, callback)
 
-    delete: (callback) ->
+    delete: () ->
       @promise('del', '/counterparty/delete', @toJSON())
-      .then ->
-        callback(null)
-      .then(null, callback)
