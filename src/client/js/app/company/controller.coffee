@@ -57,6 +57,15 @@ define (require) ->
         model: new Nomenclature
       })
 
+    copyNomenclature: (copyId) ->
+      model = new Nomenclature({ id: copyId })
+      model.fetch()
+      .then =>
+        delete model.attributes.id
+        @openPage new CreateNomenclaturePage({
+          model: model.clone()
+        })
+
     nomenclatureList: ->
       collection = new NomenclatureCollection()
       collection.fetch()

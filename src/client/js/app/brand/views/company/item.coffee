@@ -7,10 +7,10 @@ define (require) ->
   ItemView.extend
 
     template: require('hbs!./item.hbs')
-    className: 'company-item'
+    tagName: 'li'
 
     templateHelpers: ->
-      isOwner: @model.get('owner')._id is context.get('owner').id
+      isOwn: @model.get('owner._id') is context.get('owner.id')
 
     openCompany: (e) ->
       e.preventDefault()

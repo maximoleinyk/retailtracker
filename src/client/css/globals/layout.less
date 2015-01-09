@@ -19,18 +19,44 @@
         margin: 0;
       }
     }
-    .dropdown {
-      float: right;
-      .dropdown-toggle {
-        color: #eee;
+
+    .profile-image {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      margin: -14px 0 -14px 7px;
+      background-color: #eee;
+      border-radius: 2px;
+    }
+
+    .navigation {
+      margin: -15px 15px;
+
+      &.profile-dropdown {
+        margin: -15px 5px;
+
+        .dropdown-menu {
+          &:before {
+            position: absolute;
+            display: block;
+            top: 0;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: pink;
+          }
+        }
       }
-      .profile-image {
-        display: inline-block;
-        width: 36px;
-        height: 36px;
-        margin: -14px 7px;
-        background-color: #eee;
-        border-radius: 2px;
+
+      .nav > li > a {
+        padding: 14px 20px;
+        color: #fff;
+        * {
+          color: #fff;
+        }
+        .caret {
+          margin-left: 5px;
+        }
       }
     }
   }
@@ -45,7 +71,6 @@
 
   > .popup {
     .popup-box {
-
       .box {
         .border-bottom-radius(2px);
         .border-top-radius(2px);
@@ -82,7 +107,6 @@
           }
         }
       }
-
       .box-bg {
         .opacity(0.9);
         position: absolute;
@@ -93,49 +117,15 @@
         z-index: 99998;
         background-color: #fff;
       }
-
     }
   }
 
   &.app-company,
   &.app-brand {
-    > .header {
-      .logo,
-      .dropdown {
-        color: #fff !important;
-        .dropdown-menu * {
-          color: #333;
-        }
-      }
-    }
     > .content-wrapper {
       border-bottom: 1px solid #ddd;
       padding-bottom: 150px;
       background-color: #fff;
-    }
-  }
-
-  &.app-company > .content-wrapper > .main-width {
-    > * {
-      float: left;
-    }
-    > .content {
-      width: 75%;
-    }
-    > .navigation {
-      width: 25%;
-      margin-top: 30px;
-      padding-left: 20px;
-      > * {
-        padding-left: 20px;
-        border-left: 1px solid #eee;
-        ul {
-          list-style-type: none;
-          li {
-            padding: 3px;
-          }
-        }
-      }
     }
   }
 

@@ -31,7 +31,7 @@ define (require) ->
           path = if path.indexOf('/') is 0 then path.substring(1) else path
 
         @eventBus.trigger('module:load', module or 'brand', path)
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err.errors)
 
       @model.unset('password')

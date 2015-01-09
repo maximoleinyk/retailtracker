@@ -16,5 +16,5 @@ define (require) ->
       @model.changeForgottenPassword()
       .then =>
         @eventBus.trigger('open:page', new PasswordSuccessfullyChanged)
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err.errors)

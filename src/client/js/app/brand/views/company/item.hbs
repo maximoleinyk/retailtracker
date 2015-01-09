@@ -1,18 +1,6 @@
-<h4>
-    <a href="/company/{{id}}" class="title" title="{{i18n.goToCompany}}" data-click="openCompany">{{name}}</a>
-    {{#if isOwner}}
-        <a href="/company/{{id}}/edit" class="edit pull-right" title="{{i18n.editCompany}}" data-catch-url>
-            <span class="fa fa-pencil"></span>
-        </a>
-    {{/if}}
-</h4>
-<ul class="info">
-    <li>
-        <span class="color-label">{{i18n.currency}}</span>: <strong>{{currencyCode}}</strong>
-    </li>
-    {{#unless isOwner}}
-        <li>
-            <span class="color-label">{{i18n.owner}}</span>: <strong>{{owner.firstName}} {{owner.lastName}}</strong>
-        </li>
-    {{/unless}}
-</ul>
+{{#if isOwn}}
+	<span class="fa fa-lock fa-lg"></span>
+{{else}}
+    <span class="fa fa-share-alt fa-lg"></span>
+{{/if}}
+<a href="/company/{{id}}" class="title" title="{{i18n.goToCompany}}" data-click="openCompany">{{name}}</a>

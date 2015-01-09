@@ -78,5 +78,5 @@ define (require) ->
       @model.create()
       .then =>
         @navigateTo('/nomenclature')
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err)

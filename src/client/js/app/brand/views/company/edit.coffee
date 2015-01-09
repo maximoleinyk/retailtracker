@@ -3,7 +3,6 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   InviteeList = require('cs!./inviteeList')
-  EmployeeList = require('cs!./employeeList')
   _ = require('underscore')
   Collection = require('cs!app/common/collection')
 
@@ -13,7 +12,6 @@ define (require) ->
     className: 'page page-2thirds'
 
     onRender: ->
-      @renderEmployeeList()
       @renderInviteeList()
       @renderSelect()
 
@@ -23,12 +21,6 @@ define (require) ->
         _.map @options.currencies, (object) ->
           id: object.iso.code
           text: object.iso.code
-
-    renderEmployeeList: ->
-      @employeeList.show new EmployeeList({
-        collection: new Collection(@model.get('employees'), {parse:true})
-        model: @model
-      })
 
     renderInviteeList: ->
       @inviteeList.show new InviteeList({
@@ -50,5 +42,5 @@ define (require) ->
       @model.update()
       .then =>
         @navigateTo('')
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err)

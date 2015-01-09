@@ -21,5 +21,5 @@ define (require) ->
         @eventBus.trigger('open:page', new CompanyInviteConfirmed({
           company: @options.company
         }))
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err.errors)

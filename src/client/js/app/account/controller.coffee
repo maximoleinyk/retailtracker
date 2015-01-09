@@ -54,5 +54,5 @@ define (require) ->
             key: inviteKey
           })
         })
-      .then null, =>
+      .catch =>
         @navigateTo('login')

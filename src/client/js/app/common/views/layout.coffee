@@ -62,7 +62,6 @@ define (require) ->
 
     onRender: ->
       @displayHeader()
-      @displayNavigation()
       @displayFooter()
 
     displayFooter: ->
@@ -70,9 +69,6 @@ define (require) ->
 
     displayHeader: ->
       @header.show(new @options.Header(@options)) if @options.Header
-
-    displayNavigation: ->
-      @navigation.show(new @options.Navigation(@options)) if @options.Navigation
 
     displayContent: (view) ->
       @container.show(view)

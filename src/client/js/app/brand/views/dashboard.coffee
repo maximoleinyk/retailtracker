@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Layout = require('cs!app/common/marionette/layout')
-  CompanyList = require('cs!app/brand/views/company/list')
+  CompanyTabs = require('cs!app/brand/views/company/tabs')
   ActivityList = require('cs!app/brand/views/activity/list')
 
   Layout.extend
@@ -18,8 +18,9 @@ define (require) ->
       @renderActivities()
 
     renderCompanies: ->
-      @companies.show new CompanyList({
+      @companies.show new CompanyTabs({
         collection: @options.companies
+        tab: 'all'
       })
 
     renderActivities: ->

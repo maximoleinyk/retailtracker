@@ -20,5 +20,5 @@ define (require) ->
           'owner.lastName': @model.get('lastName')
         })
         @navigateTo('')
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err.errors)

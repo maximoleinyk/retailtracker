@@ -21,6 +21,7 @@ define (require) ->
 
       'nomenclature': 'nomenclatureList'
       'nomenclature/create': 'createNomenclature'
+      'nomenclature/copy/:id': 'copyNomenclature'
       'nomenclature/:id': 'viewNomenclature'
       'nomenclature/:id/edit': 'editNomenclature'
 

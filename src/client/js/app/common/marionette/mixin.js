@@ -139,7 +139,7 @@ define(function (require) {
                         }
                     };
 
-                self.$el.on('submit', 'form', function (e) {
+                self.$el.off('submit', 'form').on('submit', 'form', function (e) {
                     var $el = Marionette.$(this),
                         methodName = $el.attr('data-submit');
 
@@ -148,7 +148,7 @@ define(function (require) {
                     }
                 });
 
-                self.$el.on('click', '[data-click]', function (e) {
+                self.$el.off('click', '[data-click]').on('click', '[data-click]', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -161,6 +161,10 @@ define(function (require) {
                     });
                 }, self);
             },
+
+			find: function() {
+				return this.$el.find.apply(this.$el, arguments);
+			},
 
             removeEvents: function () {
                 this.$el.off('click', '[data-click]');

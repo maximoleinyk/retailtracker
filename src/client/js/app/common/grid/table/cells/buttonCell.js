@@ -1,8 +1,8 @@
 define(function (require) {
-    'use strict';
+	'use strict';
 
 	var AbstractCell = require('./abstractCell'),
-        _ = require('underscore');
+		_ = require('underscore');
 
 	return AbstractCell.extend({
 
@@ -12,14 +12,15 @@ define(function (require) {
 			$button: '[data-id="button"]'
 		},
 
-        events: {
-            'click @ui.$button': 'action'
-        },
+		events: {
+			'click @ui.$button': 'action'
+		},
 
 		templateHelpers: function () {
 			return {
 				label: _.bind(this.getLabel, this),
-				buttonIcon: this.options.column.get('buttonIcon')
+				buttonIcon: this.options.column.get('buttonIcon'),
+				buttonTypeClass: this.options.column.get('buttonTypeClass') || 'btn-default'
 			};
 		},
 
@@ -34,13 +35,11 @@ define(function (require) {
 
 		activate: function () {
 			var self = this;
-
-			// setTimeout for preventing simultaneous click on button within element focusing
-			setTimeout(function () {
+			_.defer(function () {
 				if (typeof self.ui.$button === 'object') {
 					self.ui.$button.focus();
 				}
-			}, 0);
+			});
 		}
 
 	});

@@ -18,5 +18,5 @@ define (require) ->
       @model.update()
       .then =>
         @navigateTo('/counterparty')
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err)

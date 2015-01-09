@@ -1,15 +1,45 @@
 define (require) ->
   'use strict'
 
-  CompositeView = require('cs!app/common/marionette/compositeView')
-  ItemView = require('cs!./item')
+  Layout = require('cs!app/common/marionette/layout')
+  Grid = require('app/common/grid/main')
+  i18n = require('cs!app/common/i18n')
 
-  CompositeView.extend
+  Layout.extend
 
     template: require('hbs!./list.hbs')
-    className: 'page nomenclature'
-    itemViewContainer: '[data-id="listContainer"]'
-    itemView: ItemView
+    className: 'page'
 
-    templateHelpers: ->
-      isEmptyCollection: @collection.length is 0
+    onRender: ->
+      @grid.show new Grid({
+        collection: @collection
+        defaultEmptyText: 'Список номенклатур пуст'
+        columns: [
+          {
+            field: 'name'
+            title: i18n.get('name')
+            url: (model) ->
+              '/nomenclature/' + model.id + '/edit'
+          }
+          {
+            field: 'article'
+            title: i18n.get('article')
+          }
+          {
+            field: 'productGroup.name'
+            title: i18n.get('productGroup')
+          }
+          {
+            field: 'uom.shortName'
+            title: i18n.get('unitOfMeasurement')
+          }
+          {
+            type: 'button'
+            buttonIcon: 'fa-copy'
+            buttonTypeClass: 'btn-link'
+            width: 50
+            action: (e, model) =>
+              @navigateTo('/nomenclature/copy/' + model.id)
+          }
+        ]
+      })

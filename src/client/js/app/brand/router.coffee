@@ -8,7 +8,9 @@ define (require) ->
     appRoutes:
       '': 'dashboard'
 
+      'companies': 'companies'
       'company/create': 'createCompany'
       'company/:id/edit': 'editCompany'
+      'company/:id/employees': 'manageCompanyEmployees'
 
       'settings/:view': 'settings'

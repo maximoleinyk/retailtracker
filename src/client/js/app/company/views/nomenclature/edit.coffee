@@ -88,5 +88,5 @@ define (require) ->
       @model.update()
       .then =>
         @navigateTo('/nomenclature')
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err)

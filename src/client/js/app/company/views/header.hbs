@@ -1,9 +1,60 @@
 <div class="logo">
     <a href="/page/company/"><h4>{{company.name}}</h4></a>
 </div>
-<nav class="dropdown">
-    <ul>
-        <li class="dropdown navbar-right">
+<nav class="navigation navbar-left">
+    <ul class="nav navbar-nav">
+		{{! Компания }}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.myCompany}}<span
+                    class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+            </ul>
+        </li>
+
+		{{! Розница }}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.retail}}<span
+                    class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/stores" data-catch-url="stores">{{i18n.retailStoreList}}</a></li>
+                <li><a href="/cash" data-catch-url="cash">{{i18n.cash}}</a></li>
+            </ul>
+        </li>
+
+		{{! Розница }}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.money}}<span
+                    class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+            </ul>
+        </li>
+
+		{{! Склдской учет }}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.inventoryControl}}<span
+                    class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/warehouses" data-catch-url="warehouses">{{i18n.warehousesList}}</a></li>
+            </ul>
+        </li>
+
+		{{! НСИ }}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.rbi}}<span
+                    class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/uom" data-catch-url="/uom">{{i18n.unitOfMeasurements}}</a></li>
+                <li><a href="/currency" data-catch-url="currency">{{i18n.currencies}}</a></li>
+                <li><a href="/nomenclature" data-catch-url="nomenclature.*">{{i18n.nomenclature}}</a></li>
+                <li><a href="/groups" data-catch-url="groups">{{i18n.productGroups}}</a></li>
+                <li><a href="/counterparty" data-catch-url="counterparty">{{i18n.counterpartiesList}}</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<nav class="navigation profile-dropdown navbar-right">
+    <ul class="nav navbar-nav">
+        <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <span data-id="userName"></span><img src="{{avatarSrc}}" class="profile-image"/>
             </a>

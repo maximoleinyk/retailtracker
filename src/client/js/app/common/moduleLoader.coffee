@@ -134,7 +134,7 @@ define (require) ->
           # start application
           startApp(module, true)
 
-        .then null, (error) =>
+        .catch (error) =>
           if error is 'Unauthorized'
             if path.indexOf('account') isnt 0
               context.set('lastAuthUrl', path)

@@ -24,7 +24,7 @@ define (require) ->
       @model.register()
       .then =>
         @eventBus.trigger('open:page', new RegistrationSuccessPage)
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err.errors)
         @ui.$registerButton.text(originButtonLabel).removeAttr('disabled')
 

@@ -88,7 +88,7 @@ define(function (require) {
 
         renderValue: function () {
 			var field = this.options.column.get('field'),
-				value = field != void 0 ? this.model.get(field) : field,
+				value = field !== void 0 ? this.model.get(field) : field,
                 formatter = this.options.column.get('formatter');
 
             if (this.canBeFormatted && _.isFunction(formatter)) {
@@ -115,7 +115,7 @@ define(function (require) {
         },
 
         appendValue: function (value) {
-            // abstract method
+			// abstract method
         },
 
         disable: function () {

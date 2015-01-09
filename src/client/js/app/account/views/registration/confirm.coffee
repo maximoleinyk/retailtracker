@@ -16,5 +16,5 @@ define (require) ->
       @model.confirm()
       .then =>
         @eventBus.trigger('open:page', new RegistrationCompleted)
-      .then null, (err) =>
+      .catch (err) =>
         @validation.show(err.errors)

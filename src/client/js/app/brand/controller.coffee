@@ -11,6 +11,9 @@ define (require) ->
   Activities = require('cs!./collections/activities')
   Promise = require('rsvp').Promise
   Currency = require('cs!app/company/models/currency')
+  CompanyListPage = require('cs!./views/company/list')
+  ManageCompanyEmployeesPage = require('cs!./views/company/employees')
+  Collection = require('cs!app/common/collection')
 
   Controller.extend
 
@@ -22,6 +25,21 @@ define (require) ->
         @openPage new DashboardPage({
           companies: companies
           activities: activities
+        })
+
+    manageCompanyEmployees: (companyId) ->
+      model = new Company({ _id: companyId }, { parse: true })
+      model.fetch()
+      .then () =>
+        @openPage new ManageCompanyEmployeesPage({
+          collection: new Collection model.get('employees')
+        })
+
+    companies: ->
+      companies = new Companies
+      companies.fetch().then =>
+        @openPage new CompanyListPage({
+          collection: companies
         })
 
     createCompany: ->
