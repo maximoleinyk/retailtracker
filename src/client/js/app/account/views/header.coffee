@@ -3,13 +3,14 @@ define (require) ->
 
   ItemView = require('cs!app/common/marionette/itemView')
   _ = require('underscore')
+  Backbone = require('backbone')
 
   ItemView.extend
 
     template: require('hbs!./header.hbs')
 
-    appEvents:
-      'router:navigate': 'updateView'
+    initialize: ->
+      @listenTo(Backbone.history, 'route', this.updateView, this)
 
     updateView: ->
       _.defer =>

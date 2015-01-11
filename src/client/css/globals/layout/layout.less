@@ -1,6 +1,6 @@
-@import "./variables";
-@import "./bootstrap/mixins";
-@import "./bootstrap/utilities";
+@import "../variables";
+@import "../bootstrap/mixins";
+@import "../bootstrap/utilities";
 
 .app {
   height: 100%;
@@ -11,8 +11,16 @@
     background-color: #444;
     padding: 15px 0;
 
+    > * {
+      .clearfix;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: @mainWidth;
+    }
+
     .logo {
       float: left;
+      margin-right: 15px;
       * {
         color: #eee;
         padding: 0;
@@ -28,40 +36,8 @@
       background-color: #eee;
       border-radius: 2px;
     }
-
-    .navigation {
-      margin: -15px 15px;
-
-      &.profile-dropdown {
-        margin: -15px 5px;
-
-        .dropdown-menu {
-          &:before {
-            position: absolute;
-            display: block;
-            top: 0;
-            right: 20px;
-            width: 20px;
-            height: 20px;
-            background-color: pink;
-          }
-        }
-      }
-
-      .nav > li > a {
-        padding: 14px 20px;
-        color: #fff;
-        * {
-          color: #fff;
-        }
-        .caret {
-          margin-left: 5px;
-        }
-      }
-    }
   }
 
-  > .header > *,
   > .content-wrapper > .main-width {
     .clearfix;
     margin: 0 auto;

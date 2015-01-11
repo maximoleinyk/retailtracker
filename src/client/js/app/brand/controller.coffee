@@ -17,6 +17,12 @@ define (require) ->
 
   Controller.extend
 
+    chooseCompany: ->
+      # todo implement
+
+    choosePos: ->
+      # todo implement
+
     dashboard: ->
       companies = new Companies
       activities = new Activities
@@ -33,6 +39,7 @@ define (require) ->
       .then () =>
         @openPage new ManageCompanyEmployeesPage({
           collection: new Collection model.get('employees')
+          model: model
         })
 
     companies: ->

@@ -1,10 +1,10 @@
 {
-  "name": "RetailTracker",
+  "name": "RetailRegister",
   "version": "0.0.1",
   "author": "maxim.oleinyk@gmail.com",
   "repository": {
     "type": "git",
-    "url": "git@github.com:maximoleinyk/retailtracker.git"
+    "url": "git@github.com:maximoleinyk/retailregister.git"
   },
   "dependencies": {
     "agenda": "^0.6.17",

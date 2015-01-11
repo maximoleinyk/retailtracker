@@ -6,14 +6,14 @@
   - http://nodejs.org/download/
   - http://mongodb.org/downloads
   - http://git-scm.com/download/win
-   
-  
+
+
 Сделать копию проекта
 
-  - git clone git@github.com:maximoleinyk/retailtracker.git
+  - git clone git@github.com:maximoleinyk/retailregister.git
 
 Скопировать из корня проекта mongo.bat и mongo.sh в корневую директорию mongodb и изменить пути внутри файлов.
-  
+
 Конфигурация проекта Unix
 
   - npm install -g grunt-cli
@@ -22,7 +22,7 @@
   - npm install
   - bower install
   - grunt
-  
+
 Конфигурация проекта Windows
 
   - npm install -g grunt-cli
@@ -46,7 +46,7 @@
   - moongo.sh в установочной директории mongodb
   - node-inspector
   - npm start
-  
+
 Запуск приложения Windows
 
   - set NODE_ENV=development
@@ -58,5 +58,5 @@
 
  - http://127.0.0.1:8080/debug?port=5858
  - http://localhost:3000/page/account/
- 
+
 Готово!!

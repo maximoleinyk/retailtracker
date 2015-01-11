@@ -17,7 +17,10 @@ define(function (require) {
 				case 'autoincrement':
 					return new AutoincrementCell(options);
 				case 'button':
-					return new ButtonCell(options);
+					if (options.isActionCellVisible && options.isActionCellVisible(options.model)) {
+						return new ButtonCell(options);
+					}
+					return new ViewCell(options);
 				case 'edit':
 					if (options.isActionCellVisible && options.isActionCellVisible(options.model)) {
 						return new DropdownButtonCell(_.extend(options, {

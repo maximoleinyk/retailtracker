@@ -1,16 +1,26 @@
 .page {
-  padding: 30px 0;
+  margin: 30px 0;
+  position: relative;
 
   > .page-title {
     margin-bottom: 30px;
+    padding: 3px 0;
     .title {
-      font-size: 18px;
-      font-weight: 300;
+      font-size: 20px;
     }
     .link-back {
       font-size: 12px;
       color: #006666;
+      &:before {
+        content: "\2190\20";
+      }
     }
+  }
+
+  .page-actions {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   > .page-section {

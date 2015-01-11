@@ -8,6 +8,7 @@ define (require) ->
 
     template: require('hbs!./item.hbs')
     tagName: 'li'
+    className: 'ellipsis'
 
     templateHelpers: ->
       isOwn: @model.get('owner._id') is context.get('owner.id')

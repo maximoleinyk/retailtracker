@@ -2,12 +2,10 @@
     <div class="title">{{i18n.editCompany}}</div>
     <a href="/companies" class="link-back">{{i18n.companies}}</a>
 </div>
-<form data-submit="update">
-    {{> app/brand/views/company/form.hbs }}
-    <div class="page-section">
-        <div class="col col-2thirds">
-            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
-            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
-        </div>
+<form data-submit="update" class="page-section">
+    <div class="page-actions">
+		<button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
+		<a href="{{url}}" class="btn btn-default">{{i18n.employees}}</a>
     </div>
+	{{> app/brand/views/company/form.hbs }}
 </form>

@@ -16,6 +16,7 @@ define (require) ->
       @renderSelect()
 
     templateHelpers: ->
+      url: '/company/' + @model.id + '/employees'
       isNew: @model.isNew()
       currencyCodes: =>
         _.map @options.currencies, (object) ->
@@ -32,15 +33,12 @@ define (require) ->
       @ui.$select.select2()
       @ui.$select.select2('enable', false)
 
-    cancel: ->
-      @navigateTo('')
-
     update: (e) ->
       e.preventDefault()
       @validation.reset()
 
       @model.update()
       .then =>
-        @navigateTo('')
+        @navigateTo('/companies')
       .catch (err) =>
         @validation.show(err)

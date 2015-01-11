@@ -1,10 +1,14 @@
 <div class="logo">
     <h4>{{i18n.retailTracker}}</h4>
 </div>
-<div class="dropdown">
-    {{# if isNotSignUp }}
-        <a href="/page/account/register" class="btn btn-link registration-link">{{i18n.signUp}}</a>
-    {{else}}
-        <a href="/page/account/login" class="btn btn-link registration-link">{{i18n.signIn}}</a>
-    {{/if}}
-</div>
+<nav class="navigation pull-right">
+    <ul>
+        <li>
+			{{#if isNotSignUp }}
+                <a href="/page/account/register" class="btn btn-link registration-link">{{i18n.signUp}}</a>
+			{{else}}
+                <a href="/page/account/login" class="btn btn-link registration-link">{{i18n.signIn}}</a>
+			{{/if}}
+        </li>
+    </ul>
+</nav>

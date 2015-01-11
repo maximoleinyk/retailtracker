@@ -1,5 +1,5 @@
 define(function (require) {
-    'use strict';
+	'use strict';
 
 	var AbstractCell = require('./abstractCell'),
 		_ = require('underscore'),
@@ -8,7 +8,7 @@ define(function (require) {
 
 	return AbstractCell.extend({
 
-		getTemplate: function() {
+		getTemplate: function () {
 			if (this.options.column.get('url')) {
 				return linkTemplate;
 			} else {
@@ -17,18 +17,25 @@ define(function (require) {
 		},
 
 		addAttributes: function () {
-            // do nothing
+			// do nothing
 		},
 
-		appendValue: function(value) {
-			var modelUrl = this.options.column.get('url'),
+		appendValue: function (value) {
+			var escape = this.options.column.get('escape'),
+				modelUrl = this.options.column.get('url'),
 				hasUrl = this.canBeFormatted && !(_.isUndefined(modelUrl) || _.isNull(modelUrl)),
-				url = hasUrl && _.isFunction(modelUrl) ? modelUrl(this.model) : modelUrl;
+				url = hasUrl && _.isFunction(modelUrl) ? modelUrl(this.model) : modelUrl,
+				$root = this.$el;
 
 			if (hasUrl) {
-				this.$el.find('a').attr('href', url).text(value);
+				$root = this.$el.find('a');
+				$root.attr('href', url)
+			}
+
+			if (_.isBoolean(escape) && !escape) {
+				$root.html(value);
 			} else {
-				this.$el.text(value);
+				$root.text(value);
 			}
 		}
 

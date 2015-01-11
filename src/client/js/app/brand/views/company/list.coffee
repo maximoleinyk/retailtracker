@@ -15,6 +15,7 @@ define (require) ->
     onRender: ->
       @grid.show new Grid({
         collection: @options.collection
+        defaultEmptyText: i18n.get('companyGridEmptyLabel')
         columns: [
           {
             field: 'name'
@@ -26,18 +27,20 @@ define (require) ->
             field: 'owner'
             title: i18n.get('owner')
             type: 'string'
-            formatter: (value) ->
-              value.firstName + ' ' + value.lastName
+            escape: false
+            formatter: (object) ->
+              "#{object.firstName} #{object.lastName} <span style='color:#888'>#{object.email}</span>"
           }
           {
             field: 'currencyCode'
-            title: i18n.get('currencyCode')
+            title: i18n.get('currency')
+            width: 120
           }
           {
             field: 'employees'
             title: i18n.get('countOfEmployees')
-            url: (model) ->
-              '/company/' + model.id + '/employees'
+            type: 'number'
+            width: 165
             formatter: (employees) ->
               employees.length
           }

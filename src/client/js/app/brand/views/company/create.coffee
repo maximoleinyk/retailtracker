@@ -40,6 +40,6 @@ define (require) ->
 
       @model.create()
       .then =>
-        @navigateTo('')
+        @navigateTo('/companies')
       .catch (err) =>
         @validation.show(err)

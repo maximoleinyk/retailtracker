@@ -15,7 +15,7 @@ define (require) ->
   App = new Marionette.Application
 
   App.addInitializer ->
-    Marionette.$(document).delegate 'a[href^="/"]', 'click', (e) ->
+    Marionette.$(document).on 'click', 'a[href^="/"]', (e) ->
       $el = $(e.currentTarget)
       href = $el.attr('href')
       enableHref = $el.data('enable-href')

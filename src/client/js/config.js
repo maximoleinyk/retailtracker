@@ -73,4 +73,4 @@ require.config({
 
 });
 
-window.RetailTracker || (window.RetailTracker = {});
+window.RetailRegister || (window.RetailRegister = {});
