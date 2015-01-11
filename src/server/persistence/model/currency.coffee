@@ -3,7 +3,7 @@ mongoose = require('mongoose')
 class CurrencySchema
 
   constructor: ->
-    @schema = mongoose.Schema
+    mongoose.mtModel 'Currency', mongoose.Schema
       name:
         type: String
         required: true
@@ -13,9 +13,9 @@ class CurrencySchema
       rate:
         type: Number
         required: true
-    return @
+    this
 
   get: (namespace) ->
-    mongoose.model('Currency', @schema, namespace('currencies'))
+    mongoose.mtModel(namespace('Currency'))
 
 module.exports = CurrencySchema

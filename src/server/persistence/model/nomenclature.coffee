@@ -3,7 +3,7 @@ mongoose = require('mongoose')
 class NomenclatureSchema
 
   constructor: ->
-    schema = mongoose.Schema
+    mongoose.mtModel 'Nomenclature', mongoose.Schema
       name:
         type: String
         required: true
@@ -30,8 +30,7 @@ class NomenclatureSchema
         }
       ]
       description: String
-    mongoose.mtModel('Nomenclature', schema)
-    @
+    this
 
   get: (namespace) ->
     mongoose.mtModel(namespace('Nomenclature'))

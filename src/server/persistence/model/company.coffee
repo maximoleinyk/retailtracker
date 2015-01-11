@@ -3,7 +3,7 @@ mongoose = require('mongoose')
 class CompanySchema
 
   constructor: ->
-    @schema = mongoose.Schema
+    mongoose.mtModel 'Company', mongoose.Schema
       name:
         type: String
         required: true
@@ -27,18 +27,20 @@ class CompanySchema
           ref: 'User'
         }
       ]
-      invitees: [{
-        firstName:
-          type: String
-          required: true
-        email:
-          type: String
-          required: true
-        role: String
-      }]
-    return @
+      invitees: [
+        {
+          firstName:
+            type: String
+            required: true
+          email:
+            type: String
+            required: true
+          role: String
+        }
+      ]
+    this
 
   get: (namespace) ->
-    mongoose.model('Company', @schema, namespace('companies'))
+    mongoose.mtModel(namespace('Company'))
 
 module.exports = CompanySchema

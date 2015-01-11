@@ -49,7 +49,7 @@ class PageController
   register: ->
     currencyService = new CurrencyService(new CurrencyStore)
 
-    counterpartyService = new CounterpartyService(new CounterpartyStore)
+    counterpartyService = new CounterpartyService(new CounterpartyStore(i18n))
 
     companyStore = new CompanyStore
 

@@ -230,7 +230,7 @@ class CompanyService
 
       employeesToRemove = _.filter companyData.employees, (originEmployee) ->
         found = _.find data.employees, (latestEmployee) ->
-          originEmployee._id.toString() is latestEmployee.id
+          originEmployee._id.toString() is latestEmployee._id
         return not found
 
       removeInvites = Promise.all _.map inviteesToRemove, (inviteeToRemove) =>

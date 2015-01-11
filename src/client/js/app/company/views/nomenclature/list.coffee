@@ -24,6 +24,7 @@ define (require) ->
           {
             field: 'article'
             title: i18n.get('article')
+            width: 150
           }
           {
             field: 'productGroup.name'
@@ -32,6 +33,7 @@ define (require) ->
           {
             field: 'uom.shortName'
             title: i18n.get('unitOfMeasurement')
+            width: 130
           }
           {
             type: 'button'

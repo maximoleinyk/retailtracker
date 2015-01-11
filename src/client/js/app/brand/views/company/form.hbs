@@ -1,5 +1,5 @@
-<div class="page-section">
-    <div class="col col-2thirds">
+<form data-submit="save" class="page-section">
+    <div class="col col-3quarters">
         <div class="form-group">
             <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
 
@@ -36,4 +36,12 @@
         </div>
         <div data-region="inviteeList"></div>
     </div>
-</div>
+    <div class="page-actions">
+		{{#if isNew}}
+            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
+		{{else}}
+            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
+            <a href="{{url}}" class="btn btn-default">{{i18n.employees}}</a>
+		{{/if}}
+    </div>
+</form>

@@ -4,20 +4,17 @@ tree = require('mongoose-path-tree')
 class ProductGroupSchema
 
   constructor: ->
-    @schema = mongoose.Schema
+    schema = mongoose.Schema
       name:
         type: String
         required: true
       description: String
       parentGroup: mongoose.Schema.Types.ObjectId
-
-    @schema.plugin(tree, {
+    schema.plugin(tree, {
       pathSeparator: '.'
     })
-
-    mongoose.mtModel('ProductGroup', @schema)
-
-    return @
+    mongoose.mtModel('ProductGroup', schema)
+    this
 
   get: (namespace) ->
     mongoose.mtModel(namespace('ProductGroup'))

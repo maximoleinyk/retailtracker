@@ -33,7 +33,7 @@ define (require) ->
       @ui.$select.select2()
       @ui.$select.select2('enable', false)
 
-    update: (e) ->
+    save: (e) ->
       e.preventDefault()
       @validation.reset()
 

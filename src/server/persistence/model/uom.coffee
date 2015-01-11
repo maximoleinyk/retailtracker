@@ -3,15 +3,12 @@ mongoose = require('mongoose')
 class UomSchema
 
   constructor: ->
-    @schema = mongoose.Schema
+    mongoose.mtModel 'Uom', mongoose.Schema
       shortName:
         type: String
         required: true
       fullName: String
-
-    mongoose.mtModel('Uom', @schema)
-
-    return @
+    this
 
   get: (namespace) ->
     mongoose.mtModel(namespace('Uom'))

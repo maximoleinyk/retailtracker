@@ -3,7 +3,7 @@ _ = require('underscore')
 
 class CounterpartyStore
 
-  constructor: ->
+  constructor: (@i18n) ->
     @model = new Model
 
   wrapCallback: (callback) ->

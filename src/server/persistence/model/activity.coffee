@@ -3,7 +3,7 @@ mongoose = require('mongoose')
 class ActivitySchema
 
   constructor: ->
-    @schema = mongoose.Schema
+    mongoose.mtModel 'Activity', mongoose.Schema
       user:
         type: mongoose.Schema.Types.ObjectId
         ref: 'User'
@@ -19,10 +19,9 @@ class ActivitySchema
         type: mongoose.Schema.Types.ObjectId
         ref: 'Company'
       ns: String
-
-    return @
+    this
 
   get: (namespace) ->
-    mongoose.model('Activity', @schema, namespace('activities'))
+    mongoose.mtModel(namespace('Activity'))
 
 module.exports = ActivitySchema

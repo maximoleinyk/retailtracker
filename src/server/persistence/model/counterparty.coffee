@@ -3,7 +3,7 @@ mongoose = require('mongoose')
 class CounterpartySchema
 
   constructor: ->
-    schema = mongoose.Schema # TODO: copy schema from moysklad
+    mongoose.mtModel 'Counterparty', mongoose.Schema # TODO: copy schema from moysklad
       name:
         type: String
         required: true
@@ -19,8 +19,7 @@ class CounterpartySchema
         type: String
       description:
         type: String
-    mongoose.mtModel('Counterparty', schema)
-    @
+    this
 
   get: (namespace) ->
     mongoose.mtModel(namespace('Counterparty'))

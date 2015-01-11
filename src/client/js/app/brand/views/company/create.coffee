@@ -31,10 +31,7 @@ define (require) ->
     renderSelect: ->
       @ui.$select.select2()
 
-    cancel: ->
-      @navigateTo('')
-
-    create: (e) ->
+    save: (e) ->
       e.preventDefault()
       @validation.reset()
 

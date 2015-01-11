@@ -6,6 +6,11 @@
   height: 100%;
   min-height: 100%;
   background-color: #fafafa;
+  min-width: @mainWidth;
+
+  > * > * {
+    width: @mainWidth;
+  }
 
   > .header {
     background-color: #444;
@@ -15,7 +20,6 @@
       .clearfix;
       margin: 0 auto;
       padding: 0 20px;
-      width: @mainWidth;
     }
 
     .logo {
@@ -42,7 +46,12 @@
     .clearfix;
     margin: 0 auto;
     padding: 0 20px;
-    width: @mainWidth;
+  }
+
+  > * > .footer {
+    margin: 20px auto;
+    text-align: center;
+    font-size: 11px;
   }
 
   > .popup {
@@ -103,12 +112,5 @@
       padding-bottom: 150px;
       background-color: #fff;
     }
-  }
-
-  > * > .footer {
-    width: @mainWidth;
-    margin: 20px auto;
-    text-align: center;
-    font-size: 11px;
   }
 }
