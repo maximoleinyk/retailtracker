@@ -7,12 +7,18 @@ class CounterpartySchema
       name:
         type: String
         required: true
+      code:
+        type: String
       phone:
         type: String
-        required: false
+      fax:
+        type: String
       email:
         type: String
-        required: false
+      actualAddress:
+        type: String
+      description:
+        type: String
     mongoose.mtModel('Counterparty', schema)
     @
 
