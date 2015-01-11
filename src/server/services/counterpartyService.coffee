@@ -12,25 +12,16 @@ class CounterpartyService
   findById: (ns, id, callback) ->
     @counterpartyStore.findById(ns, id, callback)
 
-  wrapCallback: (callback) ->
-    (err, result) =>
-      if (err)
-        if (err.name == 'ValidationError')
-          callback(_.object(_.map(err.errors, (error, name) =>
-            [name, @i18n['validation.' + error.type]]
-          )))
-        else
-          callback({ generic: err })
-      callback(null, result)
-
   create: (ns, data, callback) ->
-    @counterpartyStore.create ns, data, @wrapCallback(callback)
+    @counterpartyStore.create ns, data, callback
 
   delete: (ns, id, callback) ->
     return callback({ generic: @i18n.idRequired }) if not id
-    @counterpartyStore.delete ns, id, @wrapCallback(callback)
+    @counterpartyStore.delete ns, id, callback
 
   update: (ns, data, callback) ->
-    @counterpartyStore.update ns, data, @wrapCallback(callback)
+    @counterpartyStore.update ns, data, (err) ->
+      return callback(err) if err
+      callback(null, data)
 
 module.exports = CounterpartyService

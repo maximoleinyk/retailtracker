@@ -28,6 +28,11 @@ define (require) ->
               '/counterparty/' + model.id + '/edit'
           }
           {
+            field: 'code'
+            title: i18n.get('code')
+            type: 'string'
+          }
+          {
             field: 'phone'
             title: i18n.get('phone')
             type: 'string'
