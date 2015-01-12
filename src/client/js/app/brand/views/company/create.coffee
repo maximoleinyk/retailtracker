@@ -26,6 +26,7 @@ define (require) ->
       @inviteeList.show new InviteeList({
         collection: new Collection()
         model: @model
+        roles: @options.roles
       })
 
     renderSelect: ->

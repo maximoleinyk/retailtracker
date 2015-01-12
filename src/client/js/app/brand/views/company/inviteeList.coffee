@@ -13,20 +13,39 @@ define (require) ->
       @invitees.show new Grid({
         collection: @options.collection
         defaultEmptyText: i18n.get('emptyInvitesGrid')
-        withoutHeader: true
         editable: @
         skipInitialAutoFocus: true,
         columns: [
           {
             field: 'firstName'
+            title: i18n.get('firstName')
             type: 'string'
             placeholder: i18n.get('firstName')
             width: 180
           },
           {
             field: 'email'
+            title: i18n.get('email')
             type: 'email'
             placeholder: i18n.get('emailExampleCom')
+          },
+          {
+            field: 'role'
+            title: i18n.get('role')
+            placeholder: i18n.get('selectRole')
+            type: 'select'
+            selectFirst: true
+            data: =>
+              @options.roles.map (model) ->
+                id: model.id
+                text: model.get('name')
+            formatter: (id) =>
+              if id then @options.roles.get(id)?.get('name') else ''
+            formatResult: (roleObject) =>
+              if roleObject.text then roleObject.text else @options.roles.get(roleObject.role)?.get('name')
+            onSelection: (object, model) ->
+              model.set('role', object.id)
+            width: 220
           }
         ]
       })

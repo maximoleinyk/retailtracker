@@ -14,6 +14,7 @@ define (require) ->
   CompanyListPage = require('cs!./views/company/list')
   ManageCompanyEmployeesPage = require('cs!./views/company/employees')
   Collection = require('cs!app/common/collection')
+  Roles = require('cs!app/brand/collections/roles')
 
   Controller.extend
 
@@ -50,23 +51,28 @@ define (require) ->
         })
 
     createCompany: ->
+      roles = new Roles()
       currency = new Currency()
-      currency.getTemplates()
-      .then (currencies) =>
+
+      Promise.all([currency.getTemplates(), roles.fetch()])
+      .then (response) =>
         @openPage new CreateCompanyPage({
           model: new Company
-          currencies: currencies
+          currencies: response[0]
+          roles: roles
         })
 
     editCompany: (id) ->
+      roles = new Roles()
       currency = new Currency
       model = new Company({ _id: id }, { parse: true })
 
-      Promise.all([model.fetch(), currency.getTemplates()])
+      Promise.all([currency.getTemplates(), roles.fetch(), model.fetch()])
       .then (response) =>
         @openPage new EditCompanyPage({
           model: model
-          currencies: response[1]
+          currencies: response[0]
+          roles: roles
         })
 
     settings: (view) ->

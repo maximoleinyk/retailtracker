@@ -1,9 +1,10 @@
 Model = inject('persistence/model/counterparty')
 _ = require('underscore')
+i18n = inject('i18n').bundle('validation')
 
 class CounterpartyStore
 
-  constructor: (@i18n) ->
+  constructor: ->
     @model = new Model
 
   wrapCallback: (callback) ->
@@ -11,7 +12,7 @@ class CounterpartyStore
       if (err)
         if (err.name == 'ValidationError')
           callback(_.object(_.map(err.errors, (error, name) =>
-            [name, @i18n['validation.' + error.type]]
+            [name, i18n[error.type]]
           )))
         else
           callback({ generic: err })

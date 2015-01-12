@@ -12,6 +12,9 @@ Schema = mongoose.Schema
   company:
     type: mongoose.Schema.Types.ObjectId
     default: null
+  role:
+    type: mongoose.Schema.Types.ObjectId
+    # required: true
   ns:
     type: String
     default: ''

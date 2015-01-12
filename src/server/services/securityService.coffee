@@ -1,9 +1,9 @@
 LocalStrategy = require('passport-local')
+i18n = inject('i18n').bundle('validation')
 
 class SecurityService
 
-  constructor: (@passport, @accountService, i18n) ->
-    @i18n = i18n.bundle('validation')
+  constructor: (@passport, @accountService) ->
     @credentialsInfo = {
       usernameField: 'login'
       passwordField: 'password'
@@ -24,15 +24,15 @@ class SecurityService
   authenticate: (data, callback) ->
     # do not refactor these two if statements
     if not data.login
-      callback({ generic: @i18n.loginMustBeSet })
+      callback({ generic: i18n.loginMustBeSet })
       return
 
     if not data.password
-      callback({ generic: @i18n.passwordMustBeSet })
+      callback({ generic: i18n.passwordMustBeSet })
       return
 
     @passport.authenticate 'local', (err, account) =>
-      return callback({ generic: @i18n.invalidCredentials }) if not account
+      return callback({ generic: i18n.invalidCredentials }) if not account
       callback(null, account)
 
 module.exports = SecurityService

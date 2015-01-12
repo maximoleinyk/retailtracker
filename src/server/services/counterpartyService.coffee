@@ -1,10 +1,9 @@
-i18n = inject('i18n')
+i18n = inject('i18n').bundle('validation')
 _ = require('underscore')
 
 class CounterpartyService
 
   constructor: (@counterpartyStore) ->
-    @i18n = i18n.bundle('validation')
 
   findAll: (ns, callback) ->
     @counterpartyStore.findAll(ns, callback)
@@ -16,7 +15,7 @@ class CounterpartyService
     @counterpartyStore.create ns, data, callback
 
   delete: (ns, id, callback) ->
-    return callback({ generic: @i18n.idRequired }) if not id
+    return callback({ generic: i18n.idRequired }) if not id
     @counterpartyStore.delete ns, id, callback
 
   update: (ns, data, callback) ->

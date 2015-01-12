@@ -4,20 +4,20 @@ emailTemplates = inject('email/templates/mapper')
 templateCompiler = inject('email/templateCompiler')
 Promise = inject('util/promise')
 namespace = inject('util/namespace')
+i18n = inject('i18n').bundle('validation')
 
 class AccountService
 
-  constructor: (@companyMediator, @accountStore, @linkService, @inviteService, @userService, @i18nService, @activityService) ->
-    @i18n = i18nService.bundle('validation')
+  constructor: (@contextService, @companyMediator, @accountStore, @linkService, @inviteService, @userService, @activityService) ->
 
   register: (email, firstName, callback) ->
-    return callback({ firstName: @i18n.firstNameRequired }) if not firstName
-    return callback({ email: @i18n.emailRequired }) if not email
+    return callback({ firstName: i18n.firstNameRequired }) if not firstName
+    return callback({ email: i18n.emailRequired }) if not email
 
     findAccount = new Promise (resolve, reject) =>
       @accountStore.findByLogin email, (err, account) =>
         return reject(err) if err
-        return reject({ generic: @i18n.accountAlreadyExists }) if account and account.status is 'OWN'
+        return reject({ generic: i18n.accountAlreadyExists }) if account and account.status is 'OWN'
         resolve(account)
 
     findAccount
@@ -55,13 +55,13 @@ class AccountService
     .catch(callback)
 
   approveRegistration: (link, password, callback) ->
-    return callback({ link: @i18n.linkRequired }) if not link
-    return callback({ password: @i18n.passwordRequired }) if not password
+    return callback({ link: i18n.linkRequired }) if not link
+    return callback({ password: i18n.passwordRequired }) if not password
 
     findInvite = new Promise (resolve, reject) =>
       @inviteService.findByLink link, (err, invite) =>
         return reject(err) if err
-        return reject({ generic: @i18n.inviteCannotBeFound }) if not invite
+        return reject({ generic: i18n.inviteCannotBeFound }) if not invite
 
         resolve(invite)
 
@@ -91,7 +91,7 @@ class AccountService
             })
         # create new account
       else
-        return new Promise (resolve, reject) =>
+        createNewAccount = new Promise (resolve, reject) =>
           accountData = {
             owner: invite.user._id,
             login: invite.user.email
@@ -102,6 +102,11 @@ class AccountService
               invite: invite
               account: account
             })
+
+        return createNewAccount.then (result) =>
+          return new Promise (resolve, reject) =>
+            @contextService.afterAccountCreation result.account, (err) ->
+              if err then reject(err) else resolve(result)
 
     .then (result) =>
       new Promise (resolve, reject) =>
@@ -128,15 +133,15 @@ class AccountService
         if err then reject(err) else resolve(account)
 
   changePassword: (email, oldPassword, newPassword, callback) ->
-    return callback({ email: @i18n.emailRequired }) if not email
-    return callback({ oldPassword: @i18n.oldPasswordlRequired }) if not oldPassword
-    return callback({ newPassword: @i18n.newPasswordRequired }) if not newPassword
+    return callback({ email: i18n.emailRequired }) if not email
+    return callback({ oldPassword: i18n.oldPasswordlRequired }) if not oldPassword
+    return callback({ newPassword: i18n.newPasswordRequired }) if not newPassword
 
     findAccount = new Promise (resolve, reject) =>
       @accountStore.findByLogin email, (err, account) =>
         return reject(err) if err
-        return reject({ generic: @i18n.accountDoesNotExist }) if not account
-        return reject({ generic: @i18n.currentPasswordDoesNotMatch }) if account.password isnt Encryptor.md5(oldPassword)
+        return reject({ generic: i18n.accountDoesNotExist }) if not account
+        return reject({ generic: i18n.currentPasswordDoesNotMatch }) if account.password isnt Encryptor.md5(oldPassword)
         resolve(account)
 
     findAccount
@@ -153,12 +158,12 @@ class AccountService
     .catch(callback)
 
   forgotPassword: (email, callback) ->
-    return callback({ generic: @i18n.emailRequired }) if not email
+    return callback({ generic: i18n.emailRequired }) if not email
 
     findAccount = new Promise (resolve, reject) =>
       handler = (err, account) =>
         return reject(err) if err
-        return reject(@i18n.accountDoesNotExist) if not account
+        return reject(i18n.accountDoesNotExist) if not account
         resolve(account)
       @accountStore.findByLogin(email, handler).populate('owner')
 
@@ -188,13 +193,13 @@ class AccountService
     .catch(callback)
 
   changeForgottenPassword: (key, newPassword, callback) ->
-    return callback({ generic: @i18n.linkRequired }) if not key
-    return callback({ generic: @i18n.newPasswordRequired }) if not newPassword
+    return callback({ generic: i18n.linkRequired }) if not key
+    return callback({ generic: i18n.newPasswordRequired }) if not newPassword
 
     findLink = new Promise (resolve, reject) =>
       @linkService.findByKey key, (err, link) =>
         return reject(err) if err
-        return reject({ generic: @i18n.changePasswordRequestCannotBeFound }) if not link
+        return reject({ generic: i18n.changePasswordRequestCannotBeFound }) if not link
         resolve(link)
 
     findLink
@@ -202,7 +207,7 @@ class AccountService
       new Promise (resolve, reject) =>
         @accountStore.findByLogin link.email, (err, account) =>
           return reject(err) if err
-          return reject({ generic: @i18n.accountCouldNotBeFound }) if not account
+          return reject({ generic: i18n.accountCouldNotBeFound }) if not account
           resolve({
             link: link
             account: account
@@ -226,13 +231,13 @@ class AccountService
     .catch(callback)
 
   confirmCompanyInvite: (inviteKey, password, callback) ->
-    return callback({ key: @i18n.linkRequired }) if not inviteKey
-    return callback({ password: @i18n.passwordRequired }) if not password
+    return callback({ key: i18n.linkRequired }) if not inviteKey
+    return callback({ password: i18n.passwordRequired }) if not password
 
     findInvite = new Promise (resolve, reject) =>
       handler = (err, invite) =>
         return reject(err) if err
-        return reject({ generic: @i18n.inviteNotFound }) if not invite
+        return reject({ generic: i18n.inviteNotFound }) if not invite
         resolve(invite)
       @inviteService.findByLink(inviteKey, handler).populate('user')
 
@@ -249,7 +254,7 @@ class AccountService
       if result.account
         return Promise.empty(result)
       else
-        new Promise (resolve, reject) =>
+        createNewAccount = new Promise (resolve, reject) =>
           accountData = {
             owner: result.invite.user._id,
             login: result.invite.user.email
@@ -261,6 +266,11 @@ class AccountService
               account: account
               invite: result.invite
             })
+
+        createNewAccount.then (result) =>
+          return new Promise (resolve, reject) =>
+            @contextService.afterAccountCreation result.account, (err) ->
+              if err then reject(err) else resolve(result)
 
     .then (result) =>
       new Promise (resolve, reject) =>

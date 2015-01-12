@@ -65,13 +65,15 @@ define (require) ->
       @rootRegExp = new RegExp('^' + @root + '?')
       return this
 
-    start: ->
+    start: (defaultModuleName) ->
       moduleName = null
 
       for route of @mappings
         do =>
           if @getPath().indexOf(route) is 0
             moduleName = @mappings[route]
+
+      moduleName = defaultModuleName if not moduleName
 
       @load moduleName, (module, authenticated) =>
         options = @getOptions(module, authenticated)

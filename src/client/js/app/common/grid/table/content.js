@@ -89,12 +89,12 @@ define(function (require) {
 
         addListeners: function () {
             this.listenTo(this.collection, 'remove', this.updateOrder, this);
-            this.listenTo(this, 'render', function () {
-                $(document).on('keyup', _.bind(this.onKeyUp, this));
-            }, this);
-            this.listenTo(this, 'close', function () {
-                $(document).off('keyup', _.bind(this.onKeyUp, this));
-            }, this);
+//            this.listenTo(this, 'render', function () {
+//                $(document).on('keyup', _.bind(this.onKeyUp, this));
+//            }, this);
+//            this.listenTo(this, 'close', function () {
+//                $(document).off('keyup', _.bind(this.onKeyUp, this));
+//            }, this);
         },
 
         renderItemView: function (view, index) {

@@ -1,3 +1,6 @@
+_ = require('underscore')
+moment = require('moment')
+i18n = inject('i18n')
 HttpStatus = require('http-status-codes')
 SecurityController = inject('controllers/security')
 SecurityService = inject('services/securityService')
@@ -7,7 +10,6 @@ UomController = inject('controllers/uom')
 inviteService = inject('services/inviteService')
 linkService = inject('services/linkService')
 UserService = inject('services/userService')
-i18n = inject('i18n')
 SettingsService = inject('services/settingsService')
 UomService = inject('services/uomService')
 UomStore = inject('persistence/uomStore')
@@ -39,8 +41,9 @@ ProductGroupStore = inject('persistence/productGroupStore')
 WarehouseController = inject('controllers/warehouse')
 WarehouseService = inject('services/warehouseService')
 WarehouseStore = inject('persistence/warehouseStore')
-moment = require('moment')
-_ = require('underscore')
+RoleService = inject('services/roleService')
+RoleStore = inject('persistence/roleStore')
+RoleController = inject('controllers/role')
 
 class PageController
 
@@ -49,11 +52,13 @@ class PageController
   register: ->
     currencyService = new CurrencyService(new CurrencyStore)
 
-    counterpartyService = new CounterpartyService(new CounterpartyStore(i18n))
+    counterpartyService = new CounterpartyService(new CounterpartyStore)
+
+    roleService = new RoleService(new RoleStore)
 
     companyStore = new CompanyStore
 
-    contextService = new ContextService(currencyService, companyStore)
+    contextService = new ContextService(currencyService, companyStore, roleService)
 
     activityService = new ActivityService(new ActivityStore, companyStore)
 
@@ -61,13 +66,12 @@ class PageController
 
     companyMediator = new CompanyMediator(companyStore, activityService)
 
-    accountService = new AccountService(companyMediator, new AccountStore, linkService, inviteService, userService,
-      i18n, activityService)
+    accountService = new AccountService(contextService, companyMediator, new AccountStore, linkService, inviteService, userService, activityService)
 
     companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService,
-      contextService, i18n)
+      contextService)
 
-    securityService = new SecurityService(@passport, accountService, i18n)
+    securityService = new SecurityService(@passport, accountService)
     securityService.applyLocalStrategy()
 
     securityController = new SecurityController(securityService)
@@ -104,7 +108,7 @@ class PageController
     userController = new UserController(userService)
     userController.register(@router)
 
-    settingsController = new SettingsController(new SettingsService(i18n, userService, accountService))
+    settingsController = new SettingsController(new SettingsService(userService, accountService))
     settingsController.register(@router)
 
     uomService = new UomService(new UomStore)
@@ -127,6 +131,9 @@ class PageController
     nomenclatureController = new NomenclatureController(new NomenclatureService(uomService, productGroupService,
       new NomenclatureStore))
     nomenclatureController.register(@router)
+
+    roleController = new RoleController(roleService)
+    roleController.register(@router)
 
     data = []
     daySince = 30

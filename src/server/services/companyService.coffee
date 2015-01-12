@@ -8,8 +8,7 @@ templateCompiler = inject('email/templateCompiler')
 
 class CompanyService
 
-  constructor: (@companyStore, @inviteService, @accountService, @userService, @activityService, @contextService, i18n) ->
-    @i18n = i18n.bundle('validation')
+  constructor: (@companyStore, @inviteService, @accountService, @userService, @activityService, @contextService) ->
 
   checkPermission: (companyId, userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
@@ -61,7 +60,7 @@ class CompanyService
     .catch(callback)
 
   getInvitedCompanyDetails: (key, callback) ->
-    return callback({ generic: @i18n.inviteNotFound }) if not key
+    return callback({ generic: i18n.inviteNotFound }) if not key
 
     findInvite = new Promise (resolve, reject) =>
       @inviteService.findByLink key, (err, invite) ->
@@ -204,9 +203,9 @@ class CompanyService
     findCompany = new Promise (resolve, reject) =>
       handler = (err, company) =>
         return reject(err) if err
-        return reject({ generic: @i18n.companyWasNotFound }) if not company
-        return reject({ generic: @i18n.currencyRateCannotBeChanged }) if company.currencyRate isnt data.currencyRate
-        return reject({ generic: @i18n.currencyCodeCannotBeChanged }) if company.currencyCode isnt data.currencyCode
+        return reject({ generic: i18n.companyWasNotFound }) if not company
+        return reject({ generic: i18n.currencyRateCannotBeChanged }) if company.currencyRate isnt data.currencyRate
+        return reject({ generic: i18n.currencyCodeCannotBeChanged }) if company.currencyCode isnt data.currencyCode
         resolve(company)
       @companyStore.findById(ns, data.id, handler).populate('employees owner')
 
