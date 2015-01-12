@@ -29,7 +29,7 @@ define(function (require) {
 
 			if (hasUrl) {
 				$root = this.$el.find('a');
-				$root.attr('href', url)
+				$root.attr('href', url);
 			}
 
 			if (_.isBoolean(escape) && !escape) {
