@@ -24,10 +24,7 @@ var path = require('path'),
 		},
 		mailer: {
 			templatesDir: path.resolve(__dirname + '/src/server/email/templates'),
-			host: 'smtp.gmail.com',
-			port: 587,
-			user: 'retailtracker.noreply@gmail.com',
-			pass: 'P@sSw0Rd'
+			from: 'support@retailregister.com'
 		},
 		cookie: {
 			maxAge: 1000 * 60 * 60,

@@ -1,6 +1,5 @@
 namespace = inject('util/namespace')
 Promise = inject('util/promise')
-i18n = inject('i18n').bundle('validation')
 
 class ContextService
 
@@ -10,15 +9,15 @@ class ContextService
     accountNamespace = namespace.accountWrapper(account._id)
 
     createCashierRole = new Promise (resolve, reject) =>
-      @roleService.create accountNamespace, { name: i18n.cashier }, (err, result) ->
+      @roleService.create accountNamespace, { name: 'CASHIER' }, (err, result) ->
         if err then reject(err) else resolve(result)
 
     createManagerRole = new Promise (resolve, reject) =>
-      @roleService.create accountNamespace, { name: i18n.manager }, (err, result) ->
+      @roleService.create accountNamespace, { name: 'MANAGER' }, (err, result) ->
         if err then reject(err) else resolve(result)
 
     createBossRole = new Promise (resolve, reject) =>
-      @roleService.create accountNamespace, { name: i18n.boss }, (err, result) ->
+      @roleService.create accountNamespace, { name: 'BOSS' }, (err, result) ->
         if err then reject(err) else resolve(result)
 
     Promise.all([createCashierRole, createManagerRole, createBossRole])

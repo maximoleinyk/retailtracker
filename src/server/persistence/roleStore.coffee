@@ -7,7 +7,7 @@ class RoleStore
     @model = new Model
 
   findAll: (ns, callback) ->
-    @model.get(ns).find(callback)
+    @model.get(ns).find({}).where('name').ne('BOSS').exec(callback)
 
   create: (ns, data, callback) ->
     Role = @model.get(ns)
