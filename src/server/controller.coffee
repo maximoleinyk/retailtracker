@@ -44,6 +44,9 @@ WarehouseStore = inject('persistence/warehouseStore')
 RoleService = inject('services/roleService')
 RoleStore = inject('persistence/roleStore')
 RoleController = inject('controllers/role')
+EmployeeService = inject('services/employeeService')
+EmployeeStore = inject('persistence/employeeStore')
+EmployeeController = inject('controllers/employee')
 
 class PageController
 
@@ -134,6 +137,11 @@ class PageController
 
     roleController = new RoleController(roleService)
     roleController.register(@router)
+
+    employeeService = new EmployeeService(new EmployeeStore())
+
+    employeeController = new EmployeeController(employeeService)
+    employeeController.register(@router)
 
     data = []
     daySince = 30

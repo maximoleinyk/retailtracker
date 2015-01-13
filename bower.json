@@ -25,7 +25,8 @@
     "jsbarcode": "*",
     "cookies-js": "~1.1.0",
     "md5": "https://github.com/blueimp/JavaScript-MD5.git",
-    "d3": "~3.5.2"
+    "d3": "~3.5.2",
+    "typeahead.js": "~0.10.5"
   },
   "description": "This is the skeleton app that utilize mainstream technologies.",
   "main": "./js/config.js",

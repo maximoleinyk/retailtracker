@@ -11,6 +11,11 @@ class RoleSchema
       description:
         type: String
         default: ''
+      accessPos:
+        type: Boolean
+        default: true
+      accessCompany: Boolean
+      accessBrand: Boolean
     this
 
   get: (namespace) ->
