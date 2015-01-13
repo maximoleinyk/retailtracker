@@ -23,8 +23,11 @@ class CompanySchema
       defaultCurrency: mongoose.Schema.Types.ObjectId
       employees: [
         {
-          type: mongoose.Schema.Types.ObjectId
-          ref: 'User'
+          user:
+            type: mongoose.Schema.Types.ObjectId
+            ref: 'User'
+          role:
+            type: String
         }
       ]
       invitees: [

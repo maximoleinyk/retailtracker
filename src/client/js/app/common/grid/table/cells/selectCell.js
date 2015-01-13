@@ -50,7 +50,7 @@ define(function (require) {
 			var select2 = this.ui.$input.select2(config);
 			select2.on('select2-selecting', _.bind(this.onSelection, this));
 
-			if (this.options.column.get('selectFirst')) {
+			if (!select2.val() && this.options.column.get('selectFirst')) {
 				select2.val(data[0].id).trigger('change');
 			}
 		},
@@ -86,7 +86,9 @@ define(function (require) {
 			var id = this.model.get(this.options.column.get('field')),
 				value = id ? {
 					id: id,
-					text: this.formatResult(this.model.toJSON())
+					text: this.formatResult({
+						id: id
+					})
 				} : null;
 
 			callback(value);

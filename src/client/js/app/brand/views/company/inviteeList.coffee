@@ -40,12 +40,15 @@ define (require) ->
                 id: model.id
                 text: i18n.get(model.get('name').toLowerCase())
             formatter: (id) =>
-              if id then @options.roles.get(id)?.get('name') else ''
-            formatResult: (roleObject) =>
-              if roleObject.text
-                return roleObject.text
+              if id
+                return i18n.get(@options.roles.get(id).get('name').toLowerCase())
               else
-                return i18n.get(@options.roles.get(roleObject.role)?.get('name').toLowerCase())
+                return ''
+            formatResult: (object) =>
+              if object.text
+                return object.text
+              else
+                return i18n.get(@options.roles.get(object.id).get('name').toLowerCase())
             onSelection: (object, model) ->
               model.set('role', object.id)
             width: 220
