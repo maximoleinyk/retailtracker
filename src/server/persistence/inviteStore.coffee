@@ -1,12 +1,15 @@
 Invite = inject('persistence/model/invite')
 
-module.exports = {
+class InviteStore
 
   create: (data, callback) ->
     invite = new Invite(data)
     invite.save (err, doc) ->
       return callback(err) if err
       Invite.findById(doc._id, callback).populate('user')
+
+  removeByEmailAndAccount: (email, account, callback) ->
+    Invite.remove({ email: email, account: account }, callback)
 
   findByUserAndCompany: (userId, companyId, callback) ->
     criteria = {
@@ -24,4 +27,4 @@ module.exports = {
   remove: (id, callback) ->
     Invite.findByIdAndRemove(id, callback)
 
-}
+module.exports = InviteStore

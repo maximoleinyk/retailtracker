@@ -1,4 +1,4 @@
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
 Promise = inject('util/promise')
 
 class EmployeeService
@@ -15,7 +15,14 @@ class EmployeeService
     # todo implement
 
   create: (ns, data, callback) ->
-    # todo implement
+    createEmployee = new Promise (resolve, reject) =>
+      @employeeStore.create ns, data, (err, result) ->
+        if err then reject(err) else resolve(result)
+
+    createEmployee
+    .then (result) ->
+      callback(null, result)
+    .catch(callback)
 
   update: (ns, data, callback) ->
     # todo implement

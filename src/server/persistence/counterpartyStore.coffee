@@ -1,6 +1,6 @@
 Model = inject('persistence/model/counterparty')
 _ = require('underscore')
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
 
 class CounterpartyStore
 

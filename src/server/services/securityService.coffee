@@ -1,5 +1,5 @@
 LocalStrategy = require('passport-local')
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
 
 class SecurityService
 

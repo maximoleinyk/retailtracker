@@ -1,4 +1,4 @@
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
 _ = require('underscore')
 
 class ProductGroupService

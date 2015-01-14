@@ -1,12 +1,13 @@
 Link = inject('persistence/model/link')
 
-module.exports = {
+class LinkStore
 
   create: (data, callback) ->
-    new Link(data).save(callback)
+    link = new Link(data)
+    link.save(callback)
 
-  removeByEmail: (email, callback) ->
-    Link.remove({ email: email }, callback)
+  removeByAccountId: (accountId, callback) ->
+    Link.remove({ account: accountId }, callback)
 
   removeByKey: (link, callback) ->
     Link.findOneAndRemove({ link: link }, callback)
@@ -17,4 +18,4 @@ module.exports = {
   findByEmail: (email, callback) ->
     Link.findOne({ email: email }, callback)
 
-}
+module.exports = LinkStore

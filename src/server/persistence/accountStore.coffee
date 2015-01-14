@@ -10,8 +10,8 @@ class AccountStore
   update: (data, callback) ->
     Account.update({ _id: data._id or data.id }, _.omit(data, ['_id']), callback)
 
-  findByLogin: (email, callback) ->
-    Account.findOne({ login: email }, callback)
+  findByLogin: (login, callback) ->
+    Account.findOne({ login: login }, callback)
 
   findByOwner: (owner, callback) ->
     Account.findOne({ owner: owner }, callback)

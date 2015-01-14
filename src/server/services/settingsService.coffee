@@ -1,6 +1,6 @@
 _ = require('underscore')
 Promise = inject('util/promise')
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
 
 class SettingsService
 

@@ -1,14 +1,16 @@
 _ = require('underscore')
 moment = require('moment')
-i18n = inject('i18n')
+i18n = inject('util/i18n')
 HttpStatus = require('http-status-codes')
 SecurityController = inject('controllers/security')
 SecurityService = inject('services/securityService')
 UserController = inject('controllers/user')
 SettingsController = inject('controllers/settings')
 UomController = inject('controllers/uom')
-inviteService = inject('services/inviteService')
-linkService = inject('services/linkService')
+LinkStore = inject('persistence/linkStore')
+LinkService = inject('services/linkService')
+InviteStore = inject('persistence/inviteStore')
+InviteService = inject('services/inviteService')
 UserService = inject('services/userService')
 SettingsService = inject('services/settingsService')
 UomService = inject('services/uomService')
@@ -26,7 +28,6 @@ AccountController = inject('controllers/account')
 AccountService = inject('services/accountService')
 AccountStore = inject('persistence/accountStore')
 UserStore = inject('persistence/userStore')
-CompanyMediator = inject('services/companyMediator')
 ActivityController = inject('controllers/activity')
 ActivityService = inject('services/activityService')
 ActivityStore = inject('persistence/activityStore')
@@ -67,9 +68,15 @@ class PageController
 
     userService = new UserService(new UserStore)
 
-    companyMediator = new CompanyMediator(companyStore, activityService)
+    linkService = new LinkService(new LinkStore)
 
-    accountService = new AccountService(contextService, companyMediator, new AccountStore, linkService, inviteService, userService, activityService)
+    inviteStore = new InviteStore()
+    inviteService = new InviteService(inviteStore)
+
+    employeeService = new EmployeeService(new EmployeeStore())
+
+    accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
+      inviteService, userService, activityService)
 
     companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService,
       contextService)
@@ -79,22 +86,6 @@ class PageController
 
     securityController = new SecurityController(securityService)
     securityController.register(@router)
-
-    # redirect from login page if user is authenticated
-    @router.get '/page/account/login', (req, res, next) ->
-      if req.isAuthenticated() then res.redirect('/page/brand') else next()
-
-    # always return single HTML page on leading /page* part
-    @router.get "/page*", (req, res) ->
-      res.cookie('X-Csrf-Token', req.csrfToken())
-      res.sendFile(global.config.app.indexHtml)
-
-    # redirect from root directory to UI
-    @router.get '/', (req, res) ->
-      res.redirect '/page/account/login'
-
-    @router.get '/i18n/messages/:batch', (req, res) =>
-      res.send(i18n.bundle(req.params.batch))
 
     contextController = new ContextController(accountService)
     contextController.register(@router)
@@ -138,24 +129,23 @@ class PageController
     roleController = new RoleController(roleService)
     roleController.register(@router)
 
-    employeeService = new EmployeeService(new EmployeeStore())
-
     employeeController = new EmployeeController(employeeService)
     employeeController.register(@router)
 
-    data = []
-    daySince = 30
+    # redirect from login page if user is authenticated
+    @router.get '/page/account/login', (req, res, next) ->
+      if req.isAuthenticated() then res.redirect('/page/brand') else next()
 
-    while (daySince)
-      do ->
-        date = moment().subtract(daySince, 'months')
-        for sale in _.range(Math.floor(Math.random() * (20 - 1) + 1))
-          do ->
-            amount = Math.floor(Math.random() * (1000 - 55.5) + 55.5)
-            data.push({ date: date, amount: amount })
-        daySince--
+    # always return single HTML page on leading /page* part
+    @router.get "/page*", (req, res) ->
+      res.cookie('X-Csrf-Token', req.csrfToken())
+      res.sendFile(global.config.app.indexHtml)
 
-    @router.get '/generate/data', (req, res) ->
-      res.status(HttpStatus.OK).send(data)
+    # redirect from root directory to UI
+    @router.get '/', (req, res) ->
+      res.redirect '/page/account/login'
+
+    @router.get '/i18n/messages/:batch', (req, res) =>
+      res.send(i18n.bundle(req.params.batch))
 
 module.exports = PageController

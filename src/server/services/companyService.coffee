@@ -1,4 +1,4 @@
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
 Promise = inject('util/promise')
 _ = require('underscore')
 namespace = inject('util/namespace')
@@ -112,7 +112,7 @@ class CompanyService
 
     .then (result) =>
       result.account.companies.push({
-        ns: result.account._id.toString()
+        account: result.account._id
         company: result.company._id
       })
       result.account.owner = result.account.owner._id

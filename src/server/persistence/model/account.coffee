@@ -12,23 +12,28 @@ schema = mongoose.Schema
     default: null
   status:
     type: String
-    required: true
-    default: 'OWN'
+    default: 'ACTIVATED' # SUSPENDED ACTIVATED DELETED
+  billingStatus:
+    type: String
+    default: 'FREE'
   login:
     type: String
+    unique: true
     required: true
   password:
     type: String
     required: true
   companies: [
     {
-      ns:
-        type: String
+      account:
+        type: mongoose.Schema.Types.ObjectId
         required: true
       company:
         type: mongoose.Schema.Types.ObjectId
         required: true
     }
   ]
+
+schema.index({ login: 1 }, { unique: true })
 
 module.exports = mongoose.model('Account', schema)

@@ -4,11 +4,12 @@ emailTemplates = inject('email/templates/mapper')
 templateCompiler = inject('email/templateCompiler')
 Promise = inject('util/promise')
 namespace = inject('util/namespace')
-i18n = inject('i18n').bundle('validation')
+i18n = inject('util/i18n').bundle('validation')
+mail = emailTemplates(mailer, templateCompiler)
 
 class AccountService
 
-  constructor: (@contextService, @companyMediator, @accountStore, @linkService, @inviteService, @userService, @activityService) ->
+  constructor: (@employeeService, @contextService, @companyStore, @accountStore, @linkService, @inviteService, @userService, @activityService) ->
 
   register: (email, firstName, callback) ->
     return callback({ firstName: i18n.firstNameRequired }) if not firstName
@@ -17,41 +18,20 @@ class AccountService
     findAccount = new Promise (resolve, reject) =>
       @accountStore.findByLogin email, (err, account) =>
         return reject(err) if err
-        return reject({ generic: i18n.accountAlreadyExists }) if account and account.status is 'OWN'
-        resolve(account)
+        if account then reject({ generic: i18n.accountAlreadyExists }) else resolve()
 
     findAccount
     .then =>
       new Promise (resolve, reject) =>
-        @userService.findByEmail email, (err, user) ->
-          if err then reject(err) else resolve(user)
-
-    .then (user) =>
-      if not user
-        return new Promise (resolve, reject) =>
-          userData = {
-            firstName: firstName
-            email: email
-          }
-          @userService.create userData, (err, user) ->
-            if err then reject(err) else resolve(user)
-      else
-        return Promise.empty(user)
-
-    .then (user) =>
-      new Promise (resolve, reject) =>
-        @inviteService.createAccountInvite user, (err, result) ->
-          if err then reject(err) else resolve(result)
+        @inviteService.generateInviteForAccountOwner email, firstName, (err, invite) ->
+          if err then reject(err) else resolve(invite)
 
     .then (invite) =>
-      mail = emailTemplates(mailer, templateCompiler)
       new Promise (resolve, reject) =>
-        mail.registrationInvite invite, (err, result) ->
-          if err then reject(err) else resolve(result)
+        mail.registrationInvite invite, (err) ->
+          if err then reject(err) else resolve()
 
-    .then (result) ->
-      callback(null, result)
-
+    .then(callback)
     .catch(callback)
 
   approveRegistration: (link, password, callback) ->
@@ -61,76 +41,64 @@ class AccountService
     findInvite = new Promise (resolve, reject) =>
       @inviteService.findByLink link, (err, invite) =>
         return reject(err) if err
-        return reject({ generic: i18n.inviteCannotBeFound }) if not invite
-
-        resolve(invite)
+        if invite then resolve(invite) else reject({ generic: i18n.inviteCannotBeFound })
 
     findInvite
+
+    # create unique user
     .then (invite) =>
-      new Promise (resolve, reject) =>
-        @accountStore.findByLogin invite.user.email, (err, account) =>
+      userData = {
+        firstName: invite.firstName
+        email: invite.email
+      }
+      return new Promise (resolve, reject) =>
+        @userService.create userData, (err, user) ->
           if err then reject(err) else resolve({
+            user: user
             invite: invite
+          })
+
+    # create account
+    .then (result) =>
+      createNewAccount = new Promise (resolve, reject) =>
+        accountData = {
+          owner: result.user._id
+          login: result.invite.email
+          password: Encryptor.md5(password)
+        }
+        @accountStore.create accountData, (err, account) ->
+          if err then reject(err) else resolve({
+            invite: result.invite
             account: account
           })
 
-    .then (result) =>
-      account = result.account
-      invite = result.invite
-
-      # change status if account already exists
-      if account and account.status is 'DEPENDANT'
+      return createNewAccount.then (result) =>
         return new Promise (resolve, reject) =>
-          accountData = account.toJSON()
-          accountData.status = 'OWN'
-          accountData.dependsFrom = null
-          @accountStore.update accountData, (err) ->
-            if err then reject(err) else resolve({
-              invite: invite
-              account: accountData
-            })
-        # create new account
-      else
-        createNewAccount = new Promise (resolve, reject) =>
-          accountData = {
-            owner: invite.user._id,
-            login: invite.user.email
-            password: Encryptor.md5(password)
-          }
-          @accountStore.create accountData, (err, account) ->
-            if err then reject(err) else resolve({
-              invite: invite
-              account: account
-            })
+          @contextService.afterAccountCreation result.account, (err) ->
+            if err then reject(err) else resolve(result)
 
-        return createNewAccount.then (result) =>
-          return new Promise (resolve, reject) =>
-            @contextService.afterAccountCreation result.account, (err) ->
-              if err then reject(err) else resolve(result)
-
+    # delete invite link
     .then (result) =>
       new Promise (resolve, reject) =>
-        @inviteService.remove result.invite, (err) ->
-          if err then reject(err) else resolve(result)
-
-    .then (result) ->
-      new Promise (resolve, reject) ->
-        mail = emailTemplates(mailer, templateCompiler)
-        mail.successfulRegistration result.invite, (err) ->
+        @inviteService.remove result.invite._id, (err) ->
           if err then reject(err) else resolve(result.account)
 
+    # send mail
+    .then (account) ->
+      new Promise (resolve, reject) ->
+        mail.successfulRegistration account, (err) ->
+          if err then reject(err) else resolve(account)
+
+    # create activity item
     .then (account) =>
-      @createAccountRegisteredActivityItem(account)
+      new Promise (resolve, reject) =>
+        @activityService.accountRegistered namespace.accountWrapper(account._id), account.owner, (err) ->
+          if err then reject(err) else resolve(account)
 
     .then (account) ->
       callback(null, account)
 
     .catch(callback)
-
-  createAccountRegisteredActivityItem: (account) ->
-    new Promise (resolve, reject) =>
-      @activityService.accountRegistered namespace.accountWrapper(account._id), account.owner, (err) ->
-        if err then reject(err) else resolve(account)
 
   changePassword: (email, oldPassword, newPassword, callback) ->
     return callback({ email: i18n.emailRequired }) if not email
@@ -161,21 +129,19 @@ class AccountService
     return callback({ generic: i18n.emailRequired }) if not email
 
     findAccount = new Promise (resolve, reject) =>
-      handler = (err, account) =>
+      @accountStore.findByLogin email, (err, account) =>
         return reject(err) if err
-        return reject(i18n.accountDoesNotExist) if not account
-        resolve(account)
-      @accountStore.findByLogin(email, handler).populate('owner')
+        if not account then reject(i18n.accountDoesNotExist) else resolve(account)
 
     findAccount
     .then (account) =>
       new Promise (resolve, reject) =>
-        @linkService.removeByEmail account.owner.email, (err) =>
+        @linkService.removeByAccountId account._id, (err) =>
           if err then reject(err) else resolve(account)
 
     .then (account) =>
       new Promise (resolve, reject) =>
-        @linkService.create email, (err, link) ->
+        @linkService.create account._id, (err, link) ->
           if err then reject(err) else resolve({
             link: link
             account: account
@@ -183,14 +149,14 @@ class AccountService
 
     .then (result) ->
       new Promise (resolve, reject) ->
-        mail = emailTemplates(mailer, templateCompiler)
-        mail.changePassword result.link, (err, mail) ->
-          if err then reject(err) else resolve(mail)
+        mail.changePassword result, (err) ->
+          if err then reject(err) else resolve()
 
-    .then (mail) ->
-      callback(null, mail)
+    .then ->
+      callback(null)
 
-    .catch(callback)
+    .catch (err) ->
+      callback({generic: err})
 
   changeForgottenPassword: (key, newPassword, callback) ->
     return callback({ generic: i18n.linkRequired }) if not key
@@ -199,16 +165,14 @@ class AccountService
     findLink = new Promise (resolve, reject) =>
       @linkService.findByKey key, (err, link) =>
         return reject(err) if err
-        return reject({ generic: i18n.changePasswordRequestCannotBeFound }) if not link
-        resolve(link)
+        if not link then reject({ generic: i18n.changePasswordRequestCannotBeFound }) else resolve(link)
 
     findLink
     .then (link) =>
       new Promise (resolve, reject) =>
-        @accountStore.findByLogin link.email, (err, account) =>
+        @accountStore.findById link.account, (err, account) =>
           return reject(err) if err
-          return reject({ generic: i18n.accountCouldNotBeFound }) if not account
-          resolve({
+          if not account then reject({ generic: i18n.accountCouldNotBeFound }) else resolve({
             link: link
             account: account
           })
@@ -230,37 +194,65 @@ class AccountService
 
     .catch(callback)
 
-  confirmCompanyInvite: (inviteKey, password, callback) ->
-    return callback({ key: i18n.linkRequired }) if not inviteKey
-    return callback({ password: i18n.passwordRequired }) if not password
+  confirmCompanyInvite: (link, password, callback) ->
+    return callback({ key: i18n.linkRequired }) if not link
 
     findInvite = new Promise (resolve, reject) =>
-      handler = (err, invite) =>
+      @inviteService.findByLink link, (err, invite) =>
         return reject(err) if err
-        return reject({ generic: i18n.inviteNotFound }) if not invite
-        resolve(invite)
-      @inviteService.findByLink(inviteKey, handler).populate('user')
+        if not invite then reject({ generic: i18n.inviteNotFound }) else resolve(invite)
 
     findInvite
+
+    # find user
     .then (invite) =>
       new Promise (resolve, reject) =>
-        @accountStore.findByLogin invite.user.email, (err, account) =>
+        @userService.findByEmail invite.email, (err, user) =>
           if err then reject(err) else resolve({
-            account: account
+            user: user
             invite: invite
           })
 
+    # create user if not exists
+    .then (result) =>
+      return Promise.empty(result) if result.user
+
+      userData = {
+        firstName: result.invite.firstName
+        email: result.invite.email
+      }
+      new Promise (resolve, reject) =>
+        @userService.create userData, (err, user) ->
+          return reject(err) if err
+          return reject({ password: i18n.passwordRequired }) if not user and not password
+          resolve({
+            user: user
+            invite: result.invite
+          })
+
+    # find account
+    .then (result) =>
+      new Promise (resolve, reject) =>
+        @accountStore.findByLogin result.invite.email, (err, account) =>
+          return reject(err) if err
+          return reject({ password: i18n.passwordRequired }) if not account and not password
+          resolve({
+            user: result.user
+            invite: result.invite
+            account: account
+          })
+
+    # create account if not exists
     .then (result) =>
       if result.account
         return Promise.empty(result)
       else
+        accountData = {
+          owner: result.user._id,
+          login: result.user.email
+          password: Encryptor.md5(password)
+        }
         createNewAccount = new Promise (resolve, reject) =>
-          accountData = {
-            owner: result.invite.user._id,
-            login: result.invite.user.email
-            password: Encryptor.md5(password)
-            status: 'DEPENDANT'
-          }
           @accountStore.create accountData, (err, account) ->
             if err then reject(err) else resolve({
               account: account
@@ -272,43 +264,78 @@ class AccountService
             @contextService.afterAccountCreation result.account, (err) ->
               if err then reject(err) else resolve(result)
 
+    # add company to invitee's account
     .then (result) =>
+      data = result.account.toJSON()
+      data.companies.push({
+        account: result.invite.account # someones' account
+        company: result.invite.company
+      })
       new Promise (resolve, reject) =>
-        accountData = result.account.toJSON()
-        accountData.companies.push({
-          ns: result.invite.ns # someones' account
-          company: result.invite.company
-        })
-        @accountStore.update accountData, (err) =>
+        @accountStore.update data, (err) =>
           if err then reject(err) else resolve(result)
 
     .then (result) =>
-      @employeeConfirmedInviteToCompany(result)
+      originCompanyNamespace = namespace.companyWrapper(result.invite.account, result.invite.company)
+      originCompanyInviteNs = namespace.accountWrapper(result.invite.account)
 
+      data = {
+        firstName: result.user.firstName
+        lastName: result.user.lastName
+        role: result.invite.role
+        email: result.invite.email
+      }
+      createEmployee = new Promise (resolve, reject) =>
+        @employeeService.create originCompanyNamespace, data, (err, employee) =>
+          if err then reject(err) else resolve(employee)
+
+      createEmployee
+      .then (employee) =>
+        new Promise (resolve, reject) =>
+          @companyStore.findById originCompanyInviteNs, result.invite.company, (err, company) =>
+            if err then reject(err) else resolve({
+              company: company
+              employee: employee
+            })
+
+      # update origin company employees list
+      .then (employeeAndCompany) =>
+        company = employeeAndCompany.company
+        company.employees.push(employeeAndCompany.employee._id)
+        company.invitees = _.filter company.invitees, (invitee) ->
+          invitee.email isnt result.invite.email
+
+        new Promise (resolve, reject) =>
+          @companyStore.update originCompanyInviteNs, employeeAndCompany.company.toJSON(), (err) =>
+            if err then reject(err) else resolve(employeeAndCompany)
+
+
+      # create activity item inside of company owner's account
+      .then (employeeAndCompany) =>
+        employeeId = employeeAndCompany.employee._id
+        companyId = employeeAndCompany.company._id
+        new Promise (resolve, reject) =>
+          @activityService.employeeConfirmedInvitation originCompanyInviteNs, employeeId, companyId, originCompanyInviteNs, (err) ->
+            if err then reject(err) else resolve(result)
+
+    # create activity item inside of employee's account
     .then (result) =>
+      accountNamespace = namespace.accountWrapper(result.account._id)
+      userId = result.account.owner
+      companyId = result.invite.company
       new Promise (resolve, reject) =>
-        companyId = result.invite.company
-        userId = result.invite.user
-        @companyMediator.confirmInvitee result.invite.ns, companyId, userId, (err) =>
+        @activityService.employeeConfirmedInvitation accountNamespace, userId, companyId, result.invite.account, (err) ->
           if err then reject(err) else resolve(result)
 
     .then (result) =>
       new Promise (resolve, reject) =>
-        @inviteService.remove result.invite, (err) ->
+        @inviteService.remove result.invite._id, (err) ->
           if err then reject(err) else resolve(result.account)
 
     .then (result) ->
       callback(null, result)
 
     .catch(callback)
-
-  employeeConfirmedInviteToCompany: (result) ->
-    accountNamespace = namespace.accountWrapper(result.account._id)
-    userId = result.account.owner
-    companyId = result.invite.company
-    new Promise (resolve, reject) =>
-      @activityService.employeeConfirmedInvitation accountNamespace, userId, companyId, result.invite.ns, (err) ->
-        if err then reject(err) else resolve(result)
 
   update: (account, callback) ->
     @accountStore.update(account, callback)

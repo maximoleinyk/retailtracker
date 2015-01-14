@@ -16,12 +16,6 @@ class EmployeeSchema
         ref: 'Role'
         required: true
         $tenant: true
-      companies: [
-        {
-          type: mongoose.Schema.Types.ObjectId
-          ref: 'Company'
-        }
-      ]
     this
 
   get: (namespace) ->
