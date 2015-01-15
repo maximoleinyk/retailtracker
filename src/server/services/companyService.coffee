@@ -242,10 +242,10 @@ class CompanyService
           new Promise (resolve, reject) =>
             @inviteService.remove invite, (err) ->
               if err then reject(err) else resolve({
-                companyOwnerNamespace: invite.ns
+                companyOwnerNamespace: invite.account
                 userId: invite.user._id
                 company: invite.company
-                ns: invite.ns
+                account: invite.account
               })
 
         .then (result) =>
@@ -362,9 +362,9 @@ class CompanyService
         return Promise.empty({})
       else
         new Promise (resolve, reject) =>
-          @companyStore.findById namespace.accountWrapper(foundCompany.ns), companyId, (err, company) ->
+          @companyStore.findById namespace.accountWrapper(foundCompany.account), companyId, (err, company) ->
             if err then reject(err) else resolve({
-              ns: foundCompany.ns
+              account: foundCompany.account
               company: company
             })
 
@@ -392,7 +392,7 @@ class CompanyService
     userId = result.userId
     companyId = result.company
     new Promise (resolve, reject) =>
-      @activityService.employeeWasRemovedFromCompany accountNamespace, userId, companyId, result.ns, (err) ->
+      @activityService.employeeWasRemovedFromCompany accountNamespace, userId, companyId, result.account, (err) ->
         if err then reject(err) else resolve(result)
 
 module.exports = CompanyService

@@ -34,7 +34,7 @@ define (require) ->
         return throw 'Unknown context' if not result
         context.set('company', result.company)
         http.setHeaders({
-          account: result.ns
+          account: result.account
           company: companyId
         })
   })

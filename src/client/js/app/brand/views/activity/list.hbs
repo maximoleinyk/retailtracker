@@ -3,11 +3,12 @@
 </div>
 {{#each groups}}
     <ul class="activity-items">
-        {{#each this}}
+		{{#each this}}
             <li>
-                <span class="activity-item-time">{{time dateTime}}</span> <strong class="nowrap">{{ formatUser user }}</strong> {{{action}}}
+                <span class="activity-item-time">{{time dateTime}}</span> <strong
+                    class="nowrap">{{ formatUser user }}</strong> {{{action}}}
             </li>
-        {{/each}}
+		{{/each}}
     </ul>
     <div class="activity-group">
         <span class="date-icon fa fa-dot-circle-o"></span> <span class="activity-group-title">{{date @key}}</span>
