@@ -2,21 +2,24 @@
     <div class="box-title">{{i18n.companyInvite}}</div>
     <div class="warning" data-validation="generic" data-hide></div>
     <form data-submit="confirm">
-        <p>{{company.owner.firstName}} {{i18n.companyInviteGreetings}} <strong>{{company.name}}</strong>.</p>
-        <p>{{i18n.stepsToCompleteRegistration}}</p>
+        <p><strong>{{company.owner.firstName}}</strong> {{i18n.companyInviteGreetings}} <strong>"{{company.name}}".</strong></p>
 
-        <div class="form-group input-group-lg">
-            <label for="password">{{i18n.password}}</label>
-            <input type="password" id="password" name="password" class="form-control"
-                   placeholder="{{i18n.enterPassword}}" title="{{i18n.enterPassword}}" data-focus data-bind/>
-            <span class="help-block" data-validation="password" data-hide></span>
-        </div>
-        <div class="form-group input-group-lg">
-            <label for="confirmPassword">{{i18n.confirmPassword}}</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-                   placeholder="{{i18n.confirmPassword}}" title="{{i18n.confirmPassword}}" data-bind/>
-            <span class="help-block" data-validation="confirmPassword" data-hide></span>
-        </div>
+		{{#unless userHasAccount}}
+            <p>{{i18n.stepsToCompleteRegistration}}</p>
+            <div class="form-group input-group-lg">
+                <label for="password">{{i18n.password}}</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="{{i18n.enterPassword}}" title="{{i18n.enterPassword}}" data-focus data-bind/>
+                <span class="help-block" data-validation="password" data-hide></span>
+            </div>
+            <div class="form-group input-group-lg">
+                <label for="confirmPassword">{{i18n.confirmPassword}}</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                       placeholder="{{i18n.confirmPassword}}" title="{{i18n.confirmPassword}}" data-bind/>
+                <span class="help-block" data-validation="confirmPassword" data-hide></span>
+            </div>
+		{{/unless}}
+
         <div class="form-group submit-group">
             <button type="submit" class="btn btn-primary btn-lg" data-auto-disable>{{i18n.confirm}}</button>
         </div>

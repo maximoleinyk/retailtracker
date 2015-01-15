@@ -73,7 +73,7 @@ class PageController
     inviteStore = new InviteStore()
     inviteService = new InviteService(inviteStore)
 
-    employeeService = new EmployeeService(new EmployeeStore())
+    employeeService = new EmployeeService(roleService, new EmployeeStore())
 
     accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
       inviteService, userService, activityService)

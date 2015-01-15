@@ -12,11 +12,8 @@ class EmployeeStore
   findByEmail: (ns, email, callback) ->
     @model.get(ns).findOne({ email: email }, callback)
 
-  findAllByCompanyId: (ns, companyId, callback) ->
-    @model.get(ns).find({}).where('companies').in([companyId]).exec(callback)
-
   findAll: (ns, callback) ->
-    @model.get(ns).findAll(callback).populate('role companies')
+    @model.get(ns).find({}, callback)
 
   create: (ns, data, callback) ->
     Employee = @model.get(ns)

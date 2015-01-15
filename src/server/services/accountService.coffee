@@ -11,6 +11,18 @@ class AccountService
 
   constructor: (@employeeService, @contextService, @companyStore, @accountStore, @linkService, @inviteService, @userService, @activityService) ->
 
+  findById: (id, callback) ->
+    @accountStore.findById(id, callback).populate('user')
+
+  findByLogin: (email, callback) ->
+    @accountStore.findByLogin(email, callback)
+
+  findByOwner: (owner, callback) ->
+    @accountStore.findByOwner(owner, callback)
+
+  findByCredentials: (login, password, callback) ->
+    @accountStore.findByCredentials(login, Encryptor.md5(password), callback).populate('user')
+
   register: (email, firstName, callback) ->
     return callback({ firstName: i18n.firstNameRequired }) if not firstName
     return callback({ email: i18n.emailRequired }) if not email
@@ -251,12 +263,14 @@ class AccountService
           owner: result.user._id,
           login: result.user.email
           password: Encryptor.md5(password)
+          dependsFrom: result.invite.account
         }
         createNewAccount = new Promise (resolve, reject) =>
           @accountStore.create accountData, (err, account) ->
             if err then reject(err) else resolve({
               account: account
               invite: result.invite
+              user: result.user
             })
 
         createNewAccount.then (result) =>
@@ -302,26 +316,25 @@ class AccountService
       .then (employeeAndCompany) =>
         company = employeeAndCompany.company
         company.employees.push(employeeAndCompany.employee._id)
-        company.invitees = _.filter company.invitees, (invitee) ->
+        company.invitees = company.invitees.filter (invitee) ->
           invitee.email isnt result.invite.email
 
         new Promise (resolve, reject) =>
           @companyStore.update originCompanyInviteNs, employeeAndCompany.company.toJSON(), (err) =>
             if err then reject(err) else resolve(employeeAndCompany)
 
-
       # create activity item inside of company owner's account
       .then (employeeAndCompany) =>
-        employeeId = employeeAndCompany.employee._id
+        employeeId = result.user._id
         companyId = employeeAndCompany.company._id
         new Promise (resolve, reject) =>
-          @activityService.employeeConfirmedInvitation originCompanyInviteNs, employeeId, companyId, originCompanyInviteNs, (err) ->
+          @activityService.employeeConfirmedInvitation originCompanyInviteNs, employeeId, companyId, originCompanyInviteNs().split('.')[0], (err) ->
             if err then reject(err) else resolve(result)
 
     # create activity item inside of employee's account
     .then (result) =>
       accountNamespace = namespace.accountWrapper(result.account._id)
-      userId = result.account.owner
+      userId = result.user._id
       companyId = result.invite.company
       new Promise (resolve, reject) =>
         @activityService.employeeConfirmedInvitation accountNamespace, userId, companyId, result.invite.account, (err) ->
@@ -339,14 +352,5 @@ class AccountService
 
   update: (account, callback) ->
     @accountStore.update(account, callback)
-
-  findById: (id, callback) ->
-    @accountStore.findById(id, callback).populate('user')
-
-  findByOwner: (owner, callback) ->
-    @accountStore.findByOwner(owner, callback)
-
-  findByCredentials: (login, password, callback) ->
-    @accountStore.findByCredentials(login, Encryptor.md5(password), callback).populate('user')
 
 module.exports = AccountService

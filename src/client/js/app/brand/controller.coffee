@@ -15,6 +15,7 @@ define (require) ->
   ManageCompanyEmployeesPage = require('cs!./views/company/employees')
   Collection = require('cs!app/common/collection')
   Roles = require('cs!app/brand/collections/roles')
+  Employees = require('cs!app/company/collections/employees')
 
   Controller.extend
 
@@ -35,11 +36,12 @@ define (require) ->
         })
 
     manageCompanyEmployees: (companyId) ->
+      employees = new Employees()
       model = new Company({ _id: companyId }, { parse: true })
-      model.fetch()
-      .then () =>
+      Promise.all([model.fetch(), employees.fetch(companyId)])
+      .then =>
         @openPage new ManageCompanyEmployeesPage({
-          collection: new Collection model.get('employees')
+          collection: employees
           model: model
         })
 

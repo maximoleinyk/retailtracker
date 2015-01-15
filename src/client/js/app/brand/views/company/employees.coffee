@@ -36,8 +36,10 @@ define (require) ->
             title: i18n.get('phoneNumber')
           }
           {
-            field: 'role'
+            field: 'role.name'
             title: i18n.get('role')
+            formatter: (value) ->
+              i18n.get(value.toLowerCase())
           }
           {
             field: 'address'
@@ -54,5 +56,5 @@ define (require) ->
           }
         ]
         isActionCellVisible: (employee) =>
-          @model.get('owner') isnt employee.get('_id')
+          employee.get('role.name') isnt 'BOSS'
       })

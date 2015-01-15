@@ -1,5 +1,9 @@
 Promise = inject('util/promise')
 generateRequestLink = inject('util/linkGenerator')
+mailer = inject('email/mailer')
+emailTemplates = inject('email/templates/mapper')
+templateCompiler = inject('email/templateCompiler')
+mail = emailTemplates(mailer, templateCompiler)
 
 class InviteService
 
@@ -49,8 +53,13 @@ class InviteService
         @inviteStore.create data, (err, invite) ->
           if err then reject(err) else resolve(invite)
 
-    .then (result) ->
-      callback(null, result)
+    .then (invite) =>
+      new Promise (resolve, reject) =>
+        mail.companyInvite invite, (err) ->
+          if err then reject(err) else resolve(invite)
+
+    .then (invite) ->
+      callback(null, invite)
 
     .then null, (err) ->
       callback({ generic: err })

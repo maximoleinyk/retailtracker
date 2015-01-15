@@ -11,6 +11,7 @@ define (require) ->
 
     templateHelpers: ->
       company: @options.company.toJSON()
+      userHasAccount: @options.company.get('hasAccount')
 
     confirm: (e) ->
       e.preventDefault()

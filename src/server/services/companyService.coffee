@@ -11,6 +11,9 @@ class CompanyService
 
   constructor: (@employeeService, @roleService, @companyStore, @inviteService, @accountService, @userService, @activityService, @contextService) ->
 
+  findById: (ns, companyId, callback) ->
+    @companyStore.findById(ns, companyId, callback)
+
   findAll: (userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
       @accountService.findByOwner userId, (err, account) ->
@@ -35,7 +38,7 @@ class CompanyService
     findInvite = new Promise (resolve, reject) =>
       @inviteService.findByLink key, (err, invite) ->
         return reject(err) if err
-        return reject('Invite not found') if not invite
+        return reject({ generic: i18n.inviteNotFound }) if not invite
         resolve(invite)
 
     findInvite
@@ -44,12 +47,23 @@ class CompanyService
         handler = (err, company) =>
           return reject(err) if err
           return reject({ generic: 'Company does not exist' }) if not company
-          resolve(company)
+          resolve({
+            company: company
+            invite: invite
+          })
 
         @findById(namespace.accountWrapper(invite.account), invite.company, handler).populate('owner')
 
-    .then (company) ->
-      callback(null, company)
+    .then (result) =>
+      new Promise (resolve, reject) =>
+        @accountService.findByLogin result.invite.email, (err, account) ->
+          if err then reject(err) else resolve({
+            company: result.company
+            hasAccount: !!account
+          })
+
+    .then (result) ->
+      callback(null, result)
 
     .catch(callback)
 
@@ -90,18 +104,14 @@ class CompanyService
       .then (result) =>
         companyNamespace = namespace.companyWrapper(result.account._id, result.company._id)
         new Promise (resolve, reject) =>
-          @employeeService.findByEmail companyNamespace, result.account.owner.email, (err, employee) =>
-            return reject(err) if err
-            return resolve(_.extend(result, {employee: employee})) if employee
-            employeeData = {
-              firstName: result.account.owner.firstName
-              lastName: result.account.owner.lastName
-              email: result.account.owner.email
-              role: result.role._id
-            }
-            @employeeService.create companyNamespace, employeeData, (err, employee) ->
-              if err then reject(err) else resolve(_.extend(result, {employee: employee}))
-
+          employeeData = {
+            firstName: result.account.owner.firstName
+            lastName: result.account.owner.lastName
+            email: result.account.owner.email
+            role: result.role._id
+          }
+          @employeeService.create companyNamespace, employeeData, (err, employee) ->
+            if err then reject(err) else resolve(_.extend(result, {employee: employee}))
       .then (result) =>
         new Promise (resolve, reject) =>
           result.company.employees.push(result.employee._id)
@@ -173,31 +183,10 @@ class CompanyService
         .then (result) =>
           @createUserInvitedToCompanyActivityItem(result)
 
-        .then (result) =>
-          new Promise (resolve, reject) =>
-            mail.companyInvite result.invite, (err) ->
-              if err then reject(err) else resolve(result.company)
-
     .then (company) ->
       callback(null, company)
 
     .catch(callback)
-
-  createUserInvitedToCompanyActivityItem: (result) ->
-    accountNamespace = namespace.accountWrapper(result.invite.account)
-    userId = result.userId
-    companyId = result.invite.company
-    new Promise (resolve, reject) =>
-      @activityService.userInvitedIntoCompany accountNamespace, userId, companyId, result.invite.account, (err) ->
-        if err then reject(err) else resolve(result)
-
-  createEmployeeWasRemovedFromCompanyActivityItem: (result) ->
-    accountNamespace = namespace.accountWrapper(result.companyOwnerNamespace)
-    userId = result.userId
-    companyId = result.company
-    new Promise (resolve, reject) =>
-      @activityService.employeeWasRemovedFromCompany accountNamespace, userId, companyId, result.ns, (err) ->
-        if err then reject(err) else resolve(result)
 
   update: (ns, data, callback) ->
     return callback({ name: i18n.nameRequired }) if not data.name
@@ -359,9 +348,6 @@ class CompanyService
 
     .catch(callback)
 
-  findById: (ns, companyId, callback) ->
-    @companyStore.findById(ns, companyId, callback)
-
   checkPermission: (companyId, userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
       @accountService.findByOwner userId, (err, account) ->
@@ -392,5 +378,21 @@ class CompanyService
       callback(null, result)
 
     .then(null, callback)
+
+  createUserInvitedToCompanyActivityItem: (result) ->
+    accountNamespace = namespace.accountWrapper(result.invite.account)
+    userId = result.userId
+    companyId = result.invite.company
+    new Promise (resolve, reject) =>
+      @activityService.userInvitedIntoCompany accountNamespace, userId, companyId, result.invite.account, (err) ->
+        if err then reject(err) else resolve(result)
+
+  createEmployeeWasRemovedFromCompanyActivityItem: (result) ->
+    accountNamespace = namespace.accountWrapper(result.companyOwnerNamespace)
+    userId = result.userId
+    companyId = result.company
+    new Promise (resolve, reject) =>
+      @activityService.employeeWasRemovedFromCompany accountNamespace, userId, companyId, result.ns, (err) ->
+        if err then reject(err) else resolve(result)
 
 module.exports = CompanyService

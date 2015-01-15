@@ -1,13 +1,15 @@
 <div class="logo">
     <a href="/page/brand/"><h4>RetailRegister</h4></a>
 </div>
+{{#unless isDependantAccount}}
 <nav class="navigation pull-left">
     <ul>
         <li>
-            <a href="/companies" data-catch-url="^/compan.*">{{i18n.companies}}</a>
+            <a href="/companies" data-catch-url="^/compan.*">{{i18n.myCompanies}}</a>
         </li>
     </ul>
 </nav>
+{{/unless}}
 <nav class="navigation pull-right">
     <ul>
         <li class="dropdown">

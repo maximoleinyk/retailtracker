@@ -19,6 +19,7 @@ define (require) ->
       @updateNameLabel()
 
     templateHelpers: ->
+      isDependantAccount: context.get('dependsFrom')
       avatarSrc: 'http://www.gravatar.com/avatar/' + md5(context.get('login').trim().toLowerCase())
 
     updateNameLabel: ->

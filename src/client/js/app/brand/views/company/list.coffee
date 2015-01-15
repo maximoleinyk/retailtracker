@@ -24,14 +24,6 @@ define (require) ->
               '/company/' + model.id + '/edit'
           }
           {
-            field: 'owner'
-            title: i18n.get('owner')
-            type: 'string'
-            escape: false
-            formatter: (object) ->
-              "#{object.firstName} #{object.lastName} <span style='color:#888'>#{object.email}</span>"
-          }
-          {
             field: 'currencyCode'
             title: i18n.get('currency')
             width: 120

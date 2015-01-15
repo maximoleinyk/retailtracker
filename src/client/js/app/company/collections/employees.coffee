@@ -9,6 +9,6 @@ define (require) ->
 
     model: Employee
 
-    fetch: ->
-      request.get('/employees/all').then (result) =>
+    fetch: (companyId) ->
+      request.get('/employees/all' + if companyId then '/' + companyId else '').then (result) =>
         @reset(result, {parse: true})

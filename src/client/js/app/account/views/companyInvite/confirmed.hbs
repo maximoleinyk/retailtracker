@@ -1,8 +1,10 @@
 <div class="box">
     <div class="box-title">{{i18n.inviteConfirmation}}</div>
-    <h4>{{i18n.congratulations}}!</h4>
-    <p>Теперь вы стали сотрудником компании <strong>{{company.name}}</strong>.</p>
+    <p>{{i18n.congratulations}}!</p>
+
+    <p>Теперь вы стали сотрудником компании <strong>"{{company.name}}"</strong>.</p>
+
     <div class="submit-group">
-        <a href="/login" class="btn btn-default btn-lg">{{i18n.enter}}</a>
+        <a href="/login" class="btn btn-default btn-lg" data-focus>{{i18n.enter}}</a>
     </div>
 </div>

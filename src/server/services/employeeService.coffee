@@ -1,9 +1,10 @@
 i18n = inject('util/i18n').bundle('validation')
 Promise = inject('util/promise')
+namespace = inject('util/namespace')
 
 class EmployeeService
 
-  constructor: (@employeeStore) ->
+  constructor: (@roleService, @employeeStore) ->
 
   findById: (ns, employeeId, callback) ->
     @employeeStore.findById(ns, employeeId, callback)
@@ -12,10 +13,24 @@ class EmployeeService
     @employeeStore.findByEmail(ns, email, callback)
 
   findAll: (ns, callback) ->
-    @employeeStore.findAll(ns, callback)
+    findAll = new Promise (resolve, reject) =>
+      @employeeStore.findAll ns, (err, docs) =>
+        if err then reject(err) else resolve(docs)
 
-  findAllByCompanyId: (ns, callback) ->
-    # todo implement
+    findAll
+    .then (docs) =>
+      Promise.all docs.map (doc) =>
+        new Promise (resolve, reject) =>
+          accountNamespace = namespace.accountWrapper(ns('').split('.')[0])
+          @roleService.findById accountNamespace, doc.role, (err, result) ->
+            return reject(err) if err
+            data = doc.toJSON()
+            data.role = result.toJSON()
+            resolve(data)
+
+    .then (employees) ->
+      callback(null, employees)
+    .catch(callback)
 
   create: (ns, data, callback) ->
     createEmployee = new Promise (resolve, reject) =>

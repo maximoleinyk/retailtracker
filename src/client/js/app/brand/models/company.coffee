@@ -16,7 +16,8 @@ define (require) ->
     loadInvitedCompanyDetails: ->
       @promise('get', '/company/invite/' + @get('key'))
       .then (result) =>
-        @set @parse(result)
+        @set(@parse(result.company))
+        @set('hasAccount', result.hasAccount)
         @commit()
 
     create: ->

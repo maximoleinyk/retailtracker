@@ -8,11 +8,12 @@ class EmployeeController
 
   register: (router) ->
     router.get '/employees/all', authFilter, (req, res) =>
-      @employeeService.findAll namespace.account(req), (err, result) ->
+      @employeeService.findAll namespace.company(req), (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
 
     router.get '/employees/all/:companyId', authFilter, (req, res) =>
-      @employeeService.findAllByCompanyId namespace.account(req), req.param('companyId'), (err, result) ->
+      ns = namespace.companyWrapper(req.headers['account'], req.param('companyId'))
+      @employeeService.findAll ns, (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
 
     router.get '/employees/:id', authFilter, (req, res) =>
