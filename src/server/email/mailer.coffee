@@ -1,4 +1,5 @@
 path = require('path')
+util = require('util')
 aws = require('aws-sdk')
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
 
     template (err, html) ->
       return callback(err) if err
-      console.log(html)
+      util.log(html)
       callback()
 
 #      aws.config.loadFromPath('./aws.json');

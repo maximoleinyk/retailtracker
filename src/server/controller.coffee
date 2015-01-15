@@ -78,7 +78,7 @@ class PageController
     accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
       inviteService, userService, activityService)
 
-    companyService = new CompanyService(companyStore, inviteService, accountService, userService, activityService,
+    companyService = new CompanyService(employeeService, roleService, companyStore, inviteService, accountService, userService, activityService,
       contextService)
 
     securityService = new SecurityService(@passport, accountService)

@@ -13,11 +13,20 @@ class ContextService
         if err then reject(err) else resolve(result)
 
     createManagerRole = new Promise (resolve, reject) =>
-      @roleService.create accountNamespace, { name: 'MANAGER' }, (err, result) ->
+      role = {
+        name: 'MANAGER'
+        accessCompany: true
+      }
+      @roleService.create accountNamespace, role, (err, result) ->
         if err then reject(err) else resolve(result)
 
     createBossRole = new Promise (resolve, reject) =>
-      @roleService.create accountNamespace, { name: 'BOSS' }, (err, result) ->
+      role = {
+        name: 'BOSS'
+        accessCompany: true
+        accessBrand: true
+      }
+      @roleService.create accountNamespace, role, (err, result) ->
         if err then reject(err) else resolve(result)
 
     Promise.all([createCashierRole, createManagerRole, createBossRole])

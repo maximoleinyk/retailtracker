@@ -5,10 +5,11 @@ namespace = inject('util/namespace')
 mailer = inject('email/mailer')
 emailTemplates = inject('email/templates/mapper')
 templateCompiler = inject('email/templateCompiler')
+mail = emailTemplates(mailer, templateCompiler)
 
 class CompanyService
 
-  constructor: (@companyStore, @inviteService, @accountService, @userService, @activityService, @contextService) ->
+  constructor: (@employeeService, @roleService, @companyStore, @inviteService, @accountService, @userService, @activityService, @contextService) ->
 
   checkPermission: (companyId, userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
@@ -52,7 +53,7 @@ class CompanyService
         new Promise (resolve, reject) =>
           handler = (err, company) ->
             if err then reject(err) else resolve(company)
-          @companyStore.findById(namespace.accountWrapper(meta.ns), meta.company, handler).populate('employees owner')
+          @companyStore.findById(namespace.accountWrapper(meta.account), meta.company, handler).populate('owner')
 
     .then (companies) =>
       callback(null, companies)
@@ -98,23 +99,56 @@ class CompanyService
     .then (account) =>
       data.invitees = _.filter data.invitees, (invitee) ->
         invitee.email isnt account.owner.email
-      data.employees.push(account.owner._id)
       createCompany = new Promise (resolve, reject) =>
         @companyStore.create ns, data, (err, company) ->
           if err then reject(err) else resolve({
             account: account
             company: company
           })
-      createCompany.then (result) =>
+      createCompany
+      .then (result) =>
         new Promise (resolve, reject) =>
           @contextService.afterCompanyCreation result.account, result.company, (err) =>
             if err then reject(err) else resolve(result)
+      .then (result) =>
+        new Promise (resolve, reject) =>
+          @roleService.findByName namespace.accountWrapper(result.account._id), 'BOSS', (err, role) ->
+            if err then reject(err) else resolve({
+              account: result.account
+              company: result.company
+              role: role
+            })
+      .then (result) =>
+        companyNamespace = namespace.companyWrapper(result.account._id, result.company._id)
+        employeeData = {
+          firstName: result.account.owner.firstName
+          lastName: result.account.owner.lastName
+          email: result.account.owner.email
+          role: result.role._id
+        }
+        new Promise (resolve, reject) =>
+          @employeeService.create companyNamespace, employeeData, (err, employee) ->
+            if err then reject(err) else resolve({
+              employee: employee
+              account: result.account
+              company: result.company
+              role: result.role
+            })
+      .then (result) =>
+        new Promise (resolve, reject) =>
+          result.company.employees.push(result.employee._id)
+          @companyStore.update namespace.accountWrapper(result.account._id), result.company.toJSON(), (err) ->
+            if err then reject(err) else resolve({
+              account: account
+              company: result.company
+            })
 
     .then (result) =>
       result.account.companies.push({
         account: result.account._id
         company: result.company._id
       })
+      # do not remove object should be an ObjectId
       result.account.owner = result.account.owner._id
       new Promise (resolve, reject) =>
         @accountService.update result.account.toJSON(), (err) ->
@@ -153,15 +187,19 @@ class CompanyService
             })
 
         .then (result) =>
+          inviteData = {
+            firstName: result.user.firstName
+            email: result.user.email
+            role: invite.role
+            account: companyAndAccount.account._id
+            company: companyAndAccount.company._id
+          }
           new Promise (resolve, reject) =>
-            userId = result.user._id
-            companyId = companyAndAccount.company._id
-            accountNamespace = result.account._id.toString()
-            @inviteService.createCompanyInvite userId, companyId, accountNamespace, (err, invite) ->
+            @inviteService.generateInviteForEmployee inviteData, (err, invite) ->
               if err then reject(err) else resolve({
                 invite: invite,
                 company: companyAndAccount.company
-                userId: userId
+                userId: result.user._id
               })
 
         .then (result) =>
@@ -169,7 +207,6 @@ class CompanyService
 
         .then (result) =>
           new Promise (resolve, reject) =>
-            mail = emailTemplates(mailer, templateCompiler)
             mail.companyInvite result.invite, (err) ->
               if err then reject(err) else resolve(result.company)
 
@@ -179,11 +216,11 @@ class CompanyService
     .catch(callback)
 
   createUserInvitedToCompanyActivityItem: (result) ->
-    accountNamespace = namespace.accountWrapper(result.invite.ns)
+    accountNamespace = namespace.accountWrapper(result.invite.account)
     userId = result.userId
     companyId = result.invite.company
     new Promise (resolve, reject) =>
-      @activityService.userInvitedIntoCompany accountNamespace, userId, companyId, result.invite.ns, (err) ->
+      @activityService.userInvitedIntoCompany accountNamespace, userId, companyId, result.invite.account, (err) ->
         if err then reject(err) else resolve(result)
 
   createEmployeeWasRemovedFromCompanyActivityItem: (result) ->
@@ -308,7 +345,7 @@ class CompanyService
 
           .then (user) =>
             new Promise (resolve, reject) =>
-              @inviteService.createCompanyInvite user._id, company._id, ns('').split('.')[0], (err, invite) ->
+              @inviteService.generateInviteForEmployee user._id, company._id, ns('').split('.')[0], (err, invite) ->
                 if err then reject(err) else resolve({
                   invite: invite
                   userId: user._id
