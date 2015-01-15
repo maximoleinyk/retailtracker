@@ -9,6 +9,9 @@ class EmployeeStore
   findById: (ns, id, callback) ->
     @model.get(ns).findById(id, callback)
 
+  findByEmail: (ns, email, callback) ->
+    @model.get(ns).findOne({ email: email }, callback)
+
   findAllByCompanyId: (ns, companyId, callback) ->
     @model.get(ns).find({}).where('companies').in([companyId]).exec(callback)
 

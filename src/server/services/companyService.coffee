@@ -11,37 +11,6 @@ class CompanyService
 
   constructor: (@employeeService, @roleService, @companyStore, @inviteService, @accountService, @userService, @activityService, @contextService) ->
 
-  checkPermission: (companyId, userId, callback) ->
-    findAccount = new Promise (resolve, reject) =>
-      @accountService.findByOwner userId, (err, account) ->
-        if err then reject(err) else resolve(account)
-
-    findAccount
-    .then (account) =>
-      foundCompany = _.find account.toJSON().companies, (pair) =>
-        pair.company.toString() is companyId
-
-      if not foundCompany
-        return Promise.empty({})
-      else
-        new Promise (resolve, reject) =>
-          @companyStore.findById namespace.accountWrapper(foundCompany.ns), companyId, (err, company) ->
-            if err then reject(err) else resolve({
-              ns: foundCompany.ns
-              company: company
-            })
-
-    .then (result) =>
-      if not result.company
-        return Promise.empty()
-      else
-        return Promise.empty(result)
-
-    .then (result) ->
-      callback(null, result)
-
-    .then(null, callback)
-
   findAll: (userId, callback) ->
     findAccount = new Promise (resolve, reject) =>
       @accountService.findByOwner userId, (err, account) ->
@@ -77,7 +46,7 @@ class CompanyService
           return reject({ generic: 'Company does not exist' }) if not company
           resolve(company)
 
-        @findById(namespace.accountWrapper(invite.ns), invite.company, handler).populate('owner')
+        @findById(namespace.accountWrapper(invite.account), invite.company, handler).populate('owner')
 
     .then (company) ->
       callback(null, company)
@@ -120,20 +89,19 @@ class CompanyService
             })
       .then (result) =>
         companyNamespace = namespace.companyWrapper(result.account._id, result.company._id)
-        employeeData = {
-          firstName: result.account.owner.firstName
-          lastName: result.account.owner.lastName
-          email: result.account.owner.email
-          role: result.role._id
-        }
         new Promise (resolve, reject) =>
-          @employeeService.create companyNamespace, employeeData, (err, employee) ->
-            if err then reject(err) else resolve({
-              employee: employee
-              account: result.account
-              company: result.company
-              role: result.role
-            })
+          @employeeService.findByEmail companyNamespace, result.account.owner.email, (err, employee) =>
+            return reject(err) if err
+            return resolve(_.extend(result, {employee: employee})) if employee
+            employeeData = {
+              firstName: result.account.owner.firstName
+              lastName: result.account.owner.lastName
+              email: result.account.owner.email
+              role: result.role._id
+            }
+            @employeeService.create companyNamespace, employeeData, (err, employee) ->
+              if err then reject(err) else resolve(_.extend(result, {employee: employee}))
+
       .then (result) =>
         new Promise (resolve, reject) =>
           result.company.employees.push(result.employee._id)
@@ -244,7 +212,7 @@ class CompanyService
         return reject({ generic: i18n.currencyRateCannotBeChanged }) if company.currencyRate isnt data.currencyRate
         return reject({ generic: i18n.currencyCodeCannotBeChanged }) if company.currencyCode isnt data.currencyCode
         resolve(company)
-      @companyStore.findById(ns, data.id, handler).populate('employees owner')
+      @companyStore.findById(ns, data.id, handler).populate('owner')
 
     findCompany
     .then (company) =>
@@ -392,6 +360,37 @@ class CompanyService
     .catch(callback)
 
   findById: (ns, companyId, callback) ->
-    @companyStore.findById(ns, companyId, callback).populate('employees')
+    @companyStore.findById(ns, companyId, callback)
+
+  checkPermission: (companyId, userId, callback) ->
+    findAccount = new Promise (resolve, reject) =>
+      @accountService.findByOwner userId, (err, account) ->
+        if err then reject(err) else resolve(account)
+
+    findAccount
+    .then (account) =>
+      foundCompany = _.find account.toJSON().companies, (pair) =>
+        pair.company.toString() is companyId
+
+      if not foundCompany
+        return Promise.empty({})
+      else
+        new Promise (resolve, reject) =>
+          @companyStore.findById namespace.accountWrapper(foundCompany.ns), companyId, (err, company) ->
+            if err then reject(err) else resolve({
+              ns: foundCompany.ns
+              company: company
+            })
+
+    .then (result) =>
+      if not result.company
+        return Promise.empty()
+      else
+        return Promise.empty(result)
+
+    .then (result) ->
+      callback(null, result)
+
+    .then(null, callback)
 
 module.exports = CompanyService

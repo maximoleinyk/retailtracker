@@ -25,6 +25,7 @@ class CompanySchema
         {
           type: mongoose.Schema.Types.ObjectId
           ref: 'Employee'
+          $tenant: true
         }
       ]
       invitees: [

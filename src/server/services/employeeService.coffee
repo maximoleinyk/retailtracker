@@ -8,6 +8,9 @@ class EmployeeService
   findById: (ns, employeeId, callback) ->
     @employeeStore.findById(ns, employeeId, callback)
 
+  findByEmail: (ns, email, callback) ->
+    @employeeStore.findByEmail(ns, email, callback)
+
   findAll: (ns, callback) ->
     @employeeStore.findAll(ns, callback)
 
