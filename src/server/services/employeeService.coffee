@@ -17,14 +17,17 @@ class EmployeeService
     accountId = ns().split('.')[0]
 
     findAllCompanies = new Promise (resolve, reject) =>
-      @companyStore.findAll namespace.accountWrapper(accountId), (err, companies) ->
+      handler = (err, companies) ->
         if err then reject(err) else resolve(companies)
+      @companyStore.findAll(namespace.accountWrapper(accountId), handler).populate('owner')
 
     findAllCompanies
     .then (companies) =>
       Promise.all _.map companies, (company) =>
         new Promise (resolve, reject) =>
           @employeeStore.findLikeByEmail namespace.companyWrapper(accountId, company._id), email, (err, employees) =>
+            employees = _.filter employees, (employee) ->
+              employee.email isnt company.owner.email
             if err then reject(err) else resolve(employees)
 
     .then (result) =>
