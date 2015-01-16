@@ -23,7 +23,8 @@ require.config({
         cookies: 'libs/cookies-js/src/cookies',
         hbs: 'app/common/plugins/hbs',
         md5: 'libs/md5/js/md5',
-        d3: 'libs/d3/d3'
+        d3: 'libs/d3/d3',
+		typeahead: 'libs/typeahead.js/dist/typeahead.jquery'
     },
 
     shim: {
@@ -63,12 +64,16 @@ require.config({
         },
         bootstrap: {
             deps: ['jquery']
-        }
+        },
+		typeahead: {
+			deps: ['jquery']
+		}
     },
 
     deps: [
         'app/common/helpers',
-        'bootstrap'
+        'bootstrap',
+		'typeahead'
     ]
 
 });

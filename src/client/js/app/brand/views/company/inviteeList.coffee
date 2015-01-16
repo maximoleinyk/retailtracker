@@ -26,7 +26,7 @@ define (require) ->
           {
             field: 'email'
             title: i18n.get('email')
-            type: 'email'
+            type: 'autocomplete'
             placeholder: i18n.get('emailExampleCom')
           },
           {

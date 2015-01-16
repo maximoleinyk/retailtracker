@@ -11,6 +11,7 @@ define(function (require) {
         SelectCell = require('../cells/selectCell'),
         EmailCell = require('../cells/emailCell'),
         AutoincrementCell = require('../cells/autoincrementCell'),
+        AutocompleteCell = require('../cells/autocompleteCell'),
         DropdownButtonCell = require('../cells/dropdownButtonCell'),
         _ = require('underscore');
 
@@ -81,6 +82,8 @@ define(function (require) {
                     return new BoolCell(options);
                 case 'select':
                     return new SelectCell(options);
+                case 'autocomplete':
+                    return new AutocompleteCell(options);
                 case 'email':
                     return new EmailCell(options);
                 default:
