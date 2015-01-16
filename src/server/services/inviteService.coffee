@@ -12,8 +12,8 @@ class InviteService
   findByLink: (link, callback) ->
     @inviteStore.findByLink(link, callback)
 
-  findByUserAndCompany: (userId, companyId, callback) ->
-    @inviteStore.findByUserAndCompany(userId, companyId, callback)
+  findByEmailAndCompany: (email, companyId, callback) ->
+    @inviteStore.findByEmailAndCompany(email, companyId, callback)
 
   generateInviteForAccountOwner: (email, firstName, callback) ->
     removeAllExistingInvites = new Promise (resolve, reject) =>

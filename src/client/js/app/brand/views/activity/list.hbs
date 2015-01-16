@@ -1,7 +1,7 @@
-<div class="activity-group">
-    <span class="date-icon fa fa-dot-circle-o"></span> <span class="activity-group-title">{{i18n.today}}</span>
-</div>
 {{#each groups}}
+    <div class="activity-group">
+        <span class="date-icon fa fa-dot-circle-o"></span> <span class="activity-group-title">{{date @key}}</span>
+    </div>
     <ul class="activity-items">
 		{{#each this}}
             <li>
@@ -10,7 +10,4 @@
             </li>
 		{{/each}}
     </ul>
-    <div class="activity-group">
-        <span class="date-icon fa fa-dot-circle-o"></span> <span class="activity-group-title">{{date @key}}</span>
-    </div>
 {{/each}}

@@ -205,10 +205,21 @@ class CompanyService
 
     findCompany
     .then (company) =>
-      companyData = company.toObject()
+      companyData = company.toJSON()
+      loadAllEmployees = Promise.all _.map companyData.employees, (employeeId) =>
+        new Promise (resolve, reject) =>
+          @employeeService.findById namespace.companyWrapper(ns().split('.')[0],
+            company._id), employeeId, (err, employee) ->
+            if err then reject(err) else resolve(employee)
 
+      loadAllEmployees
+      .then (employees) =>
+        companyData.employees = employees
+        Promise.empty(companyData)
+
+    .then (companyData) =>
       newInvitees = _.filter data.invitees, (newInvitee) ->
-        found = _.find company.employees, (employee) ->
+        found = _.find companyData.employees, (employee) ->
           employee.email is newInvitee.email
         return false if found
 
@@ -222,8 +233,8 @@ class CompanyService
         return not found
 
       employeesToRemove = _.filter companyData.employees, (originEmployee) ->
-        found = _.find data.employees, (latestEmployee) ->
-          originEmployee._id.toString() is latestEmployee._id
+        found = _.find data.employees, (latestEmployeeId) ->
+          originEmployee._id.toString() is latestEmployeeId
         return not found
 
       removeInvites = Promise.all _.map inviteesToRemove, (inviteeToRemove) =>
@@ -235,96 +246,100 @@ class CompanyService
         .then (user) =>
           new Promise (resolve, reject) =>
             handler = (err, invite) ->
-              if err then reject(err) else resolve(invite)
-            @inviteService.findByUserAndCompany(user._id, company._id, handler).populate('user')
-
-        .then (invite) =>
-          new Promise (resolve, reject) =>
-            @inviteService.remove invite, (err) ->
               if err then reject(err) else resolve({
-                companyOwnerNamespace: invite.account
-                userId: invite.user._id
-                company: invite.company
-                account: invite.account
+                invite: invite
+                user: user
+              })
+            @inviteService.findByEmailAndCompany(user.email, companyData._id, handler).populate('user')
+
+        .then (inviteAndUser) =>
+          new Promise (resolve, reject) =>
+            @inviteService.remove inviteAndUser.invite._id, (err) ->
+              if err then reject(err) else resolve({
+                companyOwnerNamespace: inviteAndUser.invite.account
+                userId: inviteAndUser.user._id
+                company: inviteAndUser.invite.company
+                account: inviteAndUser.invite.account
               })
 
         .then (result) =>
           @createEmployeeWasRemovedFromCompanyActivityItem(result)
 
       removeInvites
-      .then =>
+      .then (result) =>
         Promise.all _.map employeesToRemove, (employeeToRemove) =>
           findAccount = new Promise (resolve, reject) =>
-            @accountService.findByOwner employeeToRemove._id, (err, account) ->
+            @accountService.findByLogin employeeToRemove.email, (err, account) ->
               if err then reject(err) else resolve(account)
 
           findAccount
           .then (account) =>
             accountData = account.toJSON()
             accountData.companies = _.filter accountData.companies, (pair) ->
-              pair.company.toString() isnt company._id.toString()
+              pair.company.toString() isnt companyData._id.toString()
 
             new Promise (resolve, reject) =>
               @accountService.update accountData, (err) ->
-                # this is the only way to get owner's company namespace
                 ownerCompanyNamespace = ns().split('.')[0]
                 if err then reject(err) else resolve({
                   companyOwnerNamespace: ownerCompanyNamespace
                   userId: account.owner
-                  company: company._id
+                  company: result.company
                   ns: ownerCompanyNamespace
                 })
 
           .then (result) =>
             @createEmployeeWasRemovedFromCompanyActivityItem(result)
 
-      .then =>
+      .then (result) =>
         Promise.all _.map newInvitees, (invitee) =>
-          findUser = new Promise (resolve, reject) =>
+          getUser = new Promise (resolve, reject) =>
             @userService.findByEmail invitee.email, (err, user) =>
-              if err then reject(err) else resolve({
-                invitee: invitee
-                user: user
-              })
-
-          findUser
-          .then (result) =>
-            if not result.user
-              return new Promise (resolve, reject) =>
+              return reject(err) if err
+              if not user
                 userData = {
-                  firstName: result.invitee.firstName
-                  email: result.invitee.email
+                  firstName: invitee.firstName
+                  email: invitee.email
                 }
                 @userService.create userData, (err, user) ->
                   if err then reject(err) else resolve(user)
-            else
-              return Promise.empty(result.user)
+              else
+                resolve(user)
 
-          .then (user) =>
+          getUser.then (user) =>
             new Promise (resolve, reject) =>
-              @inviteService.generateInviteForEmployee user._id, company._id, ns('').split('.')[0], (err, invite) ->
+              @roleService.findById ns, invitee.role, (err, role) ->
                 if err then reject(err) else resolve({
-                  invite: invite
-                  userId: user._id
+                  user: user
+                  role: role
                 })
-
-          .then (result) =>
+          .then (userAndRole) =>
+            inviteData = {
+              firstName: userAndRole.user.firstName
+              email: userAndRole.user.email
+              role: userAndRole.role
+              account: ns().split('.')[0]
+              company: companyData._id
+            }
             new Promise (resolve, reject) =>
-              mail = emailTemplates(mailer, templateCompiler)
-              mail.companyInvite result.invite, (err) ->
-                if err then reject(err) else resolve(result)
-
+              @inviteService.generateInviteForEmployee inviteData, (err, invite) ->
+                if err then reject(err) else resolve({
+                  invite: invite,
+                  company: companyData._id
+                  userId: userAndRole.user._id
+                })
           .then (result) =>
             @createUserInvitedToCompanyActivityItem(result)
 
       .then =>
         new Promise (resolve, reject) =>
-          @companyStore.findById ns, data.id, (err) =>
+          @companyStore.findById ns, data.id, (err, company) =>
             if (err) then reject(err) else resolve(company)
 
       .then (latestCompany) =>
         new Promise (resolve, reject) =>
           companyData = latestCompany.toJSON()
+
           companyData.invitees = _.filter companyData.invitees, (invitee) ->
             found = _.find inviteesToRemove, (removeInvitee) ->
               invitee.email is removeInvitee.email
@@ -336,7 +351,6 @@ class CompanyService
               originEmployee.email is removeEmployee.email
             return not found
 
-          companyData.owner = companyData.owner._id
           companyData.name = data.name
           companyData.description = data.description
 

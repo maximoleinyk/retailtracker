@@ -11,9 +11,9 @@ class InviteStore
   removeByEmailAndAccount: (email, account, callback) ->
     Invite.remove({ email: email, account: account }, callback)
 
-  findByUserAndCompany: (userId, companyId, callback) ->
+  findByEmailAndCompany: (email, companyId, callback) ->
     criteria = {
-      user: userId
+      email: email
       company: companyId
     }
     Invite.findOne(criteria, callback)
