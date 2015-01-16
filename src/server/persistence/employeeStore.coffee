@@ -12,6 +12,9 @@ class EmployeeStore
   findByEmail: (ns, email, callback) ->
     @model.get(ns).findOne({ email: email }, callback)
 
+  findLikeByEmail: (ns, email, callback) ->
+    @model.get(ns).find({ email: new RegExp(email, 'i')}, callback)
+
   findAll: (ns, callback) ->
     @model.get(ns).find({}, callback)
 

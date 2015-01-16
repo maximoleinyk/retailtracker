@@ -65,7 +65,10 @@ require.config({
         bootstrap: {
             deps: ['jquery']
         },
-		typeahead: {
+		'typeahead': {
+			deps: ['jquery', 'libs/typeahead.js/dist/bloodhound']
+		},
+		'libs/typeahead.js/dist/bloodhound': {
 			deps: ['jquery']
 		}
     },

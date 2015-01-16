@@ -1,10 +1,11 @@
 i18n = inject('util/i18n').bundle('validation')
 Promise = inject('util/promise')
 namespace = inject('util/namespace')
+_ = require('underscore')
 
 class EmployeeService
 
-  constructor: (@roleService, @employeeStore) ->
+  constructor: (@companyStore, @roleService, @employeeStore) ->
 
   findById: (ns, employeeId, callback) ->
     @employeeStore.findById(ns, employeeId, callback)
@@ -12,24 +13,26 @@ class EmployeeService
   findByEmail: (ns, email, callback) ->
     @employeeStore.findByEmail(ns, email, callback)
 
-  findAll: (ns, callback) ->
-    findAll = new Promise (resolve, reject) =>
-      @employeeStore.findAll ns, (err, docs) =>
-        if err then reject(err) else resolve(docs)
+  findLikeByEmail: (ns, email, callback) ->
+    accountId = ns().split('.')[0]
 
-    findAll
-    .then (docs) =>
-      Promise.all docs.map (doc) =>
+    findAllCompanies = new Promise (resolve, reject) =>
+      @companyStore.findAll namespace.accountWrapper(accountId), (err, companies) ->
+        if err then reject(err) else resolve(companies)
+
+    findAllCompanies
+    .then (companies) =>
+      Promise.all _.map companies, (company) =>
         new Promise (resolve, reject) =>
-          accountNamespace = namespace.accountWrapper(ns('').split('.')[0])
-          @roleService.findById accountNamespace, doc.role, (err, result) ->
-            return reject(err) if err
-            data = doc.toJSON()
-            data.role = result.toJSON()
-            resolve(data)
+          @employeeStore.findLikeByEmail namespace.companyWrapper(accountId, company._id), email, (err, employees) =>
+            if err then reject(err) else resolve(employees)
 
-    .then (employees) ->
+    .then (result) =>
+      employees = []
+      _.each result, (employeeArray) ->
+        employees = employees.concat(employeeArray)
       callback(null, employees)
+
     .catch(callback)
 
   create: (ns, data, callback) ->
