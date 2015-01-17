@@ -384,7 +384,7 @@ class CompanyService
       findUser
       .then (user) =>
         new Promise (resolve, reject) =>
-          @companyService.findById namespace.accountWrapper(account._id), companyId, (err, company) =>
+          @companyStore.findById namespace.accountWrapper(account._id), companyId, (err, company) =>
             if err then reject(err) else resolve({
               user: user
               company: company
