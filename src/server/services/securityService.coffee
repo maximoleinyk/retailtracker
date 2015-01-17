@@ -17,22 +17,20 @@ class SecurityService
       @accountService.findById(id, done)
 
     strategy = new LocalStrategy @credentialsInfo, (email, password, done) =>
-      @accountService.findByCredentials(email, password, done)
+      @accountService.findByCredentials email, password, (err, account) ->
+        return done(err) if err
+        return done(i18n.invalidCredentials) if not account
+        return done(i18n.accountIsSuspended) if account.status is 'SUSPENDED'
+        return done(i18n.accountWasDeleted) if account.status is 'DELETED'
+        done(err, account)
 
     @passport.use(strategy)
 
   authenticate: (data, callback) ->
-    # do not refactor these two if statements
-    if not data.login
-      callback({ generic: i18n.loginMustBeSet })
-      return
-
-    if not data.password
-      callback({ generic: i18n.passwordMustBeSet })
-      return
+    return callback({ generic: i18n.loginMustBeSet }) if not data.login
+    return callback({ generic: i18n.passwordMustBeSet }) if not data.password
 
     @passport.authenticate 'local', (err, account) =>
-      return callback({ generic: i18n.invalidCredentials }) if not account
-      callback(null, account)
+      if err then callback({ generic: err }) else callback(null, account)
 
 module.exports = SecurityService
