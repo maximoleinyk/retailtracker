@@ -2,7 +2,6 @@ define (require) ->
   'use strict'
 
   MongoModel = require('cs!app/common/model')
-  context = require('cs!app/common/context')
 
   class Role extends MongoModel
 

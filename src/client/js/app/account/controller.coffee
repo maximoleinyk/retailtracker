@@ -9,7 +9,6 @@ define (require) ->
   PasswordChangePage = require('cs!./views/forgotPassword/change')
   Account = require('cs!./models/account')
   Company = require('cs!app/brand/models/company')
-  context = require('cs!app/common/context')
   ConfirmCompanyInvitePage = require('cs!./views/companyInvite/main')
 
   Controller.extend
@@ -26,7 +25,6 @@ define (require) ->
     confirmAccountRegistration: (invite) ->
       account = new Account({
         link: invite
-        email: context.get('email')
       })
       @openPage new RegistrationApprovePage({
         model: account
@@ -35,7 +33,6 @@ define (require) ->
     changeForgottenPassword: (changeKey) ->
       account = new Account({
         key: changeKey
-        email: context.get('email')
       })
       @openPage new PasswordChangePage({
         model: account

@@ -369,24 +369,34 @@ class CompanyService
 
     findAccount
     .then (account) =>
+      throw 'Account hasn\'t been create yet' if not account
+
       foundCompany = _.find account.toJSON().companies, (pair) =>
         pair.company.toString() is companyId
 
-      if not foundCompany
-        return Promise.empty({})
-      else
+      # return undefined if permission is denied
+      return Promise.empty() if not foundCompany
+
+      findUser = new Promise (resolve, reject) =>
+        @userService.findById account.owner, (err, user) ->
+          if err then reject(err) else resolve(user)
+
+      findUser
+      .then (user) =>
         new Promise (resolve, reject) =>
-          @companyStore.findById namespace.accountWrapper(foundCompany.account), companyId, (err, company) ->
+          @companyService.findById namespace.accountWrapper(account._id), companyId, (err, company) =>
             if err then reject(err) else resolve({
-              account: foundCompany.account
+              user: user
               company: company
             })
 
-    .then (result) =>
-      if not result.company
-        return Promise.empty()
-      else
-        return Promise.empty(result)
+      .then (result) =>
+        new Promise (resolve, reject) =>
+          @employeeService.findByEmail namespace.companyWrapper(account._id, companyId), result.user.email, (err, employee) ->
+            if err then reject(err) else resolve({
+              employee: employee
+              company: result.company
+            })
 
     .then (result) ->
       callback(null, result)

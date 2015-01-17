@@ -3,7 +3,6 @@ define (require) ->
 
   Router = require('cs!./router')
   Controller = require('cs!./controller')
-  context = require('cs!app/common/context')
 
   ({
     Router: Router

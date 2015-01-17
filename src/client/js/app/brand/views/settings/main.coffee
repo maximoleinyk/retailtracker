@@ -15,7 +15,7 @@ define (require) ->
     initialize: (options) ->
       @view = options.view
       @model = new Settings({
-        id: context.get('owner').id
+        id: context.get('account.owner._id')
       })
 
     onRender: ->
@@ -27,8 +27,8 @@ define (require) ->
 
     profileView: ->
       @model.set
-        firstName: context.get('owner').firstName
-        lastName: context.get('owner').lastName
+        firstName: context.get('account.owner.firstName')
+        lastName: context.get('account.owner.lastName')
       @content.show(new ProfileView({
         model: @model
       }))

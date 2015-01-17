@@ -13,7 +13,6 @@ define (require) ->
   Currency = require('cs!app/company/models/currency')
   CompanyListPage = require('cs!./views/company/list')
   ManageCompanyEmployeesPage = require('cs!./views/company/employees')
-  Collection = require('cs!app/common/collection')
   Roles = require('cs!app/brand/collections/roles')
   Employees = require('cs!app/company/collections/employees')
 

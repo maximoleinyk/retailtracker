@@ -8,7 +8,10 @@ class EmployeeSchema
         type: String
         required: true
       lastName: String
-      email: String
+      email:
+        type: String
+        unique: true
+        required: true
       phoneNumber: String
       address: String
       role:

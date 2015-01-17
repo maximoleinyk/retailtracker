@@ -29,13 +29,13 @@ define (require) ->
     openOwnTab: ->
       @list.show new List({
         collection: new Companies @collection.filter (model) ->
-          context.get('owner.id') is model.get('owner._id')
+          context.get('account.owner._id') is model.get('owner._id')
       })
 
     openSharedTab: ->
       @list.show(new List({
         collection: new Companies @collection.filter (model) ->
-          context.get('owner.id') isnt model.get('owner._id')
+          context.get('account.owner._id') isnt model.get('owner._id')
       }))
 
     openList: (e) ->
