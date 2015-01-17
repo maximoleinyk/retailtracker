@@ -3,19 +3,34 @@ define (require) ->
 
   Marionette = require('marionette')
   eventBus = require('cs!app/common/eventBus')
+  _ = require('underscore')
 
   Marionette.AppRouter.extend
 
     eventBus: eventBus
 
     constructor: ->
+      permissions = Marionette.getOption(this, 'permissions')
+      appRoutes = Marionette.getOption(this, 'appRoutes')
+
+      this.originRoutes = _.clone(appRoutes)
+
+      copy = _.clone(appRoutes)
+      _.each permissions, (config, methodName) =>
+        isPermitted = if _.isFunction(config.permitted) then config.permitted.apply(this) else config.permitted
+        if !isPermitted
+          _.each appRoutes, (appMethodName, route) =>
+            delete copy[route] if methodName is appMethodName
+
+      this.appRoutes = copy
+
       Marionette.AppRouter::constructor.apply @, arguments
 
       @listenTo eventBus, 'router:navigate:silent', (methodName) =>
-        controller = Marionette.getOption(this, "controller")
+        controller = Marionette.getOption(this, 'controller')
         controller.silent or= {}
         method = controller.silent[methodName]
-        throw "Silent route should be mapped to existing method" if not method
+        throw 'Silent route should be mapped to existing method' if not method
         method.call(controller)
 
       @listenTo eventBus, 'router:navigate', =>
@@ -28,7 +43,34 @@ define (require) ->
       'redirect': -> # do nothing
 
       '*404': ->
+        permissions = Marionette.getOption(this, 'permissions')
+        originRoutes = Marionette.getOption(this, 'originRoutes')
+        foundMethodName = null
+
+        _.each originRoutes, (methodName, route) =>
+          routeAsRegExp = @routeAsRegexp(route)
+          if routeAsRegExp.test(Backbone.history.getFragment())
+            foundMethodName = methodName
+
+        if foundMethodName && permissions[foundMethodName]
+          fallback = permissions[foundMethodName].fallback
+          return if _.isFunction(fallback) then fallback.apply(this) else @navigate(fallback, {trigger: true})
+
         eventBus.trigger('module:load')
+
+    routeAsRegexp: (route) ->
+      optionalParam = /\((.*?)\)/g
+      namedParam = /(\(\?)?:\w+/g
+      splatParam = /\*\w+/g
+      escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g
+
+      route = route.replace(escapeRegExp, '\\$&')
+      .replace(optionalParam, '(?:$1)?')
+      .replace namedParam, (match, optional) ->
+        if optional then match else '([^/?]+)'
+      .replace(splatParam, '([^?]*?)');
+
+      new RegExp('^' + route + '(?:\\?([\\s\\S]*))?$')
 
     destroy: ->
       @stopListening(eventBus, 'router:navigate')

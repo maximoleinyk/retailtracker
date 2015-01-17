@@ -21,9 +21,6 @@ define (require) ->
     chooseCompany: ->
       # todo implement
 
-    choosePos: ->
-      # todo implement
-
     dashboard: ->
       companies = new Companies
       activities = new Activities
