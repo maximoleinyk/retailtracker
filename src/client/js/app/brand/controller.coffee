@@ -13,13 +13,18 @@ define (require) ->
   Currency = require('cs!app/company/models/currency')
   CompanyListPage = require('cs!./views/company/list')
   ManageCompanyEmployeesPage = require('cs!./views/company/employees')
-  Roles = require('cs!app/brand/collections/roles')
+  Roles = require('cs!./collections/roles')
   Employees = require('cs!app/company/collections/employees')
+  ChooseCompanyPage = require('cs!./views/company/choose')
 
   Controller.extend
 
     chooseCompany: ->
-      # todo implement
+      companies = new Companies
+      companies.fetch().then =>
+        @openPage new ChooseCompanyPage({
+          companies: companies
+        })
 
     dashboard: ->
       companies = new Companies

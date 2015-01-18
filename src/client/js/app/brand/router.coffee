@@ -23,9 +23,3 @@ define (require) ->
           context.get('account.dependsFrom').length is 0
         fallback: ->
           @navigate('choose', {trigger: true})
-
-      chooseCompany:
-        permitted: ->
-          context.get('account.dependsFrom').length > 0
-        fallback: ->
-          @navigate('', {trigger: true})

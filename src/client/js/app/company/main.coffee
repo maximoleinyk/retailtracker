@@ -28,7 +28,7 @@ define (require) ->
         context.set({
           account: account
         })
-        request.get('/company/' + companyId + '/permission/' + account.owner._id)
+        request.post('/company/' + companyId + '/permission/' + account.owner._id)
 
       .then (result) ->
         throw 'Unknown context' if not result
