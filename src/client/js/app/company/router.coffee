@@ -41,7 +41,7 @@ define (require) ->
       callback.apply(@, [].slice.call(args, 1)) if callback
 
     navigate: (fragment, options) ->
-      companyId = context.get('company')._id
+      companyId = context.get('company._id')
 
       if fragment is 'redirect'
         fragment = companyId + '/' + fragment

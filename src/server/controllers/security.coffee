@@ -14,8 +14,7 @@ class SecurityController
       authCallback = @securityService.authenticate req.body, (err, account) =>
         return @forbidden(err, res) if err
         req.login account, (err) =>
-          return next(err) if err
-          res.status(HttpStatus.NO_CONTENT).end()
+          if err then next(err) else res.status(HttpStatus.NO_CONTENT).end()
 
       authCallback(req, res, next) if authCallback
 

@@ -77,6 +77,7 @@ class AccountService
           owner: result.user._id
           login: result.invite.email
           password: Encryptor.md5(password)
+          dependsFrom: []
         }
         @accountStore.create accountData, (err, account) ->
           if err then reject(err) else resolve({
@@ -257,13 +258,22 @@ class AccountService
     # create account if not exists
     .then (result) =>
       if result.account
-        return Promise.empty(result)
+        if result.account.type is 'DEPENDANT'
+          data = result.account.toJSON()
+          data.dependsFrom.push(result.invite.account)
+          result.account.dependsFrom.push(result.invite.account)
+          return new Promise (resolve, reject) =>
+            @accountStore.update data, (err) ->
+              if err then reject(err) else resolve(result)
+        else
+          return Promise.empty(result)
       else
         accountData = {
           owner: result.user._id,
           login: result.user.email
           password: Encryptor.md5(password)
-          dependsFrom: result.invite.account
+          dependsFrom: [result.invite.account]
+          type: 'DEPENDANT'
         }
         createNewAccount = new Promise (resolve, reject) =>
           @accountStore.create accountData, (err, account) ->

@@ -7,10 +7,9 @@ class CompanyController
   constructor: (@companyService) ->
 
   register: (router) ->
-    router.get '/company/:companyId/permission/:userId', (req, res) =>
-      userId = req.params.userId
-      companyId = req.params.companyId
-      @companyService.checkPermission companyId, userId, (err, result) ->
+
+    router.post '/company/:companyId/permission/:userId', (req, res) =>
+      @companyService.checkPermission req.params.companyId, req.params.userId, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 

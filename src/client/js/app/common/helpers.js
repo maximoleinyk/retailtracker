@@ -24,7 +24,7 @@ define(function (require) {
             return moment(value).format(momentLocale.longDateFormat('LT'));
         },
         formatUser: function (user) {
-            if (context.get('owner').id === user.id) {
+            if (context.get('account.owner._id') === user.id) {
                 return i18n.get('you');
             } else {
                 return user.firstName + ' ' + user.lastName;

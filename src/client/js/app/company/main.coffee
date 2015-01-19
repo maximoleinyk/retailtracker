@@ -22,19 +22,22 @@ define (require) ->
 
     beforeStart: (url) ->
       companyId = url.split('/')[1]
+
       request.get('/context/load/company')
+      .then (account) ->
+        context.set({
+          account: account
+        })
+        request.post('/company/' + companyId + '/permission/' + account.owner._id)
 
-      # load context info
-      .then (contextData) ->
-        context.set(context.parse(contextData))
-        request.get('/company/' + companyId + '/permission/' + contextData.owner.id)
-
-      # check permissions
       .then (result) ->
-        return throw 'Unknown context' if not result
-        context.set('company', result.company)
+        throw 'Unknown context' if not result
+        context.set({
+          company: result.company
+          employee: result.employee
+        })
         http.setHeaders({
-          account: result.account
-          company: companyId
+          account: context.get('account._id')
+          company: context.get('company._id')
         })
   })

@@ -12,19 +12,19 @@ define (require) ->
 
     initialize: ->
       @model = context
-      @listenTo(context, 'change:owner.firstName', @updateNameLabel, @)
-      @listenTo(context, 'change:owner.lastName', @updateNameLabel, @)
+      @listenTo(context, 'change:account.owner.firstName', @updateNameLabel, @)
+      @listenTo(context, 'change:account.owner.lastName', @updateNameLabel, @)
 
     onRender: ->
       @updateNameLabel()
 
     templateHelpers: ->
-      isDependantAccount: context.get('dependsFrom')
-      avatarSrc: 'http://www.gravatar.com/avatar/' + md5(context.get('login').trim().toLowerCase())
+      isDependantAccount: context.get('account.dependsFrom').length > 0
+      avatarSrc: 'http://www.gravatar.com/avatar/' + md5(context.get('account.login').trim().toLowerCase())
 
     updateNameLabel: ->
-      firstName = @model.get('owner.firstName')
-      lastName = @model.get('owner.lastName')
+      firstName = @model.get('account.owner.firstName')
+      lastName = @model.get('account.owner.lastName')
       @ui.$userName.text("#{firstName} #{lastName}".trim())
 
     logout: ->

@@ -4,7 +4,6 @@ define (require) ->
   _ = require('underscore')
   Layout = require('cs!app/common/marionette/layout')
   Grid = require('app/common/grid/main')
-  context = require('cs!app/common/context')
   i18n = require('cs!app/common/i18n')
 
   Layout.extend

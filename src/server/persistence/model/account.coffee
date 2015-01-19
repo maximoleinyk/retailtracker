@@ -6,16 +6,19 @@ schema = mongoose.Schema
     type: mongoose.Schema.Types.ObjectId
     ref: 'User'
     required: true
-  dependsFrom:
-    type: mongoose.Schema.Types.ObjectId
-    ref: 'Account'
-    default: null
+  dependsFrom: [
+    {
+      type: mongoose.Schema.Types.ObjectId
+      ref: 'Account'
+      'default': []
+    }
+  ]
   status:
     type: String
-    default: 'ACTIVATED' # SUSPENDED ACTIVATED DELETED
-  billingStatus:
+    default: 'ACTIVATED' # SUSPENDED ACTIVATED
+  type:
     type: String
-    default: 'FREE'
+    default: 'OWN'
   login:
     type: String
     unique: true

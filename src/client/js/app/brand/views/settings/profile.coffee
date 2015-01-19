@@ -16,8 +16,8 @@ define (require) ->
       @model.changeProfileSettings()
       .then =>
         context.set({
-          'owner.firstName': @model.get('firstName'),
-          'owner.lastName': @model.get('lastName')
+          'account.owner.firstName': @model.get('firstName'),
+          'account.owner.lastName': @model.get('lastName')
         })
         @navigateTo('')
       .catch (err) =>

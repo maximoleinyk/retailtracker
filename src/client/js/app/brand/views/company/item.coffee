@@ -11,7 +11,7 @@ define (require) ->
     className: 'ellipsis'
 
     templateHelpers: ->
-      isOwn: @model.get('owner._id') is context.get('owner.id')
+      isOwn: @model.get('owner._id') is context.get('account.owner._id')
 
     openCompany: (e) ->
       e.preventDefault()
