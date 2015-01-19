@@ -10,10 +10,21 @@ class RoleService
 
   findByName: (ns, roleName, callback) ->
     @roleStore.findByName(ns, roleName, callback)
-    
+
   findAll: (ns, callback) ->
     findRoles = new Promise (resolve, reject) =>
       @roleStore.findAll ns, (err, result) ->
+        if err then reject(err) else resolve(result)
+
+    findRoles
+    .then (result) =>
+      callback(null, result)
+
+    .catch(callback)
+
+  findAllAvailable: (ns, callback) ->
+    findRoles = new Promise (resolve, reject) =>
+      @roleStore.findAllAvailable ns, (err, result) ->
         if err then reject(err) else resolve(result)
 
     findRoles

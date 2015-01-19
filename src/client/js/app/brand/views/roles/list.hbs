@@ -2,24 +2,32 @@
     <div class="title">{{i18n.dashboard}}</div>
 </div>
 <div class="page-section">
-    <table>
-        <thead>
-        <tr>
-            <th>{{!empt}}</th>
-			{{#each roles}}
-                <th>{{name}}</th>
-			{{/each}}
-        </tr>
-        </thead>
-        <tbody>
-		{{#each properties}}
-            <tr>
-                <td>{{@key}}</td>
-				{{#each ../roles}}
-                    <td>{{#hasPermission this.id}}Да{{else}}Нет{{/hasPermission}}</td>
+    <div class="col col-stretch">
+        <div class="grid grid-cell-center">
+            <table>
+                <thead>
+                <tr>
+                    <th>{{!empty}}</th>
+					{{#each roles}}
+                        <th>{{this}}</th>
+					{{/each}}
+                </tr>
+                </thead>
+                <tbody>
+				{{#each properties}}
+                    <tr>
+                        <td>{{this.permissionItem}}</td>
+						{{#each this.values}}
+                            <td>
+                                <label>
+                                    <input type="checkbox" {{#if this}}checked="true"{{/if}} readonly/>
+                                </label>
+                            </td>
+						{{/each}}
+                    </tr>
 				{{/each}}
-            </tr>
-		{{/each}}
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

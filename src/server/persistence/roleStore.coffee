@@ -7,6 +7,9 @@ class RoleStore
     @model = new Model
 
   findAll: (ns, callback) ->
+    @model.get(ns).find({}).exec(callback)
+
+  findAllAvailable: (ns, callback) ->
     @model.get(ns).find({}).where('name').ne('BOSS').exec(callback)
 
   findByName: (ns, name, callback) ->

@@ -1,6 +1,18 @@
 .grid {
   margin: 0 -10px;
 
+  &.grid-cell-center {
+    thead th {
+      text-align: center;
+    }
+    tbody td {
+      &:first-child {
+        text-align: left !important;
+      }
+      text-align: center;
+    }
+  }
+
   input {
     border-radius: 0;
     box-shadow: none;
@@ -81,7 +93,7 @@
     tbody {
       tr:nth-child(even) {
         td {
-          background-color: #f5f5f5 !important;
+          background-color: #f5f5f5;
         }
       }
     }

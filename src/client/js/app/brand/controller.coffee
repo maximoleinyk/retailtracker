@@ -22,7 +22,7 @@ define (require) ->
 
     roles: ->
       roles = new Roles
-      roles.fetch().then =>
+      roles.fetchAll().then =>
         @openPage new RoleListPage({
           roles: roles
         })

@@ -9,5 +9,9 @@ define (require) ->
     model: Role
 
     fetch: ->
-      @promise('get', '/role/all').then (result) =>
+      @promise('get', '/roles/all/available').then (result) =>
+        @reset(result, {parse: true})
+
+    fetchAll: ->
+      @promise('get', '/roles/all').then (result) =>
         @reset(result, {parse: true})

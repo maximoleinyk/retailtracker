@@ -5,14 +5,8 @@ define (require) ->
 
   class Role extends MongoModel
 
-    create: ->
-      @promise('post', '/role/create', @toJSON())
-      .then (result) =>
-        @set @parse(result)
-        @commit()
-
     fetch: ->
-      @promise('get', '/role/' + @id)
+      @promise('get', '/roles/' + @id)
       .then (result) =>
         @set @parse(result)
         @commit()
