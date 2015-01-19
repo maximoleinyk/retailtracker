@@ -31,7 +31,9 @@ define(function (require) {
 			bestPictures.initialize();
 
 			this.ui.$input.typeahead({
-					minLength: 2
+					hint: true,
+					highlight: true,
+					minLength: 1
 				},
 				{
 					display: column.get('display'),
