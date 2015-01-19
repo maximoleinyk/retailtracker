@@ -12,8 +12,8 @@ class RoleController
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    router.get '/role/:id', authFilter, (req, res) =>
-      @roleService.findById namespace.account(req), req.params.id, (err, result) ->
+    router.get '/role/:id/account/:accountId', authFilter, (req, res) =>
+      @roleService.findById namespace.accountWrapper(req.params.accountId), req.params.id, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 

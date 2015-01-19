@@ -10,18 +10,22 @@ define (require) ->
     eventBus: eventBus
 
     constructor: ->
-      permissions = Marionette.getOption(this, 'permissions')
-      appRoutes = Marionette.getOption(this, 'appRoutes')
+      permissions = Marionette.getOption(this, 'permissions') || {}
+      appRoutes = Marionette.getOption(this, 'appRoutes') || {}
+      copy = _.clone(appRoutes)
+
+      if permissions['*']
+        _.each appRoutes, (methodName, route) ->
+          if permissions['*'].except isnt methodName
+            delete copy[route]
+      else
+        _.each permissions, (config, methodName) =>
+          isPermitted = if _.isFunction(config.permitted) then config.permitted.apply(this) else config.permitted
+          if !isPermitted
+            _.each appRoutes, (appMethodName, route) =>
+              delete copy[route] if methodName is appMethodName
 
       this.originRoutes = _.clone(appRoutes)
-
-      copy = _.clone(appRoutes)
-      _.each permissions, (config, methodName) =>
-        isPermitted = if _.isFunction(config.permitted) then config.permitted.apply(this) else config.permitted
-        if !isPermitted
-          _.each appRoutes, (appMethodName, route) =>
-            delete copy[route] if methodName is appMethodName
-
       this.appRoutes = copy
 
       Marionette.AppRouter::constructor.apply @, arguments
@@ -52,7 +56,8 @@ define (require) ->
           if routeAsRegExp.test(Backbone.history.getFragment())
             foundMethodName = methodName
 
-        if foundMethodName && permissions[foundMethodName]
+        if foundMethodName
+          foundMethodName = if permissions['*'] then '*' else foundMethodName
           fallback = permissions[foundMethodName].fallback
           return if _.isFunction(fallback) then fallback.apply(this) else @navigate(fallback, {trigger: true})
 

@@ -27,6 +27,16 @@ define (require) ->
 
       'warehouses': 'warehouses'
 
+      'choose': 'choose'
+
+    permissions:
+      '*':
+        except: 'choose'
+        permitted: ->
+          context.get('account.dependsFrom').length is 0
+        fallback: ->
+          @navigate('/choose', {trigger: true})
+
     constructor: (options) ->
       appRoutes = {}
       _.each @appRoutes, (value, key) ->

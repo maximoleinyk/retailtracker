@@ -40,4 +40,12 @@ define (require) ->
           account: context.get('account._id')
           company: context.get('company._id')
         })
+
+        companyAndAccount = _.find context.get('account.companies'), (pair) ->
+          pair.company is context.get('company._id')
+
+        return request.get('/role/' + result.employee.role + '/account/' + companyAndAccount.account)
+
+      .then (role) ->
+        context.set('employee.role', role)
   })

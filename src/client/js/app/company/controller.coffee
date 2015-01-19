@@ -25,8 +25,12 @@ define (require) ->
   Promise = require('rsvp').Promise
   Currency = require('cs!./models/currency')
   Counterparty = require('cs!./models/counterparty')
+  ChoosePosPage = require('cs!./views/pos/choose')
 
   Controller.extend
+
+    choose: ->
+      @openPage new ChoosePosPage
 
     warehouses: ->
       collection = new Warehouses

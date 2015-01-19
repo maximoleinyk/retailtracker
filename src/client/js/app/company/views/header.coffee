@@ -21,6 +21,7 @@ define (require) ->
     templateHelpers: ->
       avatarSrc: avatar(context.get('account.login'))
       companyName: context.get('company.name')
+      isManager: context.get('employee.role.name') is 'BOSS'
 
     updateNameLabel: ->
       firstName = @model.get('account.owner.firstName')
