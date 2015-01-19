@@ -2,17 +2,17 @@
     <a href="/page/brand/">RetailRegister</a>
 </div>
 {{#unless isDependantAccount}}
-<nav class="navigation pull-left">
-    <ul>
-        <li>
-            <a href="/companies" data-catch-url="^/compan.*">{{i18n.myCompanies}}</a>
-        </li>
-    </ul>
-</nav>
+    <nav class="navigation pull-left">
+        <ul>
+            <li>
+                <a href="/companies" data-catch-url="^/compan.*">{{i18n.myCompanies}}</a>
+            </li>
+        </ul>
+    </nav>
 {{/unless}}
 <nav class="navigation pull-right">
     <ul>
-        <li class="dropdown">
+        <li class="dropdown pull-right">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 15px 0">
                 <span data-id="userName"></span><img src="{{avatarSrc}}" class="profile-image"/>
             </a>
