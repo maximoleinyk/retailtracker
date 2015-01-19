@@ -1,0 +1,25 @@
+<div class="page-title">
+    <div class="title">{{i18n.dashboard}}</div>
+</div>
+<div class="page-section">
+    <table>
+        <thead>
+        <tr>
+            <th>{{!empt}}</th>
+			{{#each roles}}
+                <th>{{name}}</th>
+			{{/each}}
+        </tr>
+        </thead>
+        <tbody>
+		{{#each properties}}
+            <tr>
+                <td>{{@key}}</td>
+				{{#each ../roles}}
+                    <td>{{#hasPermission this.id}}Да{{else}}Нет{{/hasPermission}}</td>
+				{{/each}}
+            </tr>
+		{{/each}}
+        </tbody>
+    </table>
+</div>

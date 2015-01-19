@@ -9,6 +9,7 @@ define (require) ->
     appRoutes:
       '': 'dashboard'
       'choose': 'chooseCompany'
+      'roles': 'roles'
 
       'companies': 'companies'
       'company/create': 'createCompany'

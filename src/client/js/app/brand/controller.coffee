@@ -16,8 +16,16 @@ define (require) ->
   Roles = require('cs!./collections/roles')
   Employees = require('cs!app/company/collections/employees')
   ChooseCompanyPage = require('cs!./views/company/choose')
+  RoleListPage = require('cs!./views/roles/list')
 
   Controller.extend
+
+    roles: ->
+      roles = new Roles
+      roles.fetch().then =>
+        @openPage new RoleListPage({
+          roles: roles
+        })
 
     chooseCompany: ->
       companies = new Companies

@@ -14,8 +14,12 @@ class RoleSchema
       accessPos:
         type: Boolean
         default: true
-      accessCompany: Boolean
-      accessBrand: Boolean
+      accessCompany:
+        type: Boolean
+        default: false
+      accessBrand:
+        type: Boolean
+        default: false
     this
 
   get: (namespace) ->
