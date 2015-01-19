@@ -13,11 +13,14 @@ define(function (require) {
 		onRender: function () {
 			InputCell.prototype.onRender.apply(this, arguments);
 
-			var column = this.options.column,
+			var self = this,
+				options = _.defaults(this.options.column.get('options') || {}, {
+					emptySuggestionText: 'Empty'
+				}),
 				remoteConfig = {
-					url: column.get('url'),
+					url: options.url,
 					replace: function (url, query) {
-						return url + '?' + $.param(_.extend((column.get('queryParams') || {}), {
+						return url + '?' + $.param(_.extend((options.queryParams || {}), {
 							match: query
 						}));
 					}
@@ -36,13 +39,15 @@ define(function (require) {
 					minLength: 1
 				},
 				{
-					display: column.get('display'),
+					display: options.display,
 					source: bestPictures.ttAdapter(),
 					templates: {
-						empty: column.get('emptySuggestionText'),
-						suggestion: column.get('suggestionTemplate')
+						empty: options.emptySuggestionText,
+						suggestion: options.suggestionTemplate
 					}
-				})
+				}).on('typeahead:selected', function (obj, datum) {
+					self.model.set(self.options.column.get('field'), options.display(datum));
+				});
 		}
 
 	});

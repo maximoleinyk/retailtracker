@@ -29,18 +29,19 @@ define (require) ->
             field: 'email'
             title: i18n.get('email')
             type: 'autocomplete'
-            url: '/employees/fetch'
-            queryParams:
-              limit: 5
             placeholder: i18n.get('emailExampleCom')
-            display: (employee) ->
-              employee.email
-            suggestionTemplate: (employee) ->
-              suggestionTemplate(employee, {
-                helpers:
-                  avatarUrl: ->
-                    avatar(employee.email)
-              })
+            options:
+              url: '/employees/fetch'
+              queryParams:
+                limit: 5
+              display: (employee) ->
+                employee.email
+              suggestionTemplate: (employee) ->
+                suggestionTemplate(employee, {
+                  helpers:
+                    avatarUrl: ->
+                      avatar(employee.email)
+                })
           },
           {
             field: 'role'
