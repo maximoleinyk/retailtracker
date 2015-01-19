@@ -9,7 +9,8 @@ class EmployeeController
   register: (router) ->
     router.get '/employees/fetch', authFilter, (req, res) =>
       match = req.query.match or ''
-      @employeeService.findLikeByEmail namespace.company(req), match, (err, result) ->
+      limit = req.query.limit or 5
+      @employeeService.findLikeByEmail namespace.company(req), match, limit, (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
 
     router.get '/employees/:id', authFilter, (req, res) =>

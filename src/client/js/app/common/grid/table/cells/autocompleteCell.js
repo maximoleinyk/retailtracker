@@ -4,7 +4,6 @@ define(function (require) {
 
 	var InputCell = require('./inputCell'),
 		_ = require('underscore'),
-		Handlebars = require('handlebars'),
 		$ = require('jquery');
 
 	require('typeahead');
@@ -14,18 +13,20 @@ define(function (require) {
 		onRender: function () {
 			InputCell.prototype.onRender.apply(this, arguments);
 
-			var remoteConfig = {
-				url: '/employees/fetch',
-				replace: function (url, query) {
-					return url + '?match=' + query;
-				}
-			};
-
-			var bestPictures = new Bloodhound({
-				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-				queryTokenizer: Bloodhound.tokenizers.whitespace,
-				remote: remoteConfig
-			});
+			var column = this.options.column,
+				remoteConfig = {
+					url: column.get('url'),
+					replace: function (url, query) {
+						return url + '?' + $.param(_.extend((column.get('queryParams') || {}), {
+							match: query
+						}));
+					}
+				},
+				bestPictures = new Bloodhound({
+					datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+					queryTokenizer: Bloodhound.tokenizers.whitespace,
+					remote: remoteConfig
+				});
 
 			bestPictures.initialize();
 
@@ -33,12 +34,11 @@ define(function (require) {
 					minLength: 2
 				},
 				{
-					display: function (employee) {
-						return employee.email;
-					},
+					display: column.get('display'),
 					source: bestPictures.ttAdapter(),
 					templates: {
-						suggestion: Handlebars.compile('<p>{{firstName}} {{lastName}} &lt;{{email}}&gt;</p>')
+						empty: column.get('emptySuggestionText'),
+						suggestion: column.get('suggestionTemplate')
 					}
 				})
 		}

@@ -4,6 +4,8 @@ define (require) ->
   Layout = require('cs!app/common/marionette/layout')
   Grid = require('app/common/grid/main')
   i18n = require('cs!app/common/i18n')
+  suggestionTemplate = require('hbs!./suggestionTemplate.hbs')
+  avatar = require('cs!app/common/avatar')
 
   Layout.extend
 
@@ -27,7 +29,18 @@ define (require) ->
             field: 'email'
             title: i18n.get('email')
             type: 'autocomplete'
+            url: '/employees/fetch'
+            queryParams:
+              limit: 5
             placeholder: i18n.get('emailExampleCom')
+            display: (employee) ->
+              employee.email
+            suggestionTemplate: (employee) ->
+              suggestionTemplate(employee, {
+                helpers:
+                  avatarUrl: ->
+                    avatar(employee.email)
+              })
           },
           {
             field: 'role'

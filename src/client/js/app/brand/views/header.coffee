@@ -4,7 +4,7 @@ define (require) ->
   ItemView = require('cs!app/common/marionette/itemView')
   http = require('app/common/http')
   context = require('cs!app/common/context')
-  md5 = require('md5')
+  avatar = require('cs!app/common/avatar')
 
   ItemView.extend
 
@@ -20,7 +20,7 @@ define (require) ->
 
     templateHelpers: ->
       isDependantAccount: context.get('account.dependsFrom').length > 0
-      avatarSrc: 'http://www.gravatar.com/avatar/' + md5(context.get('account.login').trim().toLowerCase())
+      avatarSrc: avatar(context.get('account.login'))
 
     updateNameLabel: ->
       firstName = @model.get('account.owner.firstName')
