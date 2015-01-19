@@ -33,7 +33,7 @@ define (require) ->
       '*':
         except: 'choose'
         permitted: ->
-          context.get('account.dependsFrom').length is 0
+          context.get('employee.role.name') is 'BOSS' or context.get('employee.role.name') is 'MANAGER'
         fallback: ->
           @navigate('/choose', {trigger: true})
 

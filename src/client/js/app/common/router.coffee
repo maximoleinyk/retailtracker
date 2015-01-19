@@ -13,11 +13,14 @@ define (require) ->
       permissions = Marionette.getOption(this, 'permissions') || {}
       appRoutes = Marionette.getOption(this, 'appRoutes') || {}
       copy = _.clone(appRoutes)
+      all = permissions['*']
 
-      if permissions['*']
+      if all
         _.each appRoutes, (methodName, route) ->
-          if permissions['*'].except isnt methodName
-            delete copy[route]
+          if all.except isnt methodName
+            isPermitted = if _.isFunction(all.permitted) then all.permitted.apply(this) else all.permitted
+            if !isPermitted
+              delete copy[route]
       else
         _.each permissions, (config, methodName) =>
           isPermitted = if _.isFunction(config.permitted) then config.permitted.apply(this) else config.permitted
