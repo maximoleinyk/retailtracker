@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Nomenclature extends MongoModel
+  class Nomenclature extends Model
 
     defaults: ->
       attributes: []
@@ -16,16 +16,16 @@ define (require) ->
         @commit()
 
     create: ->
-      @promise('post', '/nomenclature/create', @toJSON())
+      @promise('post', '/nomenclature', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
 
     update: ->
-      @promise('put', '/nomenclature/update', @toJSON())
+      @promise('put', '/nomenclature/' + @id, @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
 
     delete: ->
-      @promise('del', '/nomenclature/delete', @toJSON())
+      @promise('del', '/nomenclature/' + @id, @toJSON())

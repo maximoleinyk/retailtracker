@@ -1,28 +1,31 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Warehouse extends MongoModel
+  class Warehouse extends Model
+
+    fetch: ->
+      @promise('get', '/warehouse/' + @id).then (result) =>
+        @set @parse(result)
 
     create: (callback) ->
-      @promise('post', '/warehouse/create', @toJSON())
-      .then (result) =>
+      @promise('post', '/warehouse', @toJSON()).then (result) =>
         @set @parse(result)
         @commit()
         callback(null, @)
-      .then(null, callback)
+      .catch(callback)
 
     update: (callback) ->
-      @promise('put', '/warehouse/update', @toJSON())
+      @promise('put', '/warehouse/' + @id, @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
         callback(null, @)
-      .then(null, callback)
+      .catch(callback)
 
     delete: (callback) ->
-      @promise('del', '/warehouse/delete', @toJSON())
+      @promise('del', '/warehouse/' + @id, @toJSON())
       .then ->
         callback(null)
-      .then(null, callback)
+      .catch(callback)

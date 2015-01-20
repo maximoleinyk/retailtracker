@@ -21,7 +21,7 @@ class EmployeeController
       @employeeService.findById namespace.company(req), req.param('id'), (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
 
-    router.post '/employees/create', authFilter, (req, res) =>
+    router.post '/employees', authFilter, (req, res) =>
       @employeeService.create namespace.company(req), req.body, (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
 

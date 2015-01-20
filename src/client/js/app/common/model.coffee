@@ -7,7 +7,7 @@ define (require) ->
 
   require('backbone-nested')
 
-  class MongoModel extends Backbone.NestedModel
+  class Model extends Backbone.NestedModel
 
     initialize: ->
       @commit()

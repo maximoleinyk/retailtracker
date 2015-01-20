@@ -1,6 +1,6 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Employee extends MongoModel
+  class Employee extends Model

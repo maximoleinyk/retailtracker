@@ -1,11 +1,11 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
   context = require('cs!app/common/context')
   i18n = require('cs!app/common/i18n')
 
-  class Activity extends MongoModel
+  class Activity extends Model
 
     actions:
       'ACCOUNT_REGISTERED': (json) ->

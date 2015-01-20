@@ -18,17 +18,17 @@ class CurrencyController
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    @router.post '/currency/create', authFilter, (req, res) =>
+    @router.post '/currency', authFilter, (req, res) =>
       @currencyService.create namespace.company(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    @router.delete '/currency/delete', authFilter, (req, res) =>
+    @router.delete '/currency/:id', authFilter, (req, res) =>
       @currencyService.delete namespace.company(req), req.body.id, (err) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.NO_CONTENT).end()
 
-    @router.put '/currency/update', authFilter, (req, res) =>
+    @router.put '/currency/:id', authFilter, (req, res) =>
       @currencyService.update namespace.company(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)

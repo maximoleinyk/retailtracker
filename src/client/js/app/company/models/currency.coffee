@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Currency extends MongoModel
+  class Currency extends Model
 
     defaults:
       rate: 1
@@ -13,23 +13,20 @@ define (require) ->
       @promise('get', '/currency/templates')
 
     create: (callback) ->
-      @promise('post', '/currency/create', @toJSON())
-      .then (result) =>
+      @promise('post', '/currency', @toJSON()).then (result) =>
         @set @parse(result)
         @commit()
         callback(null, @)
-      .then(null, callback)
+      .catch(callback)
 
     update: (callback) ->
-      @promise('put', '/currency/update', @toJSON())
-      .then (result) =>
+      @promise('put', '/currency/' + @id, @toJSON()).then (result) =>
         @set @parse(result)
         @commit()
         callback(null, @)
-      .then(null, callback)
+      .catch(callback)
 
     delete: (callback) ->
-      @promise('del', '/currency/delete', @toJSON())
-      .then ->
+      @promise('del', '/currency/' + @id, @toJSON()).then ->
         callback(null)
-      .then(null, callback)
+      .catch(callback)

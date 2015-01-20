@@ -5,12 +5,10 @@ class WarehouseController extends CrudController
 
   baseUrl: '/warehouse'
 
-  register: (@router) ->
+  register: (router) ->
     super
 
-    @router.get '/warehouse/select/fetch', authFilter, (req, res) =>
-      @warehouseService.search namespace.company(req), req.query.q, (err, results) ->
-        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
-        res.jsonp(results)
+    router.get @baseUrl + '/select/fetch', authFilter, (req, res) =>
+      @service.search(@namespace(req), req.query.q, @callback(res))
 
 module.exports = WarehouseController

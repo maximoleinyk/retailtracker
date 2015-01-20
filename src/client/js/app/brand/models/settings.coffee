@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('app/common/model')
+  Model = require('app/common/model')
 
-  class Settings extends MongoModel
+  class Settings extends Model
 
     changeProfileSettings: ->
       @promise('post', '/settings/change/profile', @toJSON())

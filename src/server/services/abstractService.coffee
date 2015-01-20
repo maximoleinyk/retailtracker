@@ -11,15 +11,12 @@ class AbstractService
     @store.findById(ns, id, callback)
 
   create: (ns, data, callback) ->
-    @store.create ns, data, callback
-
-  delete: (ns, id, callback) ->
-    return callback({ generic: i18n.idRequired }) if not id
-    @store.delete ns, id, callback
+    @store.create(ns, data, callback)
 
   update: (ns, data, callback) ->
-    @store.update ns, data, (err) ->
-      return callback(err) if err
-      callback(null, data)
+    @store.update(ns, data, callback)
+
+  delete: (ns, id, callback) ->
+    @store.delete(ns, id, callback)
 
 module.exports = AbstractService

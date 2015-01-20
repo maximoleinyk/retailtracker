@@ -1,28 +1,28 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Uom extends MongoModel
+  class Uom extends Model
 
     create: (callback) ->
-      @promise('post', '/uom/create', @toJSON())
+      @promise('post', '/uom', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
         callback(null, @)
-      .then(null, callback)
+      .catch(callback)
 
     update: (callback) ->
-      @promise('put', '/uom/update', @toJSON())
+      @promise('put', '/uom/' + @id, @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
         callback(null, @)
-      .then(null, callback)
+      .catch(callback)
 
     delete: (callback) ->
-      @promise('del', '/uom/delete', @toJSON())
+      @promise('del', '/uom/' + @id, @toJSON())
       .then ->
         callback(null)
-      .then(null, callback)
+      .catch(callback)

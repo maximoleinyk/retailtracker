@@ -29,12 +29,12 @@ class CompanyController
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(company)
 
-    router.post '/company/create', authFilter, (req, res) =>
+    router.post '/company', authFilter, (req, res) =>
       @companyService.create namespace.account(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    router.put '/company/update', authFilter, (req, res) =>
+    router.put '/company/:id', authFilter, (req, res) =>
       @companyService.update namespace.account(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)

@@ -3,7 +3,10 @@ i18n = inject('util/i18n').bundle('validation')
 
 class AbstractStore
 
-  wrapCallback: (callback) ->
+  constructor: (Model) ->
+    @model = new Model
+
+  callback: (callback) ->
     (err) =>
       if (err)
         if (err.name == 'ValidationError')
@@ -19,19 +22,20 @@ class AbstractStore
     ConcreteModel = @model.get(ns)
 
     instance = new ConcreteModel(data)
-    instance.save(@wrapCallback(callback))
+    instance.save(@callback(callback))
 
   delete: (ns, id, callback) ->
-    @model.get(ns).findByIdAndRemove(id, @wrapCallback(callback))
+    @model.get(ns).findByIdAndRemove(id, @callback(callback))
 
   update: (ns, data, callback) ->
-    # TODO: Mongoose 3.9.3 is required for runValidators option support
-    @model.get(ns).update({_id: data.id or data._id}, _.omit(data, ['_id']), {runValidators: true}, @wrapCallback(callback))
+    # Mongoose 3.9.3 requires for runValidators option support
+    @model.get(ns).update({_id: data.id or data._id}, _.omit(data, ['id, _id']), {runValidators: true},
+      @callback(callback))
 
   findById: (ns, id, callback) ->
-    @model.get(ns).findById(id, @wrapCallback(callback))
+    @model.get(ns).findById(id, @callback(callback))
 
   findAll: (ns, callback) ->
-    @model.get(ns).find({}, @wrapCallback(callback))
+    @model.get(ns).find({}, @callback(callback))
 
 module.exports = AbstractStore

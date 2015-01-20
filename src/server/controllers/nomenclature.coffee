@@ -17,17 +17,17 @@ class NomenclatureController
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    router.post '/nomenclature/create', authFilter, (req, res) =>
+    router.post '/nomenclature', authFilter, (req, res) =>
       @nomenclatureService.create namespace.company(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    router.put '/nomenclature/update', authFilter, (req, res) =>
+    router.put '/nomenclature/:id', authFilter, (req, res) =>
       @nomenclatureService.update namespace.company(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    router.delete '/nomenclature/delete', authFilter, (req, res) =>
+    router.delete '/nomenclature/:id', authFilter, (req, res) =>
       @nomenclatureService.delete namespace.company(req), req.body.id, (err) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.NO_CONTENT).end()

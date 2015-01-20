@@ -35,7 +35,7 @@ define (require) ->
         modelToRemove.delete (err) =>
           if err then err else @collection.remove(modelToRemove)
 
-      Promise.all(promises).then(callback).then(null, callback)
+      Promise.all(promises).then(callback).catch(callback)
 
     onCancel: (model, callback) ->
       model.reset()

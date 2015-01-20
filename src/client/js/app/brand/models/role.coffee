@@ -1,9 +1,9 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Role extends MongoModel
+  class Role extends Model
 
     fetch: ->
       @promise('get', '/roles/' + @id)

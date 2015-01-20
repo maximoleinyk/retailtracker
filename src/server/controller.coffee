@@ -48,6 +48,9 @@ RoleController = inject('controllers/role')
 EmployeeService = inject('services/employeeService')
 EmployeeStore = inject('persistence/employeeStore')
 EmployeeController = inject('controllers/employee')
+namespace = inject('util/namespace')
+warehouseSchema = inject('persistence/model/warehouse')
+counterpartySchema = inject('persistence/model/counterparty')
 
 class PageController
 
@@ -56,7 +59,7 @@ class PageController
   register: ->
     currencyService = new CurrencyService(new CurrencyStore)
 
-    counterpartyService = new CounterpartyService(new CounterpartyStore)
+    counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
 
     roleService = new RoleService(new RoleStore)
 
@@ -73,12 +76,13 @@ class PageController
     inviteStore = new InviteStore()
     inviteService = new InviteService(inviteStore)
 
-    employeeService = new EmployeeService(companyStore, roleService, new EmployeeStore())
+    employeeService = new EmployeeService(companyStore, roleService, new EmployeeStore)
 
     accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
       inviteService, userService, activityService)
 
-    companyService = new CompanyService(employeeService, roleService, companyStore, inviteService, accountService, userService, activityService,
+    companyService = new CompanyService(employeeService, roleService, companyStore, inviteService, accountService,
+      userService, activityService,
       contextService)
 
     securityService = new SecurityService(@passport, accountService)
@@ -90,7 +94,8 @@ class PageController
     contextController = new ContextController(accountService)
     contextController.register(@router)
 
-    warehouseController = new WarehouseController(new WarehouseService(new WarehouseStore))
+    warehouseController = new WarehouseController(namespace.company,
+      new WarehouseService(new WarehouseStore(warehouseSchema)))
     warehouseController.register(@router)
 
     activityController = new ActivityController(activityService)
@@ -112,7 +117,7 @@ class PageController
     currencyController = new CurrencyController(currencyService)
     currencyController.register(@router)
 
-    counterpartyController = new CounterpartyController(counterpartyService)
+    counterpartyController = new CounterpartyController(namespace.company, counterpartyService)
     counterpartyController.register(@router)
 
     companyController = new CompanyController(companyService)

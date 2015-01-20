@@ -1,6 +1,6 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
 
-  class Invite extends MongoModel
+  class Invite extends Model

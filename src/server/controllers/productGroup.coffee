@@ -17,17 +17,17 @@ class ProductGroup
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    @router.post '/productgroup/create', authFilter, (req, res) =>
+    @router.post '/productgroup', authFilter, (req, res) =>
       @productGroupService.create namespace.company(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)
 
-    @router.delete '/productgroup/delete', authFilter, (req, res) =>
+    @router.delete '/productgroup/:id', authFilter, (req, res) =>
       @productGroupService.delete namespace.company(req), req.body.id, (err) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.NO_CONTENT).end()
 
-    @router.put '/productgroup/update', authFilter, (req, res) =>
+    @router.put '/productgroup/:id', authFilter, (req, res) =>
       @productGroupService.update namespace.company(req), req.body, (err, result) ->
         return res.status(HttpStatus.BAD_REQUEST).send(err) if err
         res.status(HttpStatus.OK).send(result)

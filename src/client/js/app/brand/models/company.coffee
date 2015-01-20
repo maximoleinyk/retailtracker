@@ -1,10 +1,10 @@
 define (require) ->
   'use strict'
 
-  MongoModel = require('cs!app/common/model')
+  Model = require('cs!app/common/model')
   context = require('cs!app/common/context')
 
-  class Company extends MongoModel
+  class Company extends Model
 
     defaults: ->
       owner: context.get('account.owner')?._id
@@ -21,13 +21,13 @@ define (require) ->
         @commit()
 
     create: ->
-      @promise('post', '/company/create', @toJSON())
+      @promise('post', '/company', @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
 
     update: ->
-      @promise('put', '/company/update', @toJSON())
+      @promise('put', '/company/' + @id, @toJSON())
       .then (result) =>
         @set @parse(result)
         @commit()
