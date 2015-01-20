@@ -12,7 +12,7 @@ define (require) ->
   Promise = require('rsvp').Promise
   Currency = require('cs!app/company/models/currency')
   CompanyListPage = require('cs!./views/company/list')
-  ManageCompanyEmployeesPage = require('cs!./views/company/employees')
+  ManageCompanyEmployeesPage = require('cs!app/company/views/employees/list')
   Roles = require('cs!./collections/roles')
   Employees = require('cs!app/company/collections/employees')
   ChooseCompanyPage = require('cs!./views/company/choose')

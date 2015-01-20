@@ -6,39 +6,11 @@
         <ul>
 			{{! Компания }}
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                   aria-expanded="false">{{i18n.myCompany}}<span
-                        class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.myCompany}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                </ul>
-            </li>
-
-			{{! Розница }}
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                   aria-expanded="false">{{i18n.retail}}<span
-                        class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
+                    <li><a href="/employees" data-catch-url="employees">{{i18n.employees}}</a></li>
                     <li><a href="/stores" data-catch-url="stores">{{i18n.retailStoreList}}</a></li>
                     <li><a href="/cash" data-catch-url="cash">{{i18n.cash}}</a></li>
-                </ul>
-            </li>
-
-			{{! Розница }}
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                   aria-expanded="false">{{i18n.money}}<span
-                        class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                </ul>
-            </li>
-
-			{{! Склдской учет }}
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                   aria-expanded="false">{{i18n.inventoryControl}}<span
-                        class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
                     <li><a href="/warehouses" data-catch-url="warehouses">{{i18n.warehousesList}}</a></li>
                 </ul>
             </li>

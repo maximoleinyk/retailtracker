@@ -7,6 +7,10 @@ class EmployeeController
   constructor: (@employeeService) ->
 
   register: (router) ->
+    router.get '/employees/all/:accountId/:companyId', authFilter, (req, res) =>
+      @employeeService.findAll namespace.companyWrapper(req.param('accountId'), req.param('companyId')), (err, result) ->
+        if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
+
     router.get '/employees/fetch', authFilter, (req, res) =>
       match = req.query.match or ''
       limit = req.query.limit or 5

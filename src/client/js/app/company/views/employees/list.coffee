@@ -8,7 +8,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./employees.hbs')
+    template: require('hbs!./list.hbs')
     className: 'page'
 
     templateHelpers: ->

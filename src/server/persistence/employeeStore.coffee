@@ -16,7 +16,7 @@ class EmployeeStore
     @model.get(ns).find({ email: new RegExp(email, 'i')}, callback).limit(limit)
 
   findAll: (ns, callback) ->
-    @model.get(ns).find({}, callback)
+    @model.get(ns).find({}).exec(callback)
 
   create: (ns, data, callback) ->
     Employee = @model.get(ns)
