@@ -3,13 +3,14 @@ define (require) ->
 
   Controller = require('cs!app/common/controller');
   HomePage = require('cs!./views/home')
-  ProductItems = require('cs!app/company/collections/productItems')
+  # TODO: ProductItems = require('cs!app/company/collections/productItems')
 
   Controller.extend
 
     home: ->
-      collection = new ProductItems
-      collection.fetch().then =>
+      #collection = new ProductItems
+      #collection.fetch().then =>
         @openPage new HomePage({
-          collection: collection
+          #collection: collection
+          collection: new Backbone.Collection()
         })
