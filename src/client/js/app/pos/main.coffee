@@ -8,7 +8,7 @@ define (require) ->
     Router: Router
     Controller: Controller
     bundleName: 'pos'
-    className: 'point-of-sale'
+    classSelector: 'point-of-sale'
     root: '/pos/'
     authUrl: '/context/handshake'
   })
