@@ -8,6 +8,13 @@ define (require) ->
 
     model: Role
 
+    comparator: (model) ->
+      name = model.get('name')
+      return 3 if name is 'BOSS'
+      return 2 if name is 'MANAGER'
+      return 1 if name is 'CASHIER'
+      0
+
     fetch: ->
       @promise('get', '/roles/all/available').then (result) =>
         @reset(result, {parse: true})
