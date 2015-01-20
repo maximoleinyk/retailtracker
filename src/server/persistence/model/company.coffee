@@ -1,4 +1,5 @@
 mongoose = require('mongoose')
+moment = require('moment')
 
 class CompanySchema
 
@@ -10,6 +11,9 @@ class CompanySchema
       description:
         type: String
         default: ''
+      created:
+        type: Date
+        default: moment().toISOString()
       owner:
         type: mongoose.Schema.Types.ObjectId
         ref: 'User'

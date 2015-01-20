@@ -5,6 +5,7 @@ define (require) ->
   Layout = require('cs!app/common/marionette/layout')
   Grid = require('app/common/grid/main')
   i18n = require('cs!app/common/i18n')
+  helpers = require('app/common/helpers')
 
   Layout.extend
 
@@ -21,6 +22,12 @@ define (require) ->
             title: i18n.get('name')
             url: (model) ->
               '/company/' + model.id + '/edit'
+          }
+          {
+            field: 'created'
+            title: i18n.get('creationDate')
+            format: (value) ->
+              helpers.date(value)
           }
           {
             field: 'currencyCode'
