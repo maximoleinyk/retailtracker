@@ -36,13 +36,14 @@ define (require) ->
           company: result.company
           employee: result.employee
         })
-        http.setHeaders({
-          account: context.get('account._id')
-          company: context.get('company._id')
-        })
 
         companyAndAccount = _.find context.get('account.companies'), (pair) ->
           pair.company is context.get('company._id')
+
+        http.setHeaders({
+          account: companyAndAccount.account
+          company: context.get('company._id')
+        })
 
         return request.get('/roles/' + result.employee.role + '/account/' + companyAndAccount.account)
 
