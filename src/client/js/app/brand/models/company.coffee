@@ -2,9 +2,12 @@ define (require) ->
   'use strict'
 
   Model = require('cs!app/common/model')
+  Promise = require('rsvp').Promise
   context = require('cs!app/common/context')
 
   class Company extends Model
+
+    urlRoot: '/company'
 
     defaults: ->
       owner: context.get('account.owner')?._id
@@ -20,15 +23,10 @@ define (require) ->
         @set('hasAccount', result.hasAccount)
         @commit()
 
-    create: ->
-      @promise('post', '/company', @toJSON())
-      .then (result) =>
-        @set @parse(result)
-        @commit()
-
-    update: ->
-      @promise('put', '/company/' + @id, @toJSON())
-      .then (result) =>
+    save: ->
+      save = new Promise (resolve, reject) =>
+        Model::save.apply(this, @toJSON()).done(resolve).fail(reject)
+      save.then (result) =>
         @set @parse(result)
         @commit()
 

@@ -13,17 +13,14 @@ define (require) ->
       'uom': 'uom'
       'currency': 'currency'
       'counterparty': 'listCounterparties'
-      'counterparty/create': 'createCounterparty'
-      'counterparty/:id/edit': 'editCounterparty'
+      'counterparty/:id': 'counterpartyForm'
       'groups': 'productGroups'
 
       'settings/:view': 'settings'
 
       'nomenclature': 'nomenclatureList'
-      'nomenclature/create': 'createNomenclature'
       'nomenclature/copy/:id': 'copyNomenclature'
-      'nomenclature/:id': 'viewNomenclature'
-      'nomenclature/:id/edit': 'editNomenclature'
+      'nomenclature/:id': 'nomenclatureForm'
 
       'warehouses': 'warehouses'
 

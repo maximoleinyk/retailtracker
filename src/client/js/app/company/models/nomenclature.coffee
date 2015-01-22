@@ -2,8 +2,11 @@ define (require) ->
   'use strict'
 
   Model = require('cs!app/common/model')
+  Promise = require('rsvp').Promise
 
   class Nomenclature extends Model
+
+    urlRoot: '/nomenclature'
 
     defaults: ->
       attributes: []
@@ -15,15 +18,10 @@ define (require) ->
         @set @parse(result)
         @commit()
 
-    create: ->
-      @promise('post', '/nomenclature', @toJSON())
-      .then (result) =>
-        @set @parse(result)
-        @commit()
-
-    update: ->
-      @promise('put', '/nomenclature/' + @id, @toJSON())
-      .then (result) =>
+    save: ->
+      save = new Promise (resolve, reject) =>
+        Model::save.apply(this, @toJSON()).done(resolve).fail(reject)
+      save.then (result) =>
         @set @parse(result)
         @commit()
 

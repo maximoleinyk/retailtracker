@@ -12,8 +12,7 @@ define (require) ->
       'roles': 'roles'
 
       'companies': 'companies'
-      'company/create': 'createCompany'
-      'company/:id/edit': 'editCompany'
+      'company/:id': 'companyForm'
       'company/:id/employees': 'manageCompanyEmployees'
 
       'settings/:view': 'settings'

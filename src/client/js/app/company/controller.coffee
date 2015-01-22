@@ -10,14 +10,12 @@ define (require) ->
   CurrenciesPage = require('cs!./views/currencies')
   Counterparties = require('cs!./collections/counterparties')
   CounterpartiesPage = require('cs!./views/counterparty/list')
-  CreateCounterpartyPage = require('cs!./views/counterparty/create')
-  EditCounterpartyPage = require('cs!./views/counterparty/edit')
+  CounterpartyFormPage = require('cs!./views/counterparty/form')
   NomenclatureListPage = require('cs!./views/nomenclature/list')
   NomenclatureCollection = require('cs!./collections/nomenclature')
   CreateNomenclaturePage = require('cs!./views/nomenclature/create')
   Nomenclature = require('cs!./models/nomenclature')
-  ViewNomenclaturePage = require('cs!./views/nomenclature/view')
-  EditNomenclaturePage = require('cs!./views/nomenclature/edit')
+  NomenclatureFormPage = require('cs!./views/nomenclature/form')
   ProductGroups = require('cs!./collections/productGroups')
   ProductGroupsPage = require('cs!./views/productGroups/list')
   Warehouses = require('cs!./collections/warehouses')
@@ -40,26 +38,18 @@ define (require) ->
           collection: collection
         })
 
-    editNomenclature: (id) ->
-      model = new Nomenclature({ id: id })
-      model.fetch()
-      .then =>
-        @openPage new EditNomenclaturePage({
+    nomenclatureForm: (id) ->
+      model = if id isnt 'create' then new Nomenclature({ _id: id }, { parse: true }) else null
+
+      openPage = =>
+        @openPage new NomenclatureFormPage({
           model: model
         })
 
-    viewNomenclature: (id) ->
-      model = new Nomenclature({ id: id })
-      model.fetch()
-      .then =>
-        @openPage new ViewNomenclaturePage({
-          model: model
-        })
-
-    createNomenclature: ->
-      @openPage new CreateNomenclaturePage({
-        model: new Nomenclature
-      })
+      if model
+        model.fetch().then(openPage)
+      else
+        openPage()
 
     copyNomenclature: (copyId) ->
       model = new Nomenclature({ id: copyId })
@@ -115,18 +105,18 @@ define (require) ->
           collection: collection
         })
 
-    createCounterparty: ->
-      @openPage new CreateCounterpartyPage({
-        model: new Counterparty
-      })
+    counterpartyForm: (id) ->
+      model = if id isnt 'create' then new Counterparty({ _id: id }, { parse: true }) else null
 
-    editCounterparty: (id) ->
-      counterparty = new Counterparty({ _id: id }, { parse: true })
-      counterparty.fetch()
-      .then =>
-        @openPage new EditCounterpartyPage({
-          model: counterparty
+      openPage = =>
+        @openPage new CounterpartyFormPage({
+          model: model
         })
+
+      if model
+        model.fetch().then(openPage)
+      else
+        openPage()
 
     settings: (view) ->
       @openPage new SettingsPage({

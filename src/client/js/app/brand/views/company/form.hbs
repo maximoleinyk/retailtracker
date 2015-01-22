@@ -1,41 +1,14 @@
-<form data-submit="save" class="page-section">
-    <div class="col col-3quarters">
-        <div class="form-group">
-            <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
-
-            <div class="col-md-4">
-                <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
-
-                <div class="help-block" data-validation="name"></div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
-
-            <div class="col-md-8">
-                <textarea id="description" name="description" rows="5" class="form-control" data-bind></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="currencyCode">{{i18n.currencyCode}}</label>
-
-            <div class="col-md-4">
-                <select id="currencyCode" class="form-control" name="currencyCode" data-id="select" data-bind>
-					{{#each currencyCodes}}
-                        <option value="{{id}}">{{text}}</option>
-					{{/each}}
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="currencyRate">{{i18n.currencyRate}}</label>
-
-            <div class="col-md-4">
-                <input type="text" id="currencyRate" name="currencyRate" class="form-control" data-bind readonly/>
-            </div>
-        </div>
-        <div data-region="inviteeList"></div>
+<div class="page-title">
+    <div class="title">
+		{{#if isNew}}
+			{{i18n.newCompany}}
+		{{else}}
+			{{i18n.editCompany}}
+		{{/if}}
     </div>
+    <a href="/companies" class="link-back">{{i18n.myCompanies}}</a>
+</div>
+<form data-submit="submit">
     <div class="page-actions">
 		{{#if isNew}}
             <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
@@ -43,5 +16,46 @@
             <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
             <a href="{{url}}" class="btn btn-default">{{i18n.employees}}</a>
 		{{/if}}
+    </div>
+    <div class="page-section">
+        <div class="col col-3quarters">
+            <div class="form-group">
+                <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
+
+                <div class="col-md-4">
+                    <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
+
+                    <div class="help-block" data-validation="name"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
+
+                <div class="col-md-8">
+                    <textarea id="description" name="description" rows="5" class="form-control"
+                              data-bind></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="currencyCode">{{i18n.currencyCode}}</label>
+
+                <div class="col-md-4">
+                    <select id="currencyCode" class="form-control" name="currencyCode" data-id="select" data-bind>
+						{{#each currencyCodes}}
+                            <option value="{{id}}">{{text}}</option>
+						{{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="currencyRate">{{i18n.currencyRate}}</label>
+
+                <div class="col-md-4">
+                    <input type="text" id="currencyRate" name="currencyRate" class="form-control" data-bind
+                           readonly/>
+                </div>
+            </div>
+            <div data-region="inviteeList"></div>
+        </div>
     </div>
 </form>

@@ -8,7 +8,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./edit.hbs')
+    template: require('hbs!./form.hbs')
     className: 'page page-2thirds company'
 
     onRender: ->
@@ -25,21 +25,20 @@ define (require) ->
 
     renderInviteeList: ->
       @inviteeList.show new InviteeList({
-        collection: new Collection(@model.get('invitees'), {parse:true})
+        collection: new Collection(@model.get('invitees'), {parse: true})
         model: @model
         roles: @options.roles
       })
 
     renderSelect: ->
       @ui.$select.select2()
-      @ui.$select.select2('enable', false)
+      @ui.$select.select2('enable', false) if not this.model.isNew()
 
-    save: (e) ->
+    submit: (e) ->
       e.preventDefault()
       @validation.reset()
 
-      @model.update()
-      .then =>
+      @model.save().then =>
         @navigateTo('/companies')
       .catch (err) =>
         @validation.show(err)

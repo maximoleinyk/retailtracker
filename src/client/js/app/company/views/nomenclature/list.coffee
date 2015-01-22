@@ -19,7 +19,7 @@ define (require) ->
             field: 'name'
             title: i18n.get('name')
             url: (model) ->
-              '/nomenclature/' + model.id + '/edit'
+              '/nomenclature/' + model.id
           }
           {
             field: 'article'

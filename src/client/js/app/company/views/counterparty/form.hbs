@@ -1,4 +1,26 @@
+<div class="page-title">
+    <div class="title">
+		{{#if isNew}}
+			{{i18n.createCounterparty}}
+		{{else}}
+			{{i18n.editCounterparty}}
+		{{/if}}
+    </div>
+    <a href="/counterparty" class="link-back">{{i18n.counterparties}}</a>
+</div>
 <div class="page-section">
+    <div class="col col-2thirds">
+        <button type="submit" class="btn btn-primary" data-auto-disable>
+			{{#if isNew}}
+				{{i18n.create}}
+			{{else}}
+				{{i18n.save}}
+			{{/if}}
+		</button>
+        <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+    </div>
+</div>
+<form data-submit="submit" class="page-section">
     <div class="col col-2thirds">
         <fieldset>
             <div class="form-group">
@@ -54,4 +76,5 @@
             </div>
         </fieldset>
     </div>
-</div>
+</form>
+

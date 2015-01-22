@@ -5,18 +5,17 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./create.hbs')
+    template: require('hbs!./form.hbs')
     className: 'page page-2thirds'
 
     cancel: ->
       @navigateTo('/counterparty')
 
-    create: (e) ->
+    submit: (e) ->
       e.preventDefault()
       @validation.reset()
 
-      @model.create()
-      .then =>
+      @model.save().then =>
         @navigateTo('/counterparty')
       .catch (err) =>
         @validation.show(err)

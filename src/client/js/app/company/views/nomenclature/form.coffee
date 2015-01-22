@@ -9,7 +9,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./edit.hbs')
+    template: require('hbs!./form.hbs')
     className: 'page'
 
     onRender: ->
@@ -81,12 +81,11 @@ define (require) ->
     cancel: ->
       @navigateTo('')
 
-    update: (e) ->
+    submit: (e) ->
       e.preventDefault()
       @validation.reset()
 
-      @model.update()
-      .then =>
+      @model.save().then =>
         @navigateTo('/nomenclature')
       .catch (err) =>
         @validation.show(err)

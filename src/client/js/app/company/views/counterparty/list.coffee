@@ -24,7 +24,7 @@ define (require) ->
             title: i18n.get('name')
             type: 'string'
             url: (model) ->
-              '/counterparty/' + model.id + '/edit'
+              '/counterparty/' + model.id
           }
           {
             field: 'code'

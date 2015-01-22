@@ -21,7 +21,7 @@ define (require) ->
             field: 'name'
             title: i18n.get('name')
             url: (model) ->
-              '/company/' + model.id + '/edit'
+              '/company/' + model.id
           }
           {
             field: 'created'

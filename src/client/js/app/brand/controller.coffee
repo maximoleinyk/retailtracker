@@ -4,8 +4,7 @@ define (require) ->
   Controller = require('cs!app/common/controller')
   DashboardPage = require('cs!./views/dashboard')
   SettingsPage = require('cs!./views/settings/main')
-  CreateCompanyPage = require('cs!./views/company/create')
-  EditCompanyPage = require('cs!./views/company/edit')
+  CompanyFormPage = require('cs!./views/company/form')
   Company = require('cs!./models/company')
   Companies = require('cs!./collections/companies')
   Activities = require('cs!./collections/activities')
@@ -61,27 +60,16 @@ define (require) ->
           collection: companies
         })
 
-    createCompany: ->
-      roles = new Roles()
-      currency = new Currency()
-
-      Promise.all([currency.getTemplates(), roles.fetch()])
-      .then (response) =>
-        @openPage new CreateCompanyPage({
-          model: new Company
-          currencies: response[0]
-          roles: roles
-        })
-
-    editCompany: (id) ->
+    companyForm: (id) ->
       roles = new Roles()
       currency = new Currency
-      model = new Company({ _id: id }, { parse: true })
+      model = if id isnt 'create' then new Company({ _id: id }, { parse: true }) else null
+      promises = [currency.getTemplates(), roles.fetch()]
+      promises.push(model.fetch()) if model
 
-      Promise.all([currency.getTemplates(), roles.fetch(), model.fetch()])
-      .then (response) =>
-        @openPage new EditCompanyPage({
-          model: model
+      Promise.all(promises).then (response) =>
+        @openPage new CompanyFormPage({
+          model: if model then model else new Company
           currencies: response[0]
           roles: roles
         })
