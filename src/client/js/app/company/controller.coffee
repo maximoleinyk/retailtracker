@@ -13,7 +13,6 @@ define (require) ->
   CounterpartyFormPage = require('cs!./views/counterparty/form')
   NomenclatureListPage = require('cs!./views/nomenclature/list')
   NomenclatureCollection = require('cs!./collections/nomenclature')
-  CreateNomenclaturePage = require('cs!./views/nomenclature/create')
   Nomenclature = require('cs!./models/nomenclature')
   NomenclatureFormPage = require('cs!./views/nomenclature/form')
   ProductGroups = require('cs!./collections/productGroups')
@@ -43,7 +42,7 @@ define (require) ->
 
       openPage = =>
         @openPage new NomenclatureFormPage({
-          model: model
+          model: if model then model else new Nomenclature
         })
 
       if model
@@ -56,7 +55,7 @@ define (require) ->
       model.fetch()
       .then =>
         delete model.attributes.id
-        @openPage new CreateNomenclaturePage({
+        @openPage new NomenclatureFormPage({
           model: model.clone()
         })
 
@@ -110,7 +109,7 @@ define (require) ->
 
       openPage = =>
         @openPage new CounterpartyFormPage({
-          model: model
+          model: if model then model else new Counterparty
         })
 
       if model

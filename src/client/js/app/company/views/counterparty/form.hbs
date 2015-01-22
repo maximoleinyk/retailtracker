@@ -8,73 +8,76 @@
     </div>
     <a href="/counterparty" class="link-back">{{i18n.counterparties}}</a>
 </div>
-<div class="page-section">
-    <div class="col col-2thirds">
-        <button type="submit" class="btn btn-primary" data-auto-disable>
-			{{#if isNew}}
-				{{i18n.create}}
-			{{else}}
-				{{i18n.save}}
-			{{/if}}
-		</button>
-        <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+<form data-submit="submit">
+    <div class="page-actions">
+        <div class="col col-2thirds">
+            <button type="submit" class="btn btn-primary" data-auto-disable>
+				{{#if isNew}}
+					{{i18n.create}}
+				{{else}}
+					{{i18n.save}}
+				{{/if}}
+            </button>
+            <button type="button" class="btn btn-link" data-click="cancel">{{i18n.cancel}}</button>
+        </div>
     </div>
-</div>
-<form data-submit="submit" class="page-section">
-    <div class="col col-2thirds">
-        <fieldset>
-            <div class="form-group">
-                <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
+    <div class="page-section">
+        <div class="col col-2thirds">
+            <fieldset>
+                <div class="form-group">
+                    <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
 
-                <div class="col-md-4">
-                    <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
+                    <div class="col-md-4">
+                        <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
 
-                    <div class="help-block" data-validation="name"></div>
+                        <div class="help-block" data-validation="name"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="name" class="col-md-4 control-label">{{i18n.code}}</label>
+                <div class="form-group">
+                    <label for="name" class="col-md-4 control-label">{{i18n.code}}</label>
 
-                <div class="col-md-4">
-                    <input type="text" id="code" name="code" class="form-control" data-bind/>
+                    <div class="col-md-4">
+                        <input type="text" id="code" name="code" class="form-control" data-bind/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="phone" class="col-md-4 control-label">{{i18n.phone}}</label>
+                <div class="form-group">
+                    <label for="phone" class="col-md-4 control-label">{{i18n.phone}}</label>
 
-                <div class="col-md-4">
-                    <input type="text" id="phone" name="phone" class="form-control" data-bind/>
+                    <div class="col-md-4">
+                        <input type="text" id="phone" name="phone" class="form-control" data-bind/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="fax" class="col-md-4 control-label">{{i18n.fax}}</label>
+                <div class="form-group">
+                    <label for="fax" class="col-md-4 control-label">{{i18n.fax}}</label>
 
-                <div class="col-md-4">
-                    <input type="text" id="fax" name="fax" class="form-control" data-bind/>
+                    <div class="col-md-4">
+                        <input type="text" id="fax" name="fax" class="form-control" data-bind/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="email" class="col-md-4 control-label">{{i18n.email}}</label>
+                <div class="form-group">
+                    <label for="email" class="col-md-4 control-label">{{i18n.email}}</label>
 
-                <div class="col-md-4">
-                    <input type="text" id="email" name="email" class="form-control" data-bind/>
+                    <div class="col-md-4">
+                        <input type="text" id="email" name="email" class="form-control" data-bind/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="fax" class="col-md-4 control-label">{{i18n.actualAddress}}</label>
+                <div class="form-group">
+                    <label for="fax" class="col-md-4 control-label">{{i18n.actualAddress}}</label>
 
-                <div class="col-md-4">
-                    <input type="text" id="actualAddress" name="actualAddress" class="form-control" data-bind/>
+                    <div class="col-md-4">
+                        <input type="text" id="actualAddress" name="actualAddress" class="form-control" data-bind/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
+                <div class="form-group">
+                    <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
 
-                <div class="col-md-8">
-                    <textarea id="description" name="description" rows="5" class="form-control" data-bind></textarea>
+                    <div class="col-md-8">
+                        <textarea id="description" name="description" rows="5" class="form-control"
+                                  data-bind></textarea>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
+            </fieldset>
+        </div>
     </div>
 </form>
 
