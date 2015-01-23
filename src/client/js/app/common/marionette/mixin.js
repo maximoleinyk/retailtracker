@@ -160,6 +160,8 @@ define(function (require) {
 						callback(Marionette.$(this), self);
 					});
 				}, self);
+
+				this.$el.find('[data-toggle="tooltip"]').tooltip();
 			},
 
 			find: function () {

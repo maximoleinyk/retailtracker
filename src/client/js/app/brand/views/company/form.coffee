@@ -9,7 +9,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./form.hbs')
-    className: 'page page-2thirds company'
+    className: 'page page-halves'
 
     onRender: ->
       @renderInviteeList()

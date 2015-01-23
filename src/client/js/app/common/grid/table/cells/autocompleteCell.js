@@ -15,7 +15,6 @@ define(function (require) {
 
 			var self = this,
 				options = _.defaults(this.options.column.get('options') || {}, {
-					emptySuggestionText: 'Empty'
 				}),
 				remoteConfig = {
 					url: options.url,
@@ -42,11 +41,14 @@ define(function (require) {
 					display: options.display,
 					source: bestPictures.ttAdapter(),
 					templates: {
-						empty: options.emptySuggestionText,
 						suggestion: options.suggestionTemplate
 					}
 				}).on('typeahead:selected', function (obj, datum) {
-					self.model.set(self.options.column.get('field'), options.display(datum));
+					var value = options.display(datum),
+						onSelect = self.options.column.get('onSelect');
+
+					self.model.set(self.options.column.get('field'), value);
+					_.isFunction(onSelect) && onSelect(value, datum);
 				});
 		}
 

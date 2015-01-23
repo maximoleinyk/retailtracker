@@ -1,27 +1,35 @@
 @import "../globals/variables";
 
-.company {
-  .tt-dropdown-menu {
-    box-shadow: @boxShadow;
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-top: none;
-    .tt-suggestions {
-      .tt-suggestion {
-        padding: 5px 145px 5px 5px;
-        .avatar {
-          width: 32px;
-          height: 32px;
-          border-radius: 2px;
-        }
+.tt-dropdown-menu {
+  box-shadow: @boxShadow;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-top: none;
+  table {
+    border: none;
+    border-collapse: collapse;
+    td {
+      padding: 5px 0 5px 5px !important;
+      &:last-child {
+        padding-right: 100px !important;
       }
     }
-    .tt-cursor {
-      background-color: #f5f5f5;
+  }
+  .tt-suggestions {
+    .tt-suggestion {
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 2px;
+      }
     }
   }
-  .tt-hint {
-    background-color: #fff;
-    color: #aaa;
+  .tt-cursor {
+    background-color: #f5f5f5;
   }
+}
+
+.tt-hint {
+  background-color: #fff !important;
+  color: #aaa;
 }

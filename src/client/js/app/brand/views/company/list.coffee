@@ -26,8 +26,8 @@ define (require) ->
           {
             field: 'created'
             title: i18n.get('creationDate')
-            format: (value) ->
-              helpers.date(value)
+            formatter: (value) ->
+              helpers.date(value, true)
           }
           {
             field: 'currencyCode'

@@ -19,17 +19,12 @@ define (require) ->
         skipInitialAutoFocus: true,
         columns: [
           {
-            field: 'firstName'
-            title: i18n.get('firstName')
-            type: 'string'
-            placeholder: i18n.get('firstName')
-            width: 180
-          },
-          {
             field: 'email'
             title: i18n.get('email')
             type: 'autocomplete'
             placeholder: i18n.get('emailExampleCom')
+            onSelect: (value) =>
+              @model.set('firstName', value.split('@')[0])
             options:
               url: '/employees/fetch'
               queryParams:
@@ -65,7 +60,7 @@ define (require) ->
                 return i18n.get(@options.roles.get(object.id).get('name').toLowerCase())
             onSelection: (object, model) ->
               model.set('role', object.id)
-            width: 220
+            width: 180
           }
         ]
       })

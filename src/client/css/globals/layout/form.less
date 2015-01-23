@@ -1,0 +1,42 @@
+form {
+  .form-group {
+    padding: 10px 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #f5f5f5;
+    .group {
+      .half {
+        width: 50% !important;
+      }
+      .quarter {
+        width: 25% !important;
+      }
+      .three-fourth {
+        width: 75% !important;
+      }
+    }
+  }
+
+  label {
+    padding: 7px 15px;
+    font-weight: 500;
+    width: 25%;
+    text-align: left;
+    margin-bottom: 0;
+    vertical-align: middle;
+    float: left;
+  }
+
+  label + * {
+    width: 75%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 0 !important;
+  }
+
+  .no-bottom {
+    &.border {
+      border-bottom: none !important;
+    }
+  }
+
+}

@@ -1,11 +1,13 @@
+@import "../variables";
+
 .page {
   margin: 30px 0;
-  position: relative;
 
   > .page-title {
     margin-bottom: 30px;
     padding: 3px 0;
     .title {
+      display: inline-block;
       font-size: 18px;
     }
     .link-back {
@@ -17,8 +19,51 @@
     }
   }
 
-  .page-actions {
-    padding-bottom: 30px;
+  > .page-title .actions {
+    display: inline-block;
+
+    &:before {
+      content: "\0000a0\02F\0000a0"; // space / space
+      display: inline-block;
+    }
+
+    &:after {
+      display: block;
+      clear: both;
+      content: '';
+    }
+
+    > * {
+      padding-right: 5px;
+    }
+  }
+
+  .page-section .actions {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #ddd;
+
+    &:before {
+      display: block;
+      content: ' ';
+      opacity: 0.8;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background-color: #fff;
+    }
+
+    > * {
+      width: @mainWidth;
+      margin: 0 auto;
+      position: relative;
+      padding: 10px 20px;
+    }
   }
 
   .page-section {
