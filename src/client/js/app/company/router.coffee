@@ -22,6 +22,7 @@ define (require) ->
 
       'warehouses': 'warehouses'
       'employees': 'employees'
+      'stores': 'stores'
 
       'settings/:view': 'settings'
 

@@ -26,8 +26,17 @@ define (require) ->
   Employees = require('cs!app/company/collections/employees')
   ManageCompanyEmployeesPage = require('cs!app/company/views/employees/list')
   context = require('cs!app/common/context')
+  Stores = require('cs!app/company/collections/stores')
+  StoresPage = require('cs!./views/store/list')
 
   Controller.extend
+
+    stores: ->
+      stores = new Stores
+      stores.fetch().then =>
+        @openPage new StoresPage({
+          collection: stores
+        })
 
     employees: ->
       employees = new Employees()

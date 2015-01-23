@@ -6,26 +6,27 @@
         <ul>
 			{{! Компания }}
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{i18n.myCompany}}<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
+                   data-catch-url="/(warehouses*)|(stores*)|(employees*)">{{i18n.myCompany}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/employees" data-catch-url="employees">{{i18n.employees}}</a></li>
-                    <li><a href="/stores" data-catch-url="stores">{{i18n.retailStoreList}}</a></li>
-                    <li><a href="/cash" data-catch-url="cash">{{i18n.cashBoxes}}</a></li>
-                    <li><a href="/warehouses" data-catch-url="warehouses">{{i18n.warehousesList}}</a></li>
+                    <li><a href="/employees">{{i18n.employees}}</a></li>
+                    <li><a href="/stores">{{i18n.retailStoreList}}</a></li>
+                    <li><a href="/cashboxes">{{i18n.cashBoxes}}</a></li>
+                    <li><a href="/warehouses">{{i18n.warehousesList}}</a></li>
                 </ul>
             </li>
 
 			{{! НСИ }}
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                   aria-expanded="false">{{i18n.rbi}}<span
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
+                   data-catch-url="/(uom)|(currency)|(nomenclature*)|(groups)|(counterparty*)">{{i18n.rbi}}<span
                         class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/uom" data-catch-url="/uom">{{i18n.unitOfMeasurements}}</a></li>
-                    <li><a href="/currency" data-catch-url="currency">{{i18n.currencies}}</a></li>
-                    <li><a href="/nomenclature" data-catch-url="nomenclature.*">{{i18n.nomenclature}}</a></li>
-                    <li><a href="/groups" data-catch-url="groups">{{i18n.productGroups}}</a></li>
-                    <li><a href="/counterparty" data-catch-url="counterparty">{{i18n.counterpartiesList}}</a></li>
+                    <li><a href="/uom">{{i18n.unitOfMeasurements}}</a></li>
+                    <li><a href="/currency">{{i18n.currencies}}</a></li>
+                    <li><a href="/nomenclature">{{i18n.nomenclature}}</a></li>
+                    <li><a href="/groups">{{i18n.productGroups}}</a></li>
+                    <li><a href="/counterparty">{{i18n.counterpartiesList}}</a></li>
                 </ul>
             </li>
         </ul>

@@ -51,12 +51,19 @@ EmployeeController = inject('controllers/employee')
 namespace = inject('util/namespace')
 warehouseSchema = inject('persistence/model/warehouse')
 counterpartySchema = inject('persistence/model/counterparty')
+StoreService = inject('services/storeService')
+StoreController = inject('controllers/store')
+StoreDataStore = inject('persistence/storeDataStore')
+storeSchema = inject('persistence/model/store')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+    storeController = new StoreController(namespace.company, new StoreService(new StoreDataStore(storeSchema)))
+    storeController.register(@router)
+
     currencyService = new CurrencyService(new CurrencyStore)
 
     counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
