@@ -19,7 +19,7 @@ define (require) ->
 
   Controller.extend
 
-    roles: ->
+    access: ->
       roles = new Roles
       roles.fetchAll().then =>
         @openPage new RoleListPage({
