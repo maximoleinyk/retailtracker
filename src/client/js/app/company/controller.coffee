@@ -23,8 +23,21 @@ define (require) ->
   Currency = require('cs!./models/currency')
   Counterparty = require('cs!./models/counterparty')
   ChoosePosPage = require('cs!./views/pos/choose')
+  Employees = require('cs!app/company/collections/employees')
+  ManageCompanyEmployeesPage = require('cs!app/company/views/employees/list')
+  context = require('cs!app/common/context')
 
   Controller.extend
+
+    employees: ->
+      employees = new Employees()
+
+      Promise.all([employees.fetch(context.get('company._id'))])
+      .then =>
+        @openPage new ManageCompanyEmployeesPage({
+          url: '/page/company/' + context.get('company._id')
+          collection: employees
+        })
 
     choose: ->
       @openPage new ChoosePosPage

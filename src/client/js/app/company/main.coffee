@@ -32,6 +32,7 @@ define (require) ->
 
       .then (result) ->
         throw 'Unknown context' if not result
+
         context.set({
           company: result.company
           employee: result.employee

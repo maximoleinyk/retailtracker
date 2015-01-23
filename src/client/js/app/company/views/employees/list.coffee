@@ -12,7 +12,8 @@ define (require) ->
     className: 'page'
 
     templateHelpers: ->
-      companyName: @model.get('name')
+      url: @options.url or ''
+      companyName: if @model then @model.get('name') else ''
 
     onRender: ->
       @grid.show new Grid({

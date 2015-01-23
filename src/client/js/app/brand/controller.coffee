@@ -49,6 +49,7 @@ define (require) ->
       Promise.all([model.fetch(), employees.fetch(companyId)])
       .then =>
         @openPage new ManageCompanyEmployeesPage({
+          url: '/company/' + companyId
           collection: employees
           model: model
         })

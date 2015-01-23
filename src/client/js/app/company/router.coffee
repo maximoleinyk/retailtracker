@@ -9,22 +9,21 @@ define (require) ->
 
     appRoutes:
       '': 'dashboard'
+      'choose': 'choose'
 
       'uom': 'uom'
       'currency': 'currency'
       'counterparty': 'listCounterparties'
       'counterparty/:id': 'counterpartyForm'
       'groups': 'productGroups'
-
-      'settings/:view': 'settings'
-
       'nomenclature': 'nomenclatureList'
-      'nomenclature/copy/:id': 'copyNomenclature'
+      'nomenclature/:id/copy': 'copyNomenclature'
       'nomenclature/:id': 'nomenclatureForm'
 
       'warehouses': 'warehouses'
+      'employees': 'employees'
 
-      'choose': 'choose'
+      'settings/:view': 'settings'
 
     permissions:
       '*':

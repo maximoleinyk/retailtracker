@@ -41,7 +41,7 @@ define (require) ->
             buttonTypeClass: 'btn-link'
             width: 50
             action: (e, model) =>
-              @navigateTo('/nomenclature/copy/' + model.id)
+              @navigateTo('/nomenclature/' + model.id + '/copy')
           }
         ]
       })
