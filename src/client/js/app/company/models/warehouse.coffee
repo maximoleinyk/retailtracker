@@ -2,30 +2,28 @@ define (require) ->
   'use strict'
 
   Model = require('cs!app/common/model')
+  Promise = require('rsvp').Promise
+  context = require('cs!app/common/context')
+  i18n = require('cs!app/common/i18n')
 
   class Warehouse extends Model
 
-    fetch: ->
-      @promise('get', '/warehouse/' + @id).then (result) =>
-        @set @parse(result)
+    urlRoot: '/warehouse'
 
-    create: (callback) ->
-      @promise('post', '/warehouse', @toJSON()).then (result) =>
-        @set @parse(result)
-        @commit()
-        callback(null, @)
-      .catch(callback)
+    defaults: ->
+      name: i18n.get('newWarehouse')
+      assignee: context.get('employee')
 
-    update: (callback) ->
-      @promise('put', '/warehouse/' + @id, @toJSON())
-      .then (result) =>
+    save: ->
+      save = new Promise (resolve, reject) =>
+        Model::save.apply(this, @toJSON()).done(resolve).fail(reject)
+      save.then (result) =>
         @set @parse(result)
         @commit()
-        callback(null, @)
-      .catch(callback)
 
-    delete: (callback) ->
-      @promise('del', '/warehouse/' + @id, @toJSON())
-      .then ->
-        callback(null)
-      .catch(callback)
+    destroy: ->
+      destroy = new Promise (resolve, reject) =>
+        Model::destroy.apply(this).done(resolve).fail(reject)
+      destroy.then (result) =>
+        @set @parse(result)
+        @commit()

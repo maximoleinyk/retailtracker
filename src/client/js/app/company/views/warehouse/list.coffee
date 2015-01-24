@@ -10,46 +10,32 @@ define (require) ->
     template: require('hbs!./list.hbs')
     className: 'page'
 
-    initialize: (options) ->
-      @collection = options.collection
-
-    onCreate: (model, callback) ->
-      model.create (err, model) =>
-        return callback(err) if err
-        @collection.add(model)
-        callback(null)
-
-    onSave: (model, callback) ->
-      model.update (err) ->
-        if err then callback(err) else callback(null)
-
-    onDelete: (model, callback) ->
-      model.delete (err) =>
-        return callback(err) if err
-        @collection.remove(model)
-        callback(err)
-
-    onCancel: (model, callback) ->
-      model.reset()
-      callback()
-
     onRender: ->
       @grid.show(new Grid({
-        collection: @collection
-        editable: @
+        collection: @options.collection
         defaultEmptyText: i18n.get('warehouseEmptyList')
-        withoutHeader: true
         columns: [
           {
             field: 'name'
-            placeholder: i18n.get('name')
-            type: 'string'
-            width: 250
-          }
+            title: i18n.get('name')
+            url: (model) ->
+              '/warehouses/' + model.id
+          },
+          {
+            field: 'assignee'
+            title: i18n.get('assignee')
+            formatter: (value) ->
+              value.firstName + ' ' + value.lastName
+            url: (model) ->
+              '/employees/' + model.id
+          },
           {
             field: 'address'
-            placeholder: i18n.get('address')
-            type: 'string'
+            title: i18n.get('address')
+          },
+          {
+            field: 'description'
+            title: i18n.get('description')
           }
         ]
       }))

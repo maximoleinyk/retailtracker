@@ -25,6 +25,14 @@
     margin-bottom: 0;
     vertical-align: middle;
     float: left;
+
+    &.required {
+      &:after {
+        content: '\020\02A';
+        color: #a94442;
+        display: inline;
+      }
+    }
   }
 
   label + * {

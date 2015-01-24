@@ -1,0 +1,64 @@
+<div class="page-title">
+    <div class="title">
+        <div>
+            {{#if isNew}}
+                {{i18n.warehouseCreation}}
+            {{else}}
+                {{i18n.warehouseEditing}}
+            {{/if}}
+        </div>
+        <a href="/warehouses" class="link-back">{{i18n.warehouses}}</a>
+    </div>
+</div>
+<form data-submit="submit" class="page-section">
+    <div class="col col-3quarters">
+        <div class="form-group">
+            <label for="name" class="required">{{i18n.name}}</label>
+
+            <div class="group">
+                <input type="text" id="name" name="name" class="form-control three-fourth" data-bind data-focus/>
+
+                <div class="help-block" data-validation="name"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="assignee" class="required">{{i18n.assignee}}</label>
+
+            <div class="group">
+                <input type="hidden" id="assignee" name="assignee" class="form-control half" data-id="assigneeSelect"
+                       data-placeholder="{{i18n.selectAssignee}}" data-bind/>
+
+                <div class="help-block" data-validation="assignee"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="address">{{i18n.address}}</label>
+
+            <div class="group">
+                <input type="text" id="address" name="address" class="form-control three-fourth" data-bind/>
+
+                <div class="help-block" data-validation="address"></div>
+            </div>
+        </div>
+        <div class="form-group no-bottom border">
+            <label for="description">{{i18n.description}}</label>
+
+            <div class="group">
+                <textarea id="description" name="description" rows="5" class="form-control" data-bind></textarea>
+            </div>
+        </div>
+        <div data-region="inviteeList"></div>
+    </div>
+    <div class="actions">
+        <div class="clearfix">
+            <button type="submit" class="btn btn-primary" data-auto-disable>
+                {{#if isNew}}
+                    {{i18n.create}}
+                {{else}}
+                    {{i18n.save}}
+                {{/if}}
+            </button>
+            <a href="{{url}}" class="btn btn-link">{{i18n.cancel}}</a>
+        </div>
+    </div>
+</form>

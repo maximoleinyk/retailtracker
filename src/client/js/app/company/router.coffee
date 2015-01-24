@@ -10,24 +10,25 @@ define (require) ->
     appRoutes:
       '': 'dashboard'
       'choose': 'choose'
+      'settings/:view': 'settings'
 
       'uom': 'uom'
       'currency': 'currency'
-      'counterparty': 'listCounterparties'
-      'counterparty/:id': 'counterpartyForm'
       'groups': 'productGroups'
+      'counterparty': 'counterpartyList'
+      'counterparty/:id': 'counterpartyForm'
       'nomenclature': 'nomenclatureList'
       'nomenclature/:id/copy': 'copyNomenclature'
       'nomenclature/:id': 'nomenclatureForm'
 
-      'warehouses': 'warehouses'
-      'employees': 'employees'
+      'warehouses': 'warehouseList'
+      'warehouses/:id': 'warehouseForm'
+
+      'employees': 'employeeList'
+      'employees/:id': 'employeeForm'
 
       'stores': 'stores'
-      'stores/create': 'storeForm'
       'stores/:id': 'storeForm'
-
-      'settings/:view': 'settings'
 
     permissions:
       '*':

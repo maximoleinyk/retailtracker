@@ -67,7 +67,7 @@ define (require) ->
           callback(obj)
           @model.set('warehouse', obj._id)
       })
-      @ui.$managerSelect.select2('val', @model.get('warehouse')) if @model.get('warehouse')
+      @ui.$warehouseSelect.select2('val', @model.get('warehouse')) if @model.get('warehouse')
 
     renderManagerSelect: ->
       select(@ui.$managerSelect, {
@@ -89,3 +89,12 @@ define (require) ->
           @model.set('manager', obj._id)
       })
       @ui.$managerSelect.select2('val', @model.get('manager')) if @model.get('manager')
+
+    submit: (e) ->
+      e.preventDefault()
+      @validation.reset()
+
+      @model.save().then =>
+        @navigateTo('/stores')
+      .catch (err) =>
+        @validation.show(err)

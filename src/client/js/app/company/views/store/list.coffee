@@ -20,6 +20,34 @@ define (require) ->
             title: i18n.get('name')
             url: (model) ->
               '/stores/' + model.id
+          },
+          {
+            field: 'manager'
+            title: i18n.get('manager')
+            formatter: (value) ->
+              value.firstName + ' ' + value.lastName + ' ' + value.email
+            url: (model) ->
+              '/employees/' + model.id
+          },
+          {
+            field: 'priceList'
+            title: i18n.get('priceList')
+            formatter: (value) ->
+              value.name
+            url: (model) ->
+              '/pricelists/' + model.id
+          },
+          {
+            field: 'warehouse'
+            title: i18n.get('warehouse')
+            formatter: (value) ->
+              value.name
+            url: (model) ->
+              '/warehouses/' + model.id
+          },
+          {
+            field: 'address'
+            title: i18n.get('address')
           }
         ]
       })

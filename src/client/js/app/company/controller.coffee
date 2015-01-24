@@ -1,6 +1,7 @@
 define (require) ->
   'use strict'
 
+  Promise = require('rsvp').Promise
   Controller = require('cs!app/common/controller');
   SettingsPage = require('cs!app/brand/views/settings/main')
   DashboardPage = require('cs!./views/dashboard')
@@ -19,7 +20,6 @@ define (require) ->
   ProductGroupsPage = require('cs!./views/productGroups/list')
   Warehouses = require('cs!./collections/warehouses')
   WarehousesPage = require('cs!./views/warehouse/list')
-  Promise = require('rsvp').Promise
   Currency = require('cs!./models/currency')
   Counterparty = require('cs!./models/counterparty')
   ChoosePosPage = require('cs!./views/pos/choose')
@@ -30,6 +30,8 @@ define (require) ->
   StoresPage = require('cs!./views/store/list')
   Store = require('cs!./models/store')
   StoreFormPage = require('cs!./views/store/form')
+  WarehouseFormPage = require('cs!./views/warehouse/form')
+  Warehouse = require('cs!./models/warehouse')
 
   Controller.extend
 
@@ -53,7 +55,7 @@ define (require) ->
           collection: stores
         })
 
-    employees: ->
+    employeeList: ->
       employees = new Employees()
 
       Promise.all([employees.fetch(context.get('company._id'))])
@@ -63,16 +65,32 @@ define (require) ->
           collection: employees
         })
 
+    employeeForm: (id) ->
+      # todo: implement
+
     choose: ->
       @openPage new ChoosePosPage
 
-    warehouses: ->
+    warehouseList: ->
       collection = new Warehouses
       collection.fetch()
       .then =>
         @openPage new WarehousesPage({
           collection: collection
         })
+
+    warehouseForm: (id) ->
+      model = if id and id isnt 'create' then new Warehouse({ _id: id }, { parse: true }) else null
+
+      openPage = =>
+        @openPage new WarehouseFormPage({
+          model: if model then model else new Warehouse
+        })
+
+      if model
+        model.fetch().then(openPage)
+      else
+        openPage()
 
     nomenclatureForm: (id) ->
       model = if id and id isnt 'create' then new Nomenclature({ _id: id }, { parse: true }) else null
@@ -133,7 +151,7 @@ define (require) ->
           currencies: response[1]
         })
 
-    listCounterparties: ->
+    counterpartyList: ->
       collection = new Counterparties
       collection.fetch()
       .then =>

@@ -7,8 +7,13 @@ class WarehouseSchema
       name:
         type: String
         required: true
-      address:
-        type: String
+      assignee:
+        type: mongoose.Schema.Types.ObjectId
+        ref: 'Employee'
+        $tenant: true
+        required: true
+      description: String
+      address: String
     this
 
   get: (namespace) ->
