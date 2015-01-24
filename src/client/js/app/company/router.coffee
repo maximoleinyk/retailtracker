@@ -27,6 +27,8 @@ define (require) ->
       'employees': 'employeeList'
       'employees/:id': 'employeeForm'
 
+      'orders/supplier': 'ordersToSuppliers'
+
       'stores': 'stores'
       'stores/:id': 'storeForm'
 

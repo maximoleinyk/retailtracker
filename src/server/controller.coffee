@@ -55,12 +55,16 @@ StoreService = inject('services/storeService')
 StoreController = inject('controllers/store')
 StoreDataStore = inject('persistence/storeDataStore')
 storeSchema = inject('persistence/model/store')
+SupplierOrdersController = inject('controllers/supplierOrders')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+    supplierOrdersController = new SupplierOrdersController
+    supplierOrdersController.register(@router)
+
     storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)), namespace.company)
     storeController.register(@router)
 

@@ -19,6 +19,11 @@ define (require) ->
 
     templateHelpers: ->
       buttons: @options.buttons
+      isPrimary: (context, options) ->
+        if context.primary
+          return options.fn(this)
+        else
+          return options.inverse(this)
 
     onCLick: (e) ->
       found = _.find @options.buttons, (button) ->

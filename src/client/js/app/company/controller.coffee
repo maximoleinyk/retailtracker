@@ -32,8 +32,17 @@ define (require) ->
   StoreFormPage = require('cs!./views/store/form')
   WarehouseFormPage = require('cs!./views/warehouse/form')
   Warehouse = require('cs!./models/warehouse')
+  SupplierOrdersPage = require('cs!./views/supplierOrders/list')
+  SupplierOrders = require('cs!./collections/supplierOrders')
 
   Controller.extend
+
+    ordersToSuppliers: ->
+      collection = new SupplierOrders
+      collection.fetch().then =>
+        @openPage new SupplierOrdersPage({
+          collection: collection
+        })
 
     storeForm: (id) ->
       model = if id and id isnt 'create' then new Store({ _id: id }, { parse: true }) else null
