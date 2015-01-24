@@ -7,6 +7,14 @@ class EmployeeService
 
   constructor: (@companyStore, @roleService, @employeeStore) ->
 
+  search: (ns, query, callback) ->
+    query = query or ''
+    @findAll ns, (err, all) ->
+      results = _.filter all, (item) ->
+        item.firstName.toLowerCase().indexOf(query.toLowerCase()) > -1 or item.lastName.toLowerCase().indexOf(query.toLowerCase()) > -1
+      results = results.splice(0, 5)
+      callback(err, results)
+
   findById: (ns, employeeId, callback) ->
     @employeeStore.findById(ns, employeeId, callback)
 

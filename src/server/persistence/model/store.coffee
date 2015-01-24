@@ -7,12 +7,27 @@ class StoreSchema
       name:
         type: String
         required: true
-      address:
-        type: String
+      warehouse:
+        type: mongoose.Schema.Types.ObjectId
+        ref: 'Warehouse'
+        $tenant: true
+#      cashBoxes: [
+#        {
+#          type: mongoose.Schema.Types.ObjectId
+#          ref: 'CashBox'
+#        }
+#      ]
+      priceList:
+        type: mongoose.Schema.Types.ObjectId
+        ref: 'PriceList'
+        required: true
+      address: String
       manager:
         type: mongoose.Schema.Types.ObjectId
         ref: 'Employee'
         $tenant: true
+        required: true
+      description: String
     this
 
   get: (namespace) ->

@@ -22,7 +22,10 @@ define (require) ->
 
       'warehouses': 'warehouses'
       'employees': 'employees'
+
       'stores': 'stores'
+      'stores/create': 'storeForm'
+      'stores/:id': 'storeForm'
 
       'settings/:view': 'settings'
 

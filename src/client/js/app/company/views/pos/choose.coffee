@@ -3,8 +3,6 @@ define (require) ->
 
   Layout = require('app/common/marionette/layout')
 
-  require('select2')
-
   Layout.extend
 
     template: require('hbs!./choose.hbs')

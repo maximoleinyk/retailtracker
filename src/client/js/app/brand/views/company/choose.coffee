@@ -6,8 +6,7 @@ define (require) ->
   Model = require('cs!app/common/model')
   context = require('cs!app/common/context')
   request = require('app/common/request')
-
-  require('select2')
+  select = require('select')
 
   Layout.extend
 
@@ -29,7 +28,7 @@ define (require) ->
       $('.app > .content-wrapper').addClass('box-like')
 
     renderCompanySelect: ->
-      @ui.$companySelect.select2
+      select @ui.$companySelect,
         data: @options.companies.map (model) ->
           id: model.id
           text: model.get('name')

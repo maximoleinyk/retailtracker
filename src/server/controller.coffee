@@ -61,7 +61,7 @@ class PageController
   constructor: (@router, @passport) ->
 
   register: ->
-    storeController = new StoreController(namespace.company, new StoreService(new StoreDataStore(storeSchema)))
+    storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)), namespace.company)
     storeController.register(@router)
 
     currencyService = new CurrencyService(new CurrencyStore)
@@ -101,8 +101,7 @@ class PageController
     contextController = new ContextController(accountService)
     contextController.register(@router)
 
-    warehouseController = new WarehouseController(namespace.company,
-      new WarehouseService(new WarehouseStore(warehouseSchema)))
+    warehouseController = new WarehouseController(new WarehouseService(new WarehouseStore(warehouseSchema)), namespace.company)
     warehouseController.register(@router)
 
     activityController = new ActivityController(activityService)
@@ -124,7 +123,7 @@ class PageController
     currencyController = new CurrencyController(currencyService)
     currencyController.register(@router)
 
-    counterpartyController = new CounterpartyController(namespace.company, counterpartyService)
+    counterpartyController = new CounterpartyController(counterpartyService, namespace.company)
     counterpartyController.register(@router)
 
     companyController = new CompanyController(companyService)

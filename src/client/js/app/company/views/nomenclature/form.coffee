@@ -6,6 +6,7 @@ define (require) ->
   AttributesGrid = require('cs!./attributes')
   _ = require('underscore')
   i18n = require('cs!app/common/i18n')
+  select = require('select')
 
   Layout.extend
 
@@ -35,7 +36,7 @@ define (require) ->
       if modelJSON.text then modelJSON.text else modelJSON.name
 
     renderUomSelect: ->
-      @ui.$uomSelect.select2({
+      select(@ui.$uomSelect, {
         placeholder: i18n.get('selectUom')
         id: (uomObject) ->
           return uomObject._id
@@ -57,7 +58,7 @@ define (require) ->
       @ui.$uomSelect.select2('val', @model.get('uom')) if @model.get('uom')
 
     renderProductGroupSelect: ->
-      @ui.$productGroupSelect.select2({
+      select(@ui.$productGroupSelect, {
         placeholder: i18n.get('selectGroup')
         id: (groupObject) ->
           return groupObject._id

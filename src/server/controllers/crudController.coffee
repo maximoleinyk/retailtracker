@@ -6,7 +6,7 @@ class CrudController
 
   baseUrl: ''
 
-  constructor: (@namespace = namespace.root, @service) ->
+  constructor: (@service, @namespace = namespace.root) ->
 
   callback: (res) ->
     (err, result) ->

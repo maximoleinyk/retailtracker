@@ -28,8 +28,23 @@ define (require) ->
   context = require('cs!app/common/context')
   Stores = require('cs!app/company/collections/stores')
   StoresPage = require('cs!./views/store/list')
+  Store = require('cs!./models/store')
+  StoreFormPage = require('cs!./views/store/form')
 
   Controller.extend
+
+    storeForm: (id) ->
+      model = if id and id isnt 'create' then new Store({ _id: id }, { parse: true }) else null
+
+      openPage = =>
+        @openPage new StoreFormPage({
+          model: if model then model else new Store
+        })
+
+      if model
+        model.fetch().then(openPage)
+      else
+        openPage()
 
     stores: ->
       stores = new Stores
@@ -60,7 +75,7 @@ define (require) ->
         })
 
     nomenclatureForm: (id) ->
-      model = if id isnt 'create' then new Nomenclature({ _id: id }, { parse: true }) else null
+      model = if id and id isnt 'create' then new Nomenclature({ _id: id }, { parse: true }) else null
 
       openPage = =>
         @openPage new NomenclatureFormPage({
@@ -127,7 +142,7 @@ define (require) ->
         })
 
     counterpartyForm: (id) ->
-      model = if id isnt 'create' then new Counterparty({ _id: id }, { parse: true }) else null
+      model = if id and id isnt 'create' then new Counterparty({ _id: id }, { parse: true }) else null
 
       openPage = =>
         @openPage new CounterpartyFormPage({

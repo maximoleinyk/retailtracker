@@ -5,6 +5,7 @@ define (require) ->
   InviteeList = require('cs!./inviteeList')
   _ = require('underscore')
   Collection = require('cs!app/common/collection')
+  select = require('select')
 
   Layout.extend
 
@@ -31,8 +32,7 @@ define (require) ->
       })
 
     renderSelect: ->
-      @ui.$select.select2()
-      @ui.$select.select2('enable', false) if not this.model.isNew()
+      select(@ui.$select).select2('enable', false) if not this.model.isNew()
 
     submit: (e) ->
       e.preventDefault()
