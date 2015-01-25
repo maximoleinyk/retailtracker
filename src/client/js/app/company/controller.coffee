@@ -38,8 +38,32 @@ define (require) ->
   PriceListTemplatesPage = require('cs!./views/templates/list')
   PriceListTemplateForm = require('cs!./views/templates/form')
   PriceListTemplate = require('cs!./models/priceListTemplate')
+  PriceListsPage = require('cs!./views/priceLists/list')
+  PriceLists = require('cs!./collections/priceLists')
+  PriceList = require('cs!./models/priceList')
+  PriceListForm = require('cs!./views/priceLists/form')
 
   Controller.extend
+
+    priceListForm: (id) ->
+      model = if id and id isnt 'create' then new PriceList({ _id: id }, { parse: true }) else null
+
+      openPage = =>
+        @openPage new PriceListForm({
+          model: if model then model else new PriceList
+        })
+
+      if model
+        model.fetch().then(openPage)
+      else
+        openPage()
+
+    priceLists: ->
+      collection = new PriceLists
+      collection.fetch().then =>
+        @openPage new PriceListsPage({
+          collection: collection
+        })
 
     priceListTemplatesForm: (id) ->
       model = if id and id isnt 'create' then new PriceListTemplate({ _id: id }, { parse: true }) else null

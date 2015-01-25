@@ -1,0 +1,48 @@
+<div class="page-title">
+    <div class="title">
+        <div>
+			{{#if isNew}}
+				{{i18n.priceListCreation}}
+			{{else}}
+				{{i18n.priceListEditing}}
+			{{/if}}
+        </div>
+        <a href="/pricelists" class="link-back">{{i18n.priceLists}}</a>
+    </div>
+</div>
+<form data-submit="submit" class="page-section">
+    <div class="col col-stretch">
+        <div class="form-group">
+            <label for="name" class="required">{{i18n.name}}</label>
+
+            <div class="group">
+                <input type="text" id="name" name="name" class="form-control half" data-bind data-focus/>
+
+                <div class="help-block" data-validation="name"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="template" class="required">{{i18n.template}}</label>
+
+            <div class="group">
+                <input type="hidden" id="template" name="template" class="form-control half" data-id="templateSelect"
+                       data-placeholder="{{i18n.templateTemplate}}" data-bind/>
+
+                <div class="help-block" data-validation="template"></div>
+            </div>
+        </div>
+        <div class="form-group no-bottom border" data-region="itemsWrapper"></div>
+    </div>
+    <div class="actions">
+        <div class="clearfix">
+            <button type="submit" class="btn btn-primary" data-auto-disable>
+				{{#if isNew}}
+					{{i18n.create}}
+				{{else}}
+					{{i18n.save}}
+				{{/if}}
+            </button>
+            <a href="/pricelists" class="btn btn-link">{{i18n.cancel}}</a>
+        </div>
+    </div>
+</form>

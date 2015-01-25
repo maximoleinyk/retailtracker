@@ -32,6 +32,9 @@ define (require) ->
       'templates': 'priceListTemplates'
       'templates/:id': 'priceListTemplatesForm'
 
+      'pricelists': 'priceLists'
+      'pricelists/:id': 'priceListForm'
+
       'stores': 'stores'
       'stores/:id': 'storeForm'
 

@@ -16,7 +16,7 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                   data-catch-url="">{{i18n.purchase}}<span class="caret"></span></a>
+                   data-catch-url="/(orders/supplier*)|(invoice/supplier*)">{{i18n.purchase}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/orders/supplier">{{i18n.ordersToSupplier}}</a></li>
                     <li><a href="/invoice/supplier">{{i18n.invoiceOfSupplier}}</a></li>
@@ -24,7 +24,7 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                   data-catch-url="">{{i18n.retail}}<span class="caret"></span></a>
+                   data-catch-url="/(pricelists.*)|(templates.*)">{{i18n.retail}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/pricelists">{{i18n.priceLists}}</a></li>
                     <li><a href="/templates">{{i18n.priceListTemplates}}</a></li>
@@ -32,7 +32,7 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                   data-catch-url="">{{i18n.warehouse}}<span class="caret"></span></a>
+                   data-catch-url="/(goods/receipt.*)">{{i18n.warehouse}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/goods/receipt">{{i18n.goodsReceipt}}</a></li>
                 </ul>

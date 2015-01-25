@@ -14,13 +14,13 @@ define (require) ->
     onRender: ->
       @grid.show new Grid({
         collection: @collection
-        defaultEmptyText: i18n.get('thereAreNoTemplates')
+        defaultEmptyText: i18n.get('thereAreNoPriceLists')
         columns: [
           {
             field: 'name'
             title: i18n.get('name')
             url: (model) ->
-              '/templates/' + model.id
+              '/pricelists/' + model.id
           },
           {
             field: 'created'
@@ -29,16 +29,16 @@ define (require) ->
               helpers.date(value, true)
           },
           {
-            field: 'currency'
-            title: i18n.get('currency')
+            field: 'priceListTemplate'
+            title: i18n.get('template')
             formatter: (value) ->
               value.name
+            url: (model) ->
+              '/templates/' + model._id
           },
           {
-            field: 'columns'
-            title: i18n.get('priceAmount')
-            formatter: (value) ->
-              value.length
+            field: 'itemsCount'
+            title: i18n.get('itemsCount')
             type: 'number'
           }
         ]

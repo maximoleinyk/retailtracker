@@ -61,12 +61,21 @@ PriceListTemplateStore = inject('persistence/priceListTemplateStore')
 PriceListTemplateService = inject('services/priceListTemplateService')
 priceListTemplateSchema = inject('persistence/model/priceListTemplate')
 currencySchema = inject('persistence/model/currency')
+PriceListController = inject('controllers/priceList')
+PriceListStore = inject('persistence/priceListStore')
+PriceListService = inject('services/priceListService')
+priceListSchema = inject('persistence/model/priceList')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+    priceListStore = new PriceListStore(priceListSchema)
+    priceListService = new PriceListService(priceListStore)
+    priceListController = new PriceListController(priceListService, namespace.company)
+    priceListController.register(@router)
+
     priceListTemplateStore = new PriceListTemplateStore(priceListTemplateSchema)
     priceListTemplateService = new PriceListTemplateService(priceListTemplateStore)
     priceListTemplateController = new PriceListTemplateController(priceListTemplateService, namespace.company)

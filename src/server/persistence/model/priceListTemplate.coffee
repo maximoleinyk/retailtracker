@@ -1,4 +1,5 @@
 mongoose = require('mongoose')
+moment = require('moment')
 
 class PriceListTemplate
 
@@ -13,6 +14,9 @@ class PriceListTemplate
         $tenant: true
         required: true
       description: String
+      created:
+        type: Date
+        default: moment()
       columns:
         type: [
           {
