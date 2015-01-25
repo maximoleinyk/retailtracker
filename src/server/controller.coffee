@@ -56,19 +56,29 @@ StoreController = inject('controllers/store')
 StoreDataStore = inject('persistence/storeDataStore')
 storeSchema = inject('persistence/model/store')
 SupplierOrdersController = inject('controllers/supplierOrders')
+PriceListTemplateController = inject('controllers/priceListTemplate')
+PriceListTemplateStore = inject('persistence/priceListTemplateStore')
+PriceListTemplateService = inject('services/priceListTemplateService')
+priceListTemplateSchema = inject('persistence/model/priceListTemplate')
+currencySchema = inject('persistence/model/currency')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+    priceListTemplateStore = new PriceListTemplateStore(priceListTemplateSchema)
+    priceListTemplateService = new PriceListTemplateService(priceListTemplateStore)
+    priceListTemplateController = new PriceListTemplateController(priceListTemplateService, namespace.company)
+    priceListTemplateController.register(@router)
+
     supplierOrdersController = new SupplierOrdersController
     supplierOrdersController.register(@router)
 
     storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)), namespace.company)
     storeController.register(@router)
 
-    currencyService = new CurrencyService(new CurrencyStore)
+    currencyService = new CurrencyService(new CurrencyStore(currencySchema))
 
     counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
 
@@ -105,7 +115,8 @@ class PageController
     contextController = new ContextController(accountService)
     contextController.register(@router)
 
-    warehouseController = new WarehouseController(new WarehouseService(new WarehouseStore(warehouseSchema)), namespace.company)
+    warehouseController = new WarehouseController(new WarehouseService(new WarehouseStore(warehouseSchema)),
+      namespace.company)
     warehouseController.register(@router)
 
     activityController = new ActivityController(activityService)
@@ -124,7 +135,7 @@ class PageController
     uomController = new UomController(uomService)
     uomController.register(@router)
 
-    currencyController = new CurrencyController(currencyService)
+    currencyController = new CurrencyController(currencyService, namespace.company)
     currencyController.register(@router)
 
     counterpartyController = new CounterpartyController(counterpartyService, namespace.company)

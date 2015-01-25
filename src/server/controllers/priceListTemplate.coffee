@@ -2,9 +2,9 @@ HttpStatus = require('http-status-codes')
 CrudController = inject('controllers/crudController')
 authFilter = inject('util/authFilter')
 
-class CurrencyController extends CrudController
+class PriceListTemplateController extends CrudController
 
-  baseUrl: '/currency'
+  baseUrl: '/pricelisttemplate'
 
   register: (router) ->
     super
@@ -13,8 +13,4 @@ class CurrencyController extends CrudController
       @service.search @namespace(req), req.query.q, (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).jsonp(result)
 
-    router.get @baseUrl + '/templates', authFilter, (req, res) =>
-      @service.getCurrencyTemplates(@callback(res))
-
-module.exports = CurrencyController
-
+module.exports = PriceListTemplateController

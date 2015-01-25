@@ -29,6 +29,9 @@ define (require) ->
 
       'orders/supplier': 'ordersToSuppliers'
 
+      'templates': 'priceListTemplates'
+      'templates/:id': 'priceListTemplatesForm'
+
       'stores': 'stores'
       'stores/:id': 'storeForm'
 

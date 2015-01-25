@@ -24,9 +24,7 @@ define (require) ->
       isCashier: context.get('employee.role.name') is 'CASHIER'
 
     updateNameLabel: ->
-      firstName = @model.get('account.owner.firstName')
-      lastName = @model.get('account.owner.lastName')
-      @ui.$userName.text("#{firstName} #{lastName}".trim())
+      @ui.$userName.text(@model.get('account.owner.firstName'))
 
     logout: ->
       http.del '/security/logout', =>

@@ -1,11 +1,11 @@
 <div class="page-title">
     <div class="title">
         <div>
-            {{#if isNew}}
-                {{i18n.warehouseCreation}}
-            {{else}}
-                {{i18n.warehouseEditing}}
-            {{/if}}
+			{{#if isNew}}
+				{{i18n.warehouseCreation}}
+			{{else}}
+				{{i18n.warehouseEditing}}
+			{{/if}}
         </div>
         <a href="/warehouses" class="link-back">{{i18n.warehouses}}</a>
     </div>
@@ -47,18 +47,17 @@
                 <textarea id="description" name="description" rows="5" class="form-control" data-bind></textarea>
             </div>
         </div>
-        <div data-region="inviteeList"></div>
     </div>
     <div class="actions">
         <div class="clearfix">
             <button type="submit" class="btn btn-primary" data-auto-disable>
-                {{#if isNew}}
-                    {{i18n.create}}
-                {{else}}
-                    {{i18n.save}}
-                {{/if}}
+				{{#if isNew}}
+					{{i18n.create}}
+				{{else}}
+					{{i18n.save}}
+				{{/if}}
             </button>
-            <a href="{{url}}" class="btn btn-link">{{i18n.cancel}}</a>
+            <a href="/warehouses" class="btn btn-link">{{i18n.cancel}}</a>
         </div>
     </div>
 </form>

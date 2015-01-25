@@ -1,12 +1,15 @@
 i18n = inject('util/i18n').bundle('validation')
 templates = inject('../../resources/currencies')
+AbstractService = inject('services/abstractService')
+_ = require('underscore')
 
-class CurrencyService
+class CurrencyService extends AbstractService
 
-  constructor: (@currencyStore) ->
-
-  findAll: (ns, callback) ->
-    @currencyStore.findAll(ns, callback)
+  search: (ns, query = '', callback) ->
+    @findAll ns, (err, all) ->
+      results = _.filter all, (item) ->
+        item.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+      callback(err, results.splice(0, 5))
 
   create: (ns, data, callback) ->
     return callback({ name: i18n.nameIsRequired }) if not data.name
@@ -15,16 +18,11 @@ class CurrencyService
     return callback({ rate: i18n.rateShouldBeNumeric }) if typeof data.rate isnt 'number'
 
     data.rate = Math.abs(data.rate)
-
-    @currencyStore.create ns, data, (err, result) ->
-      return callback({ generic: err }) if err
-      callback(null, result)
+    super
 
   delete: (ns, id, callback) ->
     return callback({ generic: i18n.idRequired }) if not id
-    @currencyStore.delete ns, id, (err) ->
-      return callback({ generic: err }) if err
-      callback(null)
+    super
 
   update: (ns, data, callback) ->
     return callback({ name: i18n.nameIsRequired }) if not data.name
@@ -33,10 +31,7 @@ class CurrencyService
     return callback({ rate: i18n.rateShouldBeNumeric }) if typeof data.rate isnt 'number'
 
     data.rate = Math.abs(data.rate)
-
-    @currencyStore.update ns, data, (err) ->
-      return callback({ generic: err }) if err
-      callback(null, data)
+    super
 
   getCurrencyTemplates: (callback) ->
     callback(null, templates)

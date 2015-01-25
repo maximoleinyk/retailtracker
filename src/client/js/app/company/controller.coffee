@@ -34,8 +34,32 @@ define (require) ->
   Warehouse = require('cs!./models/warehouse')
   SupplierOrdersPage = require('cs!./views/supplierOrders/list')
   SupplierOrders = require('cs!./collections/supplierOrders')
+  PriceListTemplates = require('cs!./collections/priceListTemplates')
+  PriceListTemplatesPage = require('cs!./views/templates/list')
+  PriceListTemplateForm = require('cs!./views/templates/form')
+  PriceListTemplate = require('cs!./models/priceListTemplate')
 
   Controller.extend
+
+    priceListTemplatesForm: (id) ->
+      model = if id and id isnt 'create' then new PriceListTemplate({ _id: id }, { parse: true }) else null
+
+      openPage = =>
+        @openPage new PriceListTemplateForm({
+          model: if model then model else new PriceListTemplate
+        })
+
+      if model
+        model.fetch().then(openPage)
+      else
+        openPage()
+
+    priceListTemplates: ->
+      collection = new PriceListTemplates
+      collection.fetch().then =>
+        @openPage new PriceListTemplatesPage({
+          collection: collection
+        })
 
     ordersToSuppliers: ->
       collection = new SupplierOrders
