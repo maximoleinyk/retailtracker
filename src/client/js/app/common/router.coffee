@@ -17,7 +17,7 @@ define (require) ->
 
       if all
         _.each appRoutes, (methodName, route) ->
-          if _.isArray(all.except) and all.except.indexOf(methodName) is 1
+          if _.isArray(all.except) and all.except.indexOf(methodName) is -1
             isPermitted = if _.isFunction(all.permitted) then all.permitted.apply(this) else all.permitted
             if !isPermitted
               delete copy[route]

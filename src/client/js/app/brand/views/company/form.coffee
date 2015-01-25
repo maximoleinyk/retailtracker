@@ -32,7 +32,8 @@ define (require) ->
       })
 
     renderSelect: ->
-      select(@ui.$select).select2('enable', false) if not this.model.isNew()
+      select(@ui.$select)
+      @ui.$select.select2('enable', false) if not this.model.isNew()
 
     submit: (e) ->
       e.preventDefault()
