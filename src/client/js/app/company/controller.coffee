@@ -42,8 +42,17 @@ define (require) ->
   PriceLists = require('cs!./collections/priceLists')
   PriceList = require('cs!./models/priceList')
   PriceListForm = require('cs!./views/priceLists/form')
+  ReceiveGoodsCollection = require('cs!./collections/receiveGoods')
+  ReceiveGoodsList = require('cs!./views/receiveGoods/list')
 
   Controller.extend
+
+    receiveGoods: ->
+      collection = new ReceiveGoodsCollection
+      collection.fetch().then =>
+        @openPage new ReceiveGoodsList({
+          collection: collection
+        })
 
     priceListForm: (id) ->
       model = if id and id isnt 'create' then new PriceList({ _id: id }, { parse: true }) else null

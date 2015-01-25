@@ -10,7 +10,7 @@ define (require) ->
       code: 'USD'
 
     getTemplates: ->
-      @promise('get', '/currency/templates')
+      @promise('get', '/currency/templates/get')
 
     create: (callback) ->
       @promise('post', '/currency', @toJSON()).then (result) =>

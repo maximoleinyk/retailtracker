@@ -35,6 +35,8 @@ define (require) ->
       'pricelists': 'priceLists'
       'pricelists/:id': 'priceListForm'
 
+      'goods/receive': 'receiveGoods'
+
       'stores': 'stores'
       'stores/:id': 'storeForm'
 

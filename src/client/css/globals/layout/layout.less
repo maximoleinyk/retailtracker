@@ -12,9 +12,13 @@
   }
 
   > .header {
-    background-color: #444;
+    background-color: #292f33;
     padding: 15px 0;
     height: 50px;
+
+    a {
+      color: @navTextColor;
+    }
 
     > * {
       .clearfix;
@@ -27,10 +31,9 @@
       float: left;
       margin: -4px 15px 0 0;
       max-width: 200px;
-      color: #fff;
+      color: @navTextColor;
 
       * {
-        color: #eee;
         padding: 0;
         margin: 0;
         font-size: 18px;

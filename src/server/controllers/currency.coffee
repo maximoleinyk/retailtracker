@@ -13,7 +13,7 @@ class CurrencyController extends CrudController
       @service.search @namespace(req), req.query.q, (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).jsonp(result)
 
-    router.get @baseUrl + '/templates', authFilter, (req, res) =>
+    router.get @baseUrl + '/templates/get', authFilter, (req, res) =>
       @service.getCurrencyTemplates(@callback(res))
 
 module.exports = CurrencyController
