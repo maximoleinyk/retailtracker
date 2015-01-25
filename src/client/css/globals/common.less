@@ -71,10 +71,6 @@ ul {
   height: 34px;
 }
 
-.dropdown-menu {
-  margin-top: 10px;
-}
-
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -87,4 +83,21 @@ ul {
 
 .tooltip .tooltip-inner {
   padding: 5px 10px;
+}
+
+.navigation a.selected {
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent transparent #fff;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    z-index: 1;
+    bottom: -16px;
+    border-width: 6px;
+  }
 }

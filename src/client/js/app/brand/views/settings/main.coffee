@@ -24,6 +24,7 @@ define (require) ->
         when 'security' then @securityView()
         else
           @defaultView()
+      $('.app > .content-wrapper').removeClass('box-like')
 
     profileView: ->
       @model.set

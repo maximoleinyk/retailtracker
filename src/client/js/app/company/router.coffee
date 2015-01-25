@@ -42,7 +42,7 @@ define (require) ->
 
     permissions:
       '*':
-        except: 'choose'
+        except: ['choose', 'settings/:view']
         permitted: ->
           context.get('employee.role.name') is 'BOSS' or context.get('employee.role.name') is 'MANAGER'
         fallback: ->
