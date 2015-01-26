@@ -78,13 +78,17 @@ require.config({
 		},
 		select2locale: {
 			deps: ['select2']
+		},
+		'cs!app/common/io': {
+			deps: ['socket.io']
 		}
 	},
 
 	deps: [
 		'app/common/helpers',
 		'bootstrap',
-		'typeahead'
+		'typeahead',
+		'cs!app/common/io'
 	]
 
 });

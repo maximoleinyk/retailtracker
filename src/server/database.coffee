@@ -13,17 +13,18 @@ class MongoDB
     mongoose.connect host, name, port, (err) ->
       return done(err) if err
 
-      app.use session({
-        saveUninitialized: true,
+      app.use session
+        saveUninitialized: true
         resave: true
         secret: config.session.secret,
-        store: new MongoStore({
+        expires: new Date(Date.now() + config.cookie.maxAge)
+        cookie:
+          maxAge: new Date(Date.now() + config.cookie.maxAge)
+        rolling: true
+        store: new MongoStore
           db: mongoose.connection.db
           cookie:
             maxAge: config.cookie.maxAge
-        })
-        rolling: true
-      })
 
       console.log('Connected to mongo on host ' + config.db.host + ' and port ' + config.db.port)
       done()

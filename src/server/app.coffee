@@ -23,6 +23,7 @@ class App
       @app.use bodyParser.json()
       @app.use passport.initialize()
       @app.use passport.session()
+      @app.use
       @app.use csrf()
       @app.use (err, req, res, next) ->
         if err.code is 'EBADCSRFTOKEN'
@@ -32,10 +33,10 @@ class App
           next(err)
       @app.use(@router)
 
+      socket(@app)
+
       controller = new PageController(@router, passport)
       controller.register()
-
-      socket(@app)
 
       @app.listen @config.app.port, =>
         console.log 'Application started on port ' + config.app.port + ' in ' + process.env.NODE_ENV + ' mode'

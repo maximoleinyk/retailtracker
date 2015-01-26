@@ -18,7 +18,7 @@
     "numeral": "~1.5.3",
     "moment": "~2.8.1",
     "rsvp": "~3.0.12",
-    "socket.io-client": "https://github.com/LearnBoost/socket.io-client.git",
+    "socket.io-client": "latest",
     "bootstrap": "~3.1.1",
     "select2": "~3.5.1",
     "backbone-nested-model": "latest",
