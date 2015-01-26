@@ -78,8 +78,8 @@ define (require) ->
       @popup.show(box)
 
     pageNotFound: ->
-      @popup.close()
-      @navigation.close()
+      @popup?.close()
+      @navigation?.close()
       @container.show(new NotFoundPage)
 
     handleUnauthorized: (error) ->
