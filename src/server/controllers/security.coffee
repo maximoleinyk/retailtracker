@@ -10,11 +10,18 @@ class SecurityController
     res.status(HttpStatus.FORBIDDEN).send({ errors: err })
 
   register: (router) ->
+    router.get '/security/handshake', authFilter, (req, res) =>
+      res.cookie('X-Csrf-Token', req.csrfToken())
+      res.status(HttpStatus.NO_CONTENT).end()
+
     router.post '/security/login', (req, res, next) =>
       authCallback = @securityService.authenticate req.body, (err, account) =>
         return @forbidden(err, res) if err
         req.login account, (err) =>
-          if err then next(err) else res.status(HttpStatus.NO_CONTENT).end()
+          return next(err) if err
+
+          res.cookie('X-Csrf-Token', req.csrfToken())
+          res.status(HttpStatus.NO_CONTENT).end()
 
       authCallback(req, res, next) if authCallback
 

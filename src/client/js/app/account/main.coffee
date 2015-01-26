@@ -12,5 +12,5 @@ define (require) ->
     bundleName: 'account'
     classSelector: 'app-account'
     root: '/account/'
-    authUrl: '/context/handshake'
+    authUrl: '/security/handshake'
   })

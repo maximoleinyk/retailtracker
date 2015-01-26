@@ -22,12 +22,15 @@ var path = require('path'),
 			port: '27017',
 			name: 'retailregister'
 		},
+		session: {
+			secret: 'session_secret'
+		},
 		mailer: {
 			templatesDir: path.resolve(__dirname + '/src/server/email/templates'),
 			from: 'support@retailregister.com'
 		},
 		cookie: {
-			maxAge: 1000 * 60 * 60,
+			maxAge: 1000 * 60 * 10,
             secret: 'secret_cookie_word'
 		}
 	};

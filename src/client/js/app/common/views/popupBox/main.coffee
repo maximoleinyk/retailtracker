@@ -5,6 +5,7 @@ define (require) ->
   eventBus = require('cs!app/common/eventBus')
   Marionette = require('marionette')
   ItemView = require('cs!app/common/marionette/itemView')
+  Handlebars = require('handlebars')
 
   MessageView = ItemView.extend({
     template: require('hbs!./messageView.hbs')
@@ -17,13 +18,15 @@ define (require) ->
 
     template: require('hbs!./buttonSet.hbs')
 
-    templateHelpers: ->
-      buttons: @options.buttons
-      isPrimary: (context, options) ->
+    initialize: ->
+      Handlebars.registerHelper 'isPrimary', (context, options) ->
         if context.primary
           return options.fn(this)
         else
           return options.inverse(this)
+
+    templateHelpers: ->
+      buttons: @options.buttons
 
     onCLick: (e) ->
       found = _.find @options.buttons, (button) ->

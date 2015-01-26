@@ -40,7 +40,7 @@ define (require) ->
               label: i18n.get('resumeSession')
               primary: true
               action: (view) ->
-                request.get('/context/handshake')
+                request.get('/security/handshake')
                 .then ->
                   http.setHeaders({
                     'X-Csrf-Token': cookies.get('X-Csrf-Token')

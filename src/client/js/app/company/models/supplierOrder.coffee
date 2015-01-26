@@ -7,10 +7,3 @@ define (require) ->
   class SupplierOrder extends Model
 
     urlRoot: '/supplierorders'
-
-    save: ->
-      save = new Promise (resolve, reject) =>
-        Model::save.apply(this, @toJSON()).done(resolve).fail(reject)
-      save.then (result) =>
-        @set @parse(result)
-        @commit()

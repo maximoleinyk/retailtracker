@@ -6,6 +6,23 @@ define(function (require) {
         _ = require('underscore');
 
     var headers = {},
+		statusCode = {
+			400: function (result) {
+				var response;
+				try {
+					response = JSON.parse(result.responseText);
+				} catch (e) {
+					response = result.responseText;
+				}
+				eventBus.trigger('http:400', response);
+			},
+			401: function (xhr, status, text) {
+				eventBus.trigger('http:401', text);
+			},
+			403: function (xhr) {
+				eventBus.trigger('http:403', { error: xhr.responseText });
+			}
+		},
         request = function (method, url, data, callback, options) {
 
             if (_.isFunction(data)) {
@@ -31,23 +48,7 @@ define(function (require) {
                     }
                     callback(response);
                 },
-                statusCode: {
-                    400: function (result) {
-                        var response;
-                        try {
-                            response = JSON.parse(result.responseText);
-                        } catch (e) {
-                            response = result.responseText;
-                        }
-                        eventBus.trigger('http:400', response);
-                    },
-                    401: function (xhr, status, text) {
-                        eventBus.trigger('http:401', text);
-                    },
-                    403: function (xhr) {
-                        eventBus.trigger('http:403', { error: xhr.responseText });
-                    }
-                }
+                statusCode: statusCode
             }, options);
 
             if (data) {
@@ -88,7 +89,8 @@ define(function (require) {
         },
         del: function (url, data, callback, options) {
             return request('DELETE', url, data, callback, options);
-        }
+        },
+		statusCode: statusCode
     };
 
 });

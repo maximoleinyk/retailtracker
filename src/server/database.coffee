@@ -16,9 +16,7 @@ class MongoDB
       app.use session({
         saveUninitialized: true,
         resave: true
-        secret: config.app.sessionSecret,
-        cookie:
-          maxAge: config.cookie.maxAge
+        secret: config.session.secret,
         store: new MongoStore({
           db: mongoose.connection.db
           cookie:

@@ -15,7 +15,7 @@ define (require) ->
     bundleName: 'company'
     classSelector: 'app-company'
     root: '/company/'
-    authUrl: '/context/handshake'
+    authUrl: '/security/handshake'
 
     initialize: (url) ->
       http.setHeaders({ company: url.split('/')[1] })

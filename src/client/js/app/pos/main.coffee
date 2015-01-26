@@ -10,5 +10,5 @@ define (require) ->
     bundleName: 'pos'
     classSelector: 'point-of-sale'
     root: '/pos/'
-    authUrl: '/context/handshake'
+    authUrl: '/security/handshake'
   })

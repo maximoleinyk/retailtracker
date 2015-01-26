@@ -21,7 +21,7 @@
     "socket.io-client": "https://github.com/LearnBoost/socket.io-client.git",
     "bootstrap": "~3.1.1",
     "select2": "~3.5.1",
-    "backbone-nested-model": "~2.0.1",
+    "backbone-nested-model": "latest",
     "jsbarcode": "*",
     "cookies-js": "~1.1.0",
     "md5": "https://github.com/blueimp/JavaScript-MD5.git",

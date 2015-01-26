@@ -23,8 +23,6 @@ define (require) ->
             title: i18n.get('email')
             type: 'autocomplete'
             placeholder: i18n.get('emailExampleCom')
-            onSelect: (value) =>
-              @model.set('firstName', value.split('@')[0])
             options:
               url: '/employees/fetch'
               queryParams:
@@ -70,6 +68,7 @@ define (require) ->
 
     onCreate: (invitee, callback) ->
       return callback({ email: i18n.get('invalidEmail') }) if not invitee.get('email')
+      invitee.set('firstName', invitee.get('email').split('@')[0])
       invitee.commit()
       @options.collection.add(invitee)
       @updateList()
@@ -77,6 +76,7 @@ define (require) ->
 
     onSave: (invitee, callback) ->
       return callback({ email: i18n.get('invalidEmail') }) if not invitee.get('email')
+      invitee.set('firstName', invitee.get('email').split('@')[0])
       invitee.commit()
       @updateList()
       callback()

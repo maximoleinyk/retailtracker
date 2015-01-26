@@ -62,9 +62,9 @@ define (require) ->
         })
 
     companyForm: (id) ->
+      model = if id and id isnt 'create' then new Company({ _id: id }, { parse: true }) else null
       roles = new Roles()
       currency = new Currency
-      model = if id isnt 'create' then new Company({ _id: id }, { parse: true }) else null
       promises = [currency.getTemplates(), roles.fetch()]
       promises.push(model.fetch()) if model
 

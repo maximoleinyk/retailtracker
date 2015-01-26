@@ -15,7 +15,7 @@ define (require) ->
     bundleName: 'brand'
     classSelector: 'app-brand'
     root: '/brand/'
-    authUrl: '/context/handshake'
+    authUrl: '/security/handshake'
 
     beforeStart: (account) ->
       request.get('/context/load/brand')

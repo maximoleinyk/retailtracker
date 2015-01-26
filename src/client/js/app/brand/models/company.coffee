@@ -22,16 +22,3 @@ define (require) ->
         @set(@parse(result.company))
         @set('hasAccount', result.hasAccount)
         @commit()
-
-    save: ->
-      save = new Promise (resolve, reject) =>
-        Model::save.apply(this, @toJSON()).done(resolve).fail(reject)
-      save.then (result) =>
-        @set @parse(result)
-        @commit()
-
-    fetch: ->
-      @promise('get', '/company/' + @id)
-      .then (result) =>
-        @set @parse(result)
-        @commit()
