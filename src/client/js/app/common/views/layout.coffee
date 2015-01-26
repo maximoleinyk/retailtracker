@@ -56,8 +56,6 @@ define (require) ->
       this.requestCount++
       this.$el.find('[data-auto-disable]').attr('disabled', true)
 
-      return if not Marionette.Backbone.history.started
-
       clearTimeout(this.timeout) if this.timeout
 
       checkSessionExpiration = ->
