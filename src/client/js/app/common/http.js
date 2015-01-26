@@ -57,6 +57,7 @@ define(function (require) {
             }
 
             eventBus.trigger('http:request:start');
+            eventBus.trigger('http:request');
 
             return Backbone.$.ajax(params).always(function () {
                 eventBus.trigger('http:request:stop');

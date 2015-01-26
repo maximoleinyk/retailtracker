@@ -16,15 +16,13 @@ class MongoDB
       app.use session
         saveUninitialized: true
         resave: true
-        secret: config.session.secret,
-        expires: new Date(Date.now() + config.cookie.maxAge)
-        cookie:
-          maxAge: new Date(Date.now() + config.cookie.maxAge)
+        expires: true
         rolling: true
+        secret: config.session.secret,
+        cookie:
+          maxAge: config.cookie.maxAge
         store: new MongoStore
           db: mongoose.connection.db
-          cookie:
-            maxAge: config.cookie.maxAge
 
       console.log('Connected to mongo on host ' + config.db.host + ' and port ' + config.db.port)
       done()

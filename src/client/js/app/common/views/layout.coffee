@@ -44,7 +44,7 @@ define (require) ->
                 .then ->
                   http.setHeaders({
                     'X-Csrf-Token': cookies.get('X-Csrf-Token')
-                  },)
+                  })
                   view.close()
             }
           ]
@@ -55,6 +55,30 @@ define (require) ->
     handleStartRequest: ->
       this.requestCount++
       this.$el.find('[data-auto-disable]').attr('disabled', true)
+
+      return if not Marionette.Backbone.history.started
+
+      clearTimeout(this.timeout) if this.timeout
+
+      checkSessionExpiration = ->
+        PopupBox.context({
+          title: i18n.get('sessionExpired')
+          message: i18n.get('sessionExpiredMessage')
+          buttons: [
+            {
+              label: i18n.get('resumeSession')
+              primary: true
+              action: (view) ->
+                request.get('/security/handshake')
+                .then ->
+                  http.setHeaders({
+                    'X-Csrf-Token': cookies.get('X-Csrf-Token')
+                  })
+                  view.close()
+            }
+          ]
+        })
+      this.timeout = setTimeout(checkSessionExpiration, 300000) # in 5 minutes
 
     handleStopRequest: ->
       this.requestCount--
