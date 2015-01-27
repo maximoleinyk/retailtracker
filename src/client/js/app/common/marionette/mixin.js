@@ -16,7 +16,6 @@ define(function (require) {
 
 			constructor: function () {
 				this.addEvents();
-				this.addValidationModule();
 				proto.constructor.apply(this, arguments);
 			},
 
@@ -28,6 +27,14 @@ define(function (require) {
 			undelegateEvents: function () {
 				Marionette.View.prototype.undelegateEvents.apply(this, arguments);
 				Marionette.unbindEntityEvents(this, this.eventBus, Marionette.getOption(this, 'appEvents'));
+			},
+
+
+			addEvents: function () {
+				this.listenTo(this, 'render', this.addBehaviours, this);
+				this.listenTo(this, 'show', this.afterRender, this);
+				this.listenTo(this, 'close', this.removeEvents, this);
+				this.listenTo(this.eventBus, 'open:page', this.highlightSelectedLinks, this);
 			},
 
 			highlightSelectedLinks: function () {
@@ -52,65 +59,7 @@ define(function (require) {
 				});
 			},
 
-			addValidationModule: function () {
-				var self = this;
-
-				this.validation = {
-					reset: function () {
-						var $wrapper = self.$el.find('[data-validation]')
-							.text('')
-							.closest('.form-group, .validation-group')
-							.removeClass('has-error');
-
-						$wrapper.each(function () {
-							var $el = Backbone.$(this);
-							if ($el.data('hidden')) {
-								$el.addClass('hidden');
-								$el.removeData('hidden');
-							}
-						});
-
-						self.$el.find('[data-validation]').each(function () {
-							var $el = Backbone.$(this);
-							if ($el) {
-								$el.addClass('hidden');
-							}
-						});
-					},
-					show: function (messages) {
-						if (!_.isObject(messages)) {
-							return;
-						}
-
-						_.each(messages, function (value, key) {
-							var $el = self.$el.find('[data-validation="' + key + '"]').text(value),
-								$wrapper = $el.closest('.form-group, .validation-group').addClass('has-error');
-
-							if ($wrapper.hasClass('hidden')) {
-								$wrapper.data('hidden', 'true').removeClass('hidden');
-							}
-
-							$el.removeClass('hidden');
-						});
-
-						var firstErrorGroup = self.$el.find('.has-error').first();
-						if (!firstErrorGroup.length) {
-							firstErrorGroup = self.$el.find('[data-focus]').closest('.form-group, .validation-group');
-						}
-						firstErrorGroup.find('input, select, textarea').focus();
-					}
-				};
-			},
-
-			addEvents: function () {
-				this.listenTo(this, 'close', this.removeEvents, this);
-				this.listenTo(this, 'render', this.addDataBinding, this);
-				this.listenTo(this, 'render', this.addBehaviours, this);
-				this.listenTo(this, 'show', this.addAutofocusBehaviour, this);
-				this.listenTo(this.eventBus, 'open:page', this.highlightSelectedLinks, this);
-			},
-
-			addAutofocusBehaviour: function () {
+			afterRender: function () {
 				this.$el.find('[data-focus]').each(function () {
 					var $el = Marionette.$(this);
 					if ($el.data('select2')) {
@@ -162,6 +111,8 @@ define(function (require) {
 				}, self);
 
 				this.$el.find('[data-toggle="tooltip"]').tooltip();
+
+				dataBinding.bind(this);
 			},
 
 			find: function () {
@@ -171,10 +122,6 @@ define(function (require) {
 			removeEvents: function () {
 				this.$el.off('click', '[data-click]');
 				this.$el.off('submit', 'form');
-			},
-
-			addDataBinding: function () {
-				dataBinding.bind(this);
 			},
 
 			navigateTo: function (route, options) {

@@ -48,5 +48,3 @@ define (require) ->
       request.post('/company/' + companyId + '/permission/' + userId)
       .then =>
         @eventBus.trigger('module:load', 'company', @model.get('companyId'))
-      .catch (err) =>
-        @validation.show(err)

@@ -9,6 +9,11 @@ define (require) ->
 
     urlRoot: '/company'
 
+    validators:
+      name:
+        exists: true
+        description: 'Название должно быть указано'
+
     defaults: ->
       owner: context.get('account.owner')?._id
       employees: []

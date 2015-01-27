@@ -9,7 +9,6 @@ define (require) ->
 
     save: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.changeSecuritySettings()
       .then =>
@@ -17,6 +16,4 @@ define (require) ->
         @model.unset('password')
         @model.unset('confirmPassword')
         @navigateTo('')
-      .catch (err) =>
-        @validation.show(err.errors)
 

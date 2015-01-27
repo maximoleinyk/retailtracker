@@ -1,20 +1,20 @@
 <div class="box">
     <div class="box-title">{{i18n.registration}}</div>
-    <div class="alert alert-warning" data-validation="generic" data-hide></div>
+    <div class="alert alert-warning" data-validate="generic" data-bind data-hide></div>
     <form data-submit="register">
         <div class="form-group input-group-lg">
             <label for="firstName">{{i18n.firstName}}</label>
             <input type="text" id="firstName" name="firstName" class="form-control"
                    data-focus title="{{i18n.userName}}" placeholder="{{i18n.howShouldWeCallYou}}" data-bind/>
 
-            <div class="help-block" data-validation="firstName"></div>
+            <div class="help-block" data-validate="firstName" data-bind></div>
         </div>
         <div class="form-group input-group-lg">
             <label for="email">{{i18n.emailAddress}}</label>
             <input type="email" id="email" name="email" class="form-control" title="{{i18n.emailAddress}}"
                    placeholder="{{i18n.emailAddress}}" data-bind/>
 
-            <div class="help-block" data-validation="email"></div>
+            <div class="help-block" data-validate="email" data-bind></div>
         </div>
         <div class="form-group submit-group">
             <button type="submit" class="btn btn-primary btn-lg" data-id="registerButton"

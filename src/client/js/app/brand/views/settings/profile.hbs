@@ -1,4 +1,4 @@
-<div class="alert alert-warning" data-validation="generic" data-hide></div>
+<div class="alert alert-warning" data-validate="generic" data-bind data-hide></div>
 <form class="form-horizontal" data-submit="save">
     <fieldset>
         <legend>{{i18n.personalData}}</legend>
@@ -8,7 +8,7 @@
             <div class="col-md-6">
                 <input type="text" class="form-control" id="firstName" name="firstName" data-focus data-bind>
 
-                <div class="help-block" data-validation="firstName"></div>
+                <div class="help-block" data-validate="firstName" data-bind></div>
             </div>
         </div>
         <div class="form-group">
@@ -17,7 +17,7 @@
             <div class="col-md-6">
                 <input type="text" class="form-control" id="lastName" name="lastName" data-bind>
 
-                <div class="help-block" data-validation="lastName"></div>
+                <div class="help-block" data-validate="lastName" data-bind></div>
             </div>
         </div>
         <div class="form-group">

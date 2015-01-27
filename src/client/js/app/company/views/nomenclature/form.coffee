@@ -84,9 +84,6 @@ define (require) ->
 
     submit: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.save().then =>
         @navigateTo('/nomenclature')
-      .catch (err) =>
-        @validation.show(err)

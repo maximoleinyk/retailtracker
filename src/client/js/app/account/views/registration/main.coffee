@@ -18,13 +18,11 @@ define (require) ->
 
       originButtonLabel = @ui.$registerButton.text()
 
-      @validation.reset()
       @ui.$registerButton.text('Регистрация...').attr('disabled', true)
 
       @model.register()
       .then =>
         @eventBus.trigger('open:page', new RegistrationSuccessPage)
-      .catch (err) =>
-        @validation.show(err.errors)
+      .catch =>
         @ui.$registerButton.text(originButtonLabel).removeAttr('disabled')
 

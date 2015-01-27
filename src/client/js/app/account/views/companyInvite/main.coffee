@@ -15,12 +15,9 @@ define (require) ->
 
     confirm: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.confirmCompanyInvite()
       .then =>
         @eventBus.trigger('open:page', new CompanyInviteConfirmed({
           company: @options.company
         }))
-      .catch (err) =>
-        @validation.show(err.errors)

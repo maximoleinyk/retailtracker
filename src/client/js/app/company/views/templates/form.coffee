@@ -96,10 +96,7 @@ define (require) ->
 
     submit: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.set('columns', @columns.toJSON())
       @model.save().then =>
         @navigateTo('/templates')
-      .catch (err) =>
-        @validation.show(err)

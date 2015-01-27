@@ -15,10 +15,7 @@ define (require) ->
 
     sendEmail: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.forgotPassword()
       .then =>
         @eventBus.trigger('open:page', new ForgotPasswordSuccessPage)
-      .catch (err) =>
-        @validation.show(err.errors)

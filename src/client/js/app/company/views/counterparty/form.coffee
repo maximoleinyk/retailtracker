@@ -13,9 +13,6 @@ define (require) ->
 
     submit: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.save().then =>
         @navigateTo('/counterparty')
-      .catch (err) =>
-        @validation.show(err)

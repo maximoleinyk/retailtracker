@@ -1,6 +1,6 @@
 <div class="box">
     <div class="box-title">{{i18n.companyInvite}}</div>
-    <div class="alert alert-warning" data-validation="generic" data-hide></div>
+    <div class="alert alert-warning" data-validate="generic" data-bind data-hide></div>
     <form data-submit="confirm">
         <p><strong>{{company.owner.firstName}}</strong> {{i18n.companyInviteGreetings}} <strong>"{{company.name}}".</strong></p>
 
@@ -10,13 +10,13 @@
                 <label for="password">{{i18n.password}}</label>
                 <input type="password" id="password" name="password" class="form-control"
                        placeholder="{{i18n.enterPassword}}" title="{{i18n.enterPassword}}" data-focus data-bind/>
-                <span class="help-block" data-validation="password" data-hide></span>
+                <span class="help-block" data-validate="password" data-bind data-hide></span>
             </div>
             <div class="form-group input-group-lg">
                 <label for="confirmPassword">{{i18n.confirmPassword}}</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
                        placeholder="{{i18n.confirmPassword}}" title="{{i18n.confirmPassword}}" data-bind/>
-                <span class="help-block" data-validation="confirmPassword" data-hide></span>
+                <span class="help-block" data-validate="confirmPassword" data-bind data-hide></span>
             </div>
 		{{/unless}}
 

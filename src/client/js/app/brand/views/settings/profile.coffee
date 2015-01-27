@@ -11,7 +11,6 @@ define (require) ->
 
     save: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.changeProfileSettings()
       .then =>
@@ -20,5 +19,3 @@ define (require) ->
           'account.owner.lastName': @model.get('lastName')
         })
         @navigateTo('')
-      .catch (err) =>
-        @validation.show(err.errors)

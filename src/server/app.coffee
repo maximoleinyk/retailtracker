@@ -23,7 +23,6 @@ class App
       @app.use bodyParser.json()
       @app.use passport.initialize()
       @app.use passport.session()
-      @app.use
       @app.use csrf()
       @app.use (err, req, res, next) ->
         if err.code is 'EBADCSRFTOKEN'

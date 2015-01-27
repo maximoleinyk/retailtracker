@@ -92,9 +92,6 @@ define (require) ->
 
     submit: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.save().then =>
         @navigateTo('/stores')
-      .catch (err) =>
-        @validation.show(err)

@@ -37,9 +37,6 @@ define (require) ->
 
     submit: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.save().then =>
         @navigateTo('/companies')
-      .catch (err) =>
-        @validation.show(err)

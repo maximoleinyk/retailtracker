@@ -43,11 +43,8 @@ define (require) ->
 
     submit: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.set('assignee', @model.get('assignee._id'))
 
       @model.save().then =>
         @navigateTo('/warehouses')
-      .catch (err) =>
-        @validation.show(err)

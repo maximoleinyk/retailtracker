@@ -3,11 +3,14 @@ define (require) ->
 
   Backbone = require('backbone')
   Promise = require('rsvp').Promise
-  http = require('app/common/http')
+  http = require('./http')
+  validators = require('./validators')
 
   require('backbone-nested')
 
   class Model extends Backbone.NestedModel
+
+    staticProperties: ['error']
 
     initialize: ->
       @commit()
@@ -26,14 +29,20 @@ define (require) ->
       });
       Backbone.NestedModel::sync.apply(this, arguments);
 
+    unsetStatic: ->
+      _.each @staticProperties, (property) =>
+        @unset(property, {silent: true})
+
     save: ->
+      @unsetStatic()
       save = new Promise (resolve, reject) =>
-        Backbone.NestedModel::save.call(this, @toJSON()).done(resolve).fail(reject)
+        Backbone.NestedModel::save.call(this).done(resolve).fail(reject)
       save.then (result) =>
         @set @parse(result)
         @commit()
 
     destroy: ->
+      @unsetStatic()
       destroy = new Promise (resolve, reject) =>
         Backbone.NestedModel::destroy.call(this).done(resolve).fail(reject)
       destroy.then (result) =>
@@ -42,18 +51,28 @@ define (require) ->
 
     parse: ->
       origin = super
-
       version = origin.__v
       id = origin._id or origin.id
-
       this.version = version
-
       delete origin.__v
       delete origin._id
-
       origin.id = id
 
       origin
+
+    validate: ->
+      return if not @validators
+      errors = {}
+      @trigger('validate')
+      _.each @validators, (validator, key) =>
+        _.each validator, (param, testName) =>
+          return if testName is 'description'
+          valid = if param then validators[testName](key, this) else validators[testName](key, param, this)
+          if not valid
+            errors[key] = errors[key] or []
+            errors[key].push(validator.description)
+      @set('error', errors) if _.keys(errors).length
+      if _.isObject(@get('error')) and not _.isEmpty(@get('error')) then 'invalid' else null
 
     reset: ->
       @set(@origin)

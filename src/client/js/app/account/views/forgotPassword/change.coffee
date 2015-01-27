@@ -11,10 +11,7 @@ define (require) ->
 
     change: (e) ->
       e.preventDefault()
-      @validation.reset()
 
       @model.changeForgottenPassword()
       .then =>
         @eventBus.trigger('open:page', new PasswordSuccessfullyChanged)
-      .catch (err) =>
-        @validation.show(err.errors)
