@@ -15,17 +15,18 @@ define (require) ->
   App = new Marionette.Application
 
   App.addInitializer ->
-    Marionette.$(document).on 'click', 'a[href^="/"]', (e) ->
-      $el = $(e.currentTarget)
-      href = $el.attr('href')
-      enableHref = $el.data('enable-href')
+    _.defer ->
+      Marionette.$(document).on 'click', 'a[href^="/"]', (e) ->
+        $el = $(e.currentTarget)
+        href = $el.attr('href')
+        enableHref = $el.data('enable-href')
 
-      if (!enableHref and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
-        e.preventDefault()
-        eventBus.trigger('router:navigate', href.replace(new RegExp('^' + Backbone.history.root), ''), {
-          trigger: true
-        })
-        $(document).trigger('click.bs.dropdown')
+        if (!enableHref and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
+          e.preventDefault()
+          eventBus.trigger('router:navigate', href.replace(new RegExp('^' + Backbone.history.root), ''), {
+            trigger: true
+          })
+          $(document).trigger('click.bs.dropdown')
 
   Module = Marionette.Module.extend
     initialize: ->
