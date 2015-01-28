@@ -1,18 +1,18 @@
 <div class="box">
     <div class="box-title">{{i18n.registrationConfirm}}</div>
-    <div class="alert alert-warning" data-validate="generic" data-bind data-hide></div>
+    <div class="alert alert-warning hidden" data-validate="generic" data-bind ></div>
     <form data-submit="confirm">
         <div class="form-group input-group-lg">
             <label for="password">{{i18n.password}}</label>
             <input type="password" id="password" name="password" class="form-control"
                    placeholder="{{i18n.enterPassword}}" title="{{i18n.enterPassword}}" data-bind data-focus/>
-            <span class="help-block" data-validate="password" data-bind data-hide></span>
+            <span class="help-block" data-validate="password" data-bind ></span>
         </div>
         <div class="form-group input-group-lg">
             <label for="confirmPassword">{{i18n.confirmPassword}}</label>
             <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
                    placeholder="{{i18n.confirmPassword}}" title="{{i18n.confirmPassword}}" data-bind/>
-            <span class="help-block" data-validate="confirmPassword" data-bind data-hide></span>
+            <span class="help-block" data-validate="confirmPassword" data-bind ></span>
         </div>
         <div class="form-group submit-group">
             <button type="submit" class="btn btn-primary btn-lg" data-auto-disable>{{i18n.done}}</button>

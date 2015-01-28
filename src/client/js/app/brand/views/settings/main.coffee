@@ -11,11 +11,8 @@ define (require) ->
     template: require('hbs!./main.hbs')
     className: 'page page-2thirds'
 
-    initialize: (options) ->
-      @view = options.view
-
     onRender: ->
-      switch @view
+      switch @options.view
         when 'profile' then @profileView()
         when 'security' then @securityView()
         else

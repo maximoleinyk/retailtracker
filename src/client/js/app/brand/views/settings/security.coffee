@@ -11,7 +11,7 @@ define (require) ->
 
     initialize: ->
       @model = new PasswordSettings({
-        id: context.get('account.owner._id')
+        userId: context.get('account.owner._id')
       })
 
     save: (e) ->

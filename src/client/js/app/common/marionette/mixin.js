@@ -71,22 +71,7 @@ define(function (require) {
 			},
 
 			addBehaviours: function () {
-				var self = this,
-					attributesMap = {
-						'data-hide': function ($el) {
-							$el.addClass('hidden').removeAttr('data-hide');
-						},
-						'data-id': function ($el) {
-							var name = $el.attr('data-id'),
-								ui = Marionette.getOption(self, 'ui');
-
-							if (!_.isObject(ui)) {
-								self.ui = {};
-							}
-
-							self.ui['$' + name] = $el;
-						}
-					};
+				var self = this;
 
 				self.$el.off('submit', 'form').on('submit', 'form', function (e) {
 					var $el = Marionette.$(this),
@@ -104,11 +89,17 @@ define(function (require) {
 					self[Marionette.$(this).data('click')](e);
 				});
 
-				_.each(attributesMap, function (callback, attribute) {
-					self.$el.find('[' + attribute + ']').each(function () {
-						callback(Marionette.$(this), self);
-					});
-				}, self);
+				self.$el.find('[data-id]').each(function () {
+					var $el = Marionette.$(this),
+						name = $el.attr('data-id'),
+						ui = Marionette.getOption(self, 'ui');
+
+					if (!_.isObject(ui)) {
+						self.ui = {};
+					}
+
+					self.ui['$' + name] = $el;
+				});
 
 				this.$el.find('[data-toggle="tooltip"]').tooltip();
 

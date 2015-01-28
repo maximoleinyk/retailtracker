@@ -13,7 +13,7 @@ define (require) ->
         exists: true
         description: ->
           i18n.get('oldPasswordIsRequired')
-      newPassword:
+      password:
         exists: true
         description: ->
           i18n.get('newPasswordIsRequired')

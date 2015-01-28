@@ -99,7 +99,7 @@ define(function (require) {
 			// we may only update data-text element in case of changing model's attribute
 			if (options.changeFromBinding) {
 				var $texts = view.$('[data-text]'),
-					errors = view.model.get('error');
+					errors = view.model.get('errors');
 
 				_.each(attrs, function (value, key) {
 					$texts.filter('[data-text="' + key + '"]').each(function () {
@@ -126,25 +126,35 @@ define(function (require) {
 
 	function listenToValidation(view) {
 		view.listenTo(view.model, 'validate', function () {
-			var errors = view.model.get('error'),
+			var errors = view.model.get('errors'),
 				$bindings = view.$('[data-bind]');
 
 			if (errors) {
 				_.each(errors, function (value, key) {
-					$bindings.filter('[data-validate="' + key + '"]').text('').closest('.form-group').removeClass('has-error');
+					var $binding = $bindings.filter('[data-validate="' + key + '"]');
+					$binding.text('').closest('.form-group').removeClass('has-error');
+
+					if (key === 'generic') {
+						$binding.addClass('hidden');
+					}
 				});
 			}
 
-			view.model.unset('error');
+			view.model.unset('errors');
 		});
 
 		view.listenTo(view.model, 'invalid', function () {
-			var errors = view.model.get('error'),
+			var errors = view.model.get('errors'),
 				$bindings = view.$('[data-bind]');
 
 			if (errors) {
 				_.each(errors, function (value, key) {
-					$bindings.filter('[data-validate="' + key + '"]').text(value.join(', ')).closest('.form-group').addClass('has-error');
+					var $binding = $bindings.filter('[data-validate="' + key + '"]');
+					$binding.text(value).closest('.form-group').addClass('has-error');
+
+					if (key === 'generic') {
+						$binding.removeClass('hidden');
+					}
 				});
 			}
 		});

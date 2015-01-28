@@ -30,11 +30,11 @@ class SettingsService
     .catch(callback)
 
   changeProfile: (data, callback) ->
-    return callback({ generic: 'User id should be specified' }) if not data.id
+    return callback({ generic: 'User id should be specified' }) if not data.userId
     return callback({ firstName: i18n.firstNameRequired }) if not data.firstName
 
     findUser = new Promise (resolve, reject) =>
-      @userService.findById data.id, (err, user) =>
+      @userService.findById data.userId, (err, user) =>
         return reject(err) if err
         return reject({ generic: i18n.userNotFound }) if not user
         resolve(user)

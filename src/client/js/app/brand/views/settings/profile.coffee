@@ -11,7 +11,7 @@ define (require) ->
 
     initialize: ->
       @model = new ProfileSettings({
-        id: context.get('account.owner._id')
+        userId: context.get('account.owner._id')
         firstName: context.get('account.owner.firstName')
         lastName: context.get('account.owner.lastName')
       })

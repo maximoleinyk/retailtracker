@@ -1,29 +1,22 @@
-<div class="alert alert-warning" data-validate="generic" data-bind data-hide></div>
+<div class="alert alert-warning hidden" data-validate="generic" data-bind></div>
 <form class="form-horizontal" data-submit="save">
-    <fieldset>
-        <legend>{{i18n.personalData}}</legend>
-        <div class="form-group">
-            <label for="firstName" class="col-md-3 control-label">{{i18n.firstName}}</label>
+    <div class="form-group">
+        <label for="firstName" class="required">{{i18n.firstName}}</label>
 
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="firstName" name="firstName" data-focus data-bind>
+        <div class="group">
+            <input type="text" class="form-control half" id="firstName" name="firstName" data-focus data-bind>
 
-                <div class="help-block" data-validate="firstName" data-bind></div>
-            </div>
+            <div class="help-block" data-validate="firstName" data-bind></div>
         </div>
-        <div class="form-group">
-            <label for="lastName" class="col-md-3 control-label">{{i18n.lastName}}</label>
+    </div>
+    <div class="form-group">
+        <label for="lastName">{{i18n.lastName}}</label>
 
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="lastName" name="lastName" data-bind>
-
-                <div class="help-block" data-validate="lastName" data-bind></div>
-            </div>
+        <div class="group">
+            <input type="text" class="form-control half" id="lastName" name="lastName" data-bind>
         </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-md-3">
-                <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
-            </div>
-        </div>
-    </fieldset>
+    </div>
+    <div class="form-group no-bottom border">
+        <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
+    </div>
 </form>

@@ -2,7 +2,10 @@
 
 .menu {
   #gradient > .horizontal(#f6f6f6, transparent, 0%, 8px);
-  .box-shadow(inset 1px 0 0 #eee);
+  background-image: -webkit-linear-gradient(left, color-stop(#f6f6f6 0%), color-stop(transparent 8px)); // Safari 5.1-6, Chrome 10+
+  background-image:  linear-gradient(to left, #f6f6f6 0%, transparent 8px); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+  background-repeat: repeat-x;
+  filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",argb(#f6f6f6),argb(transparent))); // IE9 and down
   position: relative;
   padding: 20px 0;
 
@@ -21,16 +24,10 @@
       outline: 0;
 
       &.selected {
-        .border-right-radius(2px);
-        .box-shadow(1px 1px 3px rgba(0, 0, 0, 0.05));
-        border: 1px solid #eee;
-        border-left-color: #fff;
-        background-color: #fff;
-
-        &:after {
+        &:before {
           position: absolute;
           top: 0;
-          right: 0;
+          left: 0;
           bottom: 0;
           width: 3px;
           content: "";

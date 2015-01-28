@@ -10,7 +10,7 @@ define (require) ->
 
   class Model extends Backbone.NestedModel
 
-    staticProperties: ['error']
+    staticProperties: ['errors']
 
     initialize: ->
       @commit()
@@ -35,14 +35,34 @@ define (require) ->
 
     save: ->
       save = new Promise (resolve, reject) =>
-        Backbone.NestedModel::save.call(this).done(resolve).fail(reject)
+        Backbone.NestedModel::save.call(this, null, {
+          success: (model) ->
+            resolve(model.toJSON())
+          error: (model, xhr) ->
+            if xhr.responseJSON
+              model.set(xhr.responseJSON)
+            else
+              model.set('errors', {generic: xhr.responseText})
+            model.trigger('invalid')
+            reject(model)
+        }).done(resolve).fail(reject)
       save.then (result) =>
         @set @parse(result)
         @commit()
 
     destroy: ->
       destroy = new Promise (resolve, reject) =>
-        Backbone.NestedModel::destroy.call(this).done(resolve).fail(reject)
+        Backbone.NestedModel::destroy.call(this, {
+          success: (model) ->
+            resolve(model.toJSON())
+          error: (model, xhr) ->
+            if xhr.responseJSON
+              model.set(xhr.responseJSON)
+            else
+              model.set('errors', {generic: xhr.responseText})
+            model.trigger('invalid')
+            reject(model)
+        })
       destroy.then (result) =>
         @set @parse(result)
         @commit()
@@ -70,8 +90,8 @@ define (require) ->
             localizedText = if _.isFunction(validator.description) then validator.description() else validator.description
             errors[key] = errors[key] or []
             errors[key].push(localizedText)
-      @set('error', errors) if _.keys(errors).length
-      if _.isObject(@get('error')) and not _.isEmpty(@get('error')) then 'invalid' else null
+      @set('errors', errors) if _.keys(errors).length
+      if _.isObject(@get('errors')) and not _.isEmpty(@get('errors')) then 'invalid' else null
 
     reset: ->
       @set(@origin)
