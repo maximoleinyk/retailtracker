@@ -73,7 +73,7 @@ define(function (require) {
 			addBehaviours: function () {
 				var self = this;
 
-				self.$el.off('submit', 'form').on('submit', 'form', function (e) {
+				this.$el.off('submit', 'form').on('submit', 'form', function (e) {
 					var $el = Marionette.$(this),
 						methodName = $el.attr('data-submit');
 
@@ -82,14 +82,14 @@ define(function (require) {
 					}
 				});
 
-				self.$el.off('click', '[data-click]').on('click', '[data-click]', function (e) {
+				this.$el.off('click', '[data-click]').on('click', '[data-click]', function (e) {
 					e.preventDefault();
 					e.stopPropagation();
 
 					self[Marionette.$(this).data('click')](e);
 				});
 
-				self.$el.find('[data-id]').each(function () {
+				this.$el.find('[data-id]').each(function () {
 					var $el = Marionette.$(this),
 						name = $el.attr('data-id'),
 						ui = Marionette.getOption(self, 'ui');
@@ -99,6 +99,28 @@ define(function (require) {
 					}
 
 					self.ui['$' + name] = $el;
+				});
+
+				this.$el.find('[data-optional]').each(function () {
+					var $el = Marionette.$(this),
+						message = $el.attr('data-optional'),
+						$formGroup = $el.closest('.form-group'),
+						$group = $el.closest('.group'),
+						$a = $('<a href="#" class="optional-link">' + message + '</a>');
+
+					$group.addClass('hidden');
+					$formGroup.append($a);
+					$a.on('click', function(e) {
+						e.preventDefault();
+						$a.remove();
+						$group.removeClass('hidden');
+						var $control = $group.find('.form-control');
+						if ($control.data('select2')) {
+							return $control.data('select2').select2('focus');
+						} else {
+							$control.focus();
+						}
+					});
 				});
 
 				this.$el.find('[data-toggle="tooltip"]').tooltip();

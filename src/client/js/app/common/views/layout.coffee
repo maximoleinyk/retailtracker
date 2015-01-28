@@ -59,6 +59,8 @@ define (require) ->
       clearTimeout(this.timeout) if this.timeout
 
       checkSessionExpiration = ->
+        reload = ->
+          window.location.reload()
         PopupBox.context({
           title: i18n.get('sessionExpired')
           message: i18n.get('sessionExpiredMessage')
@@ -76,6 +78,7 @@ define (require) ->
             }
           ]
         })
+        this.timeout = setTimeout(reload, 300000)
       this.timeout = setTimeout(checkSessionExpiration, 300000) # in 5 minutes
 
     handleStopRequest: ->
