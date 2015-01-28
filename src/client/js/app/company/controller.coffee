@@ -17,7 +17,7 @@ define (require) ->
   Nomenclature = require('cs!./models/nomenclature')
   NomenclatureFormPage = require('cs!./views/nomenclature/form')
   ProductGroups = require('cs!./collections/productGroups')
-  ProductGroupsPage = require('cs!./views/productGroups/list')
+  ProductGroupsPage = require('cs!./views/productGroups')
   Warehouses = require('cs!./collections/warehouses')
   WarehousesPage = require('cs!./views/warehouse/list')
   Currency = require('cs!./models/currency')

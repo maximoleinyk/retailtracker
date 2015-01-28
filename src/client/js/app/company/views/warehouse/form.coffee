@@ -36,15 +36,13 @@ define (require) ->
         formatSelection: @assigneeFormatter
         formatResult: @assigneeFormatter
         initSelection: (element, callback) =>
-          obj = @model.get('assignee')
-          callback(obj)
+          callback(@model.get('assignee'))
       })
-      @ui.$assigneeSelect.select2('val', @model.get('assignee')) if @model.get('assignee')
 
     submit: (e) ->
       e.preventDefault()
 
-      @model.set('assignee', @model.get('assignee._id'))
-
+      assignee = @model.get('assignee')
+      @model.set('assignee', if _.isObject(assignee) then assignee._id else assignee)
       @model.save().then =>
         @navigateTo('/warehouses')

@@ -10,7 +10,7 @@ define (require) ->
 
   Layout.extend
 
-    template: require('hbs!./list.hbs')
+    template: require('hbs!./productGroups.hbs')
     className: 'page'
 
     initialize: (options) ->
@@ -18,13 +18,13 @@ define (require) ->
       @data = []
 
     onCreate: (model, callback) ->
-      model.create (err, model) =>
+      model.save (err, model) =>
         return callback(err) if err
         @collection.add(model)
         callback(null)
 
     onSave: (model, callback) ->
-      model.update (err) ->
+      model.save (err) ->
         if err then callback(err) else callback(null)
 
     onDelete: (id, callback) ->
@@ -32,7 +32,7 @@ define (require) ->
       idsToRemove = _.difference(@collection.pluck('id'), availableGroups.pluck('id'))
       promises = _.map idsToRemove, (id) =>
         modelToRemove = @collection.get(id)
-        modelToRemove.delete (err) =>
+        modelToRemove.destroy (err) =>
           if err then err else @collection.remove(modelToRemove)
 
       Promise.all(promises).then(callback).catch(callback)

@@ -17,18 +17,18 @@ define (require) ->
 
     onCreate: (model, callback) ->
       model.set('rate', +model.get('rate')) if not _.isNaN(+model.get('rate'))
-      model.create (err, model) =>
+      model.save (err, model) =>
         return callback(err) if err
         @collection.add(model)
         callback(null)
 
     onSave: (model, callback) ->
       model.set('rate', +model.get('rate')) if not _.isNaN(+model.get('rate'))
-      model.update (err) ->
+      model.save (err) ->
         if err then callback(err) else callback(null)
 
     onDelete: (model, callback) ->
-      model.delete (err) =>
+      model.destroy (err) =>
         return callback(err) if err
         @collection.remove(model)
         callback(err)

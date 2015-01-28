@@ -161,7 +161,7 @@ define(function (require) {
 	}
 
 	function setInitialValues(view) {
-		var attributes = view.model.attributes,
+		var attributes = _.clone(view.model.attributes || {}),
 			$bindings = view.$('[data-bind]');
 
 		function populateAttributes(set, depth) {
