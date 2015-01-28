@@ -2,23 +2,26 @@ define (require) ->
   'use strict'
 
   Model = require('app/common/model')
+  i18n = require('cs!app/common/i18n')
 
   class Account extends Model
 
-    confirm: ->
-      @promise('post', '/account/register/confirm', @toJSON())
+    validators:
+      firstName:
+        exists: true
+        description: ->
+          i18n.get('firstNameIsRequired')
+      email:
+        exists: true
+        description: ->
+          i18n.get('emailIsRequired')
 
     register: ->
-      @promise('post', '/account/register', @toJSON())
-
-    changePassword: ->
-      @promise('post', '/account/password/change', @toJSON())
+      @save(null, {
+        url: '/account/register'
+      })
 
     forgotPassword: ->
-      @promise('post', '/account/password/forgot', @toJSON())
-
-    changeForgottenPassword: ->
-      @promise('post', '/account/password/confirm', @toJSON())
-
-    confirmCompanyInvite: ->
-      @promise('post', '/account/invite/confirm', @toJSON())
+      @save(null, {
+        url: '/account/password/forgot'
+      })

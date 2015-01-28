@@ -7,48 +7,56 @@ define (require) ->
   RegistrationApprovePage = require('cs!./views/registration/confirm')
   ForgotPasswordPage = require('cs!./views/forgotPassword/main')
   PasswordChangePage = require('cs!./views/forgotPassword/change')
-  Account = require('cs!./models/account')
-  Company = require('cs!app/brand/models/company')
   ConfirmCompanyInvitePage = require('cs!./views/companyInvite/main')
+  Account = require('cs!./models/account')
+  Invite = require('cs!./models/invite')
+  Security = require('cs!./models/security')
+  ForgotPassword = require('cs!./models/forgotPassword')
+  ChangeForgottenPassword = require('cs!./models/changeForgottenPassword')
+  Company = require('cs!app/brand/models/company')
 
   Controller.extend
 
     login: ->
-      @openPage(new LoginPage)
+      @openPage(new LoginPage({
+        model: new Security
+      }))
 
     registerAccount: ->
-      @openPage(new RegistrationPage)
+      @openPage(new RegistrationPage({
+        model: new Account
+      }))
 
     forgotPassword: ->
-      @openPage(new ForgotPasswordPage)
-
-    confirmAccountRegistration: (invite) ->
-      account = new Account({
-        link: invite
+      @openPage new ForgotPasswordPage({
+        model: new ForgotPassword
       })
+
+    confirmAccountRegistration: (link) ->
       @openPage new RegistrationApprovePage({
-        model: account
+        model: new Invite({
+          link: link
+        })
       })
 
-    changeForgottenPassword: (changeKey) ->
-      account = new Account({
-        key: changeKey
-      })
+    changeForgottenPassword: (key) ->
       @openPage new PasswordChangePage({
-        model: account
+        model: new ChangeForgottenPassword({
+          key: key
+        })
       })
 
-    confirmCompanyInvite: (inviteKey) ->
+    confirmCompanyInvite: (key) ->
       company = new Company({
-        key: inviteKey
+        key: key
       })
 
-      company.loadInvitedCompanyDetails()
-      .then =>
+      company.loadInvitedCompanyDetails().then =>
         @openPage new ConfirmCompanyInvitePage({
           company: company
-          model: new Account({
-            key: inviteKey
+          model: new Invite({
+            key: key
+            hasAccount: company.get('hasAccount')
           })
         })
       .catch =>

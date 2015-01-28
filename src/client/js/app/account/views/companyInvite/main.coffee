@@ -16,8 +16,7 @@ define (require) ->
     confirm: (e) ->
       e.preventDefault()
 
-      @model.confirmCompanyInvite()
-      .then =>
-        @eventBus.trigger('open:page', new CompanyInviteConfirmed({
+      @model.confirmCompanyInvite().then =>
+        @openPage new CompanyInviteConfirmed({
           company: @options.company
-        }))
+        })

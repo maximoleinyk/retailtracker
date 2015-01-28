@@ -12,6 +12,5 @@ define (require) ->
     confirm: (e) ->
       e.preventDefault()
 
-      @model.confirm()
-      .then =>
-        @eventBus.trigger('open:page', new RegistrationCompleted)
+      @model.confirmAccountRegistration().then =>
+        @openPage(new RegistrationCompleted)

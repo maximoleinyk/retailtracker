@@ -86,3 +86,6 @@ define (require) ->
 
     navigateTo: (route, options = {trigger: true}) ->
       eventBus.trigger('router:navigate', route, options)
+
+    openPage: (view, options = {}) ->
+      eventBus.trigger('open:page', view, options)

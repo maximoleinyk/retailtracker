@@ -1,7 +1,6 @@
 define (require) ->
   'use strict'
 
-  Security = require('cs!app/account/models/security')
   ItemView = require('cs!app/common/marionette/itemView')
   context = require('cs!app/common/context')
 
@@ -9,9 +8,6 @@ define (require) ->
 
     template: require('hbs!./login.hbs')
     className: 'page page-box'
-
-    initialize: ->
-      @model = new Security()
 
     login: (e) ->
       e.preventDefault();

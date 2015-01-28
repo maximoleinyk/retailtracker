@@ -2,11 +2,25 @@ define (require) ->
   'use strict'
 
   Model = require('app/common/model')
+  i18n = require('cs!app/common/i18n')
 
-  class Account extends Model
+  class Security extends Model
+
+    validators:
+      login:
+        exists: true
+        description: ->
+          i18n.get('loginIsRequired')
+      password:
+        exists: true
+        description: ->
+          i18n.get('passwordIsRequired')
 
     login: ->
-      @promise('post', '/security/login', @toJSON())
+      @save(null, {
+        url: '/security/login'
+      })
 
     logout: ->
+      # this request should be a standalone
       @promise('del', '/security/logout', @toJSON())

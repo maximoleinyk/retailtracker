@@ -12,6 +12,5 @@ define (require) ->
     change: (e) ->
       e.preventDefault()
 
-      @model.changeForgottenPassword()
-      .then =>
-        @eventBus.trigger('open:page', new PasswordSuccessfullyChanged)
+      @model.save().then =>
+        @openPage(new PasswordSuccessfullyChanged)

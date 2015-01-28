@@ -3,19 +3,14 @@ define (require) ->
 
   ItemView = require('cs!app/common/marionette/itemView')
   ForgotPasswordSuccessPage = require('cs!./sent')
-  Account = require('cs!app/account/models/account')
 
   ItemView.extend
 
     template: require('hbs!./main.hbs')
     className: 'page page-box'
 
-    initialize: ->
-      @model = new Account()
-
     sendEmail: (e) ->
       e.preventDefault()
 
-      @model.forgotPassword()
-      .then =>
-        @eventBus.trigger('open:page', new ForgotPasswordSuccessPage)
+      @model.save().then =>
+        @openPage(new ForgotPasswordSuccessPage)

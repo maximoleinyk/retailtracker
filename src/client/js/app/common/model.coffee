@@ -5,6 +5,7 @@ define (require) ->
   Promise = require('rsvp').Promise
   http = require('./http')
   validators = require('./validators')
+  _ = require('underscore')
 
   require('backbone-nested')
 
@@ -33,9 +34,9 @@ define (require) ->
 
       Backbone.NestedModel::sync.apply(this, arguments)
 
-    save: ->
+    save: (attributes = {}, options = {}) ->
       save = new Promise (resolve, reject) =>
-        Backbone.NestedModel::save.call(this, null, {
+        Backbone.NestedModel::save.call(this, attributes, _.extend({
           success: (model) ->
             resolve(model.toJSON())
           error: (model, xhr) ->
@@ -45,14 +46,14 @@ define (require) ->
               model.set('errors', {generic: xhr.responseText})
             model.trigger('invalid')
             reject(model)
-        }).done(resolve).fail(reject)
+        }, options)).done(resolve).fail(reject)
       save.then (result) =>
         @set @parse(result)
         @commit()
 
-    destroy: ->
+    destroy: (options) ->
       destroy = new Promise (resolve, reject) =>
-        Backbone.NestedModel::destroy.call(this, {
+        Backbone.NestedModel::destroy.call(this, _.extend({
           success: (model) ->
             resolve(model.toJSON())
           error: (model, xhr) ->
@@ -62,7 +63,7 @@ define (require) ->
               model.set('errors', {generic: xhr.responseText})
             model.trigger('invalid')
             reject(model)
-        })
+        }, options))
       destroy.then (result) =>
         @set @parse(result)
         @commit()
@@ -85,7 +86,18 @@ define (require) ->
       _.each @validators, (validator, key) =>
         _.each validator, (param, testName) =>
           return if testName is 'description'
-          valid = if param then validators[testName](key, this) else validators[testName](key, param, this)
+
+          method = validators[testName]
+          param = if _.isFunction(param) then param(this) else param
+
+          if _.isBoolean(param)
+            if param
+              valid = method(key, this)
+            else
+              valid = true
+          else
+            valid = method(key, param, this)
+
           if not valid
             localizedText = if _.isFunction(validator.description) then validator.description() else validator.description
             errors[key] = errors[key] or []

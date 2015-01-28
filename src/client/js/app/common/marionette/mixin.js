@@ -118,6 +118,11 @@ define(function (require) {
 			navigateTo: function (route, options) {
 				options = options || {trigger: true};
 				eventBus.trigger('router:navigate', route, options);
+			},
+
+			openPage: function (view, options) {
+				options = options || {};
+				eventBus.trigger('open:page', view, options);
 			}
 		};
 	};
