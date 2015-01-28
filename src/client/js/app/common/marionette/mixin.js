@@ -110,7 +110,7 @@ define(function (require) {
 
 					$group.addClass('hidden');
 					$formGroup.append($a);
-					$a.on('click', function(e) {
+					$a.on('focus click', function(e) {
 						e.preventDefault();
 						$a.remove();
 						$group.removeClass('hidden');
