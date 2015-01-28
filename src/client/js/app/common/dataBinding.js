@@ -98,12 +98,17 @@ define(function (require) {
 
 			// we may only update data-text element in case of changing model's attribute
 			if (options.changeFromBinding) {
-				var $texts = view.$('[data-text]');
+				var $texts = view.$('[data-text]'),
+					errors = view.model.get('error');
+
 				_.each(attrs, function (value, key) {
-					var $tags = $texts.filter('[data-text="' + key + '"]');
-					$tags.each(function () {
+					$texts.filter('[data-text="' + key + '"]').each(function () {
 						$(this).text(value);
 					});
+
+					if (errors && !_.isEmpty(errors) && key in errors) {
+						view.$('[data-bind]').filter('[data-validate="' + key + '"]').text('').closest('.form-group').removeClass('has-error');
+					}
 				});
 			} else {
 				insertValues(attrs, view.$('[data-bind]'));
@@ -111,11 +116,11 @@ define(function (require) {
 		});
 
 		view.listenTo(view.model, 'request validate', function () {
-			view.$('[data-disable-on]').attr('disabled', true);
+			view.$('[data-auto-disable]').attr('disabled', true);
 		});
 
 		view.listenTo(view.model, 'sync invalid', function () {
-			view.$('[data-disable-on]').removeAttr('disabled');
+			view.$('[data-auto-disable]').removeAttr('disabled');
 		});
 	}
 

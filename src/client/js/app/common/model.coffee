@@ -24,17 +24,16 @@ define (require) ->
           if err then reject(err) else resolve(result)
 
     sync: (method, model, options = {}) ->
-      _.defaults(options, {
-        statusCode: http.statusCode
-      });
-      Backbone.NestedModel::sync.apply(this, arguments);
-
-    unsetStatic: ->
       _.each @staticProperties, (property) =>
         @unset(property, {silent: true})
 
+      _.defaults(options, {
+        statusCode: http.statusCode
+      })
+
+      Backbone.NestedModel::sync.apply(this, arguments)
+
     save: ->
-      @unsetStatic()
       save = new Promise (resolve, reject) =>
         Backbone.NestedModel::save.call(this).done(resolve).fail(reject)
       save.then (result) =>
@@ -42,7 +41,6 @@ define (require) ->
         @commit()
 
     destroy: ->
-      @unsetStatic()
       destroy = new Promise (resolve, reject) =>
         Backbone.NestedModel::destroy.call(this).done(resolve).fail(reject)
       destroy.then (result) =>
@@ -51,14 +49,14 @@ define (require) ->
 
     parse: ->
       origin = super
+      return {} if not origin
       version = origin.__v
       id = origin._id or origin.id
       this.version = version
       delete origin.__v
       delete origin._id
       origin.id = id
-
-      origin
+      return origin
 
     validate: ->
       return if not @validators
@@ -69,8 +67,9 @@ define (require) ->
           return if testName is 'description'
           valid = if param then validators[testName](key, this) else validators[testName](key, param, this)
           if not valid
+            localizedText = if _.isFunction(validator.description) then validator.description() else validator.description
             errors[key] = errors[key] or []
-            errors[key].push(validator.description)
+            errors[key].push(localizedText)
       @set('error', errors) if _.keys(errors).length
       if _.isObject(@get('error')) and not _.isEmpty(@get('error')) then 'invalid' else null
 
