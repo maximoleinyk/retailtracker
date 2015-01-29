@@ -11,6 +11,9 @@ define (require) ->
   cookies = require('cookies')
   NotFoundPage = require('cs!app/common/views/notFound')
   Footer = require('cs!app/common/views/footer')
+  $ = require('jquery')
+  _ = require('underscore')
+  Backbone = require('backbone')
 
   Layout.extend
 
@@ -29,6 +32,19 @@ define (require) ->
     initialize: ->
       this.$el.addClass(@options.classSelector) if @options.classSelector
       this.requestCount = 0
+      _.defer =>
+        handleClick = (e) =>
+          $el = $(e.currentTarget)
+          href = $el.attr('href')
+          enableHref = $el.data('enable-href')
+
+          if (!enableHref and (href isnt '#') and !e.altKey and !e.ctrlKey and !e.metaKey and !e.shiftKey)
+            e.preventDefault()
+            @eventBus.trigger('router:navigate', href.replace(new RegExp('^' + Backbone.history.root), ''), {
+              trigger: true
+            })
+            $(document).trigger('click.bs.dropdown')
+        Marionette.$(document).off('click', 'a[href^="/"', handleClick).on('click', 'a[href^="/"]', handleClick)
 
     handleForbidden: (obj) ->
       if obj.error is 'CSRF has expired'
