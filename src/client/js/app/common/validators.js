@@ -1,3 +1,4 @@
+/* eslint eqeqeq: 0 */
 define(function (require) {
 	'use strict';
 

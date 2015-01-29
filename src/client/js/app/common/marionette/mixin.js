@@ -5,7 +5,8 @@ define(function (require) {
 		Backbone = require('backbone'),
 		_ = require('underscore'),
 		dataBinding = require('app/common/dataBinding'),
-		eventBus = require('cs!app/common/eventBus');
+		eventBus = require('cs!app/common/eventBus'),
+		$ = require('jquery');
 
 	return function (object) {
 		var proto = object.prototype;
