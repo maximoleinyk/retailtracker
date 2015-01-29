@@ -4,3 +4,5 @@ define (require) ->
   Model = require('cs!app/common/model')
 
   class ProductGroup extends Model
+
+    urlRoot: '/productgroup'

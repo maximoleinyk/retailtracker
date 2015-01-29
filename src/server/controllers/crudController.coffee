@@ -10,7 +10,7 @@ class CrudController
 
   callback: (res) ->
     (err, result) ->
-      if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
+      if err then res.status(HttpStatus.BAD_REQUEST).send({errors: err}) else res.status(HttpStatus.OK).send(result)
 
   register: (router) ->
     router.get @baseUrl + '/all', authFilter, (req, res) =>
@@ -26,8 +26,6 @@ class CrudController
       @service.update @namespace(req), req.body, @callback(res)
 
     router.delete @baseUrl + '/:id', authFilter, (req, res) =>
-      @service.delete @namespace(req), req.body.id, (err) ->
-        return res.status(HttpStatus.BAD_REQUEST).send(err) if err
-        res.status(HttpStatus.NO_CONTENT).end()
+      @service.delete @namespace(req), req.param('id'), @callback(res)
 
 module.exports = CrudController

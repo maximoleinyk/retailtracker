@@ -12,8 +12,7 @@ define (require) ->
 
     initialize: ->
       @model = context
-      @listenTo(context, 'change:account.owner.firstName', @updateNameLabel, @)
-      @listenTo(context, 'change:account.owner.lastName', @updateNameLabel, @)
+      @listenTo(context, 'change:account.owner.firstName', @updateNameLabel, this)
 
     onRender: ->
       @updateNameLabel()

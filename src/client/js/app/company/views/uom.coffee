@@ -10,24 +10,27 @@ define (require) ->
     template: require('hbs!./uom.hbs')
     className: 'page'
 
-    initialize: (options) ->
-      @collection = options.collection
-
     onCreate: (model, callback) ->
-      model.save (err, model) =>
-        return callback(err) if err
-        @collection.add(model)
-        callback(null)
+      model.save()
+      .then =>
+        @options.collection.add(model)
+        callback()
+      .catch (model) =>
+        callback(model.get('errors'))
 
     onSave: (model, callback) ->
-      model.save (err) ->
-        if err then callback(err) else callback(null)
+      model.save()
+      .then ->
+        callback()
+      .catch (model) ->
+        callback(model.get('errors'))
 
     onDelete: (model, callback) ->
-      model.destroy (err) =>
-        return callback(err) if err
-        @collection.remove(model)
-        callback(err)
+      model.destroy()
+      .then =>
+        callback()
+      .catch (model) =>
+        callback(model.get('errors'))
 
     onCancel: (model, callback) ->
       model.reset()
@@ -35,9 +38,9 @@ define (require) ->
 
     onRender: ->
       @grid.show(new Grid({
-        collection: @collection
+        collection: @options.collection
         editable: @
-        defaultEmptyText: 'Вы еще не создали ни одной единицы измерения'
+        defaultEmptyText: i18n.get('uomEmptyListMessage')
         columns: [
           {
             field: 'shortName'

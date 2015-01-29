@@ -17,21 +17,27 @@ define (require) ->
 
     onCreate: (model, callback) ->
       model.set('rate', +model.get('rate')) if not _.isNaN(+model.get('rate'))
-      model.save (err, model) =>
-        return callback(err) if err
-        @collection.add(model)
-        callback(null)
+      model.save()
+      .then =>
+        @options.collection.add(model)
+        callback()
+      .catch (model) =>
+        callback(model.get('errors'))
 
     onSave: (model, callback) ->
       model.set('rate', +model.get('rate')) if not _.isNaN(+model.get('rate'))
-      model.save (err) ->
-        if err then callback(err) else callback(null)
+      model.save()
+      .then ->
+        callback()
+      .catch (model) ->
+        callback(model.get('errors'))
 
     onDelete: (model, callback) ->
-      model.destroy (err) =>
-        return callback(err) if err
-        @collection.remove(model)
-        callback(err)
+      model.destroy()
+      .then =>
+        callback()
+      .catch (model) =>
+        callback(model.get('errors'))
 
     onCancel: (model, callback) ->
       model.reset()
@@ -47,7 +53,7 @@ define (require) ->
       @grid.show new Grid({
         collection: @collection
         editable: @
-        defaultEmptyText: 'Вы еще не создали ни одной валюты'
+        defaultEmptyText: i18n.get('emptyCurrencyListMessage')
         columns: [
           {
             field: 'name'

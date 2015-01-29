@@ -51,9 +51,7 @@ define (require) ->
         formatSelection: @uomFormatter
         formatResult: @uomFormatter
         initSelection: (element, callback) =>
-          obj = @model.get('uom')
-          callback(obj)
-          @model.set('uom', obj._id)
+          callback(@model.get('uom'))
       })
       @ui.$uomSelect.select2('val', @model.get('uom')) if @model.get('uom')
 

@@ -5,6 +5,8 @@ define (require) ->
 
   class Currency extends Model
 
+    urlRoot: '/currency'
+
     defaults:
       rate: 1
       code: 'USD'

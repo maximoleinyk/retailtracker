@@ -18,23 +18,23 @@ define (require) ->
       @data = []
 
     onCreate: (model, callback) ->
-      model.save (err, model) =>
-        return callback(err) if err
+      model.save()
+      .then =>
         @collection.add(model)
-        callback(null)
+        callback()
+      .catch (model) =>
+        callback(model.get('errors'))
 
     onSave: (model, callback) ->
-      model.save (err) ->
-        if err then callback(err) else callback(null)
+      model.save()
+      .then ->
+        callback()
+      .catch (model) =>
+        callback(model.get('errors'))
 
     onDelete: (id, callback) ->
-      availableGroups = @getAvailableGroups(id)
-      idsToRemove = _.difference(@collection.pluck('id'), availableGroups.pluck('id'))
-      promises = _.map idsToRemove, (id) =>
-        modelToRemove = @collection.get(id)
-        modelToRemove.destroy (err) =>
-          if err then err else @collection.remove(modelToRemove)
-
+      promises = _.map _.difference(@collection.pluck('id'), @getAvailableGroups(id).pluck('id')), (id) =>
+        @collection.get(id)?.destroy()
       Promise.all(promises).then(callback).catch(callback)
 
     onCancel: (model, callback) ->
