@@ -2,6 +2,24 @@ require.config({
 
 	baseUrl: '/static/js',
 
+	packages: [
+		{
+			name: 'cs',
+			location: 'libs/require-cs',
+			main: 'cs'
+		},
+		{
+			name: 'coffee-script',
+			location: 'libs/coffee-script/extras',
+			main: 'coffee-script'
+		},
+		{
+			name: 'cs-builder',
+			location: 'libs/require-cs',
+			main: 'cs-builder'
+		}
+	],
+
 	paths: {
 		jquery: 'libs/jquery/dist/jquery',
 		underscore: 'libs/underscore/underscore',
@@ -11,8 +29,6 @@ require.config({
 		'backbone.babysitter': 'libs/backbone.babysitter/lib/backbone.babysitter',
 		marionette: 'libs/marionette/lib/core/amd/backbone.marionette',
 		handlebars: 'libs/handlebars/handlebars',
-		cs: 'libs/require-cs/cs',
-		'coffee-script': 'libs/coffee-script/extras/coffee-script',
 		bootstrap: 'libs/bootstrap/dist/js/bootstrap',
 		'socket.io': 'libs/socket.io-client/socket.io',
 		rsvp: 'libs/rsvp/rsvp',
@@ -54,9 +70,6 @@ require.config({
 		},
 		handlebars: {
 			exports: 'Handlebars'
-		},
-		cs: {
-			deps: ['coffee-script']
 		},
 		hbs: {
 			deps: ['handlebars']

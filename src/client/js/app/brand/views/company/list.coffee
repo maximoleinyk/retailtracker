@@ -38,7 +38,7 @@ define (require) ->
             field: 'employees'
             title: i18n.get('countOfEmployees')
             type: 'number'
-            width: 165
+            width: 185
             formatter: (employees) ->
               employees.length
           }
