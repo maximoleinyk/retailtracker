@@ -63,7 +63,7 @@ define(function (require) {
 				this.$el.find('[data-focus]').each(function () {
 					var $el = Marionette.$(this);
 					if ($el.data('select2')) {
-						return $el.data('select2').select2('focus');
+						return $el.select2('focus');
 					} else {
 						$el.focus();
 					}
@@ -116,7 +116,7 @@ define(function (require) {
 						$group.removeClass('hidden');
 						var $control = $group.find('.form-control');
 						if ($control.data('select2')) {
-							return $control.data('select2').select2('focus');
+							return $control.select2('focus');
 						} else {
 							$control.focus();
 						}

@@ -11,7 +11,6 @@ define (require) ->
       '': 'dashboard'
       'choose': 'choose'
       'settings/:view': 'settings'
-
       'uom': 'uom'
       'currency': 'currency'
       'groups': 'productGroups'
@@ -20,23 +19,16 @@ define (require) ->
       'nomenclature': 'nomenclatureList'
       'nomenclature/:id/copy': 'copyNomenclature'
       'nomenclature/:id': 'nomenclatureForm'
-
       'warehouses': 'warehouseList'
       'warehouses/:id': 'warehouseForm'
-
       'employees': 'employeeList'
       'employees/:id': 'employeeForm'
-
       'orders/supplier': 'ordersToSuppliers'
-
       'templates': 'priceListTemplates'
       'templates/:id': 'priceListTemplatesForm'
-
       'pricelists': 'priceLists'
       'pricelists/:id': 'priceListForm'
-
       'goods/receive': 'receiveGoods'
-
       'stores': 'stores'
       'stores/:id': 'storeForm'
 

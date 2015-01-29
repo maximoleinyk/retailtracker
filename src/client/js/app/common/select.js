@@ -9,7 +9,9 @@ define(function (require) {
 
 		var label = $el.closest('.form-group').find('label').first(),
 			handler = function () {
-				$el.select2('open');
+				if (!$el.closest('.group').hasClass('hidden')) {
+					$el.select2('open');
+				}
 			},
 			result = $el.select2(opts);
 

@@ -1,11 +1,14 @@
 <div class="page-title">
-    <div class="title">{{i18n.counterparties}}</div>
+    <div class="title">
+		{{i18n.counterparties}}
+        <div class="actions">
+            <a href="/counterparty/create" data-toggle="tooltip" data-placement="top"
+               title="{{i18n.createCounterparty}}">
+                <span class="fa fa-plus green"></span>
+            </a>
+        </div>
+    </div>
     <a href="/page/company/" class="link-back">{{i18n.back}}</a>
-</div>
-<div class="actions">
-    <a href="/counterparty/create" class="btn btn-default">
-        <span class="fa fa-plus"></span> {{i18n.newCoгnterparty}}
-    </a>
 </div>
 <div class="page-section">
     <div class="col col-stretch" data-region="grid"></div>

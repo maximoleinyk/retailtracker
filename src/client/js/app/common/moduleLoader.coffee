@@ -18,7 +18,6 @@ define (require) ->
     initialize: ->
       @startWithParent = false
       return @
-
     onStart: (options) ->
       @layout = new Layout(options)
       @layout.render()
@@ -81,7 +80,6 @@ define (require) ->
     load: (moduleName, startApp) ->
       path = @getPath()
       require ['cs!app/' + moduleName + '/main'], (module) =>
-
         # remember current loaded module
         @currentLoadedModule = moduleName
 
@@ -136,6 +134,7 @@ define (require) ->
             # handle real error
 
     loadModule: (moduleName, path) ->
+
       # moduleName can be optional
       moduleName = moduleName or @getPath().split('/')[0]
 

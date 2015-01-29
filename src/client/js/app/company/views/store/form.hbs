@@ -52,7 +52,7 @@
 
             <div class="group">
                 <input type="hidden" id="warehouse" name="warehouse" class="form-control half" data-id="warehouseSelect"
-                       data-placeholder="{{i18n.selectWarehouse}}" data-bind/>
+                       data-placeholder="{{i18n.selectWarehouse}}" data-optional="{{i18n.add}}" data-bind/>
 
                 <div class="help-block" data-validate="warehouse" data-bind></div>
             </div>
@@ -61,7 +61,8 @@
             <label for="address">{{i18n.address}}</label>
 
             <div class="group">
-                <input type="text" id="address" name="address" class="form-control three-fourth" data-bind/>
+                <input type="text" id="address" name="address" class="form-control three-fourth"
+                       data-optional="{{i18n.add}}" data-bind/>
 
                 <div class="help-block" data-validate="address" data-bind></div>
             </div>
@@ -70,8 +71,8 @@
             <label for="description">{{i18n.description}}</label>
 
             <div class="group">
-                <textarea id="description" name="description" rows="5" class="form-control"
-                          data-optional="{{i18n.add}}" data-bind></textarea>
+                <textarea id="description" name="description" rows="5" class="form-control" data-optional="{{i18n.add}}"
+                          data-bind></textarea>
             </div>
         </div>
         <div data-region="inviteeList"></div>

@@ -3,64 +3,74 @@
     <a href="/nomenclature" class="link-back">{{i18n.nomenclature}}</a>
 </div>
 <form data-submit="submit">
-    <div class="actions">
-        <div class="col col-stretch form-control-static">
-            <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
-            <a href="/nomenclature" class="btn btn-link" data-catch-url>{{i18n.cancel}}</a>
-        </div>
-    </div>
     <div class="page-section">
-        <div class="col col-stretch">
+        <div class="col col-3quarters">
             <div class="form-group">
-                <label for="name" class="col-md-4 control-label">{{i18n.name}}</label>
+                <label for="name">{{i18n.name}}</label>
 
-                <div class="col-md-8">
-                    <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
+                <div class="group">
+                    <input type="text" id="name" name="name" class="form-control three-fourth" data-bind data-focus/>
 
                     <div class="help-block" data-validate="name" data-bind></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="article" class="col-md-4 control-label">{{i18n.article}}</label>
+                <label for="article">{{i18n.article}}</label>
 
-                <div class="col-md-3">
-                    <input type="text" id="article" name="article" class="form-control" data-bind/>
+                <div class="group">
+                    <input type="text" id="article" name="article" class="form-control quarter" data-bind/>
 
                     <div class="help-block" data-validate="article" data-bind></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="productGroup" class="col-md-4 control-label">{{i18n.productGroup}}</label>
+                <label for="uom">{{i18n.unitOfMeasurement}}</label>
 
-                <div class="col-md-4">
-                    <input type="hidden" id="productGroup" name="productGroup" class="form-control"
+                <div class="group">
+                    <input type="hidden" id="uom" name="uom" class="form-control half" data-id="uomSelect" data-bind/>
+
+                    <div class="help-block" data-validate="uom" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="productGroup">{{i18n.productGroup}}</label>
+
+                <div class="group">
+                    <input type="hidden" id="productGroup" name="productGroup" class="form-control half"
                            data-id="productGroupSelect" data-bind/>
+
+                    <div class="help-block" data-validate="productGroup" data-bind></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="uom" class="col-md-4 control-label">{{i18n.unitOfMeasurement}}</label>
+                <label>{{i18n.attributes}}</label>
 
-                <div class="col-md-4">
-                    <input type="hidden" id="uom" name="uom" class="form-control" data-id="uomSelect" data-bind/>
-                </div>
+                <div class="group" data-region="attributes"></div>
             </div>
             <div class="form-group">
-                <label class="col-md-4 control-label">{{i18n.attributes}}</label>
+                <label>{{i18n.barcodes}}</label>
 
-                <div class="col-md-8" data-region="attributes"></div>
+                <div class="group" data-region="barcodes"></div>
             </div>
-            <div class="form-group">
-                <label class="col-md-4 control-label">{{i18n.barcodes}}</label>
+            <div class="form-group no-bottom border">
+                <label for="description">{{i18n.description}}</label>
 
-                <div class="col-md-8" data-region="barcodes"></div>
-            </div>
-            <div class="form-group">
-                <label for="description" class="col-md-4 control-label">{{i18n.description}}</label>
-
-                <div class="col-md-8">
+                <div class="group">
                     <textarea id="description" name="description" rows="5" class="form-control"
                               data-optional="{{i18n.add}}" data-bind></textarea>
                 </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="clearfix">
+                <button type="submit" class="btn btn-primary" data-auto-disable>
+					{{#if isNew}}
+						{{i18n.create}}
+					{{else}}
+						{{i18n.save}}
+					{{/if}}
+                </button>
+                <a href="/nomenclature" class="btn btn-link" data-catch-url>{{i18n.cancel}}</a>
             </div>
         </div>
     </div>

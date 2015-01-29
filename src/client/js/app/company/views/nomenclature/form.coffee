@@ -11,7 +11,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./form.hbs')
-    className: 'page'
+    className: 'page page-2thirds'
 
     onRender: ->
       @renderProductGroupSelect()
