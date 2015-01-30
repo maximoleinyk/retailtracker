@@ -42,6 +42,7 @@ define(function (require) {
 			}
 
 			config = _.extend(config, {
+				placeholder: this.getPlaceholder(),
 				initSelection: _.bind(this.initSelection, this),
 				formatResult: _.bind(this.formatResult, this),
 				formatSelection: _.bind(this.formatResult, this)

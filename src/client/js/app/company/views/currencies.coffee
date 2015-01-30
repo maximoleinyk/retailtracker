@@ -44,12 +44,6 @@ define (require) ->
       callback()
 
     onRender: ->
-      data = _.map _.keys(@options.currencies), (code) =>
-        currency = @options.currencies[code]
-        return {
-        id: currency.iso.code
-        text: '(' + currency.iso.code + ') ' + currency.units.major.symbol + ' ' + currency.units.major.name
-        }
       @grid.show new Grid({
         collection: @collection
         editable: @
@@ -63,13 +57,18 @@ define (require) ->
           {
             field: 'code'
             title: i18n.get('code')
-            placeholder: i18n.get('currencyType')
             type: 'select'
-            data: data
+            data: =>
+              _.map _.keys(@options.currencies), (code) =>
+                currency = @options.currencies[code]
+                return {
+                id: currency.iso.code
+                text: '(' + currency.iso.code + ') ' + currency.units.major.symbol + ' ' + currency.units.major.name
+                }
             formatter: (value) ->
               value
             formatResult: (json) ->
-              if json.text then json.text else json.code
+              if json.text then json.text else json.id
             onSelection: (object, model) ->
               model.set('code', object.id)
             width: 200
