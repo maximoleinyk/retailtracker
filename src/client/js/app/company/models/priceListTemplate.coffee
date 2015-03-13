@@ -20,3 +20,7 @@ define (require) ->
         exists: true
         description: ->
           i18n.get('currencyIsRequired')
+      columns:
+        minLength: 2
+        description: ->
+          i18n.get('addAnotherColumn')

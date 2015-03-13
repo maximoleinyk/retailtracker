@@ -79,7 +79,7 @@ define (require) ->
       origin.id = id
       return origin
 
-    validate: ->
+    validate: (options = {}) ->
       return if not @validators
       errors = {}
       @trigger('validate')
@@ -103,7 +103,11 @@ define (require) ->
             errors[key] = errors[key] or []
             errors[key].push(localizedText)
       @set('errors', errors) if _.keys(errors).length
-      if _.isObject(@get('errors')) and not _.isEmpty(@get('errors')) then 'invalid' else null
+      if _.isObject(@get('errors')) and not _.isEmpty(@get('errors'))
+        return 'invalid'
+      else
+        options.sync and this.trigger('sync')
+        return null
 
     reset: ->
       @set(@origin)

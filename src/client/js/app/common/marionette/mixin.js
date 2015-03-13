@@ -69,6 +69,29 @@ define(function (require) {
 						$el.focus();
 					}
 				});
+				this.$el.find('[data-optional]').each(function () {
+					var $el = Marionette.$(this),
+						message = $el.attr('data-optional'),
+						$formGroup = $el.closest('.form-group'),
+						$group = $el.closest('.group'),
+						$a = $('<a href="#" class="optional-link">' + message + '</a>');
+
+					if (!$el.val()) {
+						$group.addClass('hidden');
+						$formGroup.append($a);
+						$a.on('focus click', function(e) {
+							e.preventDefault();
+							$a.remove();
+							$group.removeClass('hidden');
+							var $control = $group.find('.form-control');
+							if ($control.data('select2')) {
+								return $control.select2('focus');
+							} else {
+								$control.focus();
+							}
+						});
+					}
+				});
 			},
 
 			addBehaviours: function () {
@@ -79,6 +102,7 @@ define(function (require) {
 						methodName = $el.attr('data-submit');
 
 					if (typeof self[methodName] === 'function') {
+						e.preventDefault();
 						self[methodName](e);
 					}
 				});
@@ -100,28 +124,6 @@ define(function (require) {
 					}
 
 					self.ui['$' + name] = $el;
-				});
-
-				this.$el.find('[data-optional]').each(function () {
-					var $el = Marionette.$(this),
-						message = $el.attr('data-optional'),
-						$formGroup = $el.closest('.form-group'),
-						$group = $el.closest('.group'),
-						$a = $('<a href="#" class="optional-link">' + message + '</a>');
-
-					$group.addClass('hidden');
-					$formGroup.append($a);
-					$a.on('focus click', function(e) {
-						e.preventDefault();
-						$a.remove();
-						$group.removeClass('hidden');
-						var $control = $group.find('.form-control');
-						if ($control.data('select2')) {
-							return $control.select2('focus');
-						} else {
-							$control.focus();
-						}
-					});
 				});
 
 				this.$el.find('[data-toggle="tooltip"]').tooltip();

@@ -32,7 +32,7 @@ class App
           next(err)
       @app.use(@router)
 
-      socket(@app)
+#      socket(@app)
 
       controller = new PageController(@router, passport)
       controller.register()

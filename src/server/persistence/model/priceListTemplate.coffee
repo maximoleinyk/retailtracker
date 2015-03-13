@@ -20,6 +20,8 @@ class PriceListTemplate
       columns:
         type: [
           {
+            id: String
+            name: String
             type:
               type: String
             amount: Number

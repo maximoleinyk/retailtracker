@@ -27,14 +27,6 @@ define (require) ->
               helpers.date(value)
           },
           {
-            field: 'counterparty'
-            title: i18n.get('counterparty')
-            formatter: (value) ->
-              value.name
-            url: (model) ->
-              '/counterparty/' + model.id
-          },
-          {
             field: 'assignee'
             title: i18n.get('assignee')
             formatter: (value) ->
@@ -47,6 +39,14 @@ define (require) ->
             title: i18n.get('receivingDate')
             formatter: (value) ->
               helpers.date(value)
+          },
+          {
+            field: 'warehouseItems'
+            title: i18n.get('itemsCount')
+            formatter: (value, model) ->
+              model.get('warehouseItems').length
+            type: 'number'
+            width: 150
           },
           {
             field: 'totalAmount'

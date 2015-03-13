@@ -65,12 +65,21 @@ PriceListController = inject('controllers/priceList')
 PriceListStore = inject('persistence/priceListStore')
 PriceListService = inject('services/priceListService')
 priceListSchema = inject('persistence/model/priceList')
+receiveGoodSchema = inject('persistence/model/receiveGoods')
+ReceiveGoodsStore = inject('persistence/receiveGoodsStore')
+ReceiveGoodsService = inject('services/receiveGoodsService')
+ReceiveGoodsController = inject('controllers/receiveGoods')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+    receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
+    receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore)
+    receiveGoodsController = new ReceiveGoodsController(receiveGoodsService, namespace.company)
+    receiveGoodsController.register(@router)
+
     priceListStore = new PriceListStore(priceListSchema)
     priceListService = new PriceListService(priceListStore)
     priceListController = new PriceListController(priceListService, namespace.company)
