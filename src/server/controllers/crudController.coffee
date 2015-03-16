@@ -26,6 +26,7 @@ class CrudController
       @service.update @namespace(req), req.body, @callback(res)
 
     router.delete @baseUrl + '/:id', authFilter, (req, res) =>
-      @service.delete @namespace(req), req.param('id'), @callback(res)
+      @service.delete @namespace(req), req.param('id'), (err) ->
+        if err then res.status(HttpStatus.BAD_REQUEST).send({errors: err}) else res.status(HttpStatus.NO_CONTENT).end()
 
 module.exports = CrudController

@@ -21,6 +21,7 @@ define (require) ->
 
     onRender: ->
       @renderTemplateSelect()
+      @buildGrid(new Template @model.get('template'), {parse: true}) if not @model.isNew()
 
     templateFormatter: (obj) =>
       if obj.text then obj.text else obj.name
@@ -45,6 +46,13 @@ define (require) ->
       @ui.$templateSelect.select2('val', @model.get('template')) if @model.get('template')
 
     renderGrid: ->
+      templateModel = new Template {
+        _id: @model.get('template')
+      }, { parse: true }
+      templateModel.fetch().then =>
+        @buildGrid(templateModel)
+
+    buildGrid: (templateModel) ->
       columns = [
         {
           field: 'nomenclature'
@@ -54,26 +62,26 @@ define (require) ->
           url: '/nomenclature/select/fetch'
         }
       ]
-
-      templateModel = new Template {
-        _id: @model.get('template')
-      }, { parse: true }
-
-      templateModel.fetch().then =>
-        _.each templateModel.get('columns'), (column) ->
-          columns.push {
-            field: column.id
-            title: i18n.get(column.value.toLowerCase()) + '(' + column.amount + ')'
-            type: 'number'
-          }
-
-        @itemsWrapper.show new Grid({
-          collection: new Collection
-          defaultEmptyText: i18n.get('emptyPriceListItemsText')
-          editable: @
-          columns: columns
-        })
+      _.each templateModel.get('columns'), (column) ->
+        switch column.type
+          when 'PERCENT' then title = column.amount + '%'
+          when 'COSTPRICE' then title = i18n.get('costPrice')
+          else
+            title = column.amount
+        columns.push {
+          field: column._id
+          title: title
+          type: 'number'
+          width: 150
+          default: 0
+        }
+      @gridWraper.show new Grid({
+        collection: new Collection
+        defaultEmptyText: i18n.get('emptyPriceListItemsText')
+        editable: @
+        columns: columns
+      })
 
     submit: ->
       @model.save().then =>
-        @navigateTo('/templates')
+        @navigateTo('/pricelists')

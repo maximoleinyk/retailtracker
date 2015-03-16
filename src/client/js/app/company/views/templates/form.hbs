@@ -43,25 +43,34 @@
                 </div>
             </div>
         </div>
+		<div class="col col-half">
+		</div>
     </div>
-	<div class="page-section">
-		<div class="col col-3quarters">
+    <div class="page-section">
+        <div class="col col-3quarters">
             <div class="form-group no-bottom border">
-				<div data-region="columnWrapper"></div>
+                <div data-region="columnWrapper"></div>
                 <div class="help-block" data-bind="model" data-validate="columns" style=""></div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
     <div class="page-section">
         <div class="actions">
-            <button type="submit" class="btn btn-primary" data-auto-disable>
-				{{#if isNew}}
-					{{i18n.create}}
-				{{else}}
-					{{i18n.save}}
-				{{/if}}
-            </button>
-            <a href="/templates" class="btn btn-link">{{i18n.cancel}}</a>
+			{{#unless activated}}
+                <button type="submit" class="btn btn-primary" data-auto-disable>
+					{{#if isNew}}
+						{{i18n.create}}
+					{{else}}
+						{{i18n.save}}
+					{{/if}}
+                </button>
+				{{#unless isNew}}
+                    <button type="button" class="btn btn-default" data-click="activate">{{i18n.activate}}</button>
+				{{/unless}}
+                <a href="/templates" class="btn btn-link">{{i18n.cancel}}</a>
+			{{else}}
+                <button type="button" class="btn btn-primary" data-click="delete">{{i18n.delete}}</button>
+			{{/unless}}
         </div>
     </div>
 </form>

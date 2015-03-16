@@ -14,13 +14,16 @@ class PriceListTemplate
         $tenant: true
         required: true
       description: String
+      state:
+        type: String
+        default: 'DRAFT'
+        required: true
       created:
         type: Date
         default: moment()
       columns:
         type: [
           {
-            id: String
             name: String
             type:
               type: String

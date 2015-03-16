@@ -19,6 +19,24 @@ define (require) ->
     commit: ->
       @origin = @toJSON()
 
+    fetch: ->
+      fetch = new Promise (resolve, reject) =>
+        Backbone.NestedModel::fetch.call(this, {
+          success: (model) ->
+            resolve(model.toJSON())
+          error: (model, xhr) ->
+            if xhr.responseJSON
+              model.set(xhr.responseJSON)
+            else
+              model.set('errors', {generic: xhr.responseText})
+            model.trigger('invalid')
+            reject(model)
+        }).done(resolve).fail(reject)
+
+      fetch.then (result) =>
+        @set @parse(result)
+        @commit()
+
     promise: (method, url, data) ->
       new Promise (resolve, reject) ->
         http[method] url, data, (err, result) ->

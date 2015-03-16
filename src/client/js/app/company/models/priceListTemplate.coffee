@@ -8,8 +8,9 @@ define (require) ->
 
     urlRoot: '/pricelisttemplate'
 
-    defaults:
+    defaults: ->
       columns: []
+      state: 'DRAFT'
 
     validators:
       name:
@@ -24,3 +25,11 @@ define (require) ->
         minLength: 2
         description: ->
           i18n.get('addAnotherColumn')
+
+    isActivated: ->
+      @get('state') is 'ACTIVATED'
+
+    activate: ->
+      @save(null, {
+        url: '/pricelisttemplate/' + this.id + '/activate'
+      })

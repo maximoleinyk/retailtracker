@@ -7,8 +7,10 @@ define (require) ->
   class PriceList extends Model
 
     urlRoot: '/pricelists'
-    defaults:
+
+    defaults: ->
       items: []
+      state: 'DRAFT'
 
     validators:
       name:
@@ -19,3 +21,11 @@ define (require) ->
         exists: true
         description: ->
           i18n.get('templatePriceListIsRequired')
+
+    isActivated: ->
+      @get('state') is 'ACTIVATED'
+
+    activate: ->
+      @save(null, {
+        url: '/pricelists/' + this.id + '/activate'
+      })

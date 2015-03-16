@@ -2,10 +2,10 @@ AbstractStore = inject('persistence/abstractStore')
 
 class PriceListStore extends AbstractStore
 
-  findById: ->
-    super.populate('template')
+  findById: (ns, id, callback) ->
+    @model.get(ns).findOne({state: {'$ne': 'DELETED'}, _id: id}, @callback(callback)).populate('template')
 
-  findAll: ->
-    super.populate('template')
+  findAll: (ns, callback) ->
+    @model.get(ns).find({state: {'$ne': 'DELETED'}}, @callback(callback)).populate('template')
 
 module.exports = PriceListStore

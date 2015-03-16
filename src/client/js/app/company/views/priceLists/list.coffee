@@ -29,12 +29,12 @@ define (require) ->
               helpers.date(value, true)
           },
           {
-            field: 'priceListTemplate'
+            field: 'template'
             title: i18n.get('template')
             formatter: (value) ->
               value.name
             url: (model) ->
-              '/templates/' + model._id
+              '/templates/' + model.get('template._id')
           },
           {
             field: 'itemsCount'

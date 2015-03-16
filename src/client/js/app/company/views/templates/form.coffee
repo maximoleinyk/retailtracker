@@ -18,16 +18,20 @@ define (require) ->
     initialize: ->
       @types = ['COSTPRICE', 'PERCENT', 'FIXED']
       columns = @model.get('columns')
-      columns.push({
-        id: 'costprice'
-        name: i18n.get('costPrice')
-        type: 'FIXED'
-        value: 0
-      })
+
+      if @model.isNew()
+        columns.push({
+          id: uuid()
+          name: i18n.get('costPrice')
+          type: 'COSTPRICE'
+          amount: 0
+        })
+
       @columns = new Collection(columns)
 
     templateHelpers: ->
       isNew: @model.isNew()
+      activated: @model.isActivated()
 
     onRender: ->
       @renderAssigneeSelect()
@@ -37,6 +41,7 @@ define (require) ->
       if obj.text then obj.text else obj.name
 
     renderAssigneeSelect: ->
+      currencyObject = @model.get('currency')
       select(@ui.$currencySelect, {
         id: (uom) ->
           return uom._id
@@ -51,9 +56,10 @@ define (require) ->
         formatSelection: @currencyFormatter
         formatResult: @currencyFormatter
         initSelection: (element, callback) =>
-          callback(@model.get('currency'))
+          callback(currencyObject)
       })
-      @ui.$currencySelect.select2('val', @model.get('currency')) if @model.get('currency')
+      if @model.get('currency')
+        @model.set('currency', currencyObject._id, {silent: true})
 
     renderGrid: ->
       @columnWrapper.show new Grid({
@@ -95,10 +101,7 @@ define (require) ->
               else
                 return i18n.get(object.id.toLowerCase())
             onSelection: (object, model) ->
-              model.set({
-                id: uuid()
-                type: object.id
-              })
+              model.set('type', object.id)
             width: 250
           },
           {
@@ -107,14 +110,15 @@ define (require) ->
             type: 'number'
           }
         ],
-        isActionCellVisible: (model) ->
-          model.get('id') isnt 'costprice'
+        isActionCellVisible: (model) =>
+          model.get('id') isnt @columns.indexOf(model) isnt 0
       })
 
     onCreate: (model, callback) ->
       return callback({ name: i18n.get('nameShouldBeSpecified') }) if !model.has('name')
-      return callback({ value: i18n.get('valueShouldBeNumeric')}) if !model.has('name')
+      return callback({ amount: i18n.get('valueShouldBeNumeric')}) if !model.has('amount')
       @columns.add(model)
+      model.set('id', uuid())
       @model.set('columns', @columns.toJSON())
       @model.validate({sync: true})
       callback()
@@ -123,6 +127,14 @@ define (require) ->
       @columns.remove(model)
       callback()
 
+    activate: ->
+      @model.activate().then =>
+        @render()
+
+    delete: ->
+      @model.destroy().then =>
+        @navigateTo('/templates')
+
     submit: ->
       @model.save().then =>
-        @navigateTo('/templates')
+        @navigateTo('/templates/' + @model.id)

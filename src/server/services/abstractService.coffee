@@ -19,4 +19,7 @@ class AbstractService
   delete: (ns, id, callback) ->
     @store.delete(ns, id, callback)
 
+  search: (ns, query, limit, callback) ->
+    @store.search(ns, query, limit, callback)
+
 module.exports = AbstractService
