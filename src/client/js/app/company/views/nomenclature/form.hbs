@@ -61,17 +61,17 @@
                 </div>
             </div>
         </div>
-        <div class="actions">
-            <div class="clearfix">
-                <button type="submit" class="btn btn-primary" data-auto-disable>
-					{{#if isNew}}
-						{{i18n.create}}
-					{{else}}
-						{{i18n.save}}
-					{{/if}}
-                </button>
-                <a href="/nomenclature" class="btn btn-link" data-catch-url>{{i18n.cancel}}</a>
-            </div>
-        </div>
     </div>
+	<div class="page-section">
+        <div class="actions">
+            <button type="submit" class="btn btn-primary" data-auto-disable>
+				{{#if isNew}}
+					{{i18n.create}}
+				{{else}}
+					{{i18n.save}}
+				{{/if}}
+            </button>
+            <a href="/nomenclature" class="btn btn-link" data-catch-url>{{i18n.cancel}}</a>
+        </div>
+	</div>
 </form>

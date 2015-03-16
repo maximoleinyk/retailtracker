@@ -1,35 +1,13 @@
-i18n = inject('util/i18n').bundle('validation')
-_ = require('underscore')
-Promise = inject('util/promise')
+AbstractService = inject('services/abstractService')
 
-class NomenclatureService
+class NomenclatureService extends AbstractService
 
-  constructor: (@uomService, @productGroupService, @nomenclatureStore) ->
+  searchField: 'name'
 
-  findAll: (ns, callback) ->
-    @nomenclatureStore.findAll(ns, callback).populate('uom productGroup')
+  findAll: ->
+    super.populate('uom productGroup')
 
-  findById: (ns, id, callback) ->
-    @nomenclatureStore.findById(ns, id, callback).populate('uom productGroup')
-
-  create: (ns, data, callback) ->
-    return callback({ name: i18n.nameIsRequired }) if not data.name
-
-    @nomenclatureStore.create ns, data, (err, result) ->
-      return callback({ generic: err }) if err
-      callback(null, result)
-
-  delete: (ns, id, callback) ->
-    return callback({ generic: i18n.idRequired }) if not id
-    @nomenclatureStore.delete ns, id, (err) ->
-      return callback({ generic: err }) if err
-      callback(null)
-
-  update: (ns, data, callback) ->
-    return callback({ name: i18n.nameIsRequired }) if not data.name
-
-    @nomenclatureStore.update ns, data, (err) ->
-      return callback({ generic: err }) if err
-      callback(null, data)
+  findById: ->
+    super.populate('uom productGroup')
 
 module.exports = NomenclatureService

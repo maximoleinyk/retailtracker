@@ -59,7 +59,10 @@ define (require) ->
           title: i18n.get('nomenclature')
           placeholder: i18n.get('selectNomenclature')
           type: 'select'
+          limit: 5
           url: '/nomenclature/select/fetch'
+          formatResult: (object) =>
+            if object.text then object.text else object.name
         }
       ]
       _.each templateModel.get('columns'), (column) ->
@@ -77,10 +80,15 @@ define (require) ->
         }
       @gridWraper.show new Grid({
         collection: new Collection
+        skipInitialAutoFocus: true
         defaultEmptyText: i18n.get('emptyPriceListItemsText')
         editable: @
         columns: columns
       })
+
+    onCreate: (model, callback) ->
+      model.generatePrices().then =>
+        callback()
 
     submit: ->
       @model.save().then =>

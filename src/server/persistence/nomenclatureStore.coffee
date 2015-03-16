@@ -1,27 +1,7 @@
-Model = inject('persistence/model/nomenclature')
-_ = require('underscore')
+AbstractStore = inject('persistence/abstractStore')
 
-class NomenclatureStore
+class NomenclatureStore extends AbstractStore
 
-  constructor: ->
-    @model = new Model
-
-  create: (ns, data, callback) ->
-    Currency = @model.get(ns)
-
-    currency = new Currency(data)
-    currency.save(callback)
-
-  delete: (ns, id, callback) ->
-    @model.get(ns).findByIdAndRemove(id, callback)
-
-  update: (ns, data, callback) ->
-    @model.get(ns).update({_id: data.id or data._id}, _.omit(data, ['_id']), callback)
-
-  findAll: (ns, callback) ->
-    @model.get(ns).find({}, callback)
-
-  findById: (ns, id, callback) ->
-    @model.get(ns).findById(id, callback)
+  searchField: 'name'
 
 module.exports = NomenclatureStore

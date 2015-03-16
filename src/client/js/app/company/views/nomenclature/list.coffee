@@ -33,7 +33,7 @@ define (require) ->
           {
             field: 'uom.shortName'
             title: i18n.get('unitOfMeasurement')
-            width: 130
+            width: 150
           }
           {
             type: 'button'

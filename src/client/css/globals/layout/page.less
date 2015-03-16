@@ -38,9 +38,15 @@
   }
 
   .page-section .actions {
-    margin: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
+    padding: 20px;
+
+    &:before {
+      display: block;
+      content: '';
+      width: 100%;
+      border-top: 1px solid #eee;
+      margin-bottom: 20px;
+    }
 
     > * {
       margin-right: 15px;
@@ -79,6 +85,9 @@
       }
       .col-3quarters {
         width: 75%;
+      }
+      .actions {
+        width: 75% !important;
       }
     }
   }

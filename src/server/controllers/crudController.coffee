@@ -13,6 +13,10 @@ class CrudController
       if err then res.status(HttpStatus.BAD_REQUEST).send({errors: err}) else res.status(HttpStatus.OK).send(result)
 
   register: (router) ->
+    router.get @baseUrl + '/select/fetch', authFilter, (req, res) =>
+      @service.search @namespace(req), req.query.q, req.query.l, (err, result) ->
+        if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).jsonp(result)
+
     router.get @baseUrl + '/all', authFilter, (req, res) =>
       @service.findAll @namespace(req), @callback(res)
 

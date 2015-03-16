@@ -21,6 +21,10 @@ define (require) ->
         exists: true
         description: ->
           i18n.get('templatePriceListIsRequired')
+      items:
+        minLength: 1
+        description: ->
+          i18n.get('itemShouldBeNotEmpty')
 
     isActivated: ->
       @get('state') is 'ACTIVATED'
@@ -29,3 +33,6 @@ define (require) ->
       @save(null, {
         url: '/pricelists/' + this.id + '/activate'
       })
+
+    generatePrices: ->
+      @promise('POST', '/pricelists/generate/prices', this.toJSON())

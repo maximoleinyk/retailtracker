@@ -69,6 +69,7 @@ receiveGoodSchema = inject('persistence/model/receiveGoods')
 ReceiveGoodsStore = inject('persistence/receiveGoodsStore')
 ReceiveGoodsService = inject('services/receiveGoodsService')
 ReceiveGoodsController = inject('controllers/receiveGoods')
+nomenclatureSchema = inject('persistence/model/nomenclature')
 
 class PageController
 
@@ -166,8 +167,9 @@ class PageController
     productGroupController = new ProductGroupController(productGroupService)
     productGroupController.register(@router)
 
-    nomenclatureController = new NomenclatureController(new NomenclatureService(uomService, productGroupService,
-      new NomenclatureStore))
+    nomenclatureStore = new NomenclatureStore(nomenclatureSchema)
+    nomenclatureService = new NomenclatureService(nomenclatureStore)
+    nomenclatureController = new NomenclatureController(nomenclatureService, namespace.company)
     nomenclatureController.register(@router)
 
     roleController = new RoleController(roleService)

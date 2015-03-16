@@ -1,4 +1,3 @@
-_ = require('underscore')
 AbstractService = inject('services/abstractService')
 
 class PriceListTemplateService extends AbstractService

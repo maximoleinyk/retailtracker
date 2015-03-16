@@ -9,9 +9,9 @@ class PriceListTemplateController extends CrudController
   register: (router) ->
     super
 
-    router.get @baseUrl + '/select/fetch', authFilter, (req, res) =>
-      @service.search @namespace(req), req.query.q, 5, (err, result) ->
-        if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).jsonp(result)
+    router.post @baseUrl + '/generate/prices', authFilter, (req, res) =>
+      @service.generatePrices @namespace(req), req.body, (err, result) ->
+        if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).send(result)
 
     router.put @baseUrl + '/:id/activate', authFilter, (req, res) =>
       @service.activate @namespace(req), req.param('id'), (err, result) ->

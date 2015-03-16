@@ -11,19 +11,24 @@ define(function (require) {
 		onRender: function () {
 			InputCell.prototype.onRender.apply(this, arguments);
 
-			var dataFunc = this.options.column.get('data'),
+			var self = this,
+				dataFunc = this.options.column.get('data'),
 				config = {},
 				data = _.isFunction(dataFunc) ? dataFunc(this.options.model) : _.isArray(dataFunc) ? dataFunc : null;
 
 			if (this.options.column.get('url')) {
 				config = _.extend(config, {
+					id: function (object) {
+						return object._id;
+					},
 					ajax: {
 						url: this.options.column.get('url'),
 						dataType: 'jsonp',
-						quietMillis: 100,
+						quietMillis: 250,
 						data: function (term) {
 							return {
-								q: term
+								q: term,
+								l: self.options.column.get('limit')
 							};
 						},
 						results: function (data) {
