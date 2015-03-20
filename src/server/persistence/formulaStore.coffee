@@ -1,6 +1,6 @@
 AbstractStore = inject('persistence/abstractStore')
 
-class PriceListTemplateStore extends AbstractStore
+class FormulaStore extends AbstractStore
 
   search: (ns, query = '', limit = 5, callback) ->
     @model.get(ns).find({
@@ -14,4 +14,4 @@ class PriceListTemplateStore extends AbstractStore
   findAll: (ns, callback) ->
     @model.get(ns).find({state: {'$ne': 'DELETED'}}, @callback(callback)).populate('currency')
 
-module.exports = PriceListTemplateStore
+module.exports = FormulaStore

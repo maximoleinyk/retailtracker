@@ -1,17 +1,12 @@
 mongoose = require('mongoose')
 moment = require('moment')
 
-class PriceListTemplate
+class Formula
 
   constructor: ->
-    mongoose.mtModel 'PriceListTemplate', mongoose.Schema
+    mongoose.mtModel 'Formula', mongoose.Schema
       name:
         type: String
-        required: true
-      currency:
-        type: mongoose.Schema.Types.ObjectId
-        ref: 'Currency'
-        $tenant: true
         required: true
       description: String
       state:
@@ -34,6 +29,6 @@ class PriceListTemplate
     this
 
   get: (namespace) ->
-    mongoose.mtModel(namespace('PriceListTemplate'))
+    mongoose.mtModel(namespace('Formula'))
 
-module.exports = PriceListTemplate
+module.exports = Formula

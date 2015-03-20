@@ -17,10 +17,14 @@ define (require) ->
         exists: true
         description: ->
           i18n.get('nameIsRequired')
-      template:
+      currency:
         exists: true
         description: ->
-          i18n.get('templatePriceListIsRequired')
+          i18n.get('currencyIsRequired')
+      formula:
+        exists: true
+        description: ->
+          i18n.get('formulaIsRequired')
 
     isActivated: ->
       @get('state') is 'ACTIVATED'

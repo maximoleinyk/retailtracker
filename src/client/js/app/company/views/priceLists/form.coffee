@@ -5,8 +5,7 @@ define (require) ->
   i18n = require('cs!app/common/i18n')
   select = require('select')
   Grid = require('app/common/grid/main')
-  PriceListItems = require('cs!app/company/collections/priceListItems')
-  Template = require('cs!app/company/models/priceListTemplate')
+  Formula = require('cs!app/company/models/formula')
   helpers = require('app/common/helpers');
 
   Layout.extend
@@ -15,42 +14,68 @@ define (require) ->
     className: 'page page-halves'
 
     modelEvents:
-      'change:template': 'renderGrid'
+      'change:formula': 'renderGrid'
 
     templateHelpers: ->
       isNew: @model.isNew()
 
     onRender: ->
-      @renderTemplateSelect()
-      @buildGrid(new Template @model.get('template'), {parse: true}) if not @model.isNew()
+      @renderCurrencySelect()
+      @renderFormulaSelect()
+      @buildGrid(new Formula @model.get('formula'), {parse: true}) if not @model.isNew()
 
-    templateFormatter: (obj) =>
+    formulaFormatter: (obj) =>
       if obj.text then obj.text else obj.name
 
-    renderTemplateSelect: ->
-      select(@ui.$templateSelect, {
-        id: (object) ->
-          return object._id
+    currencyFormatter: (obj) =>
+      if obj.text then obj.text else obj.name
+
+    renderCurrencySelect: ->
+      currencyObject = @model.get('currency')
+      select(@ui.$currencySelect, {
+        id: (uom) ->
+          return uom._id
         ajax:
-          url: '/pricelisttemplate/select/fetch'
+          url: '/currency/select/fetch'
           dataType: 'jsonp'
           quietMillis: 150,
           data: (term) ->
             q: term
           results: (data) ->
             results: data
-        formatSelection: @templateFormatter
-        formatResult: @templateFormatter
+        formatSelection: @currencyFormatter
+        formatResult: @currencyFormatter
         initSelection: (element, callback) =>
-          callback(@model.get('template'))
+          callback(currencyObject)
       })
-      @ui.$templateSelect.select2('val', @model.get('template')) if @model.get('template')
+      @model.set('currency', currencyObject._id, {silent: true}) if @model.get('currency')
+      @ui.$currencySelect.select2('enable', false) if not @model.isNew()
+
+    renderFormulaSelect: ->
+      select(@ui.$formulaSelect, {
+        id: (object) ->
+          return object._id
+        ajax:
+          url: '/formula/select/fetch'
+          dataType: 'jsonp'
+          quietMillis: 150,
+          data: (term) ->
+            q: term
+          results: (data) ->
+            results: data
+        formatSelection: @formulaFormatter
+        formatResult: @formulaFormatter
+        initSelection: (element, callback) =>
+          callback(@model.get('formula'))
+      })
+      @ui.$formulaSelect.select2('val', @model.get('formula')) if @model.get('formula')
+      @ui.$formulaSelect.select2('enable', false) if not @model.isNew()
 
     renderGrid: ->
       @submit().then =>
         @navigateTo('/pricelists/' + @model.id)
 
-    buildGrid: (templateModel) ->
+    buildGrid: (formulaModel) ->
       columns = [
         {
           field: 'nomenclature'
@@ -69,7 +94,7 @@ define (require) ->
         }
       ]
 
-      _.each templateModel.get('columns'), (column) =>
+      _.each formulaModel.get('columns'), (column) =>
         result =
           field: column._id
           type: 'number'
@@ -81,7 +106,7 @@ define (require) ->
         if column.type is 'PERCENT'
           result.title = column.name + ' ' + column.amount + '%'
         else if column.type is 'COSTPRICE'
-          result.title = i18n.get('price') + ' (' + templateModel.get('currency.code') + ')'
+          result.title = i18n.get('price') + ' (' + formulaModel.get('currency.code') + ')'
           result.events =
             blur: (value, model, done) =>
               return if +value is model.get(column._id) or not +value

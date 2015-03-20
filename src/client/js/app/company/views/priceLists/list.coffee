@@ -29,12 +29,12 @@ define (require) ->
               helpers.date(value, true)
           },
           {
-            field: 'template'
-            title: i18n.get('template')
+            field: 'formula'
+            title: i18n.get('formula')
             formatter: (value) ->
               value.name
             url: (model) ->
-              '/templates/' + model.get('template._id')
+              '/formula/' + model.get('formula._id')
           },
           {
             field: 'itemsCount'

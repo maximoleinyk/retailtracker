@@ -4,9 +4,9 @@ define (require) ->
   Model = require('cs!app/common/model')
   i18n = require('cs!app/common/i18n')
 
-  class PriceListTemplate extends Model
+  class Formula extends Model
 
-    urlRoot: '/pricelisttemplate'
+    urlRoot: '/formula'
 
     defaults: ->
       columns: []
@@ -17,10 +17,6 @@ define (require) ->
         exists: true
         description: ->
           i18n.get('nameIsRequired')
-      currency:
-        exists: true
-        description: ->
-          i18n.get('currencyIsRequired')
       columns:
         minLength: 2
         description: ->
@@ -31,5 +27,5 @@ define (require) ->
 
     activate: ->
       @save(null, {
-        url: '/pricelisttemplate/' + this.id + '/activate'
+        url: '/formula/' + this.id + '/activate'
       })

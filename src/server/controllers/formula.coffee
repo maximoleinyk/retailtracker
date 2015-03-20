@@ -2,9 +2,9 @@ HttpStatus = require('http-status-codes')
 CrudController = inject('controllers/crudController')
 authFilter = inject('util/authFilter')
 
-class PriceListTemplateController extends CrudController
+class FormulaController extends CrudController
 
-  baseUrl: '/pricelisttemplate'
+  baseUrl: '/formula'
 
   register: (router) ->
     super
@@ -17,4 +17,4 @@ class PriceListTemplateController extends CrudController
       @service.activate @namespace(req), req.param('id'), (err, result) ->
         if err then res.status(HttpStatus.BAD_REQUEST).send(err) else res.status(HttpStatus.OK).jsonp(result)
 
-module.exports = PriceListTemplateController
+module.exports = FormulaController

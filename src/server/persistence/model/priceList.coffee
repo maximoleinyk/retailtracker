@@ -8,9 +8,14 @@ class PriceList
       name:
         type: String
         required: true
-      template:
+      formula:
         type: mongoose.Schema.Types.ObjectId
-        ref: 'PriceListTemplate'
+        ref: 'Formula'
+        $tenant: true
+        required: true
+      currency:
+        type: mongoose.Schema.Types.ObjectId
+        ref: 'Currency'
         $tenant: true
         required: true
       description: String

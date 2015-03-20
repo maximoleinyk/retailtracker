@@ -34,37 +34,12 @@ define (require) ->
       activated: @model.isActivated()
 
     onRender: ->
-      @renderAssigneeSelect()
       @renderGrid()
-
-    currencyFormatter: (obj) =>
-      if obj.text then obj.text else obj.name
-
-    renderAssigneeSelect: ->
-      currencyObject = @model.get('currency')
-      select(@ui.$currencySelect, {
-        id: (uom) ->
-          return uom._id
-        ajax:
-          url: '/currency/select/fetch'
-          dataType: 'jsonp'
-          quietMillis: 150,
-          data: (term) ->
-            q: term
-          results: (data) ->
-            results: data
-        formatSelection: @currencyFormatter
-        formatResult: @currencyFormatter
-        initSelection: (element, callback) =>
-          callback(currencyObject)
-      })
-      if @model.get('currency')
-        @model.set('currency', currencyObject._id, {silent: true})
 
     renderGrid: ->
       @columnWrapper.show new Grid({
         collection: @columns
-        defaultEmptyText: i18n.get('emptyPriceListTemplateColumnsText')
+        defaultEmptyText: i18n.get('emptyFormulaColumnsText')
         editable: @
         skipInitialAutoFocus: true
         columns: [
@@ -133,8 +108,8 @@ define (require) ->
 
     delete: ->
       @model.destroy().then =>
-        @navigateTo('/templates')
+        @navigateTo('/formula')
 
     submit: ->
       @model.save().then =>
-        @navigateTo('/templates/' + @model.id)
+        @navigateTo('/formula/' + @model.id)

@@ -20,19 +20,13 @@ define (require) ->
             field: 'name'
             title: i18n.get('name')
             url: (model) ->
-              '/templates/' + model.id
+              '/formula/' + model.id
           },
           {
             field: 'created'
             title: i18n.get('creationDate')
             formatter: (value) ->
               helpers.date(value, true)
-          },
-          {
-            field: 'currency'
-            title: i18n.get('currency')
-            formatter: (value) ->
-              value.name
           },
           {
             field: 'columns'
