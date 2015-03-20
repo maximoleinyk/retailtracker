@@ -70,6 +70,8 @@ ReceiveGoodsStore = inject('persistence/receiveGoodsStore')
 ReceiveGoodsService = inject('services/receiveGoodsService')
 ReceiveGoodsController = inject('controllers/receiveGoods')
 nomenclatureSchema = inject('persistence/model/nomenclature')
+uomSchema = inject('persistence/model/uom')
+productGroupSchema = inject('persistence/model/productGroup')
 
 class PageController
 
@@ -97,7 +99,10 @@ class PageController
     storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)), namespace.company)
     storeController.register(@router)
 
-    currencyService = new CurrencyService(new CurrencyStore(currencySchema))
+    currencyStore = new CurrencyStore(currencySchema)
+    currencyService = new CurrencyService(currencyStore)
+    currencyController = new CurrencyController(currencyService, namespace.company)
+    currencyController.register(@router)
 
     counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
 
@@ -134,8 +139,9 @@ class PageController
     contextController = new ContextController(accountService)
     contextController.register(@router)
 
-    warehouseController = new WarehouseController(new WarehouseService(new WarehouseStore(warehouseSchema)),
-      namespace.company)
+    warehouseStore = new WarehouseStore(warehouseSchema)
+    warehouseService = new WarehouseService(warehouseStore)
+    warehouseController = new WarehouseController(warehouseService, namespace.company)
     warehouseController.register(@router)
 
     activityController = new ActivityController(activityService)
@@ -150,12 +156,10 @@ class PageController
     settingsController = new SettingsController(new SettingsService(userService, accountService))
     settingsController.register(@router)
 
-    uomService = new UomService(new UomStore)
-    uomController = new UomController(uomService)
+    uomStore = new UomStore(uomSchema)
+    uomService = new UomService(uomStore)
+    uomController = new UomController(uomService, namespace.company)
     uomController.register(@router)
-
-    currencyController = new CurrencyController(currencyService, namespace.company)
-    currencyController.register(@router)
 
     counterpartyController = new CounterpartyController(counterpartyService, namespace.company)
     counterpartyController.register(@router)
@@ -163,8 +167,9 @@ class PageController
     companyController = new CompanyController(companyService)
     companyController.register(@router)
 
-    productGroupService = new ProductGroupService(new ProductGroupStore)
-    productGroupController = new ProductGroupController(productGroupService)
+    roductGroupStore = new ProductGroupStore(productGroupSchema)
+    productGroupService = new ProductGroupService(roductGroupStore)
+    productGroupController = new ProductGroupController(productGroupService, namespace.company)
     productGroupController.register(@router)
 
     nomenclatureStore = new NomenclatureStore(nomenclatureSchema)

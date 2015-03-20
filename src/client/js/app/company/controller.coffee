@@ -44,6 +44,7 @@ define (require) ->
   PriceListForm = require('cs!./views/priceLists/form')
   ReceiveGoodsCollection = require('cs!./collections/receiveGoods')
   ReceiveGoodsList = require('cs!./views/receiveGoods/list')
+  PriceListItems = require('cs!app/company/collections/priceListItems')
 
   Controller.extend
 
@@ -55,17 +56,16 @@ define (require) ->
         })
 
     priceListForm: (id) ->
-      model = if id and id isnt 'create' then new PriceList({ _id: id }, { parse: true }) else null
+      model = if id and id isnt 'create' then new PriceList({ _id: id }, { parse: true }) else new PriceList
+      priceListItems = new PriceListItems
 
-      openPage = =>
+      showPage = =>
         @openPage new PriceListForm({
-          model: if model then model else new PriceList
+          model: model
+          priceListItems: priceListItems
         })
 
-      if model
-        model.fetch().then(openPage)
-      else
-        openPage()
+      if model.isNew() then showPage() else Promise.all([model.fetch(), priceListItems.fetchByPriceList(id)]).then(showPage)
 
     priceLists: ->
       collection = new PriceLists

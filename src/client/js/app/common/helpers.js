@@ -10,6 +10,27 @@ define(function (require) {
 		i18n = require('cs!app/common/i18n');
 
 	moment.locale('ru', momentLocale);
+	numeral.language('ru', {
+		delimiters: {
+			thousands: ' ',
+			decimal: ','
+		},
+		abbreviations: {
+			thousand: 'тыс.',
+			million: 'млн',
+			billion: 'b',
+			trillion: 't'
+		},
+		ordinal: function () {
+			// not ideal, but since in Russian it can taken on
+			// different forms (masculine, feminine, neuter)
+			// this is all we can do
+			return '.';
+		},
+		currency: {
+			symbol: '\u20B4'
+		}
+	});
 
 	var helpers = {
 		date: function (value, long) {
@@ -28,7 +49,7 @@ define(function (require) {
 			return helpers.date(value) + ' ' + helpers.time(value);
 		},
 		amount: function (value) {
-			return numeral(value).format('0,0.00');
+			return numeral(value).format('00.00');
 		},
 		formatUser: function (user) {
 			if (context.get('account.owner._id') === user.id) {
@@ -36,6 +57,9 @@ define(function (require) {
 			} else {
 				return user.firstName + ' ' + user.lastName;
 			}
+		},
+		money: function(value) {
+			return numeral(value).format('$0,0.00');
 		}
 	};
 

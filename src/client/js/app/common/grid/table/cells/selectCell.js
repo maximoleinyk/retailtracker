@@ -19,7 +19,8 @@ define(function (require) {
 			if (this.options.column.get('url')) {
 				config = _.extend(config, {
 					id: function (object) {
-						return object._id;
+						/* eslint no-underscore-dangle: 0  */
+						return object.id || object._id;
 					},
 					ajax: {
 						url: this.options.column.get('url'),

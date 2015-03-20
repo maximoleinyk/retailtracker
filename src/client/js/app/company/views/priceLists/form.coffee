@@ -5,8 +5,9 @@ define (require) ->
   i18n = require('cs!app/common/i18n')
   select = require('select')
   Grid = require('app/common/grid/main')
-  Collection = require('cs!app/common/collection')
+  PriceListItems = require('cs!app/company/collections/priceListItems')
   Template = require('cs!app/company/models/priceListTemplate')
+  helpers = require('app/common/helpers');
 
   Layout.extend
 
@@ -46,11 +47,8 @@ define (require) ->
       @ui.$templateSelect.select2('val', @model.get('template')) if @model.get('template')
 
     renderGrid: ->
-      templateModel = new Template {
-        _id: @model.get('template')
-      }, { parse: true }
-      templateModel.fetch().then =>
-        @buildGrid(templateModel)
+      @submit().then =>
+        @navigateTo('/pricelists/' + @model.id)
 
     buildGrid: (templateModel) ->
       columns = [
@@ -61,25 +59,40 @@ define (require) ->
           type: 'select'
           limit: 5
           url: '/nomenclature/select/fetch'
+          onSelection: (object, model) ->
+            attributes = model.toJSON()
+            delete attributes.nomenclature
+            _.each attributes, (value, key) ->
+              model.set(key, 0);
           formatResult: (object) =>
             if object.text then object.text else object.name
         }
       ]
-      _.each templateModel.get('columns'), (column) ->
-        switch column.type
-          when 'PERCENT' then title = column.amount + '%'
-          when 'COSTPRICE' then title = i18n.get('costPrice')
-          else
-            title = column.amount
-        columns.push {
+
+      _.each templateModel.get('columns'), (column) =>
+        result =
           field: column._id
-          title: title
           type: 'number'
           width: 150
           default: 0
-        }
+          formatter: (value) ->
+            helpers.amount(value);
+
+        if column.type is 'PERCENT'
+          result.title = column.name + ' ' + column.amount + '%'
+        else if column.type is 'COSTPRICE'
+          result.title = i18n.get('price') + ' (' + templateModel.get('currency.code') + ')'
+          result.events =
+            blur: (value, model, done) =>
+              return if +value is model.get(column._id) or not +value
+              model.generatePrices(@model.id).then(done)
+        else
+          result.title = column.name + ' ' + column.amount
+
+        columns.push(result)
+
       @gridWraper.show new Grid({
-        collection: new Collection
+        collection: @options.priceListItems
         skipInitialAutoFocus: true
         defaultEmptyText: i18n.get('emptyPriceListItemsText')
         editable: @
@@ -87,7 +100,8 @@ define (require) ->
       })
 
     onCreate: (model, callback) ->
-      model.generatePrices().then =>
+      # validate columns
+      model.save().then ->
         callback()
 
     submit: ->

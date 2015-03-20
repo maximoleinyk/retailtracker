@@ -12,7 +12,7 @@ define(function (require) {
             this.canBeFormatted = true;
             this.bindEvents();
             this.listenEvents();
-        },
+		},
 
         invalid: function () {
             this.$el.addClass('has-error');

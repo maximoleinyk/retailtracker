@@ -20,7 +20,6 @@ class PriceList
       created:
         type: Date
         default: moment()
-      itemsCount: Number
     this
 
   get: (namespace) ->

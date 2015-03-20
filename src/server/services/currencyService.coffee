@@ -5,12 +5,6 @@ _ = require('underscore')
 
 class CurrencyService extends AbstractService
 
-  search: (ns, query = '', callback) ->
-    @findAll ns, (err, all) ->
-      results = _.filter all, (item) ->
-        item.name.toLowerCase().indexOf(query.toLowerCase()) > -1
-      callback(err, results.splice(0, 5))
-
   create: (ns, data, callback) ->
     return callback({ name: i18n.nameIsRequired }) if not data.name
     return callback({ code: i18n.codeIsRequired }) if not data.code

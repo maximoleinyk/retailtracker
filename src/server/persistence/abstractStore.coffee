@@ -42,7 +42,11 @@ class AbstractStore
 
   search: (ns, query = '', limit = 5, callback) ->
     querySchema = {}
-    querySchema[@searchField] = new RegExp(query, 'i')
+    regExp = new RegExp(query, 'i')
+    if _.isFunction(@searchField)
+      querySchema = @searchField(regExp)
+    else
+      querySchema[@searchField] = regExp
     @model.get(ns).find(querySchema).limit(limit).exec(callback)
 
 module.exports = AbstractStore
