@@ -5,14 +5,6 @@ define(function (require) {
 		AbstractCell = require('./abstractCell'),
 		_ = require('underscore');
 
-	$.fn.focusWithoutScrolling = function () {
-		var x = window.scrollX,
-			y = window.scrollY;
-		this.focus();
-		window.scrollTo(x, y);
-		return this;
-	};
-
 	return AbstractCell.extend({
 
 		template: require('hbs!./inputCell.hbs'),

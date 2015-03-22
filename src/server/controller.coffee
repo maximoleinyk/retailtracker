@@ -92,15 +92,15 @@ class PageController
     priceListController = new PriceListController(priceListService, namespace.company)
     priceListController.register(@router)
 
-    priceListItemStore = new PriceListItemStore(priceListItemSchema)
-    priceListItemService = new PriceListItemService(priceListItemStore)
-    priceListItemController = new PriceListItemController(priceListItemService, namespace.company)
-    priceListItemController.register(@router)
-
     formulaStore = new FormulaStore(formulaSchema)
     formulaService = new FormulaService(formulaStore)
     formulaController = new FormulaController(formulaService, namespace.company)
     formulaController.register(@router)
+
+    priceListItemStore = new PriceListItemStore(priceListItemSchema)
+    priceListItemService = new PriceListItemService(priceListItemStore, formulaStore)
+    priceListItemController = new PriceListItemController(priceListItemService, namespace.company)
+    priceListItemController.register(@router)
 
     supplierOrdersController = new SupplierOrdersController
     supplierOrdersController.register(@router)

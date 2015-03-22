@@ -3,7 +3,6 @@ define (require) ->
 
   Model = require('cs!app/common/model')
   i18n = require('cs!app/common/i18n')
-  _ = require('underscore')
 
   class PriceListItem extends Model
 
@@ -19,5 +18,6 @@ define (require) ->
         description: ->
           i18n.get('nomenclatureIsRequired')
 
-    generatePrices: (priceListId) ->
-      @promise('post', '/pricelistitems/generate/prices', _.extend @toJSON(), { priceListId: priceListId })
+    generatePrices: ->
+      @promise('post', '/pricelistitems/generate/prices', @toJSON()).then (result) =>
+        @set(result)

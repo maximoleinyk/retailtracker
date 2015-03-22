@@ -110,7 +110,11 @@ define (require) ->
           result.events =
             blur: (value, model, done) =>
               return done() if not +value or not model.get('nomenclature')
-              model.generatePrices(@model.id).then(done)
+              model.set('formula', formulaModel.get('id'))
+              model.set('priceList', @model.id)
+              model.generatePrices().then ->
+                done()
+              .catch(done)
         else
           result.title = column.name + ' ' + column.amount
 

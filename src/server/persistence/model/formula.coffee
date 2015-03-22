@@ -19,6 +19,7 @@ class Formula
       columns:
         type: [
           {
+            # _id: String
             name: String
             type:
               type: String

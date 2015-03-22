@@ -1,45 +1,37 @@
 _ = require('underscore')
 AbstractService = inject('services/abstractService')
+Promise = inject('util/promise')
+i18n = inject('util/i18n').bundle('validation')
+numeral = require('numeral')
 
 class PriceListItemService extends AbstractService
+
+  constructor: (@store, @formulaStore) ->
+    super
 
   findAllByPriceListId: (ns, priceListId, callback) ->
     @store.findAllByPriceListId(ns, priceListId, callback)
 
-  generatePrices: (ns, priceListItem, callback) ->
-    @formulaService.findById ns, priceListItem.priceList, (err, formula) =>
-      return callback(err) if err
+  generatePrices: (ns, data, callback) ->
+    return callback({ priceList: 'Price list id is required' }) if not data.priceList
+    return callback({ formula: 'Formula id is required' }) if not data.formula
+    return callback({ nomenclature: 'Nomenclature should be specified' }) if not data.nomenclature
 
-      prices = _.clone(priceListItem)
-      formulaColumns = formula.columns
+    findFormula = new Promise (resolve, reject) =>
+      @formulaStore.findById ns, data.formula, (err, result) ->
+        if err then reject(err) else resolve(result)
 
-      # remove cost price column as because we don't need to calculate price for that
-      originPrice = formulaColumns.unshift()
-
-      delete prices.priceList
-      delete prices.nomenclature
-
-      findColumnDetails = (formulaColumnId) ->
-        _.find formulaColumns, (column) ->
-          column._id is formulaColumnId
-
-      calculateColumnPrice = (formulaColumn) ->
-        value = .0
+    findFormula.then (formula) =>
+      result = _.clone(_.omit(data, ['priceList', 'formula', 'nomenclature']))
+      originPrice = numeral(data[formula.columns.shift()._id.toString()])
+      _.each formula.columns, (formulaColumn) ->
         switch formulaColumn.type
-          when 'PERCENT' then value = 0
-          when 'FIXED' then value = 0
+          when 'PERCENT' then originPrice.add(originPrice.divide(100).multiply(formulaColumn.amount))
           else
-            value = 0
-        value
-
-      result =
-        nomenclature: prices.nomenclature
-
-      _.each prices, (value, key) ->
-        details = findColumnDetails(key)
-        columnPrice = calculateColumnPrice(details)
-        result[key] = columnPrice
-
+            originPrice.add(formulaColumn.amount)
+        result[formulaColumn._id.toString()] = originPrice.value()
       callback(null, result)
+
+    .catch(callback)
 
 module.exports = PriceListItemService

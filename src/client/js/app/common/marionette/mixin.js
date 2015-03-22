@@ -65,7 +65,7 @@ define(function (require) {
 					if ($el.data('select2')) {
 						return $el.select2('focus');
 					} else {
-						$el.focus();
+						$el.focus(true);
 					}
 				});
 				this.$el.find('[data-optional]').each(function () {
@@ -78,7 +78,7 @@ define(function (require) {
 					if (!$el.val()) {
 						$group.addClass('hidden');
 						$formGroup.append($a);
-						$a.on('focus click', function(e) {
+						$a.on('focus click', function (e) {
 							e.preventDefault();
 							$a.remove();
 							$group.removeClass('hidden');

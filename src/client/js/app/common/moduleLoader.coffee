@@ -15,9 +15,11 @@ define (require) ->
   App = new Marionette.Application
 
   Module = Marionette.Module.extend
+
     initialize: ->
       @startWithParent = false
-      return @
+      return this
+
     onStart: (options) ->
       @layout = new Layout(options)
       @layout.render()
@@ -25,10 +27,10 @@ define (require) ->
       @router = new options.Router({
         controller: @controller
       })
-      Backbone.history.start({
+      Backbone.history.start
         pushState: true
         root: options.root
-      })
+
     onStop: ->
       @router.destroy()
       @controller.destroy()
@@ -49,6 +51,8 @@ define (require) ->
       @currentLoadedModule = null
       @doubleSlashRegExp = /\/\//g
       @rootRegExp = new RegExp('^' + @root + '?')
+      eventBus.on 'module:load', (moduleName, path) =>
+        @loadModule(moduleName, path)
       return this
 
     start: (defaultModuleName) ->
