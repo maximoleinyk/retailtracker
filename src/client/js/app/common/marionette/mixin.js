@@ -30,7 +30,6 @@ define(function (require) {
 				Marionette.unbindEntityEvents(this, this.eventBus, Marionette.getOption(this, 'appEvents'));
 			},
 
-
 			addEvents: function () {
 				this.listenTo(this, 'render', this.addBehaviours, this);
 				this.listenTo(this, 'show', this.afterRender, this);

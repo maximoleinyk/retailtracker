@@ -10,4 +10,4 @@ define (require) ->
     model: Model
 
     promise: (method, url, data) ->
-      request[method](url, data)
+      request[method.toLowerCase()](url, data)

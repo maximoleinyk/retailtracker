@@ -39,7 +39,7 @@ define (require) ->
 
     promise: (method, url, data) ->
       new Promise (resolve, reject) ->
-        http[method] url, data, (err, result) ->
+        http[method.toLowerCase()] url, data, (err, result) ->
           if err then reject(err) else resolve(result)
 
     sync: (method, model, options = {}) ->

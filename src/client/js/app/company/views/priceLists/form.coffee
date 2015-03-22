@@ -106,10 +106,10 @@ define (require) ->
         if column.type is 'PERCENT'
           result.title = column.name + ' ' + column.amount + '%'
         else if column.type is 'COSTPRICE'
-          result.title = i18n.get('price') + ' (' + formulaModel.get('currency.code') + ')'
+          result.title = i18n.get('price')
           result.events =
             blur: (value, model, done) =>
-              return if +value is model.get(column._id) or not +value
+              return done() if not +value or not model.get('nomenclature')
               model.generatePrices(@model.id).then(done)
         else
           result.title = column.name + ' ' + column.amount

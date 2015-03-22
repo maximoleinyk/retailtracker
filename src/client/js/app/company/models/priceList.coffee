@@ -9,7 +9,6 @@ define (require) ->
     urlRoot: '/pricelists'
 
     defaults: ->
-      items: []
       state: 'DRAFT'
 
     validators:

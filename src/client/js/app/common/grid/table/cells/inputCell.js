@@ -1,8 +1,17 @@
 define(function (require) {
 	'use strict';
 
-	var AbstractCell = require('./abstractCell'),
+	var $ = require('jquery'),
+		AbstractCell = require('./abstractCell'),
 		_ = require('underscore');
+
+	$.fn.focusWithoutScrolling = function () {
+		var x = window.scrollX,
+			y = window.scrollY;
+		this.focus();
+		window.scrollTo(x, y);
+		return this;
+	};
 
 	return AbstractCell.extend({
 
@@ -21,10 +30,34 @@ define(function (require) {
 			AbstractCell.prototype.initialize.apply(this, arguments);
 		},
 
-		setDefaultValues: function() {
+		registerExternalEvents: function() {
+			var self = this,
+				events = this.options.column.get('events');
+
+			if (!_.isObject(events)) {
+				return;
+			}
+
+			_.each(events, function(callback, eventName) {
+				switch (eventName) {
+					case 'blur':
+						self.ui.$input.on(eventName, function(e) {
+							var value = $(e.currentTarget).val(),
+								next = function() {
+									self.options.cellManager.enableInputs();
+								};
+							self.options.cellManager.disableInputs();
+							callback(value, self.model, next);
+						});
+						break;
+				}
+			});
+		},
+
+		setDefaultValues: function () {
 			var defaultValue = this.options.column.get('default');
 
-			if (!_.isNull(defaultValue) && ! _.isUndefined(defaultValue)) {
+			if (!_.isNull(defaultValue) && !_.isUndefined(defaultValue)) {
 				this.model.set(this.options.column.get('field'), defaultValue);
 			}
 		},
@@ -32,6 +65,7 @@ define(function (require) {
 		onRender: function () {
 			AbstractCell.prototype.onRender.apply(this, arguments);
 			this.bindInputEvents();
+			this.registerExternalEvents();
 		},
 
 		bindInputEvents: function () {

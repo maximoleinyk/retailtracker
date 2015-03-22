@@ -20,4 +20,4 @@ define (require) ->
           i18n.get('nomenclatureIsRequired')
 
     generatePrices: (priceListId) ->
-      @promise('POST', '/pricelistitems/generate/prices', _.extend @toJSON(), { priceListId: priceListId })
+      @promise('post', '/pricelistitems/generate/prices', _.extend @toJSON(), { priceListId: priceListId })
