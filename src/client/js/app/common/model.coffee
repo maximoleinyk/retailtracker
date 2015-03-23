@@ -53,9 +53,11 @@ define (require) ->
       Backbone.NestedModel::sync.apply(this, arguments)
 
     save: (attributes = {}, options = {}) ->
+      @unset('errors')
       save = new Promise (resolve, reject) =>
         Backbone.NestedModel::save.call(this, attributes, _.extend({
-          success: (model) ->
+          success: (model) =>
+            @commit()
             resolve(model.toJSON())
           error: (model, xhr) ->
             if xhr.responseJSON
@@ -70,9 +72,11 @@ define (require) ->
         @commit()
 
     destroy: (options) ->
+      @unset('errors')
       destroy = new Promise (resolve, reject) =>
         Backbone.NestedModel::destroy.call(this, _.extend({
           success: (model) ->
+            @commit()
             resolve(model.toJSON())
           error: (model, xhr) ->
             if xhr.responseJSON

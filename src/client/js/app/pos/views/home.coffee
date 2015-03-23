@@ -32,10 +32,10 @@ define (require) ->
             field: 'product'
             title: 'Позиция'
             type: 'select'
-            url: '/products/search'
+            ajaxUrl: '/products/search'
             placeholder: 'Выберите продукт'
-            formatter: (value, model) ->
-              model.get('productName')
+            formatter: (model) ->
+              model?.get('productName')
             formatResult: (json) ->
               json?.productName
             onSelection: (object, model) ->

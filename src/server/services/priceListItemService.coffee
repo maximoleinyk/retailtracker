@@ -12,6 +12,30 @@ class PriceListItemService extends AbstractService
   findAllByPriceListId: (ns, priceListId, callback) ->
     @store.findAllByPriceListId(ns, priceListId, callback)
 
+  create: (ns, data, callback) ->
+    return callback({nomenclature: 'Nomenclature is required'}) if not data.nomenclature
+    return callback({priceList: 'Price list is required'}) if not data.priceList
+    clonedData = _.omit(_.clone(data), ['nomenclature', 'priceList', 'id'])
+    zeroPriceIds = {}
+    _.each clonedData, (price, id) ->
+      if not price
+        zeroPriceIds[id] = i18n.priceShouldBeSpecified
+        return false
+    return callback(zeroPriceIds) if not _.isEmpty(zeroPriceIds)
+    super
+
+  update: (ns, data, callback) ->
+    return callback({nomenclature: 'Nomenclature is required'}) if not data.nomenclature
+    return callback({priceList: 'Price list is required'}) if not data.priceList
+    clonedData = _.omit(_.clone(data), ['nomenclature', 'priceList', 'id'])
+    zeroPriceIds = {}
+    _.each clonedData, (price, id) ->
+      if not price
+        zeroPriceIds[id] = i18n.priceShouldBeSpecified
+        return false
+    return callback(zeroPriceIds) if not _.isEmpty(zeroPriceIds)
+    super
+
   generatePrices: (ns, data, callback) ->
     return callback({ priceList: 'Price list id is required' }) if not data.priceList
     return callback({ formula: 'Formula id is required' }) if not data.formula
@@ -22,14 +46,16 @@ class PriceListItemService extends AbstractService
         if err then reject(err) else resolve(result)
 
     findFormula.then (formula) =>
-      result = _.clone(_.omit(data, ['priceList', 'formula', 'nomenclature']))
-      originPrice = numeral(data[formula.columns.shift()._id.toString()])
+      throw 'There is no such formula' if not formula
+      result = _.clone(_.omit(data, ['priceList', 'formula', 'nomenclature', 'id']))
+      originPrice = data[formula.columns.shift()._id.toString()]
       _.each formula.columns, (formulaColumn) ->
+        price = numeral(originPrice)
         switch formulaColumn.type
-          when 'PERCENT' then originPrice.add(originPrice.divide(100).multiply(formulaColumn.amount))
+          when 'PERCENT' then price.add(numeral(price).divide(100).multiply(formulaColumn.amount))
           else
-            originPrice.add(formulaColumn.amount)
-        result[formulaColumn._id.toString()] = originPrice.value()
+            price.add(formulaColumn.amount)
+        result[formulaColumn._id.toString()] = price.value()
       callback(null, result)
 
     .catch(callback)

@@ -19,15 +19,6 @@ define [
     'X-Csrf-Token': cookies.get('X-Csrf-Token')
   })
 
-  # override to prevent scrolling document to the top
-  focus = $.fn.focus;
-  $.fn.focus = ->
-    x = window.scrollX
-    y = window.scrollY
-    focus.call(this)
-    window.scrollTo(x, y)
-    return this
-
   # initialize whole module loading mechanism
   loader = new ModuleLoader('/page/', {
     'account': 'account'

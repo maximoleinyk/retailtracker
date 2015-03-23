@@ -18,6 +18,6 @@ class PriceListItem
     this
 
   get: (namespace) ->
-    mongoose.mtModel(namespace('PriceList'))
+    mongoose.mtModel(namespace('PriceListItem'))
 
 module.exports = PriceListItem

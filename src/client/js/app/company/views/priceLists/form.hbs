@@ -10,7 +10,7 @@
         <a href="/pricelists" class="link-back">{{i18n.priceLists}}</a>
     </div>
 </div>
-<form data-submit="submit">
+<form data-submit="save">
     <div class="page-section">
         <div class="col col-half">
             <div class="form-group">
@@ -65,14 +65,12 @@
     </div>
     <div class="page-section">
         <div class="actions">
-            <button type="submit" class="btn btn-primary" data-auto-disable>
-				{{#if isNew}}
-					{{i18n.create}}
-				{{else}}
-					{{i18n.save}}
-				{{/if}}
-            </button>
-            <a href="/pricelists" class="btn btn-link">{{i18n.cancel}}</a>
+			{{#if id}}
+                <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
+			{{else}}
+                <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
+                <a href="/pricelists" class="btn btn-link">{{i18n.cancel}}</a>
+			{{/if}}
         </div>
     </div>
 </form>

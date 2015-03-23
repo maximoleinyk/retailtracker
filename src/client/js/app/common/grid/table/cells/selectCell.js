@@ -23,7 +23,7 @@ define(function (require) {
 						return object.id || object._id;
 					},
 					ajax: {
-						url: this.options.column.get('url'),
+						url: this.options.column.get('ajaxUrl'),
 						dataType: 'jsonp',
 						quietMillis: 250,
 						data: function (term) {
@@ -90,15 +90,24 @@ define(function (require) {
 		},
 
 		initSelection: function ($el, callback) {
-			var id = this.model.get(this.options.column.get('field')),
-				value = id ? {
-					id: id,
-					text: this.formatResult({
-						id: id
-					})
-				} : null;
+			var value = this.model.get(this.options.column.get('field')),
+				result = null;
 
-			callback(value);
+			if (value && _.isObject(value)) {
+				result = {
+					id: value._id || value.id,
+					text: this.formatResult(value)
+				};
+			} else {
+				result = {
+					id: value,
+					text: this.formatResult({
+						id: value
+					})
+				};
+			}
+
+			callback(result);
 		},
 
 		formatResult: function (object) {

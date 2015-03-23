@@ -37,10 +37,9 @@ define (require) ->
       @renderGrid()
 
     renderGrid: ->
-      @columnWrapper.show new Grid({
+      gridConfig = {
         collection: @columns
         defaultEmptyText: i18n.get('emptyFormulaColumnsText')
-        editable: @
         skipInitialAutoFocus: true
         columns: [
           {
@@ -87,7 +86,9 @@ define (require) ->
         ],
         isActionCellVisible: (model) =>
           model.get('id') isnt @columns.indexOf(model) isnt 0
-      })
+      }
+      gridConfig.editable = this if @model.isNew()
+      @columnWrapper.show new Grid(gridConfig)
 
     onCreate: (model, callback) ->
       return callback({ name: i18n.get('nameShouldBeSpecified') }) if !model.has('name')

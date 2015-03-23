@@ -52,6 +52,7 @@ define (require) ->
       @ui.$currencySelect.select2('enable', false) if not @model.isNew()
 
     renderFormulaSelect: ->
+      formulaObject = @model.get('formula')
       select(@ui.$formulaSelect, {
         id: (object) ->
           return object._id
@@ -83,7 +84,9 @@ define (require) ->
           placeholder: i18n.get('selectNomenclature')
           type: 'select'
           limit: 5
-          url: '/nomenclature/select/fetch'
+          ajaxUrl: '/nomenclature/select/fetch'
+          url: (model) ->
+            '/nomenclature/' + model.get('nomenclature._id')
           onSelection: (object, model) ->
             attributes = model.toJSON()
             delete attributes.nomenclature
@@ -91,6 +94,8 @@ define (require) ->
               model.set(key, 0);
           formatResult: (object) =>
             if object.text then object.text else object.name
+          formatter: (object) ->
+            object?.name
         }
       ]
 
@@ -128,11 +133,35 @@ define (require) ->
         columns: columns
       })
 
-    onCreate: (model, callback) ->
-      # validate columns
-      model.save().then ->
-        callback()
+      @model.set('formula', formulaModel.get('id'), {silent: true})
 
-    submit: ->
+    onCreate: (model, callback) ->
+      model.unset('formula')
+      model.set('priceList', @model.id)
+      model.save().then =>
+        @options.priceListItems.add(model)
+        callback()
+      .catch ->
+        callback(model.get('errors'))
+
+    onSave: (model, callback) ->
+      originNomenclature = model.get('nomenclature')
+      model.unset('formula')
+      model.set('nomenclature', model.get('nomenclature._id'))
+      model.save().then ->
+        model.set('nomenclature', originNomenclature)
+        callback()
+      .catch ->
+        callback(model.get('errors'))
+
+    onDelete: (model, callback) ->
+      model.destroy().then(callback).catch ->
+        callback(model.get('errors'))
+
+    onCancel: (model, callback) ->
+      model.reset()
+      callback()
+
+    save: ->
       @model.save().then =>
         @navigateTo('/pricelists')

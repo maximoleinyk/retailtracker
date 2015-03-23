@@ -18,6 +18,11 @@ define (require) ->
         description: ->
           i18n.get('nomenclatureIsRequired')
 
+    initialize: ->
+      @listenTo this, 'change', ->
+        console.log(arguments)
+
     generatePrices: ->
       @promise('post', '/pricelistitems/generate/prices', @toJSON()).then (result) =>
         @set(result)
+        @commit()

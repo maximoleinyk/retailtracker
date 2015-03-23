@@ -13,4 +13,5 @@ define (require) ->
         @reset(result, {parse: true})
 
     fetchByPriceList: (priceListId) ->
-      @promise('get', '/pricelistitems/list/' + priceListId)
+      @promise('get', '/pricelistitems/list/' + priceListId).then (result) =>
+        @reset(result, {parse:true})

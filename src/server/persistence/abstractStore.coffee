@@ -32,7 +32,7 @@ class AbstractStore
     # Mongoose 3.9.3 requires for runValidators option support
     @model.get(ns).update {_id: data.id or data._id.toString()}, _.omit(data, ['id', '_id']), {runValidators: true}, (err) =>
       return @callback(callback) if err
-      @findById(ns, data._id, @callback(callback))
+      @findById(ns, data.id || data._id, @callback(callback))
 
   findById: (ns, id, callback) ->
     @model.get(ns).findById(id, @callback(callback))

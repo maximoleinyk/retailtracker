@@ -49,7 +49,7 @@ define(function (require) {
 		setDefaultValues: function () {
 			var defaultValue = this.options.column.get('default');
 
-			if (!_.isNull(defaultValue) && !_.isUndefined(defaultValue)) {
+			if (!_.isNull(defaultValue) && !_.isUndefined(defaultValue) && this.options.cellManager.state !== 'edit') {
 				this.model.set(this.options.column.get('field'), defaultValue);
 			}
 		},

@@ -1,4 +1,3 @@
-i18n = inject('util/i18n').bundle('validation')
 Promise = inject('util/promise')
 namespace = inject('util/namespace')
 _ = require('underscore')

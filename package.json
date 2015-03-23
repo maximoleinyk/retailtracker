@@ -29,7 +29,8 @@
     "passport-local": "^1.0.0",
     "q": "^1.0.1",
     "socket.io": "^1.0.6",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "numeral": "latest"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
