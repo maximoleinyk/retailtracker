@@ -67,6 +67,7 @@
         <div class="actions">
 			{{#if id}}
                 <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
+				<button type="button" class="btn btn-default" data-click="delete" data-auto-disable>{{i18n.delete}}</button>
 			{{else}}
                 <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
                 <a href="/pricelists" class="btn btn-link">{{i18n.cancel}}</a>

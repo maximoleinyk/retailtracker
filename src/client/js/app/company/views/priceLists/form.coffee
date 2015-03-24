@@ -72,9 +72,15 @@ define (require) ->
       @ui.$formulaSelect.select2('val', @model.get('formula')) if @model.get('formula')
       @ui.$formulaSelect.select2('enable', false) if not @model.isNew()
 
+    navigate: ->
+      @navigateTo('/pricelists/' + @model.id)
+
     renderGrid: ->
-      @submit().then =>
-        @navigateTo('/pricelists/' + @model.id)
+      if @model.isNew()
+        @save().then =>
+          @navigate()
+      else
+        @navigate()
 
     buildGrid: (formulaModel) ->
       columns = [
@@ -164,4 +170,8 @@ define (require) ->
 
     save: ->
       @model.save().then =>
+        @navigateTo('/pricelists/' + @model.id)
+
+    delete: ->
+      @model.destroy().then =>
         @navigateTo('/pricelists')

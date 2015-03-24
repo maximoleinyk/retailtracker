@@ -75,7 +75,7 @@ define (require) ->
       @unset('errors')
       destroy = new Promise (resolve, reject) =>
         Backbone.NestedModel::destroy.call(this, _.extend({
-          success: (model) ->
+          success: (model) =>
             @commit()
             resolve(model.toJSON())
           error: (model, xhr) ->
