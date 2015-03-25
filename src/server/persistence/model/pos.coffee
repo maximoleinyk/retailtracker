@@ -7,11 +7,19 @@ class PosSchema
       name:
         type: String
         required: true
+      description: String
       store:
         type: mongoose.Schema.Types.ObjectId
         ref: 'Store'
         required: true
         $tenant: true
+      cashiers: [
+        {
+          type: mongoose.Schema.Types.ObjectId
+          ref: 'Employee'
+          $tenant: true
+        }
+      ]
     this
 
   get: (namespace) ->

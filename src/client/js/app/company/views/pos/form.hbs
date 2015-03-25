@@ -1,0 +1,60 @@
+<div class="page-title">
+    <div class="title">
+        <div>
+			{{#if isNew}}
+				{{i18n.storeCreation}}
+			{{else}}
+				{{i18n.storeEditing}}
+			{{/if}}
+        </div>
+        <a href="/pos" class="link-back">{{i18n.posList}}</a>
+    </div>
+</div>
+<form data-submit="submit">
+    <div class="page-section">
+        <div class="col col-half">
+            <div class="form-group">
+                <label for="name" class="required">{{i18n.name}}</label>
+
+                <div class="group">
+                    <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
+
+                    <div class="help-block" data-validate="name" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="store" class="required">{{i18n.store}}</label>
+
+                <div class="group">
+                    <input type="hidden" id="store" name="store" class="form-control" data-id="storeSelect"
+                           data-placeholder="{{i18n.selectStore}}" data-bind/>
+
+                    <div class="help-block" data-validate="store" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">{{i18n.description}}</label>
+
+                <div class="group">
+                    <textarea id="description" name="description" rows="5" class="form-control"
+                              data-optional="{{i18n.add}}" data-bind></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="page-section">
+		<div class="col col-half" data-region="cashiersWrapper"></div>
+	</div>
+    <div class="page-section">
+        <div class="actions">
+            <button type="submit" class="btn btn-primary" data-auto-disable>
+				{{#if isNew}}
+					{{i18n.create}}
+				{{else}}
+					{{i18n.save}}
+				{{/if}}
+            </button>
+            <a href="/pos" class="btn btn-link">{{i18n.cancel}}</a>
+        </div>
+    </div>
+</form>

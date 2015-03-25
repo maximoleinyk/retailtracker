@@ -11,12 +11,6 @@ class StoreSchema
         type: mongoose.Schema.Types.ObjectId
         ref: 'Warehouse'
         $tenant: true
-#      cashBoxes: [
-#        {
-#          type: mongoose.Schema.Types.ObjectId
-#          ref: 'CashBox'
-#        }
-#      ]
       priceList:
         type: mongoose.Schema.Types.ObjectId
         ref: 'PriceList'

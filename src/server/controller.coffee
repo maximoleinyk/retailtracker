@@ -76,12 +76,22 @@ PriceListItemController = inject('controllers/priceListItem')
 PriceListItemService = inject('services/priceListItemService')
 PriceListItemStore = inject('persistence/priceListItemStore')
 priceListItemSchema = inject('persistence/model/priceListItem')
+posSchema = inject('persistence/model/pos')
+PosStore = inject('persistence/posStore')
+PosService = inject('services/posService')
+PosController = inject('controllers/pos')
+employeeSchema = inject('persistence/model/employee')
 
 class PageController
 
   constructor: (@router, @passport) ->
 
   register: ->
+    posStore = new PosStore(posSchema)
+    posService = new PosService(posStore)
+    posController = new PosController(posService, namespace.company)
+    posController.register(@router)
+
     receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
     receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore)
     receiveGoodsController = new ReceiveGoodsController(receiveGoodsService, namespace.company)
@@ -130,7 +140,10 @@ class PageController
     inviteStore = new InviteStore()
     inviteService = new InviteService(inviteStore)
 
-    employeeService = new EmployeeService(companyStore, roleService, new EmployeeStore)
+    employeeStore = new EmployeeStore(employeeSchema)
+    employeeService = new EmployeeService(employeeStore, companyStore)
+    employeeController = new EmployeeController(employeeService, namespace.company)
+    employeeController.register(@router)
 
     accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
       inviteService, userService, activityService)
@@ -188,9 +201,6 @@ class PageController
 
     roleController = new RoleController(roleService)
     roleController.register(@router)
-
-    employeeController = new EmployeeController(employeeService)
-    employeeController.register(@router)
 
     # redirect from login page if user is authenticated
     @router.get '/page/account/login', (req, res, next) ->

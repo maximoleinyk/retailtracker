@@ -31,6 +31,8 @@ define (require) ->
       'goods/receive': 'receiveGoods'
       'stores': 'stores'
       'stores/:id': 'storeForm'
+      'pos': 'posList'
+      'pos/:id': 'posForm'
 
     permissions:
       '*':

@@ -16,7 +16,7 @@ define(function (require) {
 				config = {},
 				data = _.isFunction(dataFunc) ? dataFunc(this.options.model) : _.isArray(dataFunc) ? dataFunc : null;
 
-			if (this.options.column.get('url')) {
+			if (this.options.column.get('ajaxUrl')) {
 				config = _.extend(config, {
 					id: function (object) {
 						/* eslint no-underscore-dangle: 0  */

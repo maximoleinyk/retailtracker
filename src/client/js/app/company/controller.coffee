@@ -45,8 +45,26 @@ define (require) ->
   ReceiveGoodsCollection = require('cs!./collections/receiveGoods')
   ReceiveGoodsList = require('cs!./views/receiveGoods/list')
   PriceListItems = require('cs!app/company/collections/priceListItems')
+  PosList = require('cs!app/company/views/pos/list')
+  PosCollection = require('cs!app/company/collections/pos')
+  PosModel = require('cs!app/company/models/pos')
+  PosForm = require('cs!app/company/views/pos/form')
 
   Controller.extend
+
+    posList: ->
+      collection = new PosCollection
+      collection.fetch().then =>
+        @openPage new PosList
+          collection: collection
+
+    posForm: (id) ->
+      model = if id and id isnt 'create' then new PosModel({ _id: id }, { parse: true }) else new PosModel
+      showPage = =>
+        @openPage new PosForm({
+          model: model
+        })
+      if model.isNew() then showPage() else model.fetch().then(showPage)
 
     receiveGoods: ->
       collection = new ReceiveGoodsCollection
@@ -65,7 +83,8 @@ define (require) ->
           priceListItems: priceListItems
         })
 
-      if model.isNew() then showPage() else Promise.all([model.fetch(), priceListItems.fetchByPriceList(id)]).then(showPage)
+      if model.isNew() then showPage() else Promise.all([model.fetch(),
+                                                         priceListItems.fetchByPriceList(id)]).then(showPage)
 
     priceLists: ->
       collection = new PriceLists

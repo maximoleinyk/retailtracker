@@ -47,7 +47,7 @@ class AbstractStore
     querySchema = @getSchema()
     regExp = new RegExp(query, 'i')
     if _.isFunction(@searchField)
-      querySchema = @searchField(regExp)
+      querySchema = _.extend(@searchField(regExp), querySchema)
     else
       querySchema[@searchField] = regExp
     @model.get(ns).find(querySchema).limit(limit).exec(callback)

@@ -24,7 +24,7 @@ define (require) ->
             type: 'autocomplete'
             placeholder: i18n.get('emailExampleCom')
             options:
-              url: '/employees/fetch'
+              url: '/employees/autocomplete/fetch'
               queryParams:
                 limit: 5
               display: (employee) ->
