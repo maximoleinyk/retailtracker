@@ -8,7 +8,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./form.hbs')
-    className: 'page page-2thirds'
+    className: 'page page-halves'
 
     templateHelpers: ->
       isNew: @model.isNew()
@@ -28,11 +28,12 @@ define (require) ->
       if obj.text then obj.text else obj.name
 
     renderPriceListSelect: ->
-      select(@ui.$priceListSelect, {
-        id: (priceList) ->
-          return priceList._id
+      priceListObject = @model.get('priceList')
+      select @ui.$priceListSelect,
+        id: (object) ->
+          return object._id
         ajax:
-          url: '/pricelist/select/fetch'
+          url: '/pricelists/select/fetch'
           dataType: 'jsonp'
           quietMillis: 150,
           data: (term) ->
@@ -42,16 +43,14 @@ define (require) ->
         formatSelection: @priceListFormatter
         formatResult: @priceListFormatter
         initSelection: (element, callback) =>
-          obj = @model.get('priceList') or {}
-          callback(obj)
-          @model.set('priceList', obj._id)
-      })
-      @ui.$priceListSelect.select2('val', @model.get('priceList')) if @model.get('priceList')
+          callback(priceListObject)
+      @model.set('priceList', priceListObject._id, {silent: true}) if @model.get('priceList')
 
     renderWarehouseSelect: ->
-      select(@ui.$warehouseSelect, {
-        id: (warehouse) ->
-          return warehouse._id
+      warehouseObject = @model.get('warehouse')
+      select @ui.$warehouseSelect,
+        id: (object) ->
+          return object._id
         ajax:
           url: '/warehouse/select/fetch'
           dataType: 'jsonp'
@@ -63,16 +62,14 @@ define (require) ->
         formatSelection: @warehouseFormatter
         formatResult: @warehouseFormatter
         initSelection: (element, callback) =>
-          obj = @model.get('warehouse')
-          callback(obj)
-          @model.set('warehouse', obj._id)
-      })
-      @ui.$warehouseSelect.select2('val', @model.get('warehouse')) if @model.get('warehouse')
+          callback(warehouseObject)
+      @model.set('warehouse', warehouseObject._id, {silent: true}) if @model.get('warehouse')
 
     renderManagerSelect: ->
-      select(@ui.$managerSelect, {
-        id: (employee) ->
-          return employee._id
+      managerObject = @model.get('manager')
+      select @ui.$managerSelect,
+        id: (object) ->
+          return object._id
         ajax:
           url: '/employees/select/fetch'
           dataType: 'jsonp'
@@ -84,14 +81,9 @@ define (require) ->
         formatSelection: @employeeFormatter
         formatResult: @employeeFormatter
         initSelection: (element, callback) =>
-          obj = @model.get('manager')
-          callback(obj)
-          @model.set('manager', obj._id)
-      })
-      @ui.$managerSelect.select2('val', @model.get('manager')) if @model.get('manager')
+          callback(managerObject)
+      @model.set('manager', managerObject._id, {silent: true}) if @model.get('manager')
 
-    submit: (e) ->
-      e.preventDefault()
-
+    submit: ->
       @model.save().then =>
         @navigateTo('/stores')

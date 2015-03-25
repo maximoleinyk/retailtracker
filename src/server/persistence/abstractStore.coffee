@@ -40,8 +40,11 @@ class AbstractStore
   findAll: (ns, callback) ->
     @model.get(ns).find({}, @callback(callback))
 
+  getSchema: ->
+    {}
+
   search: (ns, query = '', limit = 5, callback) ->
-    querySchema = {}
+    querySchema = @getSchema()
     regExp = new RegExp(query, 'i')
     if _.isFunction(@searchField)
       querySchema = @searchField(regExp)

@@ -21,6 +21,7 @@ class StoreSchema
         type: mongoose.Schema.Types.ObjectId
         ref: 'PriceList'
         required: true
+        $tenant: true
       address: String
       manager:
         type: mongoose.Schema.Types.ObjectId

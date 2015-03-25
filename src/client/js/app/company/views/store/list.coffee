@@ -22,12 +22,14 @@ define (require) ->
               '/stores/' + model.id
           },
           {
+            field: 'address'
+            title: i18n.get('address')
+          },
+          {
             field: 'manager'
             title: i18n.get('manager')
             formatter: (value) ->
               value.firstName + ' ' + value.lastName + ' ' + value.email
-            url: (model) ->
-              '/employees/' + model.id
           },
           {
             field: 'priceList'
@@ -35,7 +37,7 @@ define (require) ->
             formatter: (value) ->
               value.name
             url: (model) ->
-              '/pricelists/' + model.id
+              '/pricelists/' + model.get('priceList._id')
           },
           {
             field: 'warehouse'
@@ -43,11 +45,7 @@ define (require) ->
             formatter: (value) ->
               value.name
             url: (model) ->
-              '/warehouses/' + model.id
-          },
-          {
-            field: 'address'
-            title: i18n.get('address')
+              '/warehouses/' + model.get('warehouse._id')
           }
         ]
       })
