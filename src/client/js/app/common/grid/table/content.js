@@ -142,7 +142,8 @@ define(function (require) {
                 editable: this.options.editable,
                 numerable: this.options.numerable,
                 isActionCellVisible: this.options.isActionCellVisible,
-                state: state
+                state: state,
+				editableCell: this.options.editableCell
             });
 
             this.states[model.cid] = state;

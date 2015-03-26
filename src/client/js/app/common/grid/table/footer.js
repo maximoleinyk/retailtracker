@@ -42,9 +42,6 @@ define(function (require) {
                         next();
                     }
                 }));
-            } else if (type === 'custom') {
-                var CustomCell = column.get('cell');
-                return new CustomCell(_.extend(options, column.get('options')));
             } else {
                 return new ViewCell(options);
             }

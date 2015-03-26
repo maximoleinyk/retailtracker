@@ -6,6 +6,7 @@ define (require) ->
   select = require('select')
   Grid = require('app/common/grid/main')
   Employees = require('app/company/collections/employees')
+  ActionCell = require('cs!./actionCell')
 
   Layout.extend
 
@@ -31,6 +32,7 @@ define (require) ->
         defaultEmptyText: i18n.get('cashiersEmptyListLabel')
         skipInitialAutoFocus: true
         editable: this
+        editableCell: ActionCell
         columns: [
           {
             field: 'id'
@@ -42,7 +44,7 @@ define (require) ->
             formatResult: @cashierFormatter
             formatSelection: @cashierFormatter
             formatter: (id) =>
-              if id then @cashiers.get(id).get('email') else ''
+              if id then @cashiers.get(id)?.get('email') else ''
           }
         ]
 
@@ -50,10 +52,12 @@ define (require) ->
       if obj.text then obj.text else obj.firstName + ' ' + obj.lastName + ' ' + obj.email
 
     onCreate: (cashier, callback) ->
+      return callback({id: i18n.get('cashierShouldBeSelected')}) if not cashier.get('id')
       cashier.fetch().then =>
         cashier.commit()
         @cashiers.add(cashier)
         @model.set('cashiers', @cashiers.pluck('id'))
+        @model.validate({sync: true})
         callback()
 
     onSave: (cashier, callback) ->

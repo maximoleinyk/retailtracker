@@ -75,7 +75,8 @@ define(function (require) {
                 collection: this.options.collection,
                 numerable: this.options.numerable,
                 editable: this.options.editable,
-                isActionCellVisible: this.options.isActionCellVisible
+                isActionCellVisible: this.options.isActionCellVisible,
+				editableCell: this.options.editableCell
             });
             this.contentView.render();
             this.wasEmpty = false;
