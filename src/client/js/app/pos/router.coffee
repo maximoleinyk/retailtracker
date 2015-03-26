@@ -6,4 +6,4 @@ define (require) ->
   Router.extend
 
     appRoutes:
-      '': 'home'
+      '': 'dashboard'

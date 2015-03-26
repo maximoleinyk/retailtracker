@@ -2,10 +2,9 @@ define (require) ->
   'use strict'
 
   Controller = require('cs!app/common/controller');
-  HomePage = require('cs!./views/home')
+  Dashboard = require('cs!./views/dashboard')
 
   Controller.extend
 
-    home: ->
-      @openPage new HomePage
-        collection: new Backbone.Collection()
+    dashboard: ->
+      @openPage new Dashboard

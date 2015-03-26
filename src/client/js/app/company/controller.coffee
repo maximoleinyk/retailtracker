@@ -154,7 +154,10 @@ define (require) ->
       # todo: implement
 
     choose: ->
-      @openPage new ChoosePosPage
+      stores = new Stores
+      stores.fetch().then =>
+        @openPage new ChoosePosPage
+          stores: stores
 
     warehouseList: ->
       collection = new Warehouses

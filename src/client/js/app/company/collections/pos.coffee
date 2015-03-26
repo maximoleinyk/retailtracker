@@ -9,6 +9,13 @@ define (require) ->
 
     model: Pos
 
+    fetchAllowedPos: (employeeId, storeId) ->
+      data =
+        employee: employeeId
+        store: storeId
+      request.post('/pos/allowed', data).then (result) =>
+        @reset(result, {parse: true})
+
     fetch: ->
       request.get('/pos/all').then (result) =>
         @reset(result, {parse: true})

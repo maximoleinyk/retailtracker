@@ -24,3 +24,10 @@ define (require) ->
         minLength: 1
         description: ->
           i18n.get('addMinimumOneCashier')
+
+    startSession: (employeeId) ->
+      data = {
+        pos: @id
+        employee: employeeId
+      }
+      @promise('post', '/pos/start', data)
