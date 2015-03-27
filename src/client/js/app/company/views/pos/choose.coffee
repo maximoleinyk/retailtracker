@@ -7,6 +7,7 @@ define (require) ->
   PosCollection = require('cs!app/company/collections/pos')
   PosModel = require('cs!app/company/models/pos')
   _ = require('underscore')
+  i18n = require('cs!app/common/i18n')
 
   Layout.extend
 
@@ -42,7 +43,9 @@ define (require) ->
 
     fetchAllowedPos: (e) ->
       posCollection = new PosCollection
-      posCollection.fetchAllowedPos(context.get('employee._id'), e.val).then =>
+      @ui.$warning.addClass('hidden')
+      posCollection.fetchAllowedPos(context.get('employee._id'), e.val)
+      .then =>
         if posCollection.length
           @ui.$posGroup.removeClass('hidden')
           select @ui.$posSelect,
@@ -52,6 +55,8 @@ define (require) ->
           @ui.$posSelect.on('select2-selecting', _.bind(@updateSubmitStatus, this))
         else
           @ui.$posGroup.addClass('hidden')
+          @ui.$warning.removeClass('hidden').text(i18n.get('thereAreNoCashBoxesForThisStore'))
+          @ui.$startSessionButton.attr('disabled', true)
 
     updateSubmitStatus: (e) ->
       @model = new PosModel({id: e.val})

@@ -5,10 +5,29 @@ _ = require('underscore')
 
 class EmployeeService extends AbstractService
 
-  constructor: (@store, @companyStore) ->
+  constructor: (@store, @companyStore, @roleService) ->
 
   findByEmail: (ns, email, callback) ->
     @store.findByEmail(ns, email, callback)
+
+  findAll: (ns, callback) ->
+    findAll = new Promise (resolve, reject) =>
+      @store.findAll ns, (err, employees) ->
+        if err then reject(err) else resolve(employees)
+
+    findAll.then (employees) =>
+      Promise.all _.map employees, (employee) =>
+        new Promise (resolve, reject) =>
+          @roleService.findById namespace.accountWrapper(ns().split('.')[0]), employee.role, (err, role) ->
+            return reject(err) if err
+            employeeData = employee.toJSON()
+            employeeData.role = role.toJSON()
+            resolve(employeeData)
+
+    .then (employees) ->
+      callback(null, employees)
+
+    .catch(callback)
 
   findLikeByEmail: (ns, email, limit, callback) ->
     accountId = ns().split('.')[0]

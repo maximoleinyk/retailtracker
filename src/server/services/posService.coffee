@@ -25,7 +25,6 @@ class PosService extends AbstractService
         if err then reject(err) else resolve(result)
 
     loadPos.then (result) =>
-      throw {generic: 'You don\'t have permission for pos terminals'} if not result.length
       callback(null, result)
 
     .catch(callback)

@@ -65,7 +65,7 @@ define(function (require) {
 					if ($el.data('select2')) {
 						return $el.select2('focus');
 					} else {
-						$el.focus(true);
+						$el.focus();
 					}
 				});
 				this.$el.find('[data-optional]').each(function () {

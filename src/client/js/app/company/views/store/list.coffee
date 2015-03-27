@@ -22,10 +22,6 @@ define (require) ->
               '/stores/' + model.id
           },
           {
-            field: 'address'
-            title: i18n.get('address')
-          },
-          {
             field: 'manager'
             title: i18n.get('manager')
             formatter: (value) ->
@@ -43,9 +39,13 @@ define (require) ->
             field: 'warehouse'
             title: i18n.get('warehouse')
             formatter: (value) ->
-              value.name
+              value?.name
             url: (model) ->
               '/warehouses/' + model.get('warehouse._id')
+          },
+          {
+            field: 'address'
+            title: i18n.get('address')
           }
         ]
       })

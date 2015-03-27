@@ -125,7 +125,8 @@ class PageController
 
     counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
 
-    roleService = new RoleService(new RoleStore)
+    roleStore = new RoleStore
+    roleService = new RoleService(roleStore)
 
     companyStore = new CompanyStore
 
@@ -141,7 +142,7 @@ class PageController
     inviteService = new InviteService(inviteStore)
 
     employeeStore = new EmployeeStore(employeeSchema)
-    employeeService = new EmployeeService(employeeStore, companyStore)
+    employeeService = new EmployeeService(employeeStore, companyStore, roleStore)
     employeeController = new EmployeeController(employeeService, namespace.company)
     employeeController.register(@router)
 
