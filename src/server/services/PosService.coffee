@@ -1,3 +1,4 @@
+_ = require('underscore')
 AbstractService = inject('services/abstractService')
 Promise = inject('util/promise')
 
@@ -28,5 +29,16 @@ class PosService extends AbstractService
       callback(null, result)
 
     .catch(callback)
+
+  update: (ns, data) ->
+    cashiers = []
+
+    _.each data.cashiers, (cashier) ->
+      cashiers.push if _.isObject(cashier) then cashier._id or cashier.id else cashier
+
+    data.store = if _.isObject(data.store) then data.store._id else data.store
+    data.cashiers = cashiers
+
+    super
 
 module.exports = PosService

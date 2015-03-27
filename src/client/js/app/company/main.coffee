@@ -50,4 +50,7 @@ define (require) ->
 
       .then (role) ->
         context.set('employee.role', role)
+
+      .catch =>
+        throw 'Unknown context'
   })

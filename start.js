@@ -30,7 +30,7 @@ var path = require('path'),
             from: 'support@retailregister.com'
         },
         cookie: {
-            maxAge: 1000 * 60 * 10,
+            maxAge: 1000 * 60 * 20,
             secret: 'secret_cookie_word'
         }
     };
