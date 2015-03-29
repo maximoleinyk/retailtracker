@@ -15,7 +15,7 @@ class PosController extends CrudController
     router.post @baseUrl + '/start', authFilter, (req, res) =>
       @service.start @namespace(req), req.body, (err, pos) ->
         return res.status(401).end('Not authorised for this pos') if err
-        req.session.pos = pos
+        req.session.pos = pos._id
         res.status(200).send(pos)
 
 module.exports = PosController

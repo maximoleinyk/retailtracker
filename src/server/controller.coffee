@@ -82,141 +82,137 @@ PosService = inject('services/posService')
 PosController = inject('controllers/pos')
 employeeSchema = inject('persistence/model/employee')
 
-class PageController
+module.exports = (app, passport) ->
 
-  constructor: (@router, @passport) ->
+  posStore = new PosStore(posSchema)
+  posService = new PosService(posStore)
+  posController = new PosController(posService, namespace.company)
+  app.use posController.router()
 
-  register: ->
-    posStore = new PosStore(posSchema)
-    posService = new PosService(posStore)
-    posController = new PosController(posService, namespace.company)
-    posController.register(@router)
+  receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
+  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore)
+  receiveGoodsController = new ReceiveGoodsController(receiveGoodsService, namespace.company)
+  receiveGoodsController.register(router)
 
-    receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
-    receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore)
-    receiveGoodsController = new ReceiveGoodsController(receiveGoodsService, namespace.company)
-    receiveGoodsController.register(@router)
+  priceListStore = new PriceListStore(priceListSchema)
+  priceListService = new PriceListService(priceListStore)
+  priceListController = new PriceListController(priceListService, namespace.company)
+  priceListController.register(router)
 
-    priceListStore = new PriceListStore(priceListSchema)
-    priceListService = new PriceListService(priceListStore)
-    priceListController = new PriceListController(priceListService, namespace.company)
-    priceListController.register(@router)
+  formulaStore = new FormulaStore(formulaSchema)
+  formulaService = new FormulaService(formulaStore)
+  formulaController = new FormulaController(formulaService, namespace.company)
+  formulaController.register(router)
 
-    formulaStore = new FormulaStore(formulaSchema)
-    formulaService = new FormulaService(formulaStore)
-    formulaController = new FormulaController(formulaService, namespace.company)
-    formulaController.register(@router)
+  priceListItemStore = new PriceListItemStore(priceListItemSchema)
+  priceListItemService = new PriceListItemService(priceListItemStore, formulaStore)
+  priceListItemController = new PriceListItemController(priceListItemService, namespace.company)
+  priceListItemController.register(router)
 
-    priceListItemStore = new PriceListItemStore(priceListItemSchema)
-    priceListItemService = new PriceListItemService(priceListItemStore, formulaStore)
-    priceListItemController = new PriceListItemController(priceListItemService, namespace.company)
-    priceListItemController.register(@router)
+  supplierOrdersController = new SupplierOrdersController
+  supplierOrdersController.register(router)
 
-    supplierOrdersController = new SupplierOrdersController
-    supplierOrdersController.register(@router)
+  storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)), namespace.company)
+  storeController.register(router)
 
-    storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)), namespace.company)
-    storeController.register(@router)
+  currencyStore = new CurrencyStore(currencySchema)
+  currencyService = new CurrencyService(currencyStore)
+  currencyController = new CurrencyController(currencyService, namespace.company)
+  currencyController.register(router)
 
-    currencyStore = new CurrencyStore(currencySchema)
-    currencyService = new CurrencyService(currencyStore)
-    currencyController = new CurrencyController(currencyService, namespace.company)
-    currencyController.register(@router)
+  counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
 
-    counterpartyService = new CounterpartyService(new CounterpartyStore(counterpartySchema))
+  roleStore = new RoleStore
+  roleService = new RoleService(roleStore)
 
-    roleStore = new RoleStore
-    roleService = new RoleService(roleStore)
+  companyStore = new CompanyStore
 
-    companyStore = new CompanyStore
+  contextService = new ContextService(currencyService, companyStore, roleService)
 
-    contextService = new ContextService(currencyService, companyStore, roleService)
+  activityService = new ActivityService(new ActivityStore, companyStore)
 
-    activityService = new ActivityService(new ActivityStore, companyStore)
+  userService = new UserService(new UserStore)
 
-    userService = new UserService(new UserStore)
+  linkService = new LinkService(new LinkStore)
 
-    linkService = new LinkService(new LinkStore)
+  inviteStore = new InviteStore()
+  inviteService = new InviteService(inviteStore)
 
-    inviteStore = new InviteStore()
-    inviteService = new InviteService(inviteStore)
+  employeeStore = new EmployeeStore(employeeSchema)
+  employeeService = new EmployeeService(employeeStore, companyStore, roleStore)
+  employeeController = new EmployeeController(employeeService, namespace.company)
+  employeeController.register(router)
 
-    employeeStore = new EmployeeStore(employeeSchema)
-    employeeService = new EmployeeService(employeeStore, companyStore, roleStore)
-    employeeController = new EmployeeController(employeeService, namespace.company)
-    employeeController.register(@router)
+  accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
+    inviteService, userService, activityService)
 
-    accountService = new AccountService(employeeService, contextService, companyStore, new AccountStore, linkService,
-      inviteService, userService, activityService)
+  companyService = new CompanyService(employeeService, roleService, companyStore, inviteService, accountService,
+    userService, activityService,
+    contextService)
 
-    companyService = new CompanyService(employeeService, roleService, companyStore, inviteService, accountService,
-      userService, activityService,
-      contextService)
+  securityService = new SecurityService(passport, accountService)
+  securityService.applyLocalStrategy()
 
-    securityService = new SecurityService(@passport, accountService)
-    securityService.applyLocalStrategy()
+  securityController = new SecurityController(securityService)
+  securityController.register(router)
 
-    securityController = new SecurityController(securityService)
-    securityController.register(@router)
+  contextController = new ContextController(accountService)
+  contextController.register(router)
 
-    contextController = new ContextController(accountService)
-    contextController.register(@router)
+  warehouseStore = new WarehouseStore(warehouseSchema)
+  warehouseService = new WarehouseService(warehouseStore)
+  warehouseController = new WarehouseController(warehouseService, namespace.company)
+  warehouseController.register(router)
 
-    warehouseStore = new WarehouseStore(warehouseSchema)
-    warehouseService = new WarehouseService(warehouseStore)
-    warehouseController = new WarehouseController(warehouseService, namespace.company)
-    warehouseController.register(@router)
+  activityController = new ActivityController(activityService)
+  activityController.register(router)
 
-    activityController = new ActivityController(activityService)
-    activityController.register(@router)
+  accountController = new AccountController(accountService)
+  accountController.register(router)
 
-    accountController = new AccountController(accountService)
-    accountController.register(@router)
+  userController = new UserController(userService)
+  userController.register(router)
 
-    userController = new UserController(userService)
-    userController.register(@router)
+  settingsController = new SettingsController(new SettingsService(userService, accountService))
+  settingsController.register(router)
 
-    settingsController = new SettingsController(new SettingsService(userService, accountService))
-    settingsController.register(@router)
+  uomStore = new UomStore(uomSchema)
+  uomService = new UomService(uomStore)
+  uomController = new UomController(uomService, namespace.company)
+  uomController.register(router)
 
-    uomStore = new UomStore(uomSchema)
-    uomService = new UomService(uomStore)
-    uomController = new UomController(uomService, namespace.company)
-    uomController.register(@router)
+  counterpartyController = new CounterpartyController(counterpartyService, namespace.company)
+  counterpartyController.register(router)
 
-    counterpartyController = new CounterpartyController(counterpartyService, namespace.company)
-    counterpartyController.register(@router)
+  companyController = new CompanyController(companyService)
+  companyController.register(router)
 
-    companyController = new CompanyController(companyService)
-    companyController.register(@router)
+  roductGroupStore = new ProductGroupStore(productGroupSchema)
+  productGroupService = new ProductGroupService(roductGroupStore)
+  productGroupController = new ProductGroupController(productGroupService, namespace.company)
+  productGroupController.register(router)
 
-    roductGroupStore = new ProductGroupStore(productGroupSchema)
-    productGroupService = new ProductGroupService(roductGroupStore)
-    productGroupController = new ProductGroupController(productGroupService, namespace.company)
-    productGroupController.register(@router)
+  nomenclatureStore = new NomenclatureStore(nomenclatureSchema)
+  nomenclatureService = new NomenclatureService(nomenclatureStore)
+  nomenclatureController = new NomenclatureController(nomenclatureService, namespace.company)
+  nomenclatureController.register(router)
 
-    nomenclatureStore = new NomenclatureStore(nomenclatureSchema)
-    nomenclatureService = new NomenclatureService(nomenclatureStore)
-    nomenclatureController = new NomenclatureController(nomenclatureService, namespace.company)
-    nomenclatureController.register(@router)
+  roleController = new RoleController(roleService)
+  roleController.register(router)
 
-    roleController = new RoleController(roleService)
-    roleController.register(@router)
+  # redirect from login page if user is authenticated
+  router.get '/page/account/login', (req, res, next) ->
+    if req.isAuthenticated() then res.redirect('/page/brand') else next()
 
-    # redirect from login page if user is authenticated
-    @router.get '/page/account/login', (req, res, next) ->
-      if req.isAuthenticated() then res.redirect('/page/brand') else next()
+  # always return single HTML page on leading /page* part
+  router.get "/page*", (req, res) ->
+    res.cookie('X-Csrf-Token', req.csrfToken())
+    res.sendFile(global.config.app.indexHtml)
 
-    # always return single HTML page on leading /page* part
-    @router.get "/page*", (req, res) ->
-      res.cookie('X-Csrf-Token', req.csrfToken())
-      res.sendFile(global.config.app.indexHtml)
+  # redirect from root directory to UI
+  router.get '/', (req, res) ->
+    res.redirect '/page/account/login'
 
-    # redirect from root directory to UI
-    @router.get '/', (req, res) ->
-      res.redirect '/page/account/login'
+  router.get '/i18n/messages/:batch', (req, res) =>
+    res.send(i18n.bundle(req.params.batch))
 
-    @router.get '/i18n/messages/:batch', (req, res) =>
-      res.send(i18n.bundle(req.params.batch))
-
-module.exports = PageController

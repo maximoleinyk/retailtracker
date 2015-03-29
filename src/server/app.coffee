@@ -2,20 +2,23 @@ express = require('express')
 bodyParser = require('body-parser')
 cookieParser = require('cookie-parser')
 passport = require('passport')
-PageController = inject('controller')
+controllers = inject('controller')
 MongoDB = inject('database')
 socket = inject('socket')
 csrf = require('csurf')
+authenticationFilter = inject('filters/authentication')
+errorFilter = inject('filters/error')
 
 class App
 
   constructor: (@config) ->
     @app = express()
-    @router = express.Router()
     @store = new MongoDB()
 
   start: ->
     @store.connect @app, =>
+
+      # middleware
       @app.use '/static', express.static @config.app.staticDir
       @app.use cookieParser(config.cookie.secret, {
         maxAge: config.cookie.maxAge
@@ -24,18 +27,13 @@ class App
       @app.use passport.initialize()
       @app.use passport.session()
       @app.use csrf()
-      @app.use (err, req, res, next) ->
-        if err.code is 'EBADCSRFTOKEN'
-          return next() if req.url is '/security/login'
-          res.status(403).send('CSRF has expired')
-        else
-          next(err)
-      @app.use(@router)
 
-#      socket(@app)
+      # filters
+      @app.use authenticationFilter
+      @app.use errorFilter
 
-      controller = new PageController(@router, passport)
-      controller.register()
+      # controllers
+      @app.use controllers(@app, passport)
 
       @app.listen @config.app.port, =>
         console.log 'Application started on port ' + config.app.port + ' in ' + process.env.NODE_ENV + ' mode'
