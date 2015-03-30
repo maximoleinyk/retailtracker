@@ -2,12 +2,12 @@ express = require('express')
 bodyParser = require('body-parser')
 cookieParser = require('cookie-parser')
 passport = require('passport')
-controllers = inject('controller')
+csrf = require('csurf')
+controllers = inject('controllers')
 MongoDB = inject('database')
 socket = inject('socket')
-csrf = require('csurf')
-authenticationFilter = inject('filters/authentication')
 errorFilter = inject('filters/error')
+authenticationFilter = inject('filters/authentication')
 
 class App
 

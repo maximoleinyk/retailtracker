@@ -30,9 +30,12 @@ define (require) ->
       currencyCode: 'UAH'
       currencyRate: 1
 
+    startSession: ->
+      @promise('post', '/company/start', @toJSON())
+
     loadInvitedCompanyDetails: ->
       @promise('get', '/company/invite/' + @get('key'))
       .then (result) =>
-        @set(@parse(result.company))
+        @set @parse(result.company)
         @set('hasAccount', result.hasAccount)
         @commit()

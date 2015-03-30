@@ -1,12 +1,11 @@
 CrudController = inject('controllers/crudController')
-authFilter = inject('util/authFilter')
+company = inject('filters/company')
+namespace = inject('util/namespace')
 
-class SupplierOrdersController
+class SupplierOrdersController extends CrudController
 
   baseUrl: '/supplierorders'
-
-  register: (router) ->
-    router.get @baseUrl + '/all', authFilter, (req, res) =>
-      res.status(200).send([])
+  filter: company
+  namespace: namespace.company
 
 module.exports = SupplierOrdersController

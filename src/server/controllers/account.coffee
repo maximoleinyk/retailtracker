@@ -1,6 +1,4 @@
 HttpStatus = require('http-status-codes')
-_ = require('underscore')
-authFilter = inject('util/authFilter')
 
 class AccountController
 

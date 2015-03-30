@@ -1,5 +1,5 @@
 HttpStatus = require('http-status-codes')
-authFilter = inject('util/authFilter')
+companyFilter = inject('filters/company')
 
 class ContextController
 
@@ -9,7 +9,7 @@ class ContextController
     res.status(HttpStatus.BAD_REQUEST).send({errors: err})
 
   register: (router) ->
-    router.get '/context/load/brand', authFilter, (req, res) =>
+    router.get '/context/load/brand', (req, res) =>
       handler = (err, account) =>
         return res.status(HttpStatus.BAD_REQUEST).send({ error: {generic: err }}) if err
         accountData = account.toJSON()
@@ -18,7 +18,7 @@ class ContextController
         res.status(HttpStatus.OK).send(accountData)
       @accountService.findById(req.user._id, handler).populate('owner')
 
-    router.get '/context/load/company', authFilter, (req, res) =>
+    router.get '/context/load/company', companyFilter, (req, res) =>
       handler = (err, account) =>
         return res.status(HttpStatus.BAD_REQUEST).send({ error: {generic: err }}) if err
         accountData = account.toJSON()

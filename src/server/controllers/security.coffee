@@ -1,6 +1,4 @@
 HttpStatus = require('http-status-codes')
-_ = require('underscore')
-authFilter = inject('util/authFilter')
 
 class SecurityController
 
@@ -10,7 +8,7 @@ class SecurityController
     res.status(HttpStatus.FORBIDDEN).send({ errors: err })
 
   register: (router) ->
-    router.get '/security/handshake', authFilter, (req, res) =>
+    router.get '/security/handshake', (req, res) =>
       res.cookie('X-Csrf-Token', req.csrfToken())
       res.status(HttpStatus.NO_CONTENT).end()
 
@@ -25,7 +23,7 @@ class SecurityController
 
       authCallback(req, res, next) if authCallback
 
-    router.delete '/security/logout', authFilter, (req, res) ->
+    router.delete '/security/logout', (req, res) ->
       req.logout()
       res.status(HttpStatus.NO_CONTENT).end()
 
