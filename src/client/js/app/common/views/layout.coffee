@@ -112,6 +112,7 @@ define (require) ->
       @header.show(new @options.Header(@options)) if @options.Header
 
     displayContent: (view) ->
+      $('.app > .content-wrapper').removeClass('box-like')
       @container.show(view)
       Marionette.$(document).scrollTop(0)
 

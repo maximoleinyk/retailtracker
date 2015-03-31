@@ -7,10 +7,6 @@
   min-height: 100%;
   min-width: @mainWidth;
 
-  > * > * {
-    width: @mainWidth;
-  }
-
   > .header {
     background-color: #292f33;
     padding: 15px 0;
@@ -126,6 +122,11 @@
 
   &.app-company,
   &.app-brand {
+
+    > * > * {
+      width: @mainWidth;
+    }
+
     > .content-wrapper {
       border-bottom: 1px solid #ddd;
       padding-bottom: 50px;

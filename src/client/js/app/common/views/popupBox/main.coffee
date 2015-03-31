@@ -31,7 +31,7 @@ define (require) ->
     onCLick: (e) ->
       found = _.find @options.buttons, (button) ->
         # note: probably there is another way of finding button
-        button.label is Marionette.$(e.currentTarget).text().trim()
+        (button.label or '') is Marionette.$(e.currentTarget).text().trim()
       found.action(@options.view)
   })
 

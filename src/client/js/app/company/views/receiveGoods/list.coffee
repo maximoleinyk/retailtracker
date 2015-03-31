@@ -36,7 +36,7 @@ define (require) ->
           },
           {
             field: 'receivingDate'
-            title: i18n.get('receivingDate')
+            title: i18n.get('enterDate')
             formatter: (value) ->
               helpers.date(value)
           },

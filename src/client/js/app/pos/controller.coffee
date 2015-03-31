@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Controller = require('cs!app/common/controller');
-  Dashboard = require('cs!./views/dashboard')
+  Dashboard = require('cs!./views/dashboard/main')
 
   Controller.extend
 

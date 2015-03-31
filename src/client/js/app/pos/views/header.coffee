@@ -12,3 +12,13 @@ define (require) ->
 
     initialize: ->
       @model = context
+
+    onRender: ->
+      @updateNameLabel()
+
+    templateHelpers: ->
+      avatarSrc: avatar(context.get('account.login'))
+
+    updateNameLabel: ->
+      @ui.$userName.text(@model.get('account.owner.firstName'))
+
