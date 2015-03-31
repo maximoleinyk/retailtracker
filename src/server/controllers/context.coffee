@@ -7,12 +7,40 @@ Promise = inject('util/promise')
 
 class ContextController
 
-  constructor: (@accountService, @employeeService, @companyService, @posService) ->
+  constructor: (@accountService, @employeeService, @companyService, @posService, @roleService) ->
 
-  error: (err, res) ->
-    res.status(HttpStatus.BAD_REQUEST).send({errors: err})
+  findCompany: (companies, companyId) ->
+    _.find companies, (pair) ->
+      return pair if pair.company.toString() is companyId
+
+  populate: (req, result) ->
+    loadAccountDetails = new Promise (resolve, reject) =>
+      handler = (err, result) =>
+        if err then reject(err) else resolve(result)
+      @accountService.findById(req.user._id, handler)
+
+    loadAccountDetails
+    .then (account) =>
+      result.account = account.toJSON()
+      delete result.account.password
+
+      new Promise (resolve, reject) =>
+        originAccountDetails = @findCompany(result.account.companies, req.session.company)
+        accountNamespace = namespace.accountWrapper(originAccountDetails.account)
+        @companyService.findById accountNamespace, req.session.company, (err, result) ->
+          if err then reject(err) else resolve(result)
+
+    .then (company) =>
+      result.company = company.toJSON()
+      new Promise (resolve, reject) =>
+        originAccountDetails = @findCompany(result.account.companies, req.session.company)
+        companyNamespace = namespace.companyWrapper(originAccountDetails.account, company._id.toString())
+        @employeeService.findByEmail companyNamespace, result.account.login, (err, result) ->
+          if err then reject(err) else resolve(result)
 
   register: (router) ->
+
+    # context data for account module
     router.get '/context/brand', (req, res) =>
       @accountService.findById req.user._id, (err, account) =>
         return res.status(HttpStatus.BAD_REQUEST).send({ error: {generic: err }}) if err
@@ -20,58 +48,53 @@ class ContextController
         delete accountData.password
         res.status(HttpStatus.OK).send(accountData)
 
+    # context data for company module
     router.get '/context/company', companyFilter, (req, res) =>
-      handler = (err, account) =>
-        return res.status(HttpStatus.BAD_REQUEST).send({ error: {generic: err }}) if err
-        accountData = account.toJSON()
-        delete accountData.password
-        res.status(HttpStatus.OK).send(accountData)
-      @accountService.findById(req.user._id, handler)
+      result = {
+        account: null
+        company: null
+        employee: null
+      }
 
+      @populate(req, result)
+      .then (employee) =>
+        result.employee = employee.toJSON()
+        new Promise (resolve, reject) =>
+          ns = namespace.accountWrapper(@findCompany(result.account.companies, req.session.company).account)
+          @roleService.findById ns, employee.role, (err, result) ->
+            if err then reject(err) else resolve(result)
+
+      .then (role) ->
+        result.employee.role = role.toJSON()
+        res.status(HttpStatus.OK).send(result)
+
+      .catch (err) ->
+        res.status(HttpStatus.BAD_REQUEST).send(err)
+
+    # context data for pos module
     router.get '/context/pos', posFilter, (req, res) =>
-      originAccountDetails = {}
-      result =
+      result = {
         account: null
         company: null
         employee: null
         pos: null
+      }
 
-      loadAccountDetails = new Promise (resolve, reject) =>
-        handler = (err, result) =>
-          if err then reject(err) else resolve(result)
-        @accountService.findById(req.user._id, handler)
-
-      loadAccountDetails
-      .then (account) =>
-        result.account = account.toJSON()
-        delete result.account.password
-
-        originAccountDetails = _.find account.companies.toObject(), (pair) ->
-          return pair if pair.company.toString() is req.headers.company
-
-        new Promise (resolve, reject) =>
-          accountNamespace = namespace.accountWrapper(originAccountDetails.account)
-          @companyService.findById accountNamespace, req.headers.company, (err, result) ->
-            if err then reject(err) else resolve(result)
-
-      .then (company) =>
-        result.company = company.toJSON()
-        new Promise (resolve, reject) =>
-          companyNamespace = namespace.companyWrapper(originAccountDetails.account, company._id.toString())
-          @employeeService.findByEmail companyNamespace, result.account.login, (err, result) ->
-            if err then reject(err) else resolve(result)
-
+      @populate(req, result)
       .then (employee) =>
         result.employee = employee.toJSON()
         new Promise (resolve, reject) =>
-          companyNamespace = namespace.companyWrapper(originAccountDetails.account, result.company._id.toString())
+          companyId = result.company._id.toString()
+          originAccountDetails = @findCompany(result.account.companies, companyId)
+          companyNamespace = namespace.companyWrapper(originAccountDetails.account, companyId)
           @posService.findById companyNamespace, req.headers.pos, (err, result) ->
             if err then reject(err) else resolve(result)
 
       .then (pos) ->
         result.pos = pos.toJSON()
-        res.send(HttpStatus.OK).send(result)
+        res.status(HttpStatus.OK).send(result)
+
       .catch (err) ->
-        res.send(HttpStatus.BAD_REQUEST).send(err)
+        res.status(HttpStatus.BAD_REQUEST).send(err)
 
 module.exports = ContextController

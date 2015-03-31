@@ -7,6 +7,7 @@ define (require) ->
   http = require('app/common/http')
   context = require('cs!app/common/context')
   request = require('app/common/request')
+  _ = require('underscore')
 
   ({
     Router: Router

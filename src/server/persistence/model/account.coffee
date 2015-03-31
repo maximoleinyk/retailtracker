@@ -10,7 +10,7 @@ schema = mongoose.Schema
     {
       type: mongoose.Schema.Types.ObjectId
       ref: 'Account'
-      'default': []
+      default: []
     }
   ]
   status:

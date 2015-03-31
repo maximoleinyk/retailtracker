@@ -4,6 +4,7 @@ module.exports = (req, res, next) ->
   regExp = /// ^
     (/page.*)
   | (/account.*)
+  | (/company/invite)
   | (/i18n/messages)
   | (/security/login)
   | (favicon.ico)

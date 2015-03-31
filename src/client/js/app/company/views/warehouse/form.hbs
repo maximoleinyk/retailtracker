@@ -10,47 +10,51 @@
         <a href="/warehouses" class="link-back">{{i18n.warehouses}}</a>
     </div>
 </div>
-<form data-submit="submit" class="page-section">
-    <div class="col col-3quarters">
-        <div class="form-group">
-            <label for="name" class="required">{{i18n.name}}</label>
+<form data-submit="submit">
+    <div class="page-section">
+        <div class="col col-3quarters">
+            <div class="form-group">
+                <label for="name" class="required">{{i18n.name}}</label>
 
-            <div class="group">
-                <input type="text" id="name" name="name" class="form-control three-fourth" data-bind data-focus/>
+                <div class="group">
+                    <input type="text" id="name" name="name" class="form-control three-fourth" data-bind data-focus/>
 
-                <div class="help-block" data-validate="name" data-bind></div>
+                    <div class="help-block" data-validate="name" data-bind></div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="assignee" class="required">{{i18n.assignee}}</label>
+            <div class="form-group">
+                <label for="assignee" class="required">{{i18n.assignee}}</label>
 
-            <div class="group">
-                <input type="hidden" id="assignee" name="assignee" class="form-control half" data-id="assigneeSelect"
-                       data-placeholder="{{i18n.selectAssignee}}" data-bind/>
+                <div class="group">
+                    <input type="hidden" id="assignee" name="assignee" class="form-control half"
+                           data-id="assigneeSelect"
+                           data-placeholder="{{i18n.selectAssignee}}" data-bind/>
 
-                <div class="help-block" data-validate="assignee" data-bind></div>
+                    <div class="help-block" data-validate="assignee" data-bind></div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="address">{{i18n.address}}</label>
+            <div class="form-group">
+                <label for="address">{{i18n.address}}</label>
 
-            <div class="group">
-                <input type="text" id="address" name="address" class="form-control three-fourth"  data-optional="{{i18n.add}}" data-bind/>
+                <div class="group">
+                    <input type="text" id="address" name="address" class="form-control three-fourth"
+                           data-optional="{{i18n.add}}" data-bind/>
 
-                <div class="help-block" data-validate="address" data-bind></div>
+                    <div class="help-block" data-validate="address" data-bind></div>
+                </div>
             </div>
-        </div>
-        <div class="form-group no-bottom border">
-            <label for="description">{{i18n.description}}</label>
+            <div class="form-group no-bottom border">
+                <label for="description">{{i18n.description}}</label>
 
-            <div class="group">
-                <textarea id="description" name="description" rows="5" class="form-control"
-                          data-optional="{{i18n.add}}" data-bind></textarea>
+                <div class="group">
+                    <textarea id="description" name="description" rows="5" class="form-control"
+                              data-optional="{{i18n.add}}" data-bind></textarea>
+                </div>
             </div>
         </div>
     </div>
-    <div class="actions">
-        <div class="clearfix">
+    <div class="page-section">
+        <div class="actions">
             <button type="submit" class="btn btn-primary" data-auto-disable>
 				{{#if isNew}}
 					{{i18n.create}}

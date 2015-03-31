@@ -17,14 +17,19 @@ define (require) ->
     root: '/pos/'
     authUrl: '/security/handshake'
 
-    beforeStart: ->
+    beforeStart: (url) ->
+      posId = url.split('/')[1]
       http.setHeaders {
-        pos: url.split('/')[1]
+        pos: posId
       }
       request.get('/context/pos').then (result) ->
         context.set(result)
+
+        companyAndAccount = _.find context.get('account.companies'), (pair) ->
+          pair.company is context.get('company._id')
+
         http.setHeaders {
-          account: result.account._id
+          account: companyAndAccount.account
           company: result.company._id
         }
   })

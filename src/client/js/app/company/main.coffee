@@ -26,7 +26,7 @@ define (require) ->
         context.set(result)
 
         companyAndAccount = _.find context.get('account.companies'), (pair) ->
-          pair.company is context.get('company._id')
+          pair.company is companyId
 
         http.setHeaders {
           account: companyAndAccount.account

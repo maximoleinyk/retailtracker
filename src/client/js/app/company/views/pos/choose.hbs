@@ -11,18 +11,22 @@
             <div class="form-group hidden" data-id="posGroup">
                 <label for="pos">{{i18n.cashBox}}</label>
                 <input type="hidden" id="pos" name="pos" class="form-control" data-id="posSelect"
-					   data-placeholder="{{i18n.selectPos}}" data-bind/>
+                       data-placeholder="{{i18n.selectPos}}" data-bind/>
             </div>
             <div class="form-group submit-group">
                 <button type="submit" class="btn btn-primary btn-lg" title="{{i18n.startCashierSession}}"
-						data-id="startSessionButton" data-focus disabled>{{i18n.startCashierSession}}</button>
+                        data-id="startSessionButton" data-focus disabled>{{i18n.startCashierSession}}</button>
             </div>
         </form>
 	{{else}}
-        <p>{{i18n.youHaveNoStores}}</p>
+		{{#if hasAccess}}
+            <p>{{i18n.youHaveNoStores}}</p>
 
-        <div class="submit-group">
-            <a href="/stores/create" type="button" class="btn btn-default btn-lg">{{i18n.createStore}}</a>
-        </div>
+            <div class="submit-group">
+                <a href="/stores/create" type="button" class="btn btn-default btn-lg">{{i18n.createStore}}</a>
+            </div>
+		{{else}}
+            <p>{{i18n.youDontHavePermissionsForStores}}</p>
+		{{/if}}
 	{{/if}}
 </div>

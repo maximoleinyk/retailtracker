@@ -3,10 +3,11 @@ define (require) ->
 
   Layout = require('app/common/marionette/layout')
   $ = require('jquery')
-  Model = require('cs!app/common/model')
+  Company = require('cs!app/brand/models/company')
   context = require('cs!app/common/context')
   request = require('app/common/request')
   select = require('select')
+  http = require('app/common/http')
 
   Layout.extend
 
@@ -14,7 +15,7 @@ define (require) ->
     className: 'page page-box'
 
     initialize: ->
-      @model = new Model
+      @model = new Company
 
     templateHelpers: ->
       hasCompanies: @options.companies.length > 0
@@ -39,12 +40,16 @@ define (require) ->
             text: @options.companies.get(companyId).get('name')
           })
 
-    enter: (e) ->
-      e.preventDefault()
-
+    enter: ->
       companyId = @model.get('companyId')
-      userId = context.get('account.owner._id')
+      @model.set('id', companyId)
 
-      request.post('/company/' + companyId + '/permission/' + userId)
-      .then =>
-        @eventBus.trigger('module:load', 'company', @model.get('companyId'))
+      companyAndAccount = _.find context.get('account.companies'), (pair) ->
+        pair.company is companyId
+
+      http.setHeaders {
+        account: companyAndAccount.account
+      }
+
+      @model.startSession().then =>
+        @eventBus.trigger('module:load', 'company', companyId)

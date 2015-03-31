@@ -21,12 +21,14 @@ define (require) ->
             title: i18n.get('name')
             url: (model) ->
               '/formula/' + model.id
+            width: 350
           },
           {
             field: 'created'
             title: i18n.get('creationDate')
             formatter: (value) ->
               helpers.date(value, true)
+            width: 200
           },
           {
             field: 'columns'
@@ -34,6 +36,11 @@ define (require) ->
             formatter: (value) ->
               value.length
             type: 'number'
+            width: 150
+          },
+          {
+            field: 'description'
+            title: i18n.get('description')
           }
         ]
       })

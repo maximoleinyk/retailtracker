@@ -12,7 +12,7 @@ class CurrencyController extends CrudController
   register: (router) ->
     super
 
-    router.get @baseUrl + '/templates/get', @filter, (req, res) =>
+    router.get @baseUrl + '/templates/get', (req, res) =>
       @service.getCurrencyTemplates(@callback(res))
 
 module.exports = CurrencyController

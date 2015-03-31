@@ -16,6 +16,7 @@ define (require) ->
 
     templateHelpers: ->
       hasStores: @options.stores.length
+      hasAccess: context.get('employee.role.accessCompany') or context.get('employee.role.accessBrand')
 
     onRender: ->
       @renderStoreSelect()

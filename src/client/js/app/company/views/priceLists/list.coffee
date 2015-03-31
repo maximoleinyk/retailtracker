@@ -21,12 +21,14 @@ define (require) ->
             title: i18n.get('name')
             url: (model) ->
               '/pricelists/' + model.id
+            width: 350
           },
           {
             field: 'created'
             title: i18n.get('creationDate')
             formatter: (value) ->
               helpers.date(value, true)
+            width: 180
           },
           {
             field: 'formula'
@@ -37,9 +39,8 @@ define (require) ->
               '/formula/' + model.get('formula._id')
           },
           {
-            field: 'itemsCount'
-            title: i18n.get('itemsCount')
-            type: 'number'
+            field: 'description'
+            title: i18n.get('description')
           }
         ]
       })
