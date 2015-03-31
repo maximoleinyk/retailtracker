@@ -17,7 +17,6 @@ class SecurityController
         return @forbidden(err, res) if err
         req.login account, (err) =>
           return next(err) if err
-
           res.cookie('X-Csrf-Token', req.csrfToken())
           res.status(HttpStatus.NO_CONTENT).end()
 

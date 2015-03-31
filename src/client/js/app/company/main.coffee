@@ -17,40 +17,19 @@ define (require) ->
     root: '/company/'
     authUrl: '/security/handshake'
 
-    initialize: (url) ->
-      http.setHeaders({ company: url.split('/')[1] })
-
     beforeStart: (url) ->
       companyId = url.split('/')[1]
-
-      request.get('/context/load/company')
-      .then (account) ->
-        context.set({
-          account: account
-        })
-        request.post('/company/' + companyId + '/permission/' + account.owner._id)
-
-      .then (result) ->
-        throw 'Unknown context' if not result
-
-        context.set({
-          company: result.company
-          employee: result.employee
-        })
+      http.setHeaders {
+        company: companyId
+      }
+      request.get('/context/company').then (result) ->
+        context.set(result)
 
         companyAndAccount = _.find context.get('account.companies'), (pair) ->
           pair.company is context.get('company._id')
 
-        http.setHeaders({
+        http.setHeaders {
           account: companyAndAccount.account
-          company: context.get('company._id')
-        })
-
-        return request.get('/roles/' + result.employee.role + '/account/' + companyAndAccount.account)
-
-      .then (role) ->
-        context.set('employee.role', role)
-
-      .catch =>
-        throw 'Unknown context'
+          company: companyId
+        }
   })

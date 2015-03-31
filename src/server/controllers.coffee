@@ -154,7 +154,7 @@ module.exports = (app, passport) ->
   securityController = new SecurityController(securityService)
   securityController.register(router)
 
-  contextController = new ContextController(accountService)
+  contextController = new ContextController(accountService, employeeService, companyService, posService)
   contextController.register(router)
 
   warehouseStore = new WarehouseStore(warehouseSchema)

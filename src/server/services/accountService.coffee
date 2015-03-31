@@ -12,7 +12,7 @@ class AccountService
   constructor: (@employeeService, @contextService, @companyStore, @accountStore, @linkService, @inviteService, @userService, @activityService) ->
 
   findById: (id, callback) ->
-    @accountStore.findById(id, callback).populate('user')
+    @accountStore.findById(id, callback).populate('owner')
 
   findByLogin: (email, callback) ->
     @accountStore.findByLogin(email, callback)
@@ -21,7 +21,7 @@ class AccountService
     @accountStore.findByOwner(owner, callback)
 
   findByCredentials: (login, password, callback) ->
-    @accountStore.findByCredentials(login, Encryptor.md5(password), callback).populate('user')
+    @accountStore.findByCredentials(login, Encryptor.md5(password), callback).populate('owner')
 
   register: (email, firstName, callback) ->
     return callback({ firstName: i18n.firstNameRequired }) if not firstName

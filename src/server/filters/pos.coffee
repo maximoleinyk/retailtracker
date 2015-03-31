@@ -1,8 +1,8 @@
 HttpStatus = require('http-status-codes')
 
 module.exports = (req, res, next) ->
-  if not req.session.pos
-    res.status(HttpStatus.FORBIDDEN).send('Forbidden pos')
+  if req.headers.pos isnt req.session.pos
+    res.status(HttpStatus.FORBIDDEN).send('Unknown pos')
   else
     next()
 

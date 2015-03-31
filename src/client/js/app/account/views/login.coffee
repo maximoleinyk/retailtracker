@@ -9,11 +9,8 @@ define (require) ->
     template: require('hbs!./login.hbs')
     className: 'page page-box'
 
-    login: (e) ->
-      e.preventDefault();
-
-      this.model.login()
-      .then =>
+    login: ->
+      @model.login().then =>
         lastPath = context.get('lastAuthUrl')
 
         if (lastPath)

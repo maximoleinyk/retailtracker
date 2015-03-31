@@ -17,14 +17,14 @@ define (require) ->
     root: '/pos/'
     authUrl: '/security/handshake'
 
-    initialize: (url) ->
-#      http.setHeaders({ pos: url.split('/')[1] })
-
     beforeStart: ->
-#      context.set({
-#        account: null
-#        company: null
-#        employee: null
-#        role: null
-#      })
+      http.setHeaders {
+        pos: url.split('/')[1]
+      }
+      request.get('/context/pos').then (result) ->
+        context.set(result)
+        http.setHeaders {
+          account: result.account._id
+          company: result.company._id
+        }
   })

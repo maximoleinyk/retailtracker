@@ -17,11 +17,12 @@ define (require) ->
     root: '/brand/'
     authUrl: '/security/handshake'
 
-    beforeStart: (account) ->
-      request.get('/context/load/brand')
-      .then (account) ->
-        context.set({ account: account })
-        http.unsetHeader('company')
-        http.setHeaders({ account: account._id })
-
+    beforeStart: ->
+      request.get('/context/brand').then (account) ->
+        context.set('account', account)
+        http.setHeaders {
+          account: account._id
+          company: undefined
+          pos: undefined
+        }
   })
