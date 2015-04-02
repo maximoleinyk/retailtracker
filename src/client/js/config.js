@@ -41,11 +41,15 @@ require.config({
 		cookies: 'libs/cookies-js/src/cookies',
 		hbs: 'app/common/plugins/hbs',
 		md5: 'libs/md5/js/md5',
+		eventBus: 'app/common/eventBus',
 		d3: 'libs/d3/d3',
 		typeahead: 'libs/typeahead.js/dist/typeahead.jquery'
 	},
 
 	shim: {
+		eventBus: {
+			deps: ['backbone.wreqr']
+		},
 		jquery: {
 			exports: '$'
 		},
@@ -75,7 +79,7 @@ require.config({
 			deps: ['handlebars']
 		},
 		grid: {
-			deps: ['marionette']
+			deps: ['handlebars', 'marionette']
 		},
 		bootstrap: {
 			deps: ['jquery']
@@ -89,19 +93,13 @@ require.config({
 		select2: {
 			deps: ['jquery']
 		},
-		select2locale: {
-			deps: ['select2']
-		},
 		'cs!app/common/io': {
 			deps: ['socket.io']
 		}
 	},
 
 	deps: [
-		'app/common/helpers',
-		'bootstrap',
-		'typeahead',
-		'cs!app/common/io'
+		'cs!app/common/main'
 	]
 
 });

@@ -1,9 +1,8 @@
 define [
-  'jquery'
   'cs!app/common/moduleLoader'
   'app/common/http'
   'cookies'
-], ($, ModuleLoader, http, cookies) ->
+], (ModuleLoader, http, cookies) ->
   'use strict'
 
   if document.documentElement.className.indexOf('no-support') > -1

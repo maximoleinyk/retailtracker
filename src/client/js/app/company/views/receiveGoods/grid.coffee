@@ -10,6 +10,7 @@ define (require) ->
       collection: options.collection
       defaultEmptyText: i18n.get('emptyGoodsReceiveList')
       editable: options.crud
+      skipInitialAutoFocus: true
       columns: [
         {
           field: 'nomenclature'

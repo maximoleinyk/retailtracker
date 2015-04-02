@@ -71,6 +71,12 @@ define(function (require) {
 		},
 
 		buildCellView: function (type, column, options) {
+			var readOnlyCell = column.get('readonly');
+
+			if (readOnlyCell) {
+				return new ViewCell(options);
+			}
+
 			switch (type) {
 				case 'string':
 					return new InputCell(options);

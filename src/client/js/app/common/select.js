@@ -1,7 +1,8 @@
 define(function (require) {
 	'use strict';
 
-	var _ = require('underscore');
+	var $ = require('jquery'),
+		_ = require('underscore');
 
 	require('select2');
 	require('select2locale');
@@ -43,6 +44,10 @@ define(function (require) {
 						};
 					},
 					results: function (data) {
+						data.push({
+							id: -1,
+							text: '<span class="fa fa-plus"></span> <a href="#" class="select2-custom">Добавить</a>'
+						});
 						return {
 							results: data
 						};
@@ -58,7 +63,23 @@ define(function (require) {
 					$el.select2('open');
 				}
 			},
-			result = $el.select2(options);
+			result = $el.select2(options).data('select2');
+
+		result.onSelect = (function(onSelect) {
+			return function(data, options) {
+				var target;
+
+				if (options) {
+					target = $(options.target)
+				}
+
+				if (target && target.hasClass('select2-custom')) {
+					console.log('works');
+				} else {
+					return onSelect.apply(this, arguments);
+				}
+			};
+		}(result.onSelect));
 
 		label.off('click', handler).on('click', handler);
 
