@@ -14,17 +14,30 @@ define (require) ->
     onRender: ->
       @grid.show new Grid({
         collection: @collection
-        defaultEmptyText: i18n.get('thereAreNoOrders')
+        defaultEmptyText: i18n.get('emptyReceiveGoodsList')
         columns: [
           {
             field: 'number'
             title: i18n.get('number')
+            width: 90
           },
           {
-            field: 'created'
-            title: i18n.get('creationDate')
+            field: 'status'
+            title: i18n.get('status')
+            width: 150
+          },
+          {
+            field: 'warehouse'
+            title: i18n.get('warehouse')
+            formatter: (warehouse) ->
+              warehouse.name
+          },
+          {
+            field: 'enterDate'
+            title: i18n.get('enterDate')
             formatter: (value) ->
               helpers.date(value)
+            width: 180
           },
           {
             field: 'assignee'
@@ -33,20 +46,6 @@ define (require) ->
               value.firstName + ' ' + value.lastName
             url: (model) ->
               '/employees/' + model.id
-          },
-          {
-            field: 'receivingDate'
-            title: i18n.get('enterDate')
-            formatter: (value) ->
-              helpers.date(value)
-          },
-          {
-            field: 'warehouseItems'
-            title: i18n.get('itemsCount')
-            formatter: (value, model) ->
-              model.get('warehouseItems').length
-            type: 'number'
-            width: 150
           },
           {
             field: 'totalAmount'

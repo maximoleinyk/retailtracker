@@ -1,0 +1,76 @@
+<div class="page-title">
+    <div class="title">
+        <div>
+			{{i18n.goodsReceipt}} {{i18n.number}}<span data-text="number" data-bind>{{number}}</span> {{i18n.from}} <span>{{date created}}</span>
+		</div>
+        <a href="/goods/receive" class="link-back">{{i18n.back}}</a>
+    </div>
+</div>
+<form data-submit="submit">
+    <div class="page-section">
+        <div class="col col-half">
+            <div class="form-group">
+                <label for="number" class="required">{{i18n.number}}</label>
+
+                <div class="group">
+                    <input type="text" id="number" name="number" class="form-control half" data-bind data-focus/>
+
+                    <div class="help-block" data-validate="number" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="assignee" class="required">{{i18n.assignee}}</label>
+
+                <div class="group">
+                    <input type="hidden" id="assignee" name="assignee" class="form-control" data-id="assigneeSelect"
+                           data-placeholder="{{i18n.selectEmployee}}" data-bind/>
+
+                    <div class="help-block" data-validate="assignee" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="warehouse" class="required">{{i18n.warehouse}}</label>
+
+                <div class="group">
+                    <input type="hidden" id="warehouse" name="warehouse" class="form-control" data-id="warehouseSelect"
+                           data-placeholder="{{i18n.selectWarehouse}}" data-bind/>
+
+                    <div class="help-block" data-validate="warehouse" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="currency" class="required">{{i18n.currency}}</label>
+
+                <div class="group">
+                    <input type="hidden" id="currency" name="currency" class="form-control half" data-id="currencySelect"
+                           data-placeholder="{{i18n.selectCurrency}}" data-bind/>
+
+                    <div class="help-block" data-validate="currency" data-bind></div>
+                </div>
+            </div>
+            <div class="form-group no-bottom border">
+                <label for="description">{{i18n.description}}</label>
+
+                <div class="group">
+                    <textarea id="description" name="description" rows="5" class="form-control"
+                              data-optional="{{i18n.add}}" data-bind></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-section">
+        <div class="col col-stretch" data-region="grid"></div>
+    </div>
+    <div class="page-section">
+        <div class="actions">
+            <button type="submit" class="btn btn-primary" data-auto-disable>
+				{{#unless id}}
+					{{i18n.save}}
+				{{else}}
+					{{i18n.create}}
+				{{/unless}}
+            </button>
+            <a href="/goods/receive" class="btn btn-link">{{i18n.cancel}}</a>
+        </div>
+    </div>
+</form>

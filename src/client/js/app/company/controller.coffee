@@ -49,8 +49,18 @@ define (require) ->
   PosCollection = require('cs!app/company/collections/pos')
   PosModel = require('cs!app/company/models/pos')
   PosForm = require('cs!app/company/views/pos/form')
+  ReceiveGoodsForm = require('cs!app/company/views/receiveGoods/form')
+  ReceiveGoodsModel = require('cs!app/company/models/receiveGoods')
 
   Controller.extend
+
+    receiveGoodsForm: (id) ->
+      model = if id and id isnt 'create' then new ReceiveGoodsModel({ _id: id }, { parse: true }) else new ReceiveGoodsModel
+      showPage = =>
+        @openPage new ReceiveGoodsForm({
+          model: model
+        })
+      if model.isNew() then showPage() else model.fetch().then(showPage)
 
     posList: ->
       collection = new PosCollection

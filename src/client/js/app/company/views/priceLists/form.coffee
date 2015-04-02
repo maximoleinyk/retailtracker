@@ -6,7 +6,7 @@ define (require) ->
   select = require('select')
   Grid = require('app/common/grid/main')
   Formula = require('cs!app/company/models/formula')
-  helpers = require('app/common/helpers');
+  helpers = require('app/common/helpers')
 
   Layout.extend
 
