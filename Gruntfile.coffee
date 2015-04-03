@@ -100,12 +100,6 @@ module.exports = (grunt) ->
           },
           {
             expand: true
-            src: ['**/start.js']
-            cwd: 'temp/built/js/app'
-            dest: 'build/client/js/app'
-          },
-          {
-            expand: true
             src: ['**/config.js']
             cwd: 'temp/built/js'
             dest: 'build/client/js/app'
@@ -133,12 +127,20 @@ module.exports = (grunt) ->
             ]
             cwd: 'temp/built/js/app'
             dest: 'build/client/js/app'
+          },
+          {
+            expand: true
+            src: [
+              '**/pos/main.js'
+            ]
+            cwd: 'temp/built/js/app'
+            dest: 'build/client/js/app'
           }
         ]
 
     replace:
       cs:
-        src: ['temp/js/app/**/*.js', 'temp/js/util/**/*.js']
+        src: ['temp/js/app/**/*.js', 'temp/js/config.js']
         overwrite: true
         replacements: [
           {
@@ -151,16 +153,12 @@ module.exports = (grunt) ->
         dest: 'temp/index.html'
         replacements: [
           {
-            from: 'cs!'
-            to: ''
-          }
-          {
             from: '/js/libs/requirejs/require.js'
             to: '/js/require.js'
           }
           {
-            from: '/js/config.js'
-            to: '/js/app/config.js'
+            from: 'data-main="/static/js/config"'
+            to: 'data-main="/static/js/app/config"'
           }
         ]
 
@@ -173,47 +171,26 @@ module.exports = (grunt) ->
           mainConfigFile: 'temp/js/config.js'
           optimize: 'none'
           fileExclusionRegExp: /\.css/
+          findNestedDependencies: true
           modules: [
             {
               name: 'config'
-              include: [
-                'jquery'
-                'underscore'
-                'backbone'
-                'backbone.wreqr'
-                'backbone.babysitter'
-                'backbone-nested'
-                'bootstrap'
-                'marionette'
-                'handlebars'
-                'hbs'
-                'cookies'
-                'rsvp'
-                'select2'
-                'socket.io'
-                'momentRussianLocale'
-                'moment'
-                'numeral'
-                'app/common/moduleLoader'
-              ]
             },
             {
-              name: 'app/account/main'
-              exclude: [
-                'config'
-              ]
+              name: 'app/account/main',
+              exclude: ['jquery']
             },
             {
               name: 'app/brand/main'
-              exclude: [
-                'config'
-              ]
+              exclude: ['jquery']
             },
             {
               name: 'app/company/main'
-              exclude: [
-                'config'
-              ]
+              exclude: ['jquery']
+            }
+            {
+              name: 'app/pos/main'
+              exclude: ['jquery']
             }
           ]
 
@@ -221,11 +198,11 @@ module.exports = (grunt) ->
       compile:
         files:
           'build/client/js/require.js': 'build/client/js/require.js'
-          'build/client/js/app/start.js': 'build/client/js/app/start.js'
           'build/client/js/app/config.js': 'build/client/js/app/config.js'
           'build/client/js/app/account/main.js': 'build/client/js/app/account/main.js'
           'build/client/js/app/brand/main.js': 'build/client/js/app/brand/main.js'
           'build/client/js/app/company/main.js': 'build/client/js/app/company/main.js'
+          'build/client/js/app/pos/main.js': 'build/client/js/app/pos/main.js'
 
     mochaTest:
       test:
@@ -250,10 +227,4 @@ module.exports = (grunt) ->
   grunt.registerTask 'optimize', ['clean:temp', 'uglify']
 
   grunt.registerTask 'test', ['mochaTest']
-  grunt.registerTask 'default', ['clean', 'validate', 'build', 'dist', 'optimize']
-
-
-
-
-
-
+  grunt.registerTask 'default', ['clean', 'validate', 'build', 'dist']

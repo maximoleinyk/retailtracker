@@ -23,6 +23,7 @@ class App
       @app.use cookieParser(config.cookie.secret, {
         maxAge: config.cookie.maxAge
       })
+
       @app.use bodyParser.json()
       @app.use passport.initialize()
       @app.use passport.session()

@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Layout = require('cs!app/common/marionette/layout')
-  eventBus = require('eventBus')
+  eventBus = require('app/common/eventBus')
   Marionette = require('marionette')
   ItemView = require('cs!app/common/marionette/itemView')
   Handlebars = require('handlebars')

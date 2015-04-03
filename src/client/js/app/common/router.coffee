@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Marionette = require('marionette')
-  eventBus = require('eventBus')
+  eventBus = require('app/common/eventBus')
   _ = require('underscore')
 
   Marionette.AppRouter.extend

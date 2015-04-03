@@ -5,7 +5,7 @@ define (require) ->
   InviteeList = require('cs!./inviteeList')
   _ = require('underscore')
   Collection = require('cs!app/common/collection')
-  select = require('select')
+  select = require('app/common/select')
 
   Layout.extend
 

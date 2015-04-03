@@ -15,7 +15,7 @@ class MongoDB
 
       app.use session
         saveUninitialized: true
-        resave: true
+        resave: false
         expires: true
         rolling: true
         secret: config.session.secret,

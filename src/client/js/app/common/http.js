@@ -3,7 +3,7 @@ define(function (require) {
 
 	var $ = require('jquery'),
 		_ = require('underscore'),
-		eventBus = require('eventBus');
+		eventBus = require('app/common/eventBus');
 
 	var headers = {},
 		statusCode = {

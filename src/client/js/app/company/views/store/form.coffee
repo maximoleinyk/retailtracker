@@ -3,7 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
-  select = require('select')
+  select = require('app/common/select')
 
   Layout.extend
 

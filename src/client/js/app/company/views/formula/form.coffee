@@ -3,7 +3,7 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
-  select = require('select')
+  select = require('app/common/select')
   Grid = require('app/common/grid/main')
   Collection = require('cs!app/common/collection')
   helpers = require('app/common/helpers')

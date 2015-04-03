@@ -10,7 +10,7 @@ define (require) ->
   Backbone = require('backbone')
   Handlebars = require('handlebars')
   request = require('app/common/request')
-  eventBus = require('eventBus')
+  eventBus = require('app/common/eventBus')
 
   App = new Marionette.Application
 

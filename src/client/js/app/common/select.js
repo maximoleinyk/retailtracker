@@ -2,10 +2,11 @@ define(function (require) {
 	'use strict';
 
 	var $ = require('jquery'),
-		_ = require('underscore');
+		_ = require('underscore'),
+		eventBus = require('app/common/eventBus'),
+		i18n = require('cs!app/common/i18n');
 
 	require('select2');
-	require('select2locale');
 
 	return function ($el, options) {
 		options = options || {};
@@ -44,10 +45,12 @@ define(function (require) {
 						};
 					},
 					results: function (data) {
-						data.push({
-							id: -1,
-							text: '<span class="fa fa-plus"></span> <a href="#" class="select2-custom">Добавить</a>'
-						});
+						if (options.addUrl) {
+							data.push({
+								id: -1,
+								text: '<span class="fa fa-plus"></span> <a href="#">' + i18n.get('add') + '</a>'
+							});
+						}
 						return {
 							results: data
 						};
@@ -65,16 +68,11 @@ define(function (require) {
 			},
 			result = $el.select2(options).data('select2');
 
-		result.onSelect = (function(onSelect) {
-			return function(data, options) {
-				var target;
-
-				if (options) {
-					target = $(options.target)
-				}
-
-				if (target && target.hasClass('select2-custom')) {
-					console.log('works');
+		result.onSelect = (function (onSelect) {
+			return function (data) {
+				if (data.id === -1) {
+					$el.select2('destroy');
+					eventBus.trigger('router:navigate', options.addUrl, true);
 				} else {
 					return onSelect.apply(this, arguments);
 				}

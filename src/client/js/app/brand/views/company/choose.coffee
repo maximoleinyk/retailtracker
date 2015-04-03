@@ -6,7 +6,7 @@ define (require) ->
   Company = require('cs!app/brand/models/company')
   context = require('cs!app/common/context')
   request = require('app/common/request')
-  select = require('select')
+  select = require('app/common/select')
   http = require('app/common/http')
 
   Layout.extend

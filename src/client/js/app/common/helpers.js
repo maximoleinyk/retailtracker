@@ -3,13 +3,12 @@ define(function (require) {
 
 	var _ = require('underscore'),
 		moment = require('moment'),
-		momentLocale = require('momentRussianLocale'),
 		Handlebars = require('handlebars'),
 		context = require('cs!app/common/context'),
 		numeral = require('numeral'),
 		i18n = require('cs!app/common/i18n');
 
-	moment.locale('ru', momentLocale);
+	moment.locale('ru');
 	numeral.language('ru', {
 		delimiters: {
 			thousands: ' ',
@@ -28,7 +27,7 @@ define(function (require) {
 			return '.';
 		},
 		currency: {
-			symbol: '\u20B4'
+			symbol: 'руб.'
 		}
 	});
 
@@ -39,11 +38,11 @@ define(function (require) {
 			if (date.year() === moment().year() && !long) {
 				return date.format('D MMMM');
 			} else {
-				return date.format(momentLocale.longDateFormat('LL'));
+				return date.format('D MMMM YYYY г.');
 			}
 		},
 		time: function (value) {
-			return moment(value).format(momentLocale.longDateFormat('LT'));
+			return moment(value).format('HH:mm');
 		},
 		dateTime: function (value) {
 			return helpers.date(value) + ' ' + helpers.time(value);

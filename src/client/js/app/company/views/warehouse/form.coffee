@@ -3,7 +3,7 @@ define (require) ->
 
   ItemView = require('cs!app/common/marionette/itemView')
   i18n = require('cs!app/common/i18n')
-  select = require('select')
+  select = require('app/common/select')
   context = require('cs!app/common/context')
   _ = require('underscore')
 

@@ -19,11 +19,6 @@
     Here are the <a href="http://www.enable-javascript.com/" target="_blank">
     instructions how to enable JavaScript in your web browser</a>.
 </noscript>
-<script src="/static/js/libs/requirejs/require.js"></script>
-<script>
-    require(['/static/js/config.js'], function () {
-        require(['cs!app/start']);
-    });
-</script>
+<script src="/static/js/libs/requirejs/require.js" data-main="/static/js/config"></script>
 </body>
 </html>

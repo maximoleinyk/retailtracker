@@ -6,7 +6,7 @@ define (require) ->
   AttributesGrid = require('cs!./attributes')
   _ = require('underscore')
   i18n = require('cs!app/common/i18n')
-  select = require('select')
+  select = require('app/common/select')
 
   Layout.extend
 

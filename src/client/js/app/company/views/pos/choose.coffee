@@ -2,7 +2,7 @@ define (require) ->
   'use strict'
 
   Layout = require('app/common/marionette/layout')
-  select = require('select')
+  select = require('app/common/select')
   context = require('cs!app/common/context')
   PosCollection = require('cs!app/company/collections/pos')
   PosModel = require('cs!app/company/models/pos')
