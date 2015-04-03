@@ -4,12 +4,12 @@
 </div>
 <form data-submit="submit">
     <div class="page-section">
-        <div class="col col-3quarters">
+        <div class="col col-half">
             <div class="form-group">
                 <label for="name" class="required">{{i18n.name}}</label>
 
                 <div class="group">
-                    <input type="text" id="name" name="name" class="form-control three-fourth" data-bind data-focus/>
+                    <input type="text" id="name" name="name" class="form-control" data-bind data-focus/>
 
                     <div class="help-block" data-validate="name" data-bind></div>
                 </div>
@@ -18,7 +18,7 @@
                 <label for="article" class="required">{{i18n.article}}</label>
 
                 <div class="group">
-                    <input type="text" id="article" name="article" class="form-control quarter" data-bind/>
+                    <input type="text" id="article" name="article" class="form-control" data-bind/>
 
                     <div class="help-block" data-validate="article" data-bind></div>
                 </div>
@@ -43,16 +43,16 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>{{i18n.attributes}}</label>
+                <label for="manufacturer">{{i18n.manufacturer}}</label>
 
-                <div class="group" data-region="attributes"></div>
+                <div class="group">
+                    <input type="text" id="manufacturer" name="manufacturer" class="form-control"
+                           data-optional="{{i18n.add}}" data-bind/>
+
+                    <div class="help-block" data-validate="manufacturer" data-bind></div>
+                </div>
             </div>
             <div class="form-group">
-                <label>{{i18n.barcodes}}</label>
-
-                <div class="group" data-region="barcodes"></div>
-            </div>
-            <div class="form-group no-bottom border">
                 <label for="description">{{i18n.description}}</label>
 
                 <div class="group">
@@ -60,9 +60,19 @@
                               data-optional="{{i18n.add}}" data-bind></textarea>
                 </div>
             </div>
+            <div class="form-group">
+                <label>{{i18n.attributes}}</label>
+
+                <div class="group" data-region="attributes"></div>
+            </div>
+            <div class="form-group no-bottom border">
+                <label>{{i18n.barcodes}}</label>
+
+                <div class="group" data-region="barcodes"></div>
+            </div>
         </div>
     </div>
-	<div class="page-section">
+    <div class="page-section">
         <div class="actions">
             <button type="submit" class="btn btn-primary" data-auto-disable>
 				{{#if isNew}}
@@ -73,5 +83,5 @@
             </button>
             <a href="/nomenclature" class="btn btn-link" data-catch-url>{{i18n.cancel}}</a>
         </div>
-	</div>
+    </div>
 </form>

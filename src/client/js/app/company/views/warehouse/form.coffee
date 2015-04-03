@@ -3,7 +3,6 @@ define (require) ->
 
   ItemView = require('cs!app/common/marionette/itemView')
   i18n = require('cs!app/common/i18n')
-  select = require('app/common/select')
   context = require('cs!app/common/context')
   _ = require('underscore')
 
@@ -22,7 +21,7 @@ define (require) ->
       if obj.text then obj.text else obj.firstName + ' ' + obj.lastName + ' ' + obj.email
 
     renderAssigneeSelect: ->
-      select(@ui.$assigneeSelect, {
+      @ui.$assigneeSelect.selectBox
         id: (employee) ->
           return employee._id
         ajax:
@@ -37,11 +36,8 @@ define (require) ->
         formatResult: @assigneeFormatter
         initSelection: (element, callback) =>
           callback(@model.get('assignee'))
-      })
 
-    submit: (e) ->
-      e.preventDefault()
-
+    submit: ->
       assignee = @model.get('assignee')
       @model.set('assignee', if _.isObject(assignee) then assignee._id else assignee)
       @model.save().then =>

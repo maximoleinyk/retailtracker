@@ -5,7 +5,6 @@ define (require) ->
   InviteeList = require('cs!./inviteeList')
   _ = require('underscore')
   Collection = require('cs!app/common/collection')
-  select = require('app/common/select')
 
   Layout.extend
 
@@ -32,11 +31,8 @@ define (require) ->
       })
 
     renderSelect: ->
-      select(@ui.$select)
-      @ui.$select.select2('enable', false) if not this.model.isNew()
+      @ui.$select.selectBox().select2('enable', false) if not this.model.isNew()
 
-    submit: (e) ->
-      e.preventDefault()
-
+    submit: ->
       @model.save().then =>
         @navigateTo('/companies')

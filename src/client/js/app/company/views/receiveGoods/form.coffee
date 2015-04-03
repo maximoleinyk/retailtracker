@@ -3,7 +3,6 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
-  select = require('app/common/select')
   Grid = require('cs!./grid')
   Collection = require('cs!app/common/collection')
 
@@ -37,31 +36,32 @@ define (require) ->
 
     renderCurrencySelect: ->
       currencyObject = @model.get('currency')
-      select @ui.$currencySelect,
+      @ui.$currencySelect.selectBox
         urlRoot: '/currency'
+        route: '/currency'
         format: 'currency'
-        createRoute: '/currency'
         initSelection: (element, callback) =>
           callback(currencyObject)
       @model.set('currency', currencyObject._id, {silent: true}) if @model.get('currency')
 
     renderWarehouseSelect: ->
       warehouseObject = @model.get('warehouse')
-      select @ui.$warehouseSelect,
+      @ui.$warehouseSelect.selectBox
         urlRoot: '/warehouse'
         format: 'warehouse'
+        route: '/warehouses'
         initSelection: (element, callback) =>
           callback(warehouseObject)
       @model.set('warehouse', warehouseObject._id, {silent: true}) if @model.get('warehouse')
 
     renderEmployeeSelect: ->
       employee = @model.get('assignee')
-      select(@ui.$assigneeSelect, {
+      @ui.$assigneeSelect.selectBox
         format: 'employee'
         urlRoot: '/employees'
+        route: '/employees'
         initSelection: (element, callback) =>
           callback(employee)
-      })
       @model.set('manager', employee._id, {silent: true}) if @model.get('assignee')
 
     submit: ->

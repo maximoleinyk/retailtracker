@@ -3,7 +3,6 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
-  select = require('app/common/select')
   Grid = require('app/common/grid/main')
   Employees = require('app/company/collections/employees')
   ActionCell = require('cs!./actionCell')
@@ -76,7 +75,7 @@ define (require) ->
 
     renderStoreSelect: ->
       store = @model.get('store')
-      select @ui.$storeSelect,
+      @ui.$storeSelect.selectBox
         id: (object) ->
           return object._id
         ajax:

@@ -3,7 +3,6 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
-  select = require('app/common/select')
 
   Layout.extend
 
@@ -29,7 +28,7 @@ define (require) ->
 
     renderPriceListSelect: ->
       priceListObject = @model.get('priceList')
-      select @ui.$priceListSelect,
+      @ui.$priceListSelect.selectBox
         id: (object) ->
           return object._id
         ajax:
@@ -48,7 +47,7 @@ define (require) ->
 
     renderWarehouseSelect: ->
       warehouseObject = @model.get('warehouse')
-      select @ui.$warehouseSelect,
+      @ui.$warehouseSelect.selectBox
         id: (object) ->
           return object._id
         ajax:
@@ -67,7 +66,7 @@ define (require) ->
 
     renderManagerSelect: ->
       managerObject = @model.get('manager')
-      select @ui.$managerSelect,
+      @ui.$managerSelect.selectBox
         id: (object) ->
           return object._id
         ajax:

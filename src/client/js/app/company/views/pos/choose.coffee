@@ -2,7 +2,6 @@ define (require) ->
   'use strict'
 
   Layout = require('app/common/marionette/layout')
-  select = require('app/common/select')
   context = require('cs!app/common/context')
   PosCollection = require('cs!app/company/collections/pos')
   PosModel = require('cs!app/company/models/pos')
@@ -27,7 +26,7 @@ define (require) ->
 
     renderStoreSelect: ->
       return if not @options.stores.length
-      select @ui.$storeSelect,
+      @ui.$storeSelect.selectBox
         id: (object) ->
           return object._id
         ajax:
@@ -49,7 +48,7 @@ define (require) ->
       .then =>
         if posCollection.length
           @ui.$posGroup.removeClass('hidden')
-          select @ui.$posSelect,
+          @ui.$posSelect.selectBox
             data: posCollection.map (model) ->
               id: model.id
               text: model.get('name')

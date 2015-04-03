@@ -3,7 +3,6 @@ define (require) ->
 
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
-  select = require('app/common/select')
   Grid = require('app/common/grid/main')
   Formula = require('cs!app/company/models/formula')
   helpers = require('app/common/helpers')
@@ -32,7 +31,7 @@ define (require) ->
 
     renderCurrencySelect: ->
       currencyObject = @model.get('currency')
-      select(@ui.$currencySelect, {
+      @ui.$currencySelect.selectBox
         id: (uom) ->
           return uom._id
         ajax:
@@ -47,13 +46,12 @@ define (require) ->
         formatResult: @currencyFormatter
         initSelection: (element, callback) =>
           callback(currencyObject)
-      })
-      @model.set('currency', currencyObject._id, {silent: true}) if @model.get('currency')
+      @model.set('currency', currencyObject._id, {silent: true}) if currencyObject
       @ui.$currencySelect.select2('enable', false) if not @model.isNew()
 
     renderFormulaSelect: ->
       formulaObject = @model.get('formula')
-      select(@ui.$formulaSelect, {
+      @ui.$formulaSelect.selectBox
         id: (object) ->
           return object._id
         ajax:
@@ -67,9 +65,8 @@ define (require) ->
         formatSelection: @formulaFormatter
         formatResult: @formulaFormatter
         initSelection: (element, callback) =>
-          callback(@model.get('formula'))
-      })
-      @ui.$formulaSelect.select2('val', @model.get('formula')) if @model.get('formula')
+          callback(formulaObject)
+      @ui.$formulaSelect.select2('val', formulaObject) if formulaObject
       @ui.$formulaSelect.select2('enable', false) if not @model.isNew()
 
     navigate: ->

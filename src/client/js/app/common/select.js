@@ -4,12 +4,15 @@ define(function (require) {
 	var $ = require('jquery'),
 		_ = require('underscore'),
 		eventBus = require('app/common/eventBus'),
-		i18n = require('cs!app/common/i18n');
+		i18n = require('cs!app/common/i18n'),
+		Backbone = require('backbone');
 
 	require('select2');
 
-	return function ($el, options) {
+	$.fn.selectBox = function (options) {
 		options = options || {};
+
+		var $el = $(this);
 
 		if (!_.isUndefined(options.format)) {
 			switch (options.format) {
@@ -45,12 +48,6 @@ define(function (require) {
 						};
 					},
 					results: function (data) {
-						if (options.addUrl) {
-							data.push({
-								id: -1,
-								text: '<span class="fa fa-plus"></span> <a href="#">' + i18n.get('add') + '</a>'
-							});
-						}
 						return {
 							results: data
 						};
@@ -66,18 +63,7 @@ define(function (require) {
 					$el.select2('open');
 				}
 			},
-			result = $el.select2(options).data('select2');
-
-		result.onSelect = (function (onSelect) {
-			return function (data) {
-				if (data.id === -1) {
-					$el.select2('destroy');
-					eventBus.trigger('router:navigate', options.addUrl, true);
-				} else {
-					return onSelect.apply(this, arguments);
-				}
-			};
-		}(result.onSelect));
+			result = $el.select2(options);
 
 		label.off('click', handler).on('click', handler);
 

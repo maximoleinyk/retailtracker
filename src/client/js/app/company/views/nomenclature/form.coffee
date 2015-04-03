@@ -6,12 +6,11 @@ define (require) ->
   AttributesGrid = require('cs!./attributes')
   _ = require('underscore')
   i18n = require('cs!app/common/i18n')
-  select = require('app/common/select')
 
   Layout.extend
 
     template: require('hbs!./form.hbs')
-    className: 'page page-2thirds'
+    className: 'page page-halves'
 
     onRender: ->
       @renderProductGroupSelect()
@@ -36,7 +35,7 @@ define (require) ->
       if modelJSON.text then modelJSON.text else modelJSON.name
 
     renderUomSelect: ->
-      select(@ui.$uomSelect, {
+      @ui.$uomSelect.selectBox
         placeholder: i18n.get('selectUom')
         id: (uomObject) ->
           return uomObject._id
@@ -52,11 +51,10 @@ define (require) ->
         formatResult: @uomFormatter
         initSelection: (element, callback) =>
           callback(@model.get('uom'))
-      })
       @ui.$uomSelect.select2('val', @model.get('uom')) if @model.get('uom')
 
     renderProductGroupSelect: ->
-      select(@ui.$productGroupSelect, {
+      @ui.$productGroupSelect.selectBox
         placeholder: i18n.get('selectGroup')
         id: (groupObject) ->
           return groupObject._id
@@ -74,14 +72,11 @@ define (require) ->
           obj = @model.get('productGroup')
           callback(obj)
           @model.set('productGroup', obj._id)
-      })
       @ui.$productGroupSelect.select2('val', @model.get('productGroup')) if @model.get('productGroup')
 
     cancel: ->
       @navigateTo('')
 
-    submit: (e) ->
-      e.preventDefault()
-
+    submit: ->
       @model.save().then =>
         @navigateTo('/nomenclature')

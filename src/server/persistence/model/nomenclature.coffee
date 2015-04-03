@@ -29,6 +29,7 @@ class NomenclatureSchema
           value: String
         }
       ]
+      manufacturer: String
       description: String
     this
 

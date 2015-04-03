@@ -15,14 +15,8 @@ module.exports = ->
     else
       next()
 
-  router.get '/page/brand*', (req, res, next) ->
-    delete req.session.company
-    delete req.session.pos
-    next()
-
-  router.get '/page/company*', (req, res, next) ->
-    delete req.session.pos
-    next()
+  router.get '/page', (req, res) ->
+    res.redirect('/page/account/login')
 
   # always return single HTML page on leading /page* part
   router.get "/page*", (req, res) ->

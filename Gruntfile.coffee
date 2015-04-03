@@ -178,19 +178,19 @@ module.exports = (grunt) ->
             },
             {
               name: 'app/account/main',
-              exclude: ['jquery']
+              exclude: ['config']
             },
             {
               name: 'app/brand/main'
-              exclude: ['jquery']
+              exclude: ['config']
             },
             {
               name: 'app/company/main'
-              exclude: ['jquery']
+              exclude: ['config']
             }
             {
               name: 'app/pos/main'
-              exclude: ['jquery']
+              exclude: ['config']
             }
           ]
 
@@ -221,10 +221,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-mocha-test'
 
-  grunt.registerTask 'validate', ['eslint']
+  grunt.registerTask 'test', ['mochaTest']
+  grunt.registerTask 'lint', ['eslint']
+  grunt.registerTask 'validate', ['lint', 'test']
   grunt.registerTask 'build', ['copy:temp', 'coffee', 'less', 'replace', 'requirejs']
   grunt.registerTask 'dist', ['copy:index', 'copy:css', 'copy:js']
   grunt.registerTask 'optimize', ['clean:temp', 'uglify']
 
-  grunt.registerTask 'test', ['mochaTest']
-  grunt.registerTask 'default', ['clean', 'validate', 'build', 'dist']
+  grunt.registerTask 'default', ['clean', 'validate', 'build', 'dist', 'optimize']

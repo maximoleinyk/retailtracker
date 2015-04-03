@@ -8,8 +8,6 @@ define (require) ->
     template: require('hbs!./form.hbs')
     className: 'page page-2thirds'
 
-    submit: (e) ->
-      e.preventDefault()
-
+    submit: ->
       @model.save().then =>
         @navigateTo('/counterparty')
