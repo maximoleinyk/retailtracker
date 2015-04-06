@@ -1,12 +1,13 @@
 <div class="page-title">
     <div class="title">
         <div>
-			{{i18n.goodsReceipt}} {{i18n.number}}<span data-text="number" data-bind>{{number}}</span> {{i18n.from}} <span>{{date created}}</span>
-		</div>
+			{{i18n.goodsReceipt}} {{i18n.number}}<span data-text="number" data-bind>{{number}}</span> {{i18n.from}}
+            <span>{{date created}}</span>
+        </div>
         <a href="/goods/receive" class="link-back">{{i18n.back}}</a>
     </div>
 </div>
-<form data-submit="submit">
+<form data-submit="save">
     <div class="page-section">
         <div class="col col-half">
             <div class="form-group">
@@ -16,16 +17,6 @@
                     <input type="text" id="number" name="number" class="form-control half" data-bind data-focus/>
 
                     <div class="help-block" data-validate="number" data-bind></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="assignee" class="required">{{i18n.assignee}}</label>
-
-                <div class="group">
-                    <input type="hidden" id="assignee" name="assignee" class="form-control" data-id="assigneeSelect"
-                           data-placeholder="{{i18n.selectEmployee}}" data-bind/>
-
-                    <div class="help-block" data-validate="assignee" data-bind></div>
                 </div>
             </div>
             <div class="form-group">
@@ -42,7 +33,8 @@
                 <label for="currency" class="required">{{i18n.currency}}</label>
 
                 <div class="group">
-                    <input type="hidden" id="currency" name="currency" class="form-control half" data-id="currencySelect"
+                    <input type="hidden" id="currency" name="currency" class="form-control half"
+                           data-id="currencySelect"
                            data-placeholder="{{i18n.selectCurrency}}" data-bind/>
 
                     <div class="help-block" data-validate="currency" data-bind></div>
@@ -59,8 +51,21 @@
         </div>
     </div>
     <div class="page-section">
-        <div class="col col-stretch" data-region="grid"></div>
+        <div class="col col-stretch">
+			<div class="form-group" data-id="gridGroup">
+				<div data-region="grid"></div>
+				<div class="help-block" data-validate="items" data-bind></div>
+			</div>
+        </div>
     </div>
+	<div class="page-section">
+		<div class="col half">&nbsp;</div>
+		<div class="col col-half">
+            <div class="total-section">
+                <div class="total-item-label">{{i18n.total}}:</div> <div data-id="totalPrice" class="total-item-value"></div>
+            </div>
+		</div>
+	</div>
     <div class="page-section">
         <div class="actions">
             <button type="submit" class="btn btn-primary" data-auto-disable>

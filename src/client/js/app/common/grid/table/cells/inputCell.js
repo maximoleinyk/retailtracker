@@ -22,7 +22,7 @@ define(function (require) {
 			AbstractCell.prototype.initialize.apply(this, arguments);
 		},
 
-		registerExternalEvents: function() {
+		registerExternalEvents: function () {
 			var self = this,
 				events = this.options.column.get('events');
 
@@ -30,12 +30,12 @@ define(function (require) {
 				return;
 			}
 
-			_.each(events, function(callback, eventName) {
+			_.each(events, function (callback, eventName) {
 				switch (eventName) {
 					case 'blur':
-						self.ui.$input.on(eventName, function(e) {
+						self.ui.$input.on(eventName, function (e) {
 							var value = $(e.currentTarget).val(),
-								next = function() {
+								next = function () {
 									self.options.cellManager.enableInputs();
 								};
 							self.options.cellManager.disableInputs();
@@ -49,7 +49,7 @@ define(function (require) {
 		setDefaultValues: function () {
 			var defaultValue = this.options.column.get('default');
 
-			if (!_.isNull(defaultValue) && !_.isUndefined(defaultValue) && this.options.cellManager.state !== 'edit') {
+			if (!_.isNull(defaultValue) && !_.isUndefined(defaultValue) && this.options.cellManager.isFooter) {
 				this.model.set(this.options.column.get('field'), defaultValue);
 			}
 		},

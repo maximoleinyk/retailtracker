@@ -89,8 +89,18 @@ module.exports = (app, passport) ->
   posController = new PosController(posService)
   posController.register(router)
 
+  currencyStore = new CurrencyStore(currencySchema)
+  currencyService = new CurrencyService(currencyStore)
+  currencyController = new CurrencyController(currencyService)
+  currencyController.register(router)
+
+  nomenclatureStore = new NomenclatureStore(nomenclatureSchema)
+  nomenclatureService = new NomenclatureService(nomenclatureStore)
+  nomenclatureController = new NomenclatureController(nomenclatureService)
+  nomenclatureController.register(router)
+
   receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
-  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore)
+  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore, currencyStore, nomenclatureStore)
   receiveGoodsController = new ReceiveGoodsController(receiveGoodsService)
   receiveGoodsController.register(router)
 
@@ -114,11 +124,6 @@ module.exports = (app, passport) ->
 
   storeController = new StoreController(new StoreService(new StoreDataStore(storeSchema)))
   storeController.register(router)
-
-  currencyStore = new CurrencyStore(currencySchema)
-  currencyService = new CurrencyService(currencyStore)
-  currencyController = new CurrencyController(currencyService)
-  currencyController.register(router)
 
   roleStore = new RoleStore
   roleService = new RoleService(roleStore)
@@ -190,11 +195,6 @@ module.exports = (app, passport) ->
   productGroupService = new ProductGroupService(productGroupStore)
   productGroupController = new ProductGroupController(productGroupService)
   productGroupController.register(router)
-
-  nomenclatureStore = new NomenclatureStore(nomenclatureSchema)
-  nomenclatureService = new NomenclatureService(nomenclatureStore)
-  nomenclatureController = new NomenclatureController(nomenclatureService)
-  nomenclatureController.register(router)
 
   roleController = new RoleController(roleService)
   roleController.register(router)

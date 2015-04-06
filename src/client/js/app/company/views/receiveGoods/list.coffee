@@ -19,39 +19,57 @@ define (require) ->
           {
             field: 'number'
             title: i18n.get('number')
-            width: 90
+            width: 75
           },
           {
             field: 'status'
             title: i18n.get('status')
-            width: 150
+            width: 250
+            url: (model) ->
+              '/goods/receive/' + model.id
+            formatter: (value, model) ->
+              result = i18n.get(value.toLowerCase()) + ' '
+              switch (value)
+                when 'DRAFT' then result += helpers.dateTime(model.get('created'))
+                when 'ENTERED' then result += helpers.dateTime(model.get('entered'))
+                else
+                  result
+              result
           },
           {
             field: 'warehouse'
             title: i18n.get('warehouse')
+            url: (model) ->
+              '/warehouses/' + model.get('warehouse._id')
             formatter: (warehouse) ->
               warehouse.name
           },
           {
-            field: 'enterDate'
-            title: i18n.get('enterDate')
-            formatter: (value) ->
-              helpers.date(value)
-            width: 180
-          },
-          {
             field: 'assignee'
             title: i18n.get('assignee')
+            url: (model) ->
+              '/employees/' + model.get('employee._id')
             formatter: (value) ->
               value.firstName + ' ' + value.lastName
-            url: (model) ->
-              '/employees/' + model.id
           },
           {
-            field: 'totalAmount'
-            title: i18n.get('totalAmount')
+            field: 'items'
+            title: i18n.get('totalQuantity')
+            width: 150
+            type: 'number'
+            formatter: (value) ->
+              (value or []).length
+          },
+          {
+            field: 'currencyCode'
+            title: i18n.get('currency')
+            width: 90
+          },
+          {
+            field: 'totalPrice'
+            title: i18n.get('totalPrice')
             formatter: (value, model) ->
-              model.get('uom') + ' ' + helpers.amount(value)
+              helpers.amount(value, model.get('currencyCode'))
             type: 'number'
           }
         ]

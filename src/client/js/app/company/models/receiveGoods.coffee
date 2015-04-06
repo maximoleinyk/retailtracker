@@ -4,14 +4,16 @@ define (require) ->
   Model = require('cs!app/common/model')
   moment = require('moment')
   i18n = require('cs!app/common/i18n')
+  context = require('cs!app/common/context')
 
   class ReceiveGoods extends Model
 
     urlRoot: '/receivegoods'
 
-    defaults:
+    defaults: ->
       number: 1
       status: 'DRAFT'
+      assignee: context.get('employee._id')
       items: []
       created: moment().toDate()
 
@@ -38,3 +40,7 @@ define (require) ->
         description: ->
           i18n.get('pleaseAddOneOrMoreProducts')
 
+    updateTotals: ->
+      @promise('post', '/receivegoods/updatetotals', @toJSON()).then (result) =>
+        @set(result, {parse:true})
+        @commit()

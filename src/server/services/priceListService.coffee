@@ -13,7 +13,7 @@ class PriceListService extends AbstractService
       data = document.toJSON()
       data.formula = data.formula._id
       data.currency = data.currency._id
-      data.state = 'DELETED'
+      data.status = 'DELETED'
       @update(ns, data, callback)
 
 module.exports = PriceListService

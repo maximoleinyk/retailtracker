@@ -9,7 +9,7 @@ class Formula
         type: String
         required: true
       description: String
-      state:
+      status:
         type: String
         default: 'DRAFT'
         required: true

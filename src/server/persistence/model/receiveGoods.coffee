@@ -8,7 +8,7 @@ class ReceiveGoods
       number:
         type: Number
         required: true
-        unique: true
+#        unique: true
       status:
         type: String
         required: true # DRAFT DELETED ENTERED
@@ -22,6 +22,8 @@ class ReceiveGoods
         type: mongoose.Schema.Types.ObjectId
         ref: 'Currency'
         $tenant: true
+      currencyCode: String
+      currencyRate: String
       assignee:
         type: mongoose.Schema.Types.ObjectId
         ref: 'Employee'
@@ -31,19 +33,14 @@ class ReceiveGoods
         type: mongoose.Schema.Types.ObjectId
         ref: 'Warehouse'
         $tenant: true
-      totalQuantity:
-        type: Number
-        required: true
-      totalAmount:
-        type: Number
-        required: true
+      totalQuantity: Number
+      totalPrice: Number
       items: [
         {
           nomenclature:
             type: mongoose.Schema.Types.ObjectId
             ref: 'Nomenclature'
             $tenant: true
-#          manufacturer: String
           quantity: Number
           price: Number
           totalPrice: Number

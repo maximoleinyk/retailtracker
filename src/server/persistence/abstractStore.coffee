@@ -20,10 +20,9 @@ class AbstractStore
 
   create: (ns, data, callback) ->
     ConcreteModel = @model.get(ns)
-
     instance = new ConcreteModel(data)
     instance.save (err, document) =>
-      @findById(ns, document._id, @callback(callback))
+      if err then @callback(callback)(err) else @findById(ns, document._id, @callback(callback))
 
   delete: (ns, id, callback) ->
     @model.get(ns).findByIdAndRemove(id, @callback(callback))

@@ -10,7 +10,7 @@ define (require) ->
 
     defaults: ->
       columns: []
-      state: 'DRAFT'
+      status: 'DRAFT'
 
     validators:
       name:
@@ -23,7 +23,7 @@ define (require) ->
           i18n.get('addAnotherColumn')
 
     isActivated: ->
-      @get('state') is 'ACTIVATED'
+      @get('status') is 'ACTIVATED'
 
     activate: ->
       @save(null, {

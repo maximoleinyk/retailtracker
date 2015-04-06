@@ -72,30 +72,30 @@ define (require) ->
       this.requestCount++
       this.$el.find('[data-auto-disable]').attr('disabled', true)
 
-      clearTimeout(this.timeout) if this.timeout
-
-      checkSessionExpiration = ->
-        reload = ->
-          window.location.reload()
-        PopupBox.context({
-          title: i18n.get('sessionExpired')
-          message: i18n.get('sessionExpiredMessage')
-          buttons: [
-            {
-              label: i18n.get('resumeSession')
-              primary: true
-              action: (view) ->
-                request.get('/security/handshake')
-                .then ->
-                  http.setHeaders({
-                    'X-Csrf-Token': cookies.get('X-Csrf-Token')
-                  })
-                  view.close()
-            }
-          ]
-        })
-        this.timeout = setTimeout(reload, 300000)
-      this.timeout = setTimeout(checkSessionExpiration, 300000) # in 5 minutes
+#      clearTimeout(this.timeout) if this.timeout
+#
+#      checkSessionExpiration = ->
+#        reload = ->
+#          window.location.reload()
+#        PopupBox.context({
+#          title: i18n.get('sessionExpired')
+#          message: i18n.get('sessionExpiredMessage')
+#          buttons: [
+#            {
+#              label: i18n.get('resumeSession')
+#              primary: true
+#              action: (view) ->
+#                request.get('/security/handshake')
+#                .then ->
+#                  http.setHeaders({
+#                    'X-Csrf-Token': cookies.get('X-Csrf-Token')
+#                  })
+#                  view.close()
+#            }
+#          ]
+#        })
+#        this.timeout = setTimeout(reload, 300000)
+#      this.timeout = setTimeout(checkSessionExpiration, 300000) # in 5 minutes
 
     handleStopRequest: ->
       this.requestCount--

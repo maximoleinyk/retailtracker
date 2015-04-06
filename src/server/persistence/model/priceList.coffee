@@ -19,7 +19,7 @@ class PriceList
         $tenant: true
         required: true
       description: String
-      state:
+      status:
         type: String
         default: 'DRAFT' # DRAFT ACTIVATED DELETED
       created:

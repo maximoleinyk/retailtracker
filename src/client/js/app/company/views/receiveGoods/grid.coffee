@@ -4,6 +4,7 @@ define (require) ->
   i18n = require('cs!app/common/i18n')
   Grid = require('app/common/grid/main')
   helpers = require('app/common/helpers')
+  numeral = require('numeral')
 
   (options) ->
     new Grid
@@ -22,35 +23,48 @@ define (require) ->
           url: (model) ->
             '/nomenclature/' + model.get('nomenclature._id')
           onSelection: (object, model) ->
-
+            model.set({
+              price: 0
+              quantity: 0
+              totalPrice: 0
+            })
           formatResult: (object) =>
             if object.text then object.text else object.name
           formatter: (object) ->
             object?.name
         },
         {
-          field: 'remainingCommodity'
-          title: i18n.get('remainingCommodity')
-          width: 100
-          readonly: true
-          type: 'number'
-        },
-        {
           field: 'quantity'
           title: i18n.get('quantity')
           width: 100
           type: 'number'
+          default: 0
+          events:
+            blur: (value, model, done) ->
+              model.set('totalPrice', numeral(model.get('price')).multiply(+model.get('quantity')).value())
+              done()
         },
         {
           field: 'price'
           title: i18n.get('price')
           width: 150
           type: 'number'
+          default: 0
+          formatter: (value) ->
+            helpers.amount(value);
+          events:
+            blur: (value, model, done) ->
+              model.set('totalPrice', numeral(model.get('price')).multiply(+model.get('quantity')).value())
+              done()
         }
         {
           field: 'totalPrice'
           title: i18n.get('totalPrice')
           width: 150
           type: 'number'
+          readonly: true
+          default: 0
+          formatter: (value) ->
+            helpers.amount(value);
         }
       ]

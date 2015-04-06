@@ -8,6 +8,8 @@ define(function (require) {
 
     return EditRow.extend({
 
+		isFooter: true,
+
         initialize: function (options) {
             options = options || {};
             options.state = 'edit';

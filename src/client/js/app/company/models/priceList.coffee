@@ -9,7 +9,7 @@ define (require) ->
     urlRoot: '/pricelists'
 
     defaults: ->
-      state: 'DRAFT'
+      status: 'DRAFT'
 
     validators:
       name:
@@ -26,7 +26,7 @@ define (require) ->
           i18n.get('formulaIsRequired')
 
     isActivated: ->
-      @get('state') is 'ACTIVATED'
+      @get('status') is 'ACTIVATED'
 
     activate: ->
       @save(null, {

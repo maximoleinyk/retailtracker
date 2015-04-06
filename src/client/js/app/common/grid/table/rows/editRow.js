@@ -119,18 +119,23 @@ define(function (require) {
 							onCancel: function () {
 								self.discardChanges();
 							},
-							onAction: function () {
+							onAction: function (e) {
+								e.preventDefault();
+
 								var next = function (err) {
 									self.enableInputs();
 									self.validate(err, function () {
 										self.changeState('view');
 									});
 								};
+
 								self.disableInputs();
+
 								if (self.options.editable.onSave) {
-									return self.options.editable.onSave(self.model, next);
+									self.options.editable.onSave(self.model, next);
+								} else {
+									next();
 								}
-								next();
 							}
 						}));
 					}

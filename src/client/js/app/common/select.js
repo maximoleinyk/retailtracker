@@ -23,6 +23,7 @@ define(function (require) {
 						return object.text ? object.text : object.name;
 					};
 					break;
+				case 'person':
 				case 'employee':
 					options.formatSelection = options.formatResult = function (object) {
 						return object.text ? object.text : object.firstName + ' ' + object.lastName + ' ' + object.email;

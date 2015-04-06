@@ -47,7 +47,7 @@ define(function (require) {
 		dateTime: function (value) {
 			return helpers.date(value) + ' ' + helpers.time(value);
 		},
-		amount: function (value) {
+		amount: function (value, currencyCode) {
 			return numeral(value).format('00.00');
 		},
 		formatUser: function (user) {
