@@ -10,7 +10,7 @@ define (require) ->
   Layout.extend
 
     template: require('hbs!./form.hbs')
-    className: 'page page-halves'
+    className: 'page page-halves page-2thirds'
 
     modelEvents:
       'change:totalPrice': 'updateTotals'
@@ -18,6 +18,9 @@ define (require) ->
 
     initialize: ->
       @items = new Collection
+
+    templateHelpers: ->
+      isEntered: @model.isEntered()
 
     onRender: ->
       @renderWarehouseSelect()
@@ -43,16 +46,24 @@ define (require) ->
         format: 'currency'
         initSelection: (element, callback) =>
           callback(currencyObject)
+        onSelection: (id, object) =>
+          @model.set({
+            currencyRate: object.rate
+            currencyCode: object.code
+          })
       @model.set('currency', currencyObject._id, {silent: true}) if @model.get('currency')
 
     renderGrid: ->
-      @items.reset(@model.get('items'))
-      @grid.show new Grid
+      options =
         collection: @items
-        crud: this
+      options.crud = this if not @model.isEntered()
+      @items.reset(@model.get('items'))
+      @grid.show new Grid(options)
 
     updateTotals: ->
-      @ui.$totalPrice.text(helpers.amount(@model.get('totalPrice'), @model.get('currency.code')))
+      @ui.$resultPrice.text(helpers.amount(@model.get('totalPrice'), @model.get('currencyCode')))
+      @ui.$currencyRate.text(helpers.currencyRate(@model.get('currencyRate')))
+      @ui.$resultAmount.text(@model.get('items').length)
 
     save: ->
       @model.save().then =>
@@ -65,6 +76,10 @@ define (require) ->
       errors.quantity = i18n.get('quantityShouldBeSpecified') if not model.get('quantity')
       errors.price = i18n.get('priceShouldBeSpecified') if not model.get('price')
       errors
+
+    enter: ->
+      @model.enter().then =>
+        @render()
 
     onCreate: (model, callback) ->
       errors = @handleErrors(model)

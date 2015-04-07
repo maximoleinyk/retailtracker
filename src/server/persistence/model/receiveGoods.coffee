@@ -6,7 +6,7 @@ class ReceiveGoods
   constructor: ->
     mongoose.mtModel 'ReceiveGoods', mongoose.Schema
       number:
-        type: Number
+        type: String
         required: true
 #        unique: true
       status:

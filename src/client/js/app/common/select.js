@@ -66,6 +66,12 @@ define(function (require) {
 			},
 			result = $el.select2(options);
 
+		if (_.isFunction(options.onSelection)) {
+			$el.on('select2-selecting', function(e) {
+				options.onSelection(e.val, e.object);
+			});
+		}
+
 		label.off('click', handler).on('click', handler);
 
 		return result;

@@ -12,8 +12,8 @@ class ReceiveGoodsController extends CrudController
     router.post @baseUrl + '/updatetotals', @filter, (req, res) =>
       @service.updateTotals @namespace(req), req.body, @callback(res)
 
-    router.post @baseUrl + '/enter/:id', @filter, (req, res) =>
-      @service.enter @namespace(req), req.param('id'), @callback(res)
+    router.post @baseUrl + '/enter', @filter, (req, res) =>
+      @service.enter @namespace(req), req.body, @callback(res)
 
     super
 

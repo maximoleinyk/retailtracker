@@ -59,6 +59,9 @@ define(function (require) {
 		},
 		money: function(value) {
 			return numeral(value).format('$0,0.00');
+		},
+		currencyRate: function(value) {
+			return numeral(value).format('0.0000');
 		}
 	};
 

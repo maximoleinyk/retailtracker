@@ -78,6 +78,10 @@ PosController = inject('controllers/pos')
 employeeSchema = inject('persistence/model/employee')
 pageController = inject('controllers/page')
 express = require('express')
+WarehouseItemService = inject('services/warehouseItemService')
+WarehouseItemStore = inject('persistence/warehouseItemStore')
+WarehouseItemService = inject('services/warehouseItemService')
+warehouseItemSchema = inject('persistence/model/warehouseItem')
 
 module.exports = (app, passport) ->
   router = express.Router()
@@ -99,8 +103,11 @@ module.exports = (app, passport) ->
   nomenclatureController = new NomenclatureController(nomenclatureService)
   nomenclatureController.register(router)
 
+  warehouseItemStore = new WarehouseItemStore(warehouseItemSchema)
+  warehouseItemService = new WarehouseItemService(warehouseItemStore)
+
   receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
-  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore, currencyStore, nomenclatureStore)
+  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore, warehouseItemService, currencyStore, nomenclatureStore)
   receiveGoodsController = new ReceiveGoodsController(receiveGoodsService)
   receiveGoodsController.register(router)
 

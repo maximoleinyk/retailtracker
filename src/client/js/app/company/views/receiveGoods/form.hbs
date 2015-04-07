@@ -2,7 +2,7 @@
     <div class="title">
         <div>
 			{{i18n.goodsReceipt}} {{i18n.number}}<span data-text="number" data-bind>{{number}}</span> {{i18n.from}}
-            <span>{{date created}}</span>
+            <span>{{date created}}</span> {{#if isEntered}}({{i18n.entered}}){{/if}}
         </div>
         <a href="/goods/receive" class="link-back">{{i18n.back}}</a>
     </div>
@@ -52,30 +52,41 @@
     </div>
     <div class="page-section">
         <div class="col col-stretch">
-			<div class="form-group" data-id="gridGroup">
-				<div data-region="grid"></div>
-				<div class="help-block" data-validate="items" data-bind></div>
-			</div>
+            <div class="form-group" data-id="gridGroup">
+                <div data-region="grid"></div>
+                <div class="help-block" data-validate="items" data-bind></div>
+            </div>
         </div>
     </div>
-	<div class="page-section">
-		<div class="col half">&nbsp;</div>
-		<div class="col col-half">
-            <div class="total-section">
-                <div class="total-item-label">{{i18n.total}}:</div> <div data-id="totalPrice" class="total-item-value"></div>
+    <div class="page-section">
+        <div class="col col-3quarters">&nbsp;</div>
+        <div class="col col-quarter">
+            <div class="total-section major">
+                <div class="total-section-label">{{i18n.resultPrice}}:</div>
+                <div class="total-section-value" data-id="resultPrice"></div>
             </div>
-		</div>
-	</div>
+            <div class="total-section">
+                <div class="total-section-label">{{i18n.currencyRate}}:</div>
+                <div class="total-section-value" data-id="currencyRate"></div>
+            </div>
+            <div class="total-section">
+                <div class="total-section-label">{{i18n.resultAmount}}:</div>
+                <div class="total-section-value" data-id="resultAmount"></div>
+            </div>
+        </div>
+    </div>
     <div class="page-section">
         <div class="actions">
-            <button type="submit" class="btn btn-primary" data-auto-disable>
+			{{#unless isEntered}}
 				{{#unless id}}
-					{{i18n.save}}
+                    <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
 				{{else}}
-					{{i18n.create}}
+                    <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.create}}</button>
+                    <button type="button" class="btn btn-default" data-click="enter"
+                            data-auto-disable>{{i18n.enter}}</button>
 				{{/unless}}
-            </button>
-            <a href="/goods/receive" class="btn btn-link">{{i18n.cancel}}</a>
+                <a href="/goods/receive" class="btn btn-link">{{i18n.cancel}}</a>
+			{{/unless}}
         </div>
     </div>
 </form>

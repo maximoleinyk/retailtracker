@@ -40,6 +40,14 @@ define (require) ->
         description: ->
           i18n.get('pleaseAddOneOrMoreProducts')
 
+    isEntered: ->
+      @get('status') is 'ENTERED'
+
+    enter: ->
+      @promise('post', '/receivegoods/enter', @toJSON()).then (result) =>
+        @set(result, {parse:true})
+        @commit()
+
     updateTotals: ->
       @promise('post', '/receivegoods/updatetotals', @toJSON()).then (result) =>
         @set(result, {parse:true})
