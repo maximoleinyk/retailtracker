@@ -9,27 +9,28 @@ define(function (require) {
 		i18n = require('cs!app/common/i18n');
 
 	moment.locale('ru');
-	numeral.language('ru', {
+	numeral.language('uk-UA', {
 		delimiters: {
 			thousands: ' ',
 			decimal: ','
 		},
 		abbreviations: {
-			thousand: 'тыс.',
+			thousand: 'тис.',
 			million: 'млн',
-			billion: 'b',
-			trillion: 't'
+			billion: 'млрд',
+			trillion: 'блн'
 		},
 		ordinal: function () {
-			// not ideal, but since in Russian it can taken on
+			// not ideal, but since in Ukrainian it can taken on
 			// different forms (masculine, feminine, neuter)
 			// this is all we can do
-			return '.';
+			return '';
 		},
 		currency: {
-			symbol: 'руб.'
+			symbol: '\u20B4'
 		}
 	});
+	numeral.language('uk-UA');
 
 	var helpers = {
 		date: function (value, long) {
@@ -57,10 +58,10 @@ define(function (require) {
 				return user.firstName + ' ' + user.lastName;
 			}
 		},
-		money: function(value) {
-			return numeral(value).format('$0,0.00');
+		money: function (value) {
+			return numeral(value).format('$ 0,0.00');
 		},
-		currencyRate: function(value) {
+		currencyRate: function (value) {
 			return numeral(value).format('0.0000');
 		}
 	};

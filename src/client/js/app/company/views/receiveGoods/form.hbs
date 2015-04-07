@@ -52,15 +52,15 @@
     </div>
     <div class="page-section">
         <div class="col col-stretch">
-            <div class="form-group" data-id="gridGroup">
+            <div class="form-group no-bottom border" data-id="gridGroup">
                 <div data-region="grid"></div>
                 <div class="help-block" data-validate="items" data-bind></div>
             </div>
         </div>
     </div>
     <div class="page-section">
-        <div class="col col-3quarters">&nbsp;</div>
-        <div class="col col-quarter">
+        <div class="col col-half">&nbsp;</div>
+        <div class="col col-half">
             <div class="total-section major">
                 <div class="total-section-label">{{i18n.resultPrice}}:</div>
                 <div class="total-section-value" data-id="resultPrice"></div>
@@ -75,9 +75,9 @@
             </div>
         </div>
     </div>
-    <div class="page-section">
-        <div class="actions">
-			{{#unless isEntered}}
+	{{#unless isEntered}}
+        <div class="page-section">
+            <div class="actions">
 				{{#unless id}}
                     <button type="submit" class="btn btn-primary" data-auto-disable>{{i18n.save}}</button>
 				{{else}}
@@ -86,7 +86,7 @@
                             data-auto-disable>{{i18n.enter}}</button>
 				{{/unless}}
                 <a href="/goods/receive" class="btn btn-link">{{i18n.cancel}}</a>
-			{{/unless}}
+            </div>
         </div>
-    </div>
+	{{/unless}}
 </form>

@@ -6,7 +6,7 @@
         <ul>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                   data-catch-url="/(warehouses*)|(stores*)|(employees*)">{{i18n.myCompany}}<span class="caret"></span></a>
+                   data-catch-url="/(warehouses.*)|(stores.*)|(employees.*)">{{i18n.myCompany}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/employees">{{i18n.employees}}</a></li>
                     <li><a href="/stores">{{i18n.stores}}</a></li>
@@ -24,14 +24,15 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                   data-catch-url="/(goods/receipt.*)">{{i18n.warehouse}}<span class="caret"></span></a>
+                   data-catch-url="/(goods/receipt.*)|(/warehouse/items)">{{i18n.warehouse}}<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/goods/receive">{{i18n.goodsReceipt}}</a></li>
+                    <li><a href="/warehouse/items">{{i18n.warehouseItems}}</a></li>
                 </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
-                   data-catch-url="/(uom)|(currency)|(nomenclature*)|(groups)|(counterparty*)">{{i18n.rbi}}<span
+                   data-catch-url="/(uom)|(currency)|(nomenclature.*)|(groups)|(counterparty.*)">{{i18n.rbi}}<span
                         class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="/uom">{{i18n.unitOfMeasurements}}</a></li>

@@ -29,11 +29,12 @@ define (require) ->
               '/goods/receive/' + model.id
             formatter: (value, model) ->
               result = i18n.get(value.toLowerCase()) + ' '
-              switch (value)
-                when 'DRAFT' then result += helpers.dateTime(model.get('created'))
-                when 'ENTERED' then result += helpers.dateTime(model.get('entered'))
-                else
-                  result
+              if value is 'DRAFT'
+                result += helpers.dateTime(model.get('created'))
+              else if value is 'ENTERED'
+                result += helpers.dateTime(model.get('entered'))
+              else
+                result
               result
           },
           {
@@ -68,8 +69,8 @@ define (require) ->
           {
             field: 'totalPrice'
             title: i18n.get('totalPrice')
-            formatter: (value, model) ->
-              helpers.amount(value, model.get('currencyCode'))
+            formatter: (value) ->
+              helpers.money(value)
             type: 'number'
           }
         ]

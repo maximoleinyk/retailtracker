@@ -44,7 +44,7 @@
 			hbs: 'app/common/plugins/hbs',
 			md5: 'libs/md5/js/md5',
 			d3: 'libs/d3/d3',
-			typeahead: 'libs/typeahead.js/dist/typeahead.jquery',
+			typeahead: 'libs/typeahead.js/dist/typeahead.jquery'
 		},
 
 		shim: {

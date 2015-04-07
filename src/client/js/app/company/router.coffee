@@ -20,6 +20,7 @@ define (require) ->
       'nomenclature/:id/copy': 'copyNomenclature'
       'nomenclature/:id': 'nomenclatureForm'
       'warehouses': 'warehouseList'
+      'warehouse/items': 'warehouseItems'
       'warehouses/:id': 'warehouseForm'
       'employees': 'employeeList'
       'employees/:id': 'employeeForm'

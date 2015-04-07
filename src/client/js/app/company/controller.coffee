@@ -51,8 +51,16 @@ define (require) ->
   PosForm = require('cs!app/company/views/pos/form')
   ReceiveGoodsForm = require('cs!app/company/views/receiveGoods/form')
   ReceiveGoodsModel = require('cs!app/company/models/receiveGoods')
+  WarehouseItemsPage = require('cs!./views/warehouseItems/list')
+  WarehouseItems = require('cs!./collections/warehouseItems')
 
   Controller.extend
+
+    warehouseItems: ->
+      collection = new WarehouseItems
+      collection.fetch().then =>
+        @openPage new WarehouseItemsPage
+          collection: collection
 
     receiveGoodsForm: (id) ->
       model = if id and id isnt 'create' then new ReceiveGoodsModel({ _id: id }, { parse: true }) else new ReceiveGoodsModel

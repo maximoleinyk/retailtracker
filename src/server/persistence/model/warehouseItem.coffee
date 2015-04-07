@@ -5,9 +5,6 @@ class WarehouseItemSchema
 
   constructor: ->
     mongoose.mtModel 'WarehouseItem', mongoose.Schema
-      created:
-        type: Date
-        default: moment().toDate()
       nomenclature:
         type: mongoose.Schema.Types.ObjectId
         ref: 'Nomenclature'

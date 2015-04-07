@@ -51,7 +51,7 @@ define (require) ->
           type: 'number'
           default: 0
           formatter: (value) ->
-            helpers.amount(value);
+            helpers.money(value);
           events:
             blur: (value, model, done) ->
               model.set('totalPrice', numeral(model.get('price')).multiply(+model.get('quantity')).value())
@@ -65,6 +65,6 @@ define (require) ->
           readonly: true
           default: 0
           formatter: (value) ->
-            helpers.amount(value);
+            helpers.money(value);
         }
       ]

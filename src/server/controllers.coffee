@@ -82,6 +82,7 @@ WarehouseItemService = inject('services/warehouseItemService')
 WarehouseItemStore = inject('persistence/warehouseItemStore')
 WarehouseItemService = inject('services/warehouseItemService')
 warehouseItemSchema = inject('persistence/model/warehouseItem')
+WarehouseItemController = inject('controllers/warehouseItem')
 
 module.exports = (app, passport) ->
   router = express.Router()
@@ -105,9 +106,12 @@ module.exports = (app, passport) ->
 
   warehouseItemStore = new WarehouseItemStore(warehouseItemSchema)
   warehouseItemService = new WarehouseItemService(warehouseItemStore)
+  warehouseItemController = new WarehouseItemController(warehouseItemService)
+  warehouseItemController.register(router)
 
   receiveGoodsStore = new ReceiveGoodsStore(receiveGoodSchema)
-  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore, warehouseItemService, currencyStore, nomenclatureStore)
+  receiveGoodsService = new ReceiveGoodsService(receiveGoodsStore, warehouseItemService, currencyStore,
+    nomenclatureStore)
   receiveGoodsController = new ReceiveGoodsController(receiveGoodsService)
   receiveGoodsController.register(router)
 

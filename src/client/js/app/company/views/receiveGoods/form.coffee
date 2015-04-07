@@ -61,7 +61,7 @@ define (require) ->
       @grid.show new Grid(options)
 
     updateTotals: ->
-      @ui.$resultPrice.text(helpers.amount(@model.get('totalPrice'), @model.get('currencyCode')))
+      @ui.$resultPrice.text(helpers.money(@model.get('totalPrice')))
       @ui.$currencyRate.text(helpers.currencyRate(@model.get('currencyRate')))
       @ui.$resultAmount.text(@model.get('items').length)
 
