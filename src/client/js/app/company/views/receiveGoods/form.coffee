@@ -4,7 +4,7 @@ define (require) ->
   Layout = require('cs!app/common/marionette/layout')
   i18n = require('cs!app/common/i18n')
   Grid = require('cs!./grid')
-  Collection = require('cs!app/common/collection')
+  WarehouseItems = require('cs!app/company/collections/warehouseItems')
   helpers = require('app/common/helpers')
 
   Layout.extend
@@ -15,9 +15,13 @@ define (require) ->
     modelEvents:
       'change:totalPrice': 'updateTotals'
       'change:currency': 'updateTotals'
+      'change:warehouse': 'updateRemainingCommodity'
 
     initialize: ->
-      @items = new Collection
+      @items = new WarehouseItems
+
+    updateRemainingCommodity: ->
+      @items.updateRemainingCommodity(@model.get('warehouse'))
 
     templateHelpers: ->
       isEntered: @model.isEntered()
@@ -27,6 +31,7 @@ define (require) ->
       @renderCurrencySelect()
       @renderGrid()
       @updateTotals()
+      @updateRemainingCommodity() if not @model.isNew()
 
     renderWarehouseSelect: ->
       warehouseObject = @model.get('warehouse')

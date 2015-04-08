@@ -5,6 +5,13 @@ _ = require('underscore')
 
 class WarehouseService extends AbstractService
 
+  getCommodity: (ns, data, callback) ->
+    @store.countRemainingCommodity ns, data.warehouse, data.nomenclature, (err, result) ->
+      if err then callback(err) else callback(null, (result[0] || {}))
+
+  getItemsCommodity: (ns, data, callback) ->
+    @store.countRemainingCommodities(ns, data.warehouse, data.nomenclatures, callback)
+
   create: (ns, data, callback) ->
     errors = {}
     errors.nomenclature = i18n.nomenclatureIsRequired if not data.nomenclature

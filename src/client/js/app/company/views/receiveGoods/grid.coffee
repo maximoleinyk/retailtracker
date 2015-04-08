@@ -28,10 +28,19 @@ define (require) ->
               quantity: 0
               totalPrice: 0
             })
+            model.getCommodity(object._id, options.crud.model.get('warehouse'))
           formatResult: (object) =>
             if object.text then object.text else object.name
           formatter: (object) ->
             object?.name
+        },
+        {
+          field: 'remainingCommodity'
+          title: i18n.get('remainingCommodity')
+          width: 100
+          type: 'number'
+          default: 0
+          readonly: true
         },
         {
           field: 'quantity'
@@ -51,7 +60,9 @@ define (require) ->
           type: 'number'
           default: 0
           formatter: (value) ->
-            helpers.money(value);
+            helpers.amount(value)
+          value: (value) ->
+            helpers.amountUnformat(value)
           events:
             blur: (value, model, done) ->
               model.set('totalPrice', numeral(model.get('price')).multiply(+model.get('quantity')).value())
@@ -65,6 +76,8 @@ define (require) ->
           readonly: true
           default: 0
           formatter: (value) ->
-            helpers.money(value);
+            helpers.amount(value)
+          value: (value) ->
+            helpers.amountUnformat(value)
         }
       ]

@@ -1,15 +1,22 @@
 define(function (require) {
 	'use strict';
 
-	var InputCell = require('./inputCell');
+	var InputCell = require('./inputCell'),
+		_ = require('underscore');
 
 	return InputCell.extend({
 
 		updateModel: function () {
-			var property = this.options.column.get('field'),
-				value = this.ui.$input.val();
+			var field = this.options.column.get('field'),
+				value = this.ui.$input.val(),
+				obtainFunction = this.options.column.get('value');
 
-			this.model.set(property, +value);
+			if (_.isFunction(obtainFunction)) {
+				value = obtainFunction(value, this.model);
+			}
+
+			// prevent invocation of renderValue function
+			this.model.set(field, value, {silent: true});
 		}
 
 	});

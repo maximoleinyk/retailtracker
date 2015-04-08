@@ -108,6 +108,8 @@ define (require) ->
           type: 'number'
           width: 150
           default: 0
+          value: (value) ->
+            helpers.amountUnformat(value)
           formatter: (value) ->
             helpers.amount(value);
 
@@ -117,7 +119,7 @@ define (require) ->
           result.title = i18n.get('price')
           result.events =
             blur: (value, model, done) =>
-              return done() if not +value or not model.get('nomenclature')
+              return done() if !helpers.amountUnformat(value) or not model.get('nomenclature')
               model.set('formula', formulaModel.get('id'))
               model.set('priceList', @model.id)
               model.generatePrices().then ->

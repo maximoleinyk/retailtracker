@@ -10,8 +10,17 @@ define(function (require) {
 
         initialize: function () {
             this.canBeFormatted = true;
+			this.setDefaultValues();
             this.bindEvents();
             this.listenEvents();
+		},
+
+		setDefaultValues: function () {
+			var defaultValue = this.options.column.get('default');
+
+			if (!_.isNull(defaultValue) && !_.isUndefined(defaultValue) && this.options.cellManager.isFooter) {
+				this.model.set(this.options.column.get('field'), defaultValue);
+			}
 		},
 
         invalid: function () {

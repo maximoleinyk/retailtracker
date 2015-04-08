@@ -8,4 +8,13 @@ class WarehouseItemController extends ReadableController
   filter: company
   namespace: namespace.company
 
+  register: (router) ->
+    super
+
+    router.post @baseUrl + '/commodity', @filter, (req, res) =>
+      @service.getCommodity @namespace(req), req.body, @callback(res)
+
+    router.post @baseUrl + '/commodity/all', @filter, (req, res) =>
+      @service.getItemsCommodity @namespace(req), req.body, @callback(res)
+
 module.exports = WarehouseItemController

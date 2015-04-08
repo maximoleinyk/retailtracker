@@ -2,6 +2,7 @@ _ = require('underscore')
 AbstractService = inject('services/abstractService')
 Promise = inject('util/promise')
 numeral = require('numeral')
+moment = require('moment')
 i18n = inject('util/i18n').bundle('validation')
 
 class ReceiveGoodsService extends AbstractService
@@ -82,6 +83,7 @@ class ReceiveGoodsService extends AbstractService
     find.then (document) =>
       data = document.toJSON()
       data.status = 'ENTERED'
+      data.entered = moment().toDate()
       data.warehouse = data.warehouse._id
       data.currency = data.currency._id
       data.assignee = data.assignee._id

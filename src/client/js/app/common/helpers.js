@@ -48,8 +48,11 @@ define(function (require) {
 		dateTime: function (value) {
 			return helpers.date(value) + ' ' + helpers.time(value);
 		},
-		amount: function (value, currencyCode) {
-			return numeral(value).format('00.00');
+		amount: function (value) {
+			return numeral(value).format('0,0.00');
+		},
+		amountUnformat: function(value) {
+			return numeral().unformat(value);
 		},
 		formatUser: function (user) {
 			if (context.get('account.owner._id') === user.id) {
