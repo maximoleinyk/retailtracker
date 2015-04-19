@@ -28,6 +28,10 @@ define (require) ->
               '/stores/' + model.get('store._id')
             formatter: (storeObject) ->
               storeObject.name
+          },
+          {
+            field: 'description'
+            title: i18n.get('description')
           }
         ]
       })

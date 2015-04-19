@@ -2,19 +2,21 @@ define (require) ->
   'use strict'
 
   Layout = require('cs!app/common/marionette/layout')
-  ProductsArea = require('cs!./productArea')
-  ShoppingList = require('cs!./shoppingList')
+  ProductsContainer = require('cs!./productsContainer')
+  ItemsList = require('cs!./itemsList')
 
   Layout.extend
 
     template: require('hbs!./main.hbs')
+    className: 'page page-2thirds'
 
     onRender: ->
       @renderProducts()
       @renderShoppingList()
 
     renderProducts: ->
-      @products.show new ProductsArea
+      @products.show new ProductsContainer
+        warehouseItems: @options.warehouseItems
 
     renderShoppingList: ->
-      @shoppingList.show new ShoppingList
+      @list.show new ItemsList

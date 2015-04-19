@@ -1,0 +1,42 @@
+@mainWidth: 960px;
+
+.app.app-pos {
+  min-width: @mainWidth;
+
+  .content-wrapper {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    > .main-width {
+      height: 100%;
+      padding: 0;
+      > .content {
+        height: 100%;
+      }
+    }
+  }
+
+  .page {
+    margin: 0 5px;
+    height: 100%;
+
+    .page-section {
+      margin: 0 -10px;
+
+      &.absolute {
+        height: 100%;
+
+        > .col {
+          height: 100%;
+        }
+      }
+    }
+
+    .col {
+      padding: 5px;
+    }
+  }
+}

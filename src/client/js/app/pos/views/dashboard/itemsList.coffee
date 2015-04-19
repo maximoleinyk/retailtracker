@@ -5,4 +5,4 @@ define (require) ->
 
   ItemView.extend
 
-    template: require('hbs!./productArea.hbs')
+    template: require('hbs!./itemsList.hbs')
