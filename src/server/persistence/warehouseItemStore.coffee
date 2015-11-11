@@ -11,7 +11,7 @@ class WarehouseItemStore extends AbstractStore
     config = [
       {
         $match:
-          warehouse: new mongoose.Types.ObjectId(warehouseId)
+          warehouse: if warehouseId then new mongoose.Types.ObjectId(warehouseId) else null
       },
       {
         $group:
